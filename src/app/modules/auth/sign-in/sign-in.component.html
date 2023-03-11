@@ -14,19 +14,19 @@
             <div
                 class="mt-8 text-4xl font-extrabold tracking-tight leading-tight"
             >
-                Sign in
+                Entrar
             </div>
             <div class="flex items-baseline mt-0.5 font-medium">
-                <div>Don't have an account?</div>
+                <div>Não tem uma conta?</div>
                 <a
                     class="ml-1 text-primary-500 hover:underline"
                     [routerLink]="['/sign-up']"
-                    >Sign up
+                    >Registre-se
                 </a>
             </div>
 
             <!-- Alert -->
-            <fuse-alert
+            <!--<fuse-alert
                 class="mt-8"
                 [appearance]="'outline'"
                 [showIcon]="false"
@@ -37,7 +37,7 @@
             </fuse-alert>
 
             <!-- Alert -->
-            <fuse-alert
+            <!--<fuse-alert
                 class="mt-8"
                 *ngIf="showAlert"
                 [appearance]="'outline'"
@@ -46,13 +46,13 @@
                 [@shake]="alert.type === 'error'"
             >
                 {{ alert.message }}
-            </fuse-alert>
+            </fuse-alert>-->
 
             <!-- Sign in form -->
             <form class="mt-8" [formGroup]="signInForm" #signInNgForm="ngForm">
                 <!-- Email field -->
                 <mat-form-field class="w-full">
-                    <mat-label>Email address</mat-label>
+                    <mat-label>E-mail</mat-label>
                     <input id="email" matInput [formControlName]="'email'" />
                     <mat-error
                         *ngIf="signInForm.get('email').hasError('required')"
@@ -68,7 +68,7 @@
 
                 <!-- Password field -->
                 <mat-form-field class="w-full">
-                    <mat-label>Password</mat-label>
+                    <mat-label>Senha</mat-label>
                     <input
                         id="password"
                         matInput
@@ -109,12 +109,12 @@
                         [color]="'primary'"
                         [formControlName]="'rememberMe'"
                     >
-                        Remember me
+                        Lembrar-me
                     </mat-checkbox>
                     <a
                         class="text-md font-medium text-primary-500 hover:underline"
                         [routerLink]="['/forgot-password']"
-                        >Forgot password?
+                        >Esqueceu a senha?
                     </a>
                 </div>
 
@@ -126,7 +126,7 @@
                     [disabled]="signInForm.disabled"
                     (click)="signIn()"
                 >
-                    <span *ngIf="!signInForm.disabled"> Sign in </span>
+                    <span *ngIf="!signInForm.disabled"> Entrar </span>
                     <mat-progress-spinner
                         *ngIf="signInForm.disabled"
                         [diameter]="24"
@@ -137,7 +137,7 @@
                 <!-- Separator -->
                 <div class="flex items-center mt-8">
                     <div class="flex-auto mt-px border-t"></div>
-                    <div class="mx-2 text-secondary">Or continue with</div>
+                    <div class="mx-2 text-secondary">Ou continue com</div>
                     <div class="flex-auto mt-px border-t"></div>
                 </div>
 
@@ -223,22 +223,21 @@
         <!-- @formatter:on -->
         <!-- Content -->
         <div class="z-10 relative w-full max-w-2xl">
-            <div class="text-7xl font-bold leading-none text-gray-100">
-                <div>Welcome to</div>
-                <div>our community</div>
+            <!--<div class="text-7xl font-bold leading-none text-gray-100">
+                <div></div>
+                <div></div>
             </div>
             <div class="mt-6 text-lg tracking-tight leading-6 text-gray-400">
                 Fuse helps developers to build organized and well coded
                 dashboards full of beautiful and rich modules. Join us and start
                 building your application today.
-            </div>
+            </div>-->
             <div class="flex items-center mt-8">
                 <div class="flex flex-0 items-center -space-x-1.5">
                     <img
-                        class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover"
-                        src="assets/images/avatars/female-18.jpg"
+                        src="assets\images\logo\Logo-Rede-JS-Pecas_5-400x400.png"
                     />
-                    <img
+                    <!--<img
                         class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover"
                         src="assets/images/avatars/female-11.jpg"
                     />
@@ -249,10 +248,10 @@
                     <img
                         class="flex-0 w-10 h-10 rounded-full ring-4 ring-offset-1 ring-gray-800 ring-offset-gray-800 object-cover"
                         src="assets/images/avatars/male-16.jpg"
-                    />
+                    />-->
                 </div>
                 <div class="ml-4 font-medium tracking-tight text-gray-400">
-                    More than 17k people joined us, it's your turn
+                    <!--More than 17k people joined us, it's your turn-->
                 </div>
             </div>
         </div>
