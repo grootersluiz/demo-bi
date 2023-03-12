@@ -57,12 +57,12 @@
                     <mat-error
                         *ngIf="signInForm.get('email').hasError('required')"
                     >
-                        Email address is required
+                        E-mail obrigatório
                     </mat-error>
                     <mat-error
                         *ngIf="signInForm.get('email').hasError('email')"
                     >
-                        Please enter a valid email address
+                        Por favor, insira um e-mail válido
                     </mat-error>
                 </mat-form-field>
 
@@ -97,7 +97,7 @@
                             [svgIcon]="'heroicons_solid:eye-off'"
                         ></mat-icon>
                     </button>
-                    <mat-error> Password is required </mat-error>
+                    <mat-error> Senha obrigatória </mat-error>
                 </mat-form-field>
 
                 <!-- Actions -->
