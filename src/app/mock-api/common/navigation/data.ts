@@ -10,7 +10,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
         children: [
             {
                 id: 'admin.ecommerce.inventory',
-                title: 'Inventory',
+                title: 'Inventário',
                 type: 'basic',
                 link: '/admin/ecommerce/inventory',
             },
@@ -26,7 +26,7 @@ export const compactNavigation: FuseNavigationItem[] = [
         children: [
             {
                 id: 'admin.ecommerce.inventory',
-                title: 'Inventory',
+                title: 'Inventário',
                 type: 'basic',
                 link: '/admin/ecommerce/inventory',
             },
@@ -42,7 +42,7 @@ export const futuristicNavigation: FuseNavigationItem[] = [
         children: [
             {
                 id: 'admin.ecommerce.inventory',
-                title: 'Inventory',
+                title: 'Inventário',
                 type: 'basic',
                 link: '/admin/ecommerce/inventory',
             },
@@ -58,7 +58,7 @@ export const horizontalNavigation: FuseNavigationItem[] = [
         children: [
             {
                 id: 'admin.ecommerce.inventory',
-                title: 'Inventory',
+                title: 'Inventário',
                 type: 'basic',
                 link: '/admin/ecommerce/inventory',
             },
