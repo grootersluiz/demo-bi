@@ -3,6 +3,7 @@ import { AuthGuard } from 'app/core/auth/guards/auth.guard';
 import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
 import { InitialDataResolver } from 'app/app.resolvers';
+import { AuthRedirectGuard } from 'app/core/auth/guards/auth.redirect.guard';
 
 // @formatter:off
 /* eslint-disable max-len */
@@ -11,6 +12,18 @@ export const appRoutes: Route[] = [
     // Redirect empty path to '/example'
     { path: '', pathMatch: 'full', redirectTo: 'sign-in' },
 
+    {
+        path: 'sign-in',
+        canActivate: [AuthRedirectGuard],
+        component: LayoutComponent,
+        data: {
+            layout: 'empty',
+        },
+        loadChildren: () =>
+            import('app/modules/auth/sign-in/sign-in.module').then(
+                (m) => m.AuthSignInModule
+            ),
+    },
     // Redirect signed-in user to the '/example'
     //
     // After the user signs in, the sign-in page will redirect the user to the 'signed-in-redirect'
@@ -19,7 +32,7 @@ export const appRoutes: Route[] = [
     {
         path: 'signed-in-redirect',
         pathMatch: 'full',
-        redirectTo: 'apps/ecommerce',
+        redirectTo: 'apps',
     },
 
     // Auth routes for guests
@@ -78,6 +91,12 @@ export const appRoutes: Route[] = [
             layout: 'empty',
         },
         children: [
+            {
+                path: '',
+                pathMatch: 'full',
+                redirectTo: 'apps/ecommerce',
+            },
+
             {
                 path: 'sign-out',
                 loadChildren: () =>

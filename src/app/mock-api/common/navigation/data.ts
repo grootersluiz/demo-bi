@@ -4,15 +4,15 @@ import { FuseNavigationItem } from '@fuse/components/navigation';
 export const defaultNavigation: FuseNavigationItem[] = [
     {
         id: 'admin.ecommerce',
-        title: 'ECommerce',
+        title: 'Relatórios',
         type: 'collapsable',
-        icon: 'heroicons_outline:shopping-cart',
+        // icon: 'heroicons_outline:shopping-cart',
         children: [
             {
                 id: 'admin.ecommerce.inventory',
                 title: 'Inventário',
                 type: 'basic',
-                link: '/admin/ecommerce/inventory',
+                link: '/apps/ecommerce/inventory',
             },
         ],
     },
@@ -20,15 +20,15 @@ export const defaultNavigation: FuseNavigationItem[] = [
 export const compactNavigation: FuseNavigationItem[] = [
     {
         id: 'admin.ecommerce',
-        title: 'ECommerce',
+        title: 'Relatórios',
         type: 'collapsable',
-        icon: 'heroicons_outline:shopping-cart',
+        // icon: 'heroicons_outline:shopping-cart',
         children: [
             {
                 id: 'admin.ecommerce.inventory',
                 title: 'Inventário',
                 type: 'basic',
-                link: '/admin/ecommerce/inventory',
+                link: '/apps/ecommerce/inventory',
             },
         ],
     },
@@ -36,15 +36,15 @@ export const compactNavigation: FuseNavigationItem[] = [
 export const futuristicNavigation: FuseNavigationItem[] = [
     {
         id: 'admin.ecommerce',
-        title: 'ECommerce',
+        title: 'Relatórios',
         type: 'collapsable',
-        icon: 'heroicons_outline:shopping-cart',
+        // icon: 'heroicons_outline:shopping-cart',
         children: [
             {
                 id: 'admin.ecommerce.inventory',
                 title: 'Inventário',
                 type: 'basic',
-                link: '/admin/ecommerce/inventory',
+                link: '/apps/ecommerce/inventory',
             },
         ],
     },
@@ -52,15 +52,15 @@ export const futuristicNavigation: FuseNavigationItem[] = [
 export const horizontalNavigation: FuseNavigationItem[] = [
     {
         id: 'admin.ecommerce',
-        title: 'ECommerce',
+        title: 'Relatórios',
         type: 'collapsable',
-        icon: 'heroicons_outline:shopping-cart',
+        // icon: 'heroicons_outline:shopping-cart',
         children: [
             {
                 id: 'admin.ecommerce.inventory',
                 title: 'Inventário',
                 type: 'basic',
-                link: '/admin/ecommerce/inventory',
+                link: '/apps/ecommerce/inventory',
             },
         ],
     },
