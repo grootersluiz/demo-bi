@@ -16,7 +16,7 @@ export const appRoutes: Route[] = [
     // After the user signs in, the sign-in page will redirect the user to the 'signed-in-redirect'
     // path. Below is another redirection for that path to redirect the user to the desired
     // location. This is a small convenience to keep all main routes together here on this file.
-    { path: 'signed-in-redirect', pathMatch: 'full', redirectTo: 'ecommerce' },
+    { path: 'signed-in-redirect', pathMatch: 'full', redirectTo: 'apps' },
 
     // Auth routes for guests
     {
@@ -119,29 +119,16 @@ export const appRoutes: Route[] = [
         },
         children: [
             {
-                path: 'ecommerce',
-                loadChildren: () =>
-                    import('app/modules/admin/ecommerce/ecommerce.module').then(
-                        (m) => m.ECommerceModule
-                    ),
-            },
-        ],
-    },
-
-    {
-        path: '',
-        canMatch: [AuthGuard],
-        component: LayoutComponent,
-        resolve: {
-            initialData: InitialDataResolver,
-        },
-        children: [
-            {
-                path: 'example',
-                loadChildren: () =>
-                    import('app/modules/admin/example/example.module').then(
-                        (m) => m.ExampleModule
-                    ),
+                path: 'apps',
+                children: [
+                    {
+                        path: 'ecommerce',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/ecommerce/ecommerce.module'
+                            ).then((m) => m.ECommerceModule),
+                    },
+                ],
             },
         ],
     },
