@@ -186,6 +186,25 @@ export const appRoutes: Route[] = [
                     },
                 ],
             },
+            {
+                path: 'user',
+                children: [
+                    {
+                        path: 'profile',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/maintenance/maintenance.module'
+                            ).then((m) => m.MaintenanceModule),
+                    },
+                    {
+                        path: 'settings',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/maintenance/maintenance.module'
+                            ).then((m) => m.MaintenanceModule),
+                    },
+                ],
+            },
         ],
     },
 ];

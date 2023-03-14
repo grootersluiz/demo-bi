@@ -5,7 +5,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
     {
         id: 'analiseindicadores',
         title: 'Análise de Indicadores',
-        subtitle: 'Unique dashboard designs',
+        subtitle: 'Gestão de indicadores estratégicos',
         type: 'group',
         icon: 'heroicons_outline:home',
         children: [
@@ -18,28 +18,28 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 children: [
                     {
                         id: 'dashboards.project',
-                        title: 'Project',
+                        title: 'Modelo Teste 1',
                         type: 'basic',
                         icon: 'heroicons_outline:clipboard-check',
                         link: '/dashboards/project',
                     },
                     {
                         id: 'dashboards.analytics',
-                        title: 'Analytics',
+                        title: 'Modelo Teste 2',
                         type: 'basic',
                         icon: 'heroicons_outline:chart-pie',
                         link: '/dashboards/analytics',
                     },
                     {
                         id: 'dashboards.finance',
-                        title: 'Finance',
+                        title: 'Modelo Teste 3',
                         type: 'basic',
                         icon: 'heroicons_outline:cash',
                         link: '/dashboards/finance',
                     },
                     {
                         id: 'dashboards.crypto',
-                        title: 'Crypto',
+                        title: 'Modelo Teste 4',
                         type: 'basic',
                         icon: 'heroicons_outline:currency-dollar',
                         link: '/dashboards/crypto',
@@ -50,7 +50,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 id: 'admin.ecommerce',
                 title: 'Relatórios',
                 type: 'collapsable',
-                icon: 'heroicons_outline:home',
+                icon: 'heroicons_outline:clipboard',
                 link: '/analiseindicadores/admin.ecommerce',
                 children: [
                     {
@@ -60,6 +60,29 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         link: '/apps/ecommerce/inventory',
                     },
                 ],
+            },
+        ],
+    },
+    {
+        id: 'user',
+        title: 'Usuário',
+        subtitle: 'Configurações de usuário',
+        type: 'group',
+        icon: 'heroicons_outline:user',
+        children: [
+            {
+                id: 'profile',
+                title: 'Perfil',
+                type: 'basic',
+                icon: 'heroicons_outline:user-circle',
+                link: '/user/profile',
+            },
+            {
+                id: 'settings',
+                title: 'Configurações',
+                type: 'basic',
+                icon: 'heroicons_outline:cog',
+                link: '/user/settings',
             },
         ],
     },
