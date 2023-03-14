@@ -32,7 +32,7 @@ export const appRoutes: Route[] = [
     {
         path: 'signed-in-redirect',
         pathMatch: 'full',
-        redirectTo: 'apps',
+        redirectTo: 'dashboards/project',
     },
 
     // Auth routes for guests
@@ -150,6 +150,39 @@ export const appRoutes: Route[] = [
                             import(
                                 'app/modules/admin/ecommerce/ecommerce.module'
                             ).then((m) => m.ECommerceModule),
+                    },
+                ],
+            },
+            {
+                path: 'dashboards',
+                children: [
+                    {
+                        path: 'project',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/dashboards/project/project.module'
+                            ).then((m) => m.ProjectModule),
+                    },
+                    {
+                        path: 'analytics',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/dashboards/analytics/analytics.module'
+                            ).then((m) => m.AnalyticsModule),
+                    },
+                    {
+                        path: 'finance',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/dashboards/finance/finance.module'
+                            ).then((m) => m.FinanceModule),
+                    },
+                    {
+                        path: 'crypto',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/dashboards/crypto/crypto.module'
+                            ).then((m) => m.CryptoModule),
                     },
                 ],
             },
