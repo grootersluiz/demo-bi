@@ -1784,7 +1784,7 @@ export const rol = {
         predictedRatio: 55,
         series: [
             {
-                name: 'Page Views',
+                name: 'ROL',
                 data: [
                     {
                         x: now.minus({ days: 65 }).toJSDate(),
@@ -2049,7 +2049,7 @@ export const rol = {
                 ],
             },
             {
-                name: 'Visitors',
+                name: 'ROL realizada',
                 data: [
                     {
                         x: now.minus({ days: 65 }).toJSDate(),
@@ -2317,18 +2317,18 @@ export const rol = {
     },
     newVsReturning: {
         uniqueVisitors: 46085,
-        series: [80, 20],
-        labels: ['New', 'Returning'],
+        series: [80, 15],
+        labels: ['ROL', 'Meta'],
     },
     gender: {
         uniqueVisitors: 46085,
         series: [55, 45],
-        labels: ['Male', 'Female'],
+        labels: ['Atingidas', 'Não atingidas'],
     },
     age: {
         uniqueVisitors: 46085,
         series: [35, 65],
-        labels: ['Under 30', 'Over 30'],
+        labels: ['Total', 'Dias úteis'],
     },
     language: {
         uniqueVisitors: 46085,
