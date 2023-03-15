@@ -2335,4 +2335,11 @@ export const rol = {
         series: [25, 75],
         labels: ['English', 'Other'],
     },
+    previousStatement: {
+        status: 'paid',
+        date: now.startOf('day').minus({ days: 15 }).toFormat('DDD'),
+        limit: 34500,
+        spent: 27221.21,
+        minimum: 7331.94,
+    },
 };
