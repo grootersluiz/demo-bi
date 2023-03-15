@@ -184,6 +184,13 @@ export const appRoutes: Route[] = [
                                 'app/modules/admin/dashboards/crypto/crypto.module'
                             ).then((m) => m.CryptoModule),
                     },
+                    {
+                        path: 'rol',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/dashboards/rol/rol.module'
+                            ).then((m) => m.RolModule),
+                    },
                 ],
             },
             {

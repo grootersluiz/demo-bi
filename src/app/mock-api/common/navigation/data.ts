@@ -44,6 +44,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         icon: 'heroicons_outline:currency-dollar',
                         link: '/dashboards/crypto',
                     },
+                    {
+                        id: 'dashboards.rol',
+                        title: 'Rol',
+                        type: 'basic',
+                        icon: 'heroicons_outline:currency-dollar',
+                        link: '/dashboards/rol',
+                    },
                 ],
             },
             {
