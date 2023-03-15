@@ -46,9 +46,9 @@ export const defaultNavigation: FuseNavigationItem[] = [
                     },
                     {
                         id: 'dashboards.rol',
-                        title: 'Rol',
+                        title: 'ROL',
                         type: 'basic',
-                        icon: 'heroicons_outline:currency-dollar',
+                        icon: 'heroicons_outline:chart-bar',
                         link: '/dashboards/rol',
                     },
                 ],
