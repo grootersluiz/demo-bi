@@ -442,5 +442,311 @@
                 </div>
             </div>
         </div>
+        <div class="grid grid-cols-1 xl:grid-cols-3 gap-8 w-full mt-8">
+            <!-- Ranking - ROL table -->
+            <div
+                class="xl:col-span-2 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden"
+            >
+                <div class="p-6">
+                    <div
+                        class="mr-4 text-lg font-medium tracking-tight leading-6 truncate"
+                    >
+                        Ranking - ROL
+                    </div>
+                    <!-- <div class="text-secondary font-medium">
+                        1 pending, 4 completed
+                    </div> -->
+                </div>
+                <div class="overflow-x-auto mx-6">
+                    <table
+                        class="w-full bg-transparent"
+                        mat-table
+                        matSort
+                        [dataSource]="recentTransactionsDataSource"
+                        [trackBy]="trackByFn"
+                        #recentTransactionsTable
+                    >
+                        <!-- Posição-->
+                        <ng-container matColumnDef="transactionId">
+                            <th
+                                mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef
+                            >
+                                Posição
+                            </th>
+                            <td mat-cell *matCellDef="let transaction">
+                                <span
+                                    class="pr-6 font-medium text-sm text-secondary whitespace-nowrap"
+                                >
+                                    {{ transaction.transactionId }}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Filial -->
+                        <ng-container matColumnDef="date">
+                            <th
+                                mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef
+                            >
+                                Filial
+                            </th>
+                            <td mat-cell *matCellDef="let transaction">
+                                <span class="pr-6 whitespace-nowrap">
+                                    {{ transaction.date | date : "MMM dd, y" }}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Consultor -->
+                        <ng-container matColumnDef="name">
+                            <th
+                                mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef
+                            >
+                                Consultor
+                            </th>
+                            <td mat-cell *matCellDef="let transaction">
+                                <span class="pr-6 whitespace-nowrap">
+                                    {{ transaction.name }}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- ROL -->
+                        <ng-container matColumnDef="amount">
+                            <th
+                                mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef
+                            >
+                                ROL
+                            </th>
+                            <td mat-cell *matCellDef="let transaction">
+                                <span
+                                    class="pr-6 font-medium whitespace-nowrap"
+                                >
+                                    {{ transaction.amount | currency : "USD" }}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Status -->
+                        <ng-container matColumnDef="status">
+                            <th
+                                mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef
+                            >
+                                Status
+                            </th>
+                            <td mat-cell *matCellDef="let transaction">
+                                <span
+                                    class="inline-flex items-center font-bold text-xs px-2.5 py-0.5 rounded-full tracking-wide uppercase"
+                                    [ngClass]="{
+                                        'bg-red-200 text-red-800 dark:bg-red-600 dark:text-red-50':
+                                            transaction.status === 'pending',
+                                        'bg-green-200 text-green-800 dark:bg-green-600 dark:text-green-50':
+                                            transaction.status === 'completed'
+                                    }"
+                                >
+                                    <span
+                                        class="leading-relaxed whitespace-nowrap"
+                                        >{{ transaction.status }}</span
+                                    >
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Footer -->
+                        <ng-container matColumnDef="recentOrdersTableFooter">
+                            <td
+                                class="py-6 px-0 border-0"
+                                mat-footer-cell
+                                *matFooterCellDef
+                                colspan="6"
+                            >
+                                <!-- <button mat-stroked-button>
+                                    See all transactions
+                                </button> -->
+                            </td>
+                        </ng-container>
+
+                        <tr
+                            mat-header-row
+                            *matHeaderRowDef="recentTransactionsTableColumns"
+                        ></tr>
+                        <tr
+                            class="order-row h-16"
+                            mat-row
+                            *matRowDef="
+                                let row;
+                                columns: recentTransactionsTableColumns
+                            "
+                        ></tr>
+                        <tr
+                            class="h-16 border-0"
+                            mat-footer-row
+                            *matFooterRowDef="['recentOrdersTableFooter']"
+                        ></tr>
+                    </table>
+                </div>
+            </div>
+            <!-- Ranking - Metas table -->
+            <div
+                class="xl:col-span-2 flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden"
+            >
+                <div class="p-6">
+                    <div
+                        class="mr-4 text-lg font-medium tracking-tight leading-6 truncate"
+                    >
+                        Ranking - Metas
+                    </div>
+                    <!-- <div class="text-secondary font-medium">
+                        1 pending, 4 completed
+                    </div> -->
+                </div>
+                <div class="overflow-x-auto mx-6">
+                    <table
+                        class="w-full bg-transparent"
+                        mat-table
+                        matSort
+                        [dataSource]="recentTransactionsDataSource"
+                        [trackBy]="trackByFn"
+                        #recentTransactionsTable
+                    >
+                        <!-- Posição-->
+                        <ng-container matColumnDef="transactionId">
+                            <th
+                                mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef
+                            >
+                                Posição
+                            </th>
+                            <td mat-cell *matCellDef="let transaction">
+                                <span
+                                    class="pr-6 font-medium text-sm text-secondary whitespace-nowrap"
+                                >
+                                    {{ transaction.transactionId }}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Filial -->
+                        <ng-container matColumnDef="date">
+                            <th
+                                mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef
+                            >
+                                Filial
+                            </th>
+                            <td mat-cell *matCellDef="let transaction">
+                                <span class="pr-6 whitespace-nowrap">
+                                    {{ transaction.date | date : "MMM dd, y" }}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Consultor -->
+                        <ng-container matColumnDef="name">
+                            <th
+                                mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef
+                            >
+                                Consultor
+                            </th>
+                            <td mat-cell *matCellDef="let transaction">
+                                <span class="pr-6 whitespace-nowrap">
+                                    {{ transaction.name }}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Metas -->
+                        <ng-container matColumnDef="amount">
+                            <th
+                                mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef
+                            >
+                                Metas Atingidas
+                            </th>
+                            <td mat-cell *matCellDef="let transaction">
+                                <span
+                                    class="pr-6 font-medium whitespace-nowrap"
+                                >
+                                    {{ transaction.amount | currency : "USD" }}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Status -->
+                        <ng-container matColumnDef="status">
+                            <th
+                                mat-header-cell
+                                mat-sort-header
+                                *matHeaderCellDef
+                            >
+                                Status
+                            </th>
+                            <td mat-cell *matCellDef="let transaction">
+                                <span
+                                    class="inline-flex items-center font-bold text-xs px-2.5 py-0.5 rounded-full tracking-wide uppercase"
+                                    [ngClass]="{
+                                        'bg-red-200 text-red-800 dark:bg-red-600 dark:text-red-50':
+                                            transaction.status === 'pending',
+                                        'bg-green-200 text-green-800 dark:bg-green-600 dark:text-green-50':
+                                            transaction.status === 'completed'
+                                    }"
+                                >
+                                    <span
+                                        class="leading-relaxed whitespace-nowrap"
+                                        >{{ transaction.status }}</span
+                                    >
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Footer -->
+                        <ng-container matColumnDef="recentOrdersTableFooter">
+                            <td
+                                class="py-6 px-0 border-0"
+                                mat-footer-cell
+                                *matFooterCellDef
+                                colspan="6"
+                            >
+                                <!-- <button mat-stroked-button>
+                                    See all transactions
+                                </button> -->
+                            </td>
+                        </ng-container>
+
+                        <tr
+                            mat-header-row
+                            *matHeaderRowDef="recentTransactionsTableColumns"
+                        ></tr>
+                        <tr
+                            class="order-row h-16"
+                            mat-row
+                            *matRowDef="
+                                let row;
+                                columns: recentTransactionsTableColumns
+                            "
+                        ></tr>
+                        <tr
+                            class="h-16 border-0"
+                            mat-footer-row
+                            *matFooterRowDef="['recentOrdersTableFooter']"
+                        ></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

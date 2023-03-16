@@ -3,12 +3,15 @@ import {
     Component,
     OnDestroy,
     OnInit,
+    ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { ApexOptions } from 'ng-apexcharts';
 import { RolService } from 'app/modules/admin/dashboards/rol/rol.service';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
     selector: 'rol',
@@ -17,6 +20,9 @@ import { RolService } from 'app/modules/admin/dashboards/rol/rol.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RolComponent implements OnInit, OnDestroy {
+    @ViewChild('recentTransactionsTable', { read: MatSort })
+    recentTransactionsTableMatSort: MatSort;
+
     chartVisitors: ApexOptions;
     chartConversions: ApexOptions;
     chartImpressions: ApexOptions;
@@ -26,6 +32,15 @@ export class RolComponent implements OnInit, OnDestroy {
     chartGender: ApexOptions;
     chartAge: ApexOptions;
     chartLanguage: ApexOptions;
+    recentTransactionsDataSource: MatTableDataSource<any> =
+        new MatTableDataSource();
+    recentTransactionsTableColumns: string[] = [
+        'transactionId',
+        'date',
+        'name',
+        'amount',
+        // 'status',
+    ];
     data: any;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -50,6 +65,10 @@ export class RolComponent implements OnInit, OnDestroy {
                 // Store the data
                 this.data = data;
 
+                // Store the table data
+                this.recentTransactionsDataSource.data =
+                    data.recentTransactions;
+
                 // Prepare the chart data
                 this._prepareChartData();
             });
@@ -67,6 +86,15 @@ export class RolComponent implements OnInit, OnDestroy {
                 },
             },
         };
+    }
+
+    /**
+     * After view init
+     */
+    ngAfterViewInit(): void {
+        // Make the data source sortable
+        this.recentTransactionsDataSource.sort =
+            this.recentTransactionsTableMatSort;
     }
 
     /**
