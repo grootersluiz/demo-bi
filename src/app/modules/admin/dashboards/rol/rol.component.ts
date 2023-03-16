@@ -359,7 +359,7 @@ export class RolComponent implements OnInit, OnDestroy {
                     enabled: false,
                 },
             },
-            colors: ['#64748B', '#94A3B8'],
+            colors: ['#FF8C00', '#94A3B8'],
             dataLabels: {
                 enabled: false,
             },
@@ -437,7 +437,7 @@ export class RolComponent implements OnInit, OnDestroy {
                     enabled: true,
                 },
             },
-            colors: ['#3182CE', '#63B3ED'],
+            colors: ['#FF8C00', '#F0E68C'],
             labels: this.data.newVsReturning.labels,
             plotOptions: {
                 pie: {
@@ -493,7 +493,7 @@ export class RolComponent implements OnInit, OnDestroy {
                     enabled: true,
                 },
             },
-            colors: ['#319795', '#4FD1C5'],
+            colors: ['#008000', '#32CD32'],
             labels: this.data.gender.labels,
             plotOptions: {
                 pie: {
@@ -549,7 +549,7 @@ export class RolComponent implements OnInit, OnDestroy {
                     enabled: true,
                 },
             },
-            colors: ['#DD6B20', '#F6AD55'],
+            colors: ['#FF8C00', '#F0E68C'],
             labels: this.data.age.labels,
             plotOptions: {
                 pie: {
