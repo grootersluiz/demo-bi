@@ -2384,4 +2384,64 @@ export const rol = {
             date: '2019-11-24T12:13:23.064Z',
         },
     ],
+    githubIssues: {
+        overview: {
+            'this-week': {
+                'new-issues': 214,
+                'closed-issues': 75,
+                fixed: 3,
+                'wont-fix': 4,
+                're-opened': 8,
+                'needs-triage': 6,
+            },
+            'last-week': {
+                'new-issues': 197,
+                'closed-issues': 72,
+                fixed: 6,
+                'wont-fix': 11,
+                're-opened': 6,
+                'needs-triage': 5,
+            },
+        },
+        labels: [
+            'Jan',
+            'Fev',
+            'Mar',
+            'Abr',
+            'Mai',
+            'Jun',
+            'Jul',
+            'Ago',
+            'Set',
+            'Out',
+            'Nov',
+            'Dez',
+        ],
+        series: {
+            'this-week': [
+                {
+                    name: 'Meta',
+                    type: 'line',
+                    data: [42, 28, 43, 34, 20, 25, 22, 33, 28, 41, 17, 36],
+                },
+                {
+                    name: 'CC',
+                    type: 'column',
+                    data: [11, 10, 8, 11, 8, 10, 17, 12, 7, 6, 10, 14],
+                },
+            ],
+            'last-week': [
+                {
+                    name: 'Meta',
+                    type: 'line',
+                    data: [37, 32, 39, 27, 18, 24, 20, 40, 38, 25, 29, 36],
+                },
+                {
+                    name: 'CC',
+                    type: 'column',
+                    data: [9, 8, 10, 12, 7, 11, 15, 10, 9, 12, 7, 13],
+                },
+            ],
+        },
+    },
 };

@@ -41,6 +41,7 @@ export class RolComponent implements OnInit, OnDestroy {
         'amount',
         // 'status',
     ];
+    chartGithubIssues: ApexOptions = {};
     data: any;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -669,6 +670,81 @@ export class RolComponent implements OnInit, OnDestroy {
                                                     <div class="ml-2 text-md leading-none">${w.config.labels[seriesIndex]}:</div>
                                                     <div class="ml-2 text-md font-bold leading-none">${w.config.series[seriesIndex]}%</div>
                                                 </div>`,
+            },
+        };
+
+        this.chartGithubIssues = {
+            chart: {
+                fontFamily: 'inherit',
+                foreColor: 'inherit',
+                height: '100%',
+                type: 'line',
+                toolbar: {
+                    show: false,
+                },
+                zoom: {
+                    enabled: false,
+                },
+            },
+            colors: ['#FF8C00', '#94A3B8'],
+            dataLabels: {
+                enabled: true,
+                enabledOnSeries: [0],
+                background: {
+                    borderWidth: 0,
+                },
+            },
+            grid: {
+                borderColor: 'var(--fuse-border)',
+            },
+            labels: this.data.githubIssues.labels,
+            legend: {
+                show: false,
+            },
+            plotOptions: {
+                bar: {
+                    columnWidth: '50%',
+                },
+            },
+            series: this.data.githubIssues.series,
+            states: {
+                hover: {
+                    filter: {
+                        type: 'darken',
+                        value: 0.75,
+                    },
+                },
+            },
+            stroke: {
+                width: [3, 0],
+            },
+            tooltip: {
+                followCursor: true,
+                theme: 'dark',
+            },
+            xaxis: {
+                axisBorder: {
+                    show: false,
+                },
+                axisTicks: {
+                    color: 'var(--fuse-border)',
+                },
+                labels: {
+                    style: {
+                        colors: 'var(--fuse-text-secondary)',
+                    },
+                },
+                tooltip: {
+                    enabled: false,
+                },
+            },
+            yaxis: {
+                labels: {
+                    offsetX: -16,
+                    style: {
+                        colors: 'var(--fuse-text-secondary)',
+                    },
+                },
             },
         };
     }
