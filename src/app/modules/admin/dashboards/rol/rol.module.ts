@@ -14,6 +14,19 @@ import { SharedModule } from 'app/shared/shared.module';
 import { RolComponent } from 'app/modules/admin/dashboards/rol/rol.component';
 import { rolRoutes } from 'app/modules/admin/dashboards/rol/rol.routing';
 import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import {
+    MatMomentDateModule,
+    MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+    MomentDateAdapter,
+    MAT_MOMENT_DATE_ADAPTER_OPTIONS_FACTORY,
+} from '@angular/material-moment-adapter';
+import {
+    DateAdapter,
+    MAT_DATE_FORMATS,
+    MAT_DATE_LOCALE,
+} from '@angular/material/core';
 
 @NgModule({
     declarations: [RolComponent],
@@ -31,6 +44,10 @@ import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
         NgApexchartsModule,
         SharedModule,
         MatFormFieldModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatMomentDateModule,
     ],
+    providers: [{ provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }],
 })
 export class RolModule {}

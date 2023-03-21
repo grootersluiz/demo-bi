@@ -10,6 +10,7 @@
                     Filiais E5
                 </div>
             </div>
+
             <!-- <div class="flex items-center ml-6">
                 <mat-form-field appearance="fill">
                     <mat-label>Filiais</mat-label>
@@ -53,6 +54,47 @@
                     <button mat-menu-item>Vendedor 4</button>
                     <button mat-menu-item>Vendedor 5</button>
                 </mat-menu>
+
+                <!--Filtro Data-->
+
+                <mat-form-field
+                    class="hidden sm:inline-flex ml-3"
+                    style="width: 250px"
+                >
+                    <mat-label>Período</mat-label>
+                    <mat-date-range-input
+                        [formGroup]="range"
+                        [rangePicker]="picker"
+                    >
+                        <input
+                            matStartDate
+                            formControlName="start"
+                            placeholder="Start date"
+                        />
+                        <input
+                            matEndDate
+                            formControlName="end"
+                            placeholder="End date"
+                        />
+                    </mat-date-range-input>
+                    <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
+                    <mat-datepicker-toggle
+                        matIconSuffix
+                        [for]="picker"
+                    ></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+
+                    <mat-error
+                        *ngIf="
+                            range.controls.start.hasError('matStartDateInvalid')
+                        "
+                        >Data inicial inválida</mat-error
+                    >
+                    <mat-error
+                        *ngIf="range.controls.end.hasError('matEndDateInvalid')"
+                        >Data final inválida</mat-error
+                    >
+                </mat-form-field>
             </div>
         </div>
 

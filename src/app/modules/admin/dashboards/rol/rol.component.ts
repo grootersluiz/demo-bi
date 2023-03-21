@@ -12,9 +12,10 @@ import { ApexOptions } from 'ng-apexcharts';
 import { RolService } from 'app/modules/admin/dashboards/rol/rol.service';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
-import { MatFormField } from '@angular/material/form-field';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @Component({
     selector: 'rol',
@@ -46,6 +47,22 @@ export class RolComponent implements OnInit, OnDestroy {
     ];
     chartGithubIssues: ApexOptions = {};
     data: any;
+
+    // Filtros principais do dashboard
+
+    filiais = new FormControl('');
+    filiaisLista: string[] = [
+        'Campina Grande - PB',
+        'E5',
+        'João Pessoa - PB',
+        'Maceió - AL',
+        'Recife - PE',
+    ];
+
+    range = new FormGroup({
+        start: new FormControl<Date | null>(null),
+        end: new FormControl<Date | null>(null),
+    });
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -155,17 +172,6 @@ export class RolComponent implements OnInit, OnDestroy {
                 );
             });
     }
-
-    // Filtros principais do dashboard
-
-    filiais = new FormControl('');
-    filiaisLista: string[] = [
-        'Campina Grande - PB',
-        'E5',
-        'João Pessoa - PB',
-        'Maceió - AL',
-        'Recife - PE',
-    ];
 
     /**
      * Prepare the chart data from the data
