@@ -2418,7 +2418,7 @@ export const rol = {
             'Dez',
         ],
         series: {
-            'this-week': [
+            'this-year': [
                 {
                     name: 'Meta',
                     type: 'line',
@@ -2430,18 +2430,18 @@ export const rol = {
                     data: [11, 10, 8, 11, 8, 10, 17, 12, 7, 6, 10, 14],
                 },
             ],
-            'last-week': [
-                {
-                    name: 'Meta',
-                    type: 'line',
-                    data: [37, 32, 39, 27, 18, 24, 20, 40, 38, 25, 29, 36],
-                },
-                {
-                    name: 'CC',
-                    type: 'column',
-                    data: [9, 8, 10, 12, 7, 11, 15, 10, 9, 12, 7, 13],
-                },
-            ],
+            // 'last-week': [
+            //     {
+            //         name: 'Meta',
+            //         type: 'line',
+            //         data: [37, 32, 39, 27, 18, 24, 20, 40, 38, 25, 29, 36],
+            //     },
+            //     {
+            //         name: 'CC',
+            //         type: 'column',
+            //         data: [9, 8, 10, 12, 7, 11, 15, 10, 9, 12, 7, 13],
+            //     },
+            // ],
         },
     },
 };

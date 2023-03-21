@@ -12,6 +12,9 @@ import { ApexOptions } from 'ng-apexcharts';
 import { RolService } from 'app/modules/admin/dashboards/rol/rol.service';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { FormControl } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormField } from '@angular/material/form-field';
 
 @Component({
     selector: 'rol',
@@ -152,6 +155,17 @@ export class RolComponent implements OnInit, OnDestroy {
                 );
             });
     }
+
+    // Filtros principais do dashboard
+
+    filiais = new FormControl('');
+    filiaisLista: string[] = [
+        'Campina Grande - PB',
+        'E5',
+        'João Pessoa - PB',
+        'Maceió - AL',
+        'Recife - PE',
+    ];
 
     /**
      * Prepare the chart data from the data

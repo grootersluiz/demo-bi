@@ -13,6 +13,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { SharedModule } from 'app/shared/shared.module';
 import { RolComponent } from 'app/modules/admin/dashboards/rol/rol.component';
 import { rolRoutes } from 'app/modules/admin/dashboards/rol/rol.routing';
+import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 
 @NgModule({
     declarations: [RolComponent],
@@ -29,6 +30,7 @@ import { rolRoutes } from 'app/modules/admin/dashboards/rol/rol.routing';
         MatTooltipModule,
         NgApexchartsModule,
         SharedModule,
+        MatFormFieldModule,
     ],
 })
 export class RolModule {}
