@@ -59,6 +59,15 @@ export class RolComponent implements OnInit, OnDestroy {
         'Recife - PE',
     ];
 
+    vendedores = new FormControl('');
+    vendedoresLista: string[] = [
+        'Vendedor 1',
+        'Vendedor 2',
+        'Vendedor 3',
+        'Vendedor 4',
+        'Vendedor 5',
+    ];
+
     range = new FormGroup({
         start: new FormControl<Date | null>(null),
         end: new FormControl<Date | null>(null),
