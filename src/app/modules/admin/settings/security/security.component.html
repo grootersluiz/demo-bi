@@ -1,0 +1,127 @@
+<div class="w-full max-w-3xl">
+    <!-- Form -->
+    <form [formGroup]="securityForm">
+        <!-- Section -->
+        <div class="w-full">
+            <div class="text-xl">Definição de senha</div>
+            <div class="text-secondary">
+                Você pode alterar a senha 2 vezes a cada 24 horas!
+            </div>
+        </div>
+        <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
+            <!-- Current password -->
+            <div class="sm:col-span-4">
+                <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+                    <mat-label>Defina a senha</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:key'"
+                        matPrefix
+                    ></mat-icon>
+                    <input
+                        [formControlName]="'currentPassword'"
+                        type="password"
+                        matInput
+                    />
+                </mat-form-field>
+                <div class="mt-1 text-md text-hint">
+                    No mínimo 8 caracteres. Precisa conter números, letras e
+                    caracteres especiais.
+                </div>
+            </div>
+            <!-- New password -->
+            <div class="sm:col-span-4">
+                <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+                    <mat-label>Confirme a senha</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:key'"
+                        matPrefix
+                    ></mat-icon>
+                    <input
+                        [formControlName]="'newPassword'"
+                        type="password"
+                        matInput
+                    />
+                </mat-form-field>
+                <!-- <div class="mt-1 text-md text-hint">
+                    No mínimo 8 caracteres. Precisa conter números, letras e
+                    caracteres especiais.
+                </div> -->
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="my-10 border-t"></div>
+
+        <!-- Section -->
+        <div class="w-full">
+            <div class="text-xl">Preferências de segurança</div>
+            <div class="text-secondary">
+                Mantenha as contas mais seguras com as preferências abaixo
+            </div>
+        </div>
+        <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
+            <!-- 2-step auth -->
+            <div class="sm:col-span-4 flex items-center justify-between">
+                <div
+                    class="flex-auto cursor-pointer"
+                    (click)="twoStepToggle.toggle()"
+                >
+                    <div class="leading-6 font-medium">
+                        Habilitar autenticação de 2 etapas
+                    </div>
+                    <div class="text-md text-secondary">
+                        Proteção através da solicitação de autenticação via
+                        código SMS, em todos os momentos de login.
+                    </div>
+                </div>
+                <mat-slide-toggle
+                    class="ml-4"
+                    [color]="'primary'"
+                    [formControlName]="'twoStep'"
+                    #twoStepToggle
+                >
+                </mat-slide-toggle>
+            </div>
+            <!-- Ask to change password -->
+            <div class="sm:col-span-4 flex items-center justify-between">
+                <div
+                    class="flex-auto cursor-pointer"
+                    (click)="askPasswordChangeToggle.toggle()"
+                >
+                    <div class="leading-6 font-medium">
+                        Solicitar alteração de senha a cada 6 meses.
+                    </div>
+                    <div class="text-md text-secondary">
+                        Uma forma simples, porém efetiva, de proteção contra
+                        vazamento de dados sensíveis ou roubo de senha.
+                    </div>
+                </div>
+                <mat-slide-toggle
+                    class="ml-4"
+                    [color]="'primary'"
+                    [formControlName]="'askPasswordChange'"
+                    #askPasswordChangeToggle
+                >
+                </mat-slide-toggle>
+            </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="my-10 border-t"></div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-end">
+            <button mat-stroked-button type="button">Cancelar</button>
+            <button
+                class="ml-4"
+                mat-flat-button
+                type="button"
+                [color]="'primary'"
+            >
+                Salvar
+            </button>
+        </div>
+    </form>
+</div>

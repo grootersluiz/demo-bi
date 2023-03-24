@@ -212,6 +212,32 @@ export const appRoutes: Route[] = [
                     },
                 ],
             },
+            {
+                path: 'records',
+                children: [
+                    {
+                        path: 'regusers',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/settings/settings.module'
+                            ).then((m) => m.SettingsModule),
+                    },
+                    {
+                        path: 'regdashs',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/maintenance/maintenance.module'
+                            ).then((m) => m.MaintenanceModule),
+                    },
+                    {
+                        path: 'regreports',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/maintenance/maintenance.module'
+                            ).then((m) => m.MaintenanceModule),
+                    },
+                ],
+            },
         ],
     },
 ];
