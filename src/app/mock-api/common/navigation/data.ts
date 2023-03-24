@@ -70,6 +70,37 @@ export const defaultNavigation: FuseNavigationItem[] = [
             },
         ],
     },
+
+    {
+        id: 'records',
+        title: 'Cadastros',
+        subtitle: 'Usuários, Dashboards, Relatórios',
+        type: 'group',
+        // icon: 'heroicons_outline:user',
+        children: [
+            {
+                id: 'regusers',
+                title: 'Usuários',
+                type: 'basic',
+                icon: 'heroicons_outline:user',
+                link: '/records/regusers',
+            },
+            {
+                id: 'regdashs',
+                title: 'Dashboards',
+                type: 'basic',
+                icon: 'heroicons_outline:chart-pie',
+                link: '/records/regdashs',
+            },
+            {
+                id: 'regreports',
+                title: 'Relatórios',
+                type: 'basic',
+                icon: 'heroicons_outline:clipboard-check',
+                link: '/records/regreports',
+            },
+        ],
+    },
     {
         id: 'user',
         title: 'Usuário',
