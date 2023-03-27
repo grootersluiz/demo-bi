@@ -18,6 +18,7 @@ import {
 })
 export class SettingsAccountComponent implements OnInit {
     accountForm: UntypedFormGroup;
+    securityForm: UntypedFormGroup;
 
     /**
      * Constructor
@@ -45,6 +46,13 @@ export class SettingsAccountComponent implements OnInit {
             phone: ['62-98175-0604'],
             country: ['usa'],
             language: ['english'],
+        });
+        // Create the form
+        this.securityForm = this._formBuilder.group({
+            currentPassword: [''],
+            newPassword: [''],
+            twoStep: [true],
+            askPasswordChange: [false],
         });
     }
 }
