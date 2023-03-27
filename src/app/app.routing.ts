@@ -223,14 +223,14 @@ export const appRoutes: Route[] = [
                             ).then((m) => m.SettingsModule),
                     },
                     {
-                        path: 'regdashs',
+                        path: 'regdashsreports',
                         loadChildren: () =>
                             import(
-                                'app/modules/admin/maintenance/maintenance.module'
-                            ).then((m) => m.MaintenanceModule),
+                                'app/modules/admin/layouts/layouts.module'
+                            ).then((m) => m.FormsLayoutsModule),
                     },
                     {
-                        path: 'regreports',
+                        path: 'regviews',
                         loadChildren: () =>
                             import(
                                 'app/modules/admin/maintenance/maintenance.module'
