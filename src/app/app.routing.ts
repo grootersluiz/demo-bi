@@ -233,8 +233,8 @@ export const appRoutes: Route[] = [
                         path: 'regviews',
                         loadChildren: () =>
                             import(
-                                'app/modules/admin/maintenance/maintenance.module'
-                            ).then((m) => m.MaintenanceModule),
+                                'app/modules/admin/layoutsviews/layoutsviews.module'
+                            ).then((m) => m.FormsLayoutsViewsModule),
                     },
                 ],
             },
