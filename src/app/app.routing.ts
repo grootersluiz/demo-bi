@@ -219,8 +219,8 @@ export const appRoutes: Route[] = [
                         path: 'regusers',
                         loadChildren: () =>
                             import(
-                                'app/modules/admin/maintenance/maintenance.module'
-                            ).then((m) => m.MaintenanceModule),
+                                'app/modules/admin/contacts/contacts.module'
+                            ).then((m) => m.ContactsModule),
                     },
                     {
                         path: 'regdashsreports',
