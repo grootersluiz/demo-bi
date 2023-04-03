@@ -18,7 +18,7 @@
             >
                 <a
                     mat-icon-button
-                    [matTooltip]="'Close'"
+                    [matTooltip]="'Fechar'"
                     [routerLink]="['../']"
                     (click)="closeDrawer()"
                 >
@@ -63,7 +63,7 @@
                                 class="icon-size-5"
                                 [svgIcon]="'heroicons_solid:pencil-alt'"
                             ></mat-icon>
-                            <span class="ml-2">Edit</span>
+                            <span class="ml-2">Editar</span>
                         </button>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                                         >
                                             {{ email.email }}
                                         </a>
-                                        <div
+                                        <!-- <div
                                             class="text-md truncate text-secondary"
                                             *ngIf="email.label"
                                         >
@@ -150,7 +150,7 @@
                                             <span class="font-medium">{{
                                                 email.label
                                             }}</span>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </ng-container>
                             </div>
@@ -171,7 +171,7 @@
                                     "
                                 >
                                     <div class="flex items-center leading-6">
-                                        <div
+                                        <!-- <div
                                             class="hidden sm:flex w-6 h-4 overflow-hidden"
                                             [matTooltip]="
                                                 getCountryByIso(
@@ -189,18 +189,18 @@
                                                     phoneNumber.country
                                                 ).flagImagePos
                                             "
-                                        ></div>
-                                        <div class="sm:ml-3 font-mono">
+                                        ></div> -->
+                                        <!-- <div class="sm:ml-3 font-mono">
                                             {{
                                                 getCountryByIso(
                                                     phoneNumber.country
                                                 ).code
                                             }}
-                                        </div>
+                                        </div> -->
                                         <div class="ml-2.5 font-mono">
                                             {{ phoneNumber.phoneNumber }}
                                         </div>
-                                        <div
+                                        <!-- <div
                                             class="text-md truncate text-secondary"
                                             *ngIf="phoneNumber.label"
                                         >
@@ -208,14 +208,14 @@
                                             <span class="font-medium">{{
                                                 phoneNumber.label
                                             }}</span>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </ng-container>
                             </div>
                         </div>
                     </ng-container>
 
-                    <!-- Address -->
+                    <!-- Address
                     <ng-container *ngIf="contact.address">
                         <div class="flex sm:items-center">
                             <mat-icon
@@ -225,10 +225,10 @@
                                 {{ contact.address }}
                             </div>
                         </div>
-                    </ng-container>
+                    </ng-container> -->
 
                     <!-- Birthday -->
-                    <ng-container *ngIf="contact.birthday">
+                    <!-- <ng-container *ngIf="contact.birthday">
                         <div class="flex sm:items-center">
                             <mat-icon
                                 [svgIcon]="'heroicons_outline:cake'"
@@ -237,10 +237,10 @@
                                 {{ contact.birthday | date : "longDate" }}
                             </div>
                         </div>
-                    </ng-container>
+                    </ng-container> -->
 
                     <!-- Notes -->
-                    <ng-container *ngIf="contact.notes">
+                    <!-- <ng-container *ngIf="contact.notes">
                         <div class="flex">
                             <mat-icon
                                 [svgIcon]="'heroicons_outline:menu-alt-2'"
@@ -250,7 +250,7 @@
                                 [innerHTML]="contact.notes"
                             ></div>
                         </div>
-                    </ng-container>
+                    </ng-container> -->
                 </div>
             </div>
         </div>
@@ -275,8 +275,9 @@
             >
                 <a
                     mat-icon-button
-                    [matTooltip]="'Close'"
+                    [matTooltip]="'Fechar'"
                     [routerLink]="['../']"
+                    (click)="closeDrawer()"
                 >
                     <mat-icon
                         class="text-white"
@@ -364,7 +365,7 @@
                             class="w-full"
                             [subscriptSizing]="'dynamic'"
                         >
-                            <mat-label>Name</mat-label>
+                            <mat-label>Nome</mat-label>
                             <mat-icon
                                 matPrefix
                                 class="hidden sm:flex icon-size-5"
@@ -413,7 +414,7 @@
                                 ></mat-icon>
                                 <span
                                     class="ml-1.5 text-md font-medium whitespace-nowrap"
-                                    >Edit</span
+                                    >Editar</span
                                 >
                             </ng-container>
 
@@ -424,7 +425,7 @@
                                 ></mat-icon>
                                 <span
                                     class="ml-1.5 text-md font-medium whitespace-nowrap"
-                                    >Add</span
+                                    >Adicionar</span
                                 >
                             </ng-container>
 
@@ -446,7 +447,7 @@
                                                 <input
                                                     class="w-full min-w-0 py-1 border-0"
                                                     type="text"
-                                                    placeholder="Enter tag name"
+                                                    placeholder="Insira o nome da tag"
                                                     (input)="filterTags($event)"
                                                     (keydown)="
                                                         filterTagsInputKeyDown(
@@ -602,7 +603,7 @@
                             class="w-full"
                             [subscriptSizing]="'dynamic'"
                         >
-                            <mat-label>Title</mat-label>
+                            <mat-label>Cargo</mat-label>
                             <mat-icon
                                 matPrefix
                                 class="hidden sm:flex icon-size-5"
@@ -622,7 +623,7 @@
                             class="w-full"
                             [subscriptSizing]="'dynamic'"
                         >
-                            <mat-label>Company</mat-label>
+                            <mat-label>Filial</mat-label>
                             <mat-icon
                                 matPrefix
                                 class="hidden sm:flex icon-size-5"
@@ -656,7 +657,7 @@
                                         [subscriptSizing]="'dynamic'"
                                     >
                                         <mat-label *ngIf="first"
-                                            >Email</mat-label
+                                            >E-mail</mat-label
                                         >
                                         <mat-icon
                                             matPrefix
@@ -666,11 +667,11 @@
                                         <input
                                             matInput
                                             [formControl]="email.get('email')"
-                                            [placeholder]="'Email address'"
+                                            [placeholder]="'Endereço de e-mail'"
                                             [spellcheck]="false"
                                         />
                                     </mat-form-field>
-                                    <mat-form-field
+                                    <!-- <mat-form-field
                                         class="flex-auto w-full max-w-24 sm:max-w-40 ml-2 sm:ml-4"
                                         [subscriptSizing]="'dynamic'"
                                     >
@@ -687,7 +688,7 @@
                                             [formControl]="email.get('label')"
                                             [placeholder]="'Label'"
                                         />
-                                    </mat-form-field>
+                                    </mat-form-field> -->
                                     <!-- Remove email -->
                                     <ng-container *ngIf="!(first && last)">
                                         <div
@@ -698,7 +699,7 @@
                                                 class="w-8 h-8 min-h-8"
                                                 mat-icon-button
                                                 (click)="removeEmailField(i)"
-                                                matTooltip="Remove"
+                                                matTooltip="Remover"
                                             >
                                                 <mat-icon
                                                     class="icon-size-5"
@@ -722,7 +723,7 @@
                             ></mat-icon>
                             <span
                                 class="ml-2 font-medium text-secondary group-hover:underline"
-                                >Add an email address</span
+                                >Adicionar e-mail</span
                             >
                         </div>
                     </div>
@@ -747,16 +748,16 @@
                                         [subscriptSizing]="'dynamic'"
                                     >
                                         <mat-label *ngIf="first"
-                                            >Phone</mat-label
+                                            >Telefone</mat-label
                                         >
                                         <input
                                             matInput
                                             [formControl]="
                                                 phoneNumber.get('phoneNumber')
                                             "
-                                            [placeholder]="'Phone'"
+                                            [placeholder]="'Telefone'"
                                         />
-                                        <mat-select
+                                        <!-- <mat-select
                                             class="mr-1.5"
                                             [formControl]="
                                                 phoneNumber.get('country')
@@ -829,9 +830,9 @@
                                                     </span>
                                                 </mat-option>
                                             </ng-container>
-                                        </mat-select>
+                                        </mat-select> -->
                                     </mat-form-field>
-                                    <mat-form-field
+                                    <!-- <mat-form-field
                                         class="flex-auto w-full max-w-24 sm:max-w-40 ml-2 sm:ml-4"
                                         [subscriptSizing]="'dynamic'"
                                     >
@@ -850,7 +851,7 @@
                                             "
                                             [placeholder]="'Label'"
                                         />
-                                    </mat-form-field>
+                                    </mat-form-field> -->
                                     <!-- Remove phone number -->
                                     <ng-container *ngIf="!(first && last)">
                                         <div
@@ -863,7 +864,7 @@
                                                 (click)="
                                                     removePhoneNumberField(i)
                                                 "
-                                                matTooltip="Remove"
+                                                matTooltip="Remover"
                                             >
                                                 <mat-icon
                                                     class="icon-size-5"
@@ -887,13 +888,13 @@
                             ></mat-icon>
                             <span
                                 class="ml-2 font-medium text-secondary group-hover:underline"
-                                >Add a phone number</span
+                                >Adicionar telefone</span
                             >
                         </div>
                     </div>
 
                     <!-- Address -->
-                    <div class="mt-8">
+                    <!-- <div class="mt-8">
                         <mat-form-field
                             class="w-full"
                             [subscriptSizing]="'dynamic'"
@@ -910,10 +911,10 @@
                                 [placeholder]="'Address'"
                             />
                         </mat-form-field>
-                    </div>
+                    </div> -->
 
                     <!-- Birthday -->
-                    <div class="mt-8">
+                    <!-- <div class="mt-8">
                         <mat-form-field
                             class="w-full"
                             [subscriptSizing]="'dynamic'"
@@ -939,10 +940,10 @@
                                 #birthdayDatepicker
                             ></mat-datepicker>
                         </mat-form-field>
-                    </div>
+                    </div> -->
 
                     <!-- Notes -->
-                    <div class="mt-8">
+                    <!-- <div class="mt-8">
                         <mat-form-field
                             class="w-full"
                             [subscriptSizing]="'dynamic'"
@@ -962,7 +963,7 @@
                                 cdkTextareaAutosize
                             ></textarea>
                         </mat-form-field>
-                    </div>
+                    </div> -->
 
                     <!-- Actions -->
                     <div
@@ -972,19 +973,19 @@
                         <button
                             mat-button
                             [color]="'warn'"
-                            [matTooltip]="'Delete'"
+                            [matTooltip]="'Deletar'"
                             (click)="deleteContact()"
                         >
-                            Delete
+                            Deletar
                         </button>
                         <!-- Cancel -->
                         <button
                             class="ml-auto"
                             mat-button
-                            [matTooltip]="'Cancel'"
+                            [matTooltip]="'Cancelar'"
                             (click)="toggleEditMode(false)"
                         >
-                            Cancel
+                            Cancelar
                         </button>
                         <!-- Save -->
                         <button
@@ -992,10 +993,10 @@
                             mat-flat-button
                             [color]="'primary'"
                             [disabled]="contactForm.invalid"
-                            [matTooltip]="'Save'"
+                            [matTooltip]="'Salvar'"
                             (click)="updateContact()"
                         >
-                            Save
+                            Salvar
                         </button>
                     </div>
                 </form>
