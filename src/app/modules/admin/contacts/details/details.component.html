@@ -2,35 +2,45 @@
     <!-- View mode -->
     <ng-container *ngIf="!editMode">
         <!-- Header -->
-        <div
+        <!-- <div
             class="relative w-full h-40 sm:h-48 px-8 sm:px-12 bg-accent-100 dark:bg-accent-700"
-        >
-            <!-- Background -->
-            <ng-container *ngIf="contact.background">
+        > -->
+        <!-- Background -->
+        <!-- <ng-container *ngIf="contact.background">
                 <img
                     class="absolute inset-0 object-cover w-full h-full"
                     [src]="contact.background"
                 />
-            </ng-container>
-            <!-- Close button -->
-            <div
-                class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6"
-            >
-                <a
-                    mat-icon-button
-                    [matTooltip]="'Fechar'"
-                    [routerLink]="['../']"
-                    (click)="closeDrawer()"
-                >
+            </ng-container> -->
+        <!-- Close button -->
+        <div
+            class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6"
+        >
+            <div class="flex items-center ml-auto mb-1">
+                <button mat-stroked-button (click)="toggleEditMode(true)">
                     <mat-icon
-                        class="text-white"
-                        [svgIcon]="'heroicons_outline:x'"
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:pencil-alt'"
                     ></mat-icon>
-                </a>
+                    <span class="ml-2">Editar</span>
+                </button>
             </div>
+            <a
+                mat-icon-button
+                [matTooltip]="'Fechar'"
+                [routerLink]="['../']"
+                (click)="closeDrawer()"
+            >
+                <mat-icon
+                    class="text-black"
+                    [svgIcon]="'heroicons_outline:x'"
+                ></mat-icon>
+            </a>
         </div>
+        <!-- </div> -->
 
         <!-- Contact -->
+        <br />
         <div
             class="relative flex flex-col flex-auto items-center p-6 pt-0 sm:p-12 sm:pt-0"
         >
@@ -54,7 +64,7 @@
                         </div>
                     </div>
                     <!-- Actions -->
-                    <div class="flex items-center ml-auto mb-1">
+                    <!-- <div class="flex items-center ml-auto mb-1">
                         <button
                             mat-stroked-button
                             (click)="toggleEditMode(true)"
@@ -65,7 +75,7 @@
                             ></mat-icon>
                             <span class="ml-2">Editar</span>
                         </button>
-                    </div>
+                    </div> -->
                 </div>
 
                 <!-- Name -->
@@ -259,33 +269,34 @@
     <!-- Edit mode -->
     <ng-container *ngIf="editMode">
         <!-- Header -->
-        <div
+        <!-- <div
             class="relative w-full h-40 sm:h-48 px-8 sm:px-12 bg-accent-100 dark:bg-accent-700"
-        >
-            <!-- Background -->
-            <ng-container *ngIf="contact.background">
+        > -->
+        <!-- Background -->
+        <!-- <ng-container *ngIf="contact.background">
                 <img
                     class="absolute inset-0 object-cover w-full h-full"
                     [src]="contact.background"
                 />
-            </ng-container>
-            <!-- Close button -->
-            <div
-                class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6"
+            </ng-container> -->
+        <!-- Close button -->
+        <div
+            class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6"
+        >
+            <a
+                mat-icon-button
+                [matTooltip]="'Fechar'"
+                [routerLink]="['../']"
+                (click)="closeDrawer()"
             >
-                <a
-                    mat-icon-button
-                    [matTooltip]="'Fechar'"
-                    [routerLink]="['../']"
-                    (click)="closeDrawer()"
-                >
-                    <mat-icon
-                        class="text-white"
-                        [svgIcon]="'heroicons_outline:x'"
-                    ></mat-icon>
-                </a>
-            </div>
+                <mat-icon
+                    class="text-black"
+                    [svgIcon]="'heroicons_outline:x'"
+                ></mat-icon>
+            </a>
         </div>
+        <!-- </div> -->
+        <br />
 
         <!-- Contact form -->
         <div

@@ -287,12 +287,15 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
     deleteContact(): void {
         // Open the confirmation dialog
         const confirmation = this._fuseConfirmationService.open({
-            title: 'Delete contact',
+            title: 'Deletar contato',
             message:
-                'Are you sure you want to delete this contact? This action cannot be undone!',
+                'Tem certeza que quer deletar esse contato? Essa ação não poderá ser desfeita!',
             actions: {
                 confirm: {
-                    label: 'Delete',
+                    label: 'Deletar',
+                },
+                cancel: {
+                    label: 'Cancelar',
                 },
             },
         });
