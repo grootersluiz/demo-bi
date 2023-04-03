@@ -21,7 +21,7 @@ import {
     takeUntil,
 } from 'rxjs';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { Contact, Country } from 'app/modules/admin//contacts/contacts.types';
+import { Contact, Country } from 'app/modules/admin/contacts/contacts.types';
 import { ContactsService } from 'app/modules/admin/contacts/contacts.service';
 
 @Component({
