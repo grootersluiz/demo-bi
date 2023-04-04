@@ -166,7 +166,7 @@ export class InventoryService {
             .get<{
                 columns: String[];
                 rows: any[][];
-            }>(`http://js-api.tatu.tech/v1/views/${viewId}/data`, {
+            }>(`http://js-api.tatu.tech/v1/views/${!viewId || viewId === 0 ? 24 : viewId}/data`, {
                 params: {
                     page: '' + page,
                     size: '' + size,
