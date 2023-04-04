@@ -47,27 +47,31 @@ import { ActivatedRoute } from '@angular/router';
         `
             .inventory-grid {
                 /* grid-template-columns: 48px auto 40px; */
-                grid-template-columns: auto auto auto;
+                place-items: center;
+                grid-template-columns: 150px auto 150px;
 
                 /* @screen sm {
                     grid-template-columns: 48px auto 112px 72px;
                 } */
                 @screen sm {
-                    grid-template-columns: auto auto auto auto;
+                    place-items: center;
+                    grid-template-columns: 150px auto 150px 150px;
                 }
 
                 /* @screen md {
                     grid-template-columns: 48px 112px auto 112px 72px;
                 } */
                 @screen md {
-                    grid-template-columns: auto auto auto auto auto;
+                    place-items: center;
+                    grid-template-columns: 150px 150px auto 150px 150px;
                 }
 
                 /* @screen lg {
                     grid-template-columns: 48px 112px auto 112px 96px 96px 72px;
                 } */
                 @screen lg {
-                    grid-template-columns: auto auto auto auto auto auto;
+                    place-items: center;
+                    grid-template-columns: 150px 150px auto 150px 150px 150px;
                 }
             }
         `,
