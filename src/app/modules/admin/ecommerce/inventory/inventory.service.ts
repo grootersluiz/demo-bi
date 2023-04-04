@@ -157,7 +157,7 @@ export class InventoryService {
         sort: string = 'sku',
         order: 'asc' | 'desc' | '' = 'asc',
         search: string = '',
-        viewId: number,
+        viewId: number
     ): Observable<{
         columns: String[];
         rows: any[][];
@@ -166,15 +166,20 @@ export class InventoryService {
             .get<{
                 columns: String[];
                 rows: any[][];
-            }>(`http://js-api.tatu.tech/v1/views/${!viewId || viewId === 0 ? 24 : viewId}/data`, {
-                params: {
-                    page: '' + page,
-                    size: '' + size,
-                    sort,
-                    order,
-                    search,
-                },
-            })
+            }>(
+                `http://10.2.1.108/v1/views/${
+                    !viewId || viewId === 0 ? 24 : viewId
+                }/data`,
+                {
+                    params: {
+                        page: '' + page,
+                        size: '' + size,
+                        sort,
+                        order,
+                        search,
+                    },
+                }
+            )
             .pipe(
                 tap((response) => {
                     console.log('products reponse', response);
