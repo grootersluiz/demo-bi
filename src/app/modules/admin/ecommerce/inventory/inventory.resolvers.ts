@@ -143,8 +143,8 @@ export class InventoryProductsResolver implements Resolve<any> {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<{
-        pagination: InventoryPagination;
-        products: InventoryProduct[];
+        columns: String[];
+        rows: any[][];
     }> {
         return this._inventoryService.getProducts();
     }

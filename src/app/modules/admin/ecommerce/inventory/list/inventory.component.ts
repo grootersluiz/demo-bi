@@ -82,6 +82,7 @@ export class InventoryListComponent
     @ViewChild(MatSort) private _sort: MatSort;
 
     products$: Observable<InventoryProduct[]>;
+    rows$: Observable<any[][]>;
 
     brands: InventoryBrand[];
     categories: InventoryCategory[];
@@ -89,6 +90,7 @@ export class InventoryListComponent
     flashMessage: 'success' | 'error' | null = null;
     isLoading: boolean = false;
     pagination: InventoryPagination;
+    columns: Observable<String[]>;
     searchInputControl: UntypedFormControl = new UntypedFormControl();
     selectedProduct: InventoryProduct | null = null;
     selectedProductForm: UntypedFormGroup;
@@ -136,15 +138,15 @@ export class InventoryListComponent
             .then((result) => console.log(result))
             .catch((error) => console.log('error', error)); */
 
-        var requestOptions = {
-            method: 'GET',
-            /* redirect: 'follow' */
-        };
+        // var requestOptions = {
+        //     method: 'GET',
+        //     /* redirect: 'follow' */
+        // };
 
-        fetch('http://js-api.tatu.tech/v1/views/2/data', requestOptions)
-            .then((response) => response.text())
-            .then((result) => console.log(result))
-            .catch((error) => console.log('error', error));
+        // fetch('http://js-api.tatu.tech/v1/views/2/data', requestOptions)
+        //     .then((response) => response.text())
+        //     .then((result) => console.log(result))
+        //     .catch((error) => console.log('error', error));
 
         // Create the selected product form
         this.selectedProductForm = this._formBuilder.group({
@@ -205,6 +207,8 @@ export class InventoryListComponent
 
         // Get the products
         this.products$ = this._inventoryService.products$;
+        this.rows$ = this._inventoryService.rows$;
+        this.columns = this._inventoryService.columns$;
 
         // Get the tags
         this._inventoryService.tags$

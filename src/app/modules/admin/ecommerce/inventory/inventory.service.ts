@@ -31,6 +31,10 @@ export class InventoryService {
         new BehaviorSubject(null);
     private _pagination: BehaviorSubject<InventoryPagination | null> =
         new BehaviorSubject(null);
+    private _columns: BehaviorSubject<String[] | null> =
+        new BehaviorSubject(null);
+    private _rows: BehaviorSubject<any[][] | null> =
+        new BehaviorSubject(null);
     private _product: BehaviorSubject<InventoryProduct | null> =
         new BehaviorSubject(null);
     private _products: BehaviorSubject<InventoryProduct[] | null> =
@@ -83,6 +87,14 @@ export class InventoryService {
      */
     get products$(): Observable<InventoryProduct[]> {
         return this._products.asObservable();
+    }
+
+    get columns$(): Observable<String[]> {
+        return this._columns.asObservable();
+    }
+
+    get rows$(): Observable<any[][]> {
+        return this._rows.asObservable();
     }
 
     /**
@@ -146,14 +158,14 @@ export class InventoryService {
         order: 'asc' | 'desc' | '' = 'asc',
         search: string = ''
     ): Observable<{
-        pagination: InventoryPagination;
-        products: InventoryProduct[];
+        columns: String[];
+        rows: any[][];
     }> {
         return this._httpClient
             .get<{
-                pagination: InventoryPagination;
-                products: InventoryProduct[];
-            }>('api/apps/ecommerce/inventory/products', {
+                columns: String[];
+                rows: any[][];
+            }>('http://js-api.tatu.tech/v1/views/2/data', {
                 params: {
                     page: '' + page,
                     size: '' + size,
@@ -164,8 +176,9 @@ export class InventoryService {
             })
             .pipe(
                 tap((response) => {
-                    this._pagination.next(response.pagination);
-                    this._products.next(response.products);
+                    console.log('products reponse', response);
+                    this._columns.next(response.columns);
+                    this._rows.next(response.rows);
                 })
             );
     }
