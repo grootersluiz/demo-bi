@@ -47,14 +47,14 @@ import { InventoryService } from 'app/modules/admin/ecommerce/inventory/inventor
             .inventory-grid {
                 /* grid-template-columns: 48px auto 40px; */
                 place-items: center;
-                grid-template-columns: 150px 150px 150px;
+                grid-template-columns: 150px auto 150px;
 
                 /* @screen sm {
                     grid-template-columns: 48px auto 112px 72px;
                 } */
                 @screen sm {
                     place-items: center;
-                    grid-template-columns: 150px 150px 150px 150px;
+                    grid-template-columns: 150px auto 150px 150px;
                 }
 
                 /* @screen md {
@@ -62,7 +62,7 @@ import { InventoryService } from 'app/modules/admin/ecommerce/inventory/inventor
                 } */
                 @screen md {
                     place-items: center;
-                    grid-template-columns: 150px 150px 150px 150px 150px;
+                    grid-template-columns: 150px 150px auto 150px 150px;
                 }
 
                 /* @screen lg {
@@ -70,7 +70,7 @@ import { InventoryService } from 'app/modules/admin/ecommerce/inventory/inventor
                 } */
                 @screen lg {
                     place-items: center;
-                    grid-template-columns: 150px 150px 150px 150px 150px 250px;
+                    grid-template-columns: 150px 150px auto 150px 150px 150px;
                 }
             }
         `,
