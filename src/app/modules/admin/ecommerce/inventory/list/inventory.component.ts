@@ -15,7 +15,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { MatCheckboxChange } from '@angular/material/checkbox';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import {
     debounceTime,
@@ -42,6 +42,7 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
     selector: 'inventory-list',
     templateUrl: './inventory.component.html',
+    providers: [MatPaginatorIntl],
     styles: [
         /* language=SCSS */
         `
@@ -113,7 +114,8 @@ export class InventoryListComponent
         private _fuseConfirmationService: FuseConfirmationService,
         private _formBuilder: UntypedFormBuilder,
         private _inventoryService: InventoryService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private _matPaginatorIntl: MatPaginatorIntl
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -155,9 +157,9 @@ export class InventoryListComponent
         //     .then((result) => console.log(result))
         //     .catch((error) => console.log('error', error));
 
-        this.route.queryParams.subscribe(params => {
-          console.log("view params", params);
-          this.viewId = params.viewId;
+        this.route.queryParams.subscribe((params) => {
+            console.log('view params', params);
+            this.viewId = params.viewId;
         });
 
         // Create the selected product form
@@ -216,6 +218,13 @@ export class InventoryListComponent
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
+
+        // Labels of paginator
+        this._matPaginatorIntl.itemsPerPageLabel = 'Itens por página: ';
+        this._matPaginatorIntl.firstPageLabel = 'Primeira página';
+        this._matPaginatorIntl.lastPageLabel = 'Última página';
+        this._matPaginatorIntl.previousPageLabel = 'Página anterior';
+        this._matPaginatorIntl.nextPageLabel = 'Próxima página';
 
         // Get the products
         this.products$ = this._inventoryService.products$;
