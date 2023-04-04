@@ -85,8 +85,8 @@ export class ECommerceInventoryMockApi {
                     // Filter the products
                     products = products.filter(
                         (contact) =>
-                            contact.name &&
-                            contact.name
+                            contact.sku &&
+                            contact.sku
                                 .toLowerCase()
                                 .includes(search.toLowerCase())
                     );

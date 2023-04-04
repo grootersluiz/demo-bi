@@ -10,7 +10,7 @@
             <mat-progress-bar [mode]="'indeterminate'"></mat-progress-bar>
         </div>
         <!-- Title -->
-        <div class="text-4xl font-extrabold tracking-tight">Inventário</div>
+        <div class="text-4xl font-extrabold tracking-tight">Produtos</div>
         <!-- Actions -->
         <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
             <!-- Search -->
@@ -27,7 +27,7 @@
                     matInput
                     [formControl]="searchInputControl"
                     [autocomplete]="'off'"
-                    [placeholder]="'Buscar Produto'"
+                    [placeholder]="'Buscar Produtos'"
                 />
             </mat-form-field>
             <!-- Add product button -->
@@ -63,28 +63,29 @@
                                 class="hidden md:block"
                                 [mat-sort-header]="'sku'"
                             >
-                                SKU
+                                Cód. Produto
                             </div>
-                            <div [mat-sort-header]="'name'">Name</div>
+                            <div [mat-sort-header]="'name'">Descrição</div>
                             <div
                                 class="hidden sm:block"
                                 [mat-sort-header]="'price'"
                             >
-                                Price
+                                Ref. Fornecedor
                             </div>
+
                             <div
                                 class="hidden lg:block"
                                 [mat-sort-header]="'stock'"
                             >
-                                Stock
+                                Volume
                             </div>
                             <div
                                 class="hidden lg:block"
                                 [mat-sort-header]="'active'"
                             >
-                                Active
+                                Marca
                             </div>
-                            <div class="hidden sm:block">Details</div>
+                            <!-- <div class="hidden sm:block">Details</div> -->
                         </div>
                         <!-- Rows -->
                         <ng-container *ngIf="products$ | async as products">
@@ -98,8 +99,8 @@
                                     class="inventory-grid grid items-center gap-4 py-3 px-6 md:px-8 border-b"
                                 >
                                     <!-- Image -->
-                                    <div class="flex items-center">
-                                        <div
+                                    <!-- <div class="flex items-center"> -->
+                                    <!-- <div
                                             class="relative flex flex-0 items-center justify-center w-12 h-12 mr-6 rounded overflow-hidden border"
                                         >
                                             <img
@@ -116,20 +117,20 @@
                                             >
                                                 NO THUMB
                                             </div>
-                                        </div>
-                                    </div>
+                                        </div> -->
+                                    <!-- </div> -->
 
                                     <!-- SKU -->
-                                    <div class="hidden md:block truncate">
+                                    <!-- <div class="hidden md:block truncate">
                                         {{ product.sku }}
-                                    </div>
+                                    </div> -->
 
                                     <!-- Name -->
-                                    <div class="truncate">
+                                    <!-- <div class="truncate">
                                         {{ product.name }}
-                                    </div>
+                                    </div> -->
 
-                                    <!-- Price -->
+                                    <!-- Price 
                                     <div class="hidden sm:block">
                                         {{
                                             product.price
@@ -138,14 +139,14 @@
                                                     : "symbol"
                                                     : "1.2-2"
                                         }}
-                                    </div>
+                                    </div> -->
 
                                     <!-- Stock -->
-                                    <div class="hidden lg:flex items-center">
+                                    <!-- <div class="hidden lg:flex items-center">
                                         <div class="min-w-4">
                                             {{ product.stock }}
                                         </div>
-                                        <!-- Low stock -->
+                                         Low stock 
                                         <div
                                             class="flex items-end ml-2 w-1 h-4 bg-red-200 rounded overflow-hidden"
                                             *ngIf="product.stock < 20"
@@ -154,7 +155,7 @@
                                                 class="flex w-full h-1/3 bg-red-600"
                                             ></div>
                                         </div>
-                                        <!-- Medium stock -->
+                                         Medium stock 
                                         <div
                                             class="flex items-end ml-2 w-1 h-4 bg-orange-200 rounded overflow-hidden"
                                             *ngIf="
@@ -166,7 +167,7 @@
                                                 class="flex w-full h-2/4 bg-orange-400"
                                             ></div>
                                         </div>
-                                        <!-- High stock -->
+                                         High stock
                                         <div
                                             class="flex items-end ml-2 w-1 h-4 bg-green-100 rounded overflow-hidden"
                                             *ngIf="product.stock >= 30"
@@ -175,10 +176,10 @@
                                                 class="flex w-full h-full bg-green-400"
                                             ></div>
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                     <!-- Active -->
-                                    <div class="hidden lg:block">
+                                    <!-- <div class="hidden lg:block">
                                         <ng-container *ngIf="product.active">
                                             <mat-icon
                                                 class="text-green-400 icon-size-5"
@@ -193,10 +194,10 @@
                                                 [svgIcon]="'heroicons_solid:x'"
                                             ></mat-icon>
                                         </ng-container>
-                                    </div>
+                                    </div> -->
 
                                     <!-- Details button -->
-                                    <div>
+                                    <!-- <div>
                                         <button
                                             class="min-w-10 min-h-7 h-7 px-2 leading-6"
                                             mat-stroked-button
@@ -212,7 +213,7 @@
                                                 "
                                             ></mat-icon>
                                         </button>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="grid">
                                     <ng-container

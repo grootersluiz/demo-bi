@@ -62,7 +62,7 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 children: [
                     {
                         id: 'admin.ecommerce.inventory',
-                        title: 'Inventário',
+                        title: 'Produtos',
                         type: 'basic',
                         link: '/apps/ecommerce/inventory',
                     },

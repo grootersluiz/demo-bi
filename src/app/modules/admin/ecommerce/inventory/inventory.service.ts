@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import {
     BehaviorSubject,
     filter,
@@ -142,7 +142,7 @@ export class InventoryService {
     getProducts(
         page: number = 0,
         size: number = 10,
-        sort: string = 'name',
+        sort: string = 'sku',
         order: 'asc' | 'desc' | '' = 'asc',
         search: string = ''
     ): Observable<{

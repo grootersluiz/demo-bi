@@ -45,18 +45,28 @@ import { InventoryService } from 'app/modules/admin/ecommerce/inventory/inventor
         /* language=SCSS */
         `
             .inventory-grid {
-                grid-template-columns: 48px auto 40px;
+                /* grid-template-columns: 48px auto 40px; */
+                grid-template-columns: auto auto auto;
 
-                @screen sm {
+                /* @screen sm {
                     grid-template-columns: 48px auto 112px 72px;
+                } */
+                @screen sm {
+                    grid-template-columns: auto auto auto auto;
                 }
 
-                @screen md {
+                /* @screen md {
                     grid-template-columns: 48px 112px auto 112px 72px;
+                } */
+                @screen md {
+                    grid-template-columns: auto auto auto auto auto;
                 }
 
-                @screen lg {
+                /* @screen lg {
                     grid-template-columns: 48px 112px auto 112px 96px 96px 72px;
+                } */
+                @screen lg {
+                    grid-template-columns: auto auto auto auto auto auto;
                 }
             }
         `,
@@ -105,6 +115,37 @@ export class InventoryListComponent
      * On init
      */
     ngOnInit(): void {
+        /* Teste API back-end */
+
+        /* var myHeaders = new Headers();
+        myHeaders.append('Content-Type', 'application/json');
+
+        var raw = JSON.stringify({
+            query: 'SELECT NUFIN, CODEMP, NUMNOTA, SERIENOTA, DTNEG FROM TGFFIN where rownum < 10',
+        });
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            // redirect: 'follow'
+        };
+
+        fetch('http://js-api.tatu.tech/reports/data', requestOptions)
+            .then((response) => response.text())
+            .then((result) => console.log(result))
+            .catch((error) => console.log('error', error)); */
+
+        var requestOptions = {
+            method: 'GET',
+            /* redirect: 'follow' */
+        };
+
+        fetch('http://js-api.tatu.tech/v1/views/2/data', requestOptions)
+            .then((response) => response.text())
+            .then((result) => console.log(result))
+            .catch((error) => console.log('error', error));
+
         // Create the selected product form
         this.selectedProductForm = this._formBuilder.group({
             id: [''],
@@ -199,7 +240,7 @@ export class InventoryListComponent
                     return this._inventoryService.getProducts(
                         0,
                         10,
-                        'name',
+                        'sku',
                         'asc',
                         query
                     );
@@ -218,7 +259,7 @@ export class InventoryListComponent
         if (this._sort && this._paginator) {
             // Set the initial sort
             this._sort.sort({
-                id: 'name',
+                id: 'sku',
                 start: 'asc',
                 disableClear: true,
             });
