@@ -146,7 +146,9 @@ export class InventoryProductsResolver implements Resolve<any> {
         columns: String[];
         rows: any[][];
     }> {
-        return this._inventoryService.getProducts();
+        const viewId = state.root.queryParams.viewId;
+        console.log('route.paramMap', viewId);
+        return this._inventoryService.getProducts(0,  10, 'sku', 'asc','', Number(viewId));
     }
 }
 

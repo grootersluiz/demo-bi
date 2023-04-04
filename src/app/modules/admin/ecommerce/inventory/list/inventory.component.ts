@@ -37,6 +37,7 @@ import {
     InventoryVendor,
 } from 'app/modules/admin/ecommerce/inventory/inventory.types';
 import { InventoryService } from 'app/modules/admin/ecommerce/inventory/inventory.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'inventory-list',
@@ -98,6 +99,7 @@ export class InventoryListComponent
     tagsEditMode: boolean = false;
     vendors: InventoryVendor[];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+    viewId: number;
 
     /**
      * Constructor
@@ -106,7 +108,8 @@ export class InventoryListComponent
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseConfirmationService: FuseConfirmationService,
         private _formBuilder: UntypedFormBuilder,
-        private _inventoryService: InventoryService
+        private _inventoryService: InventoryService,
+        private route: ActivatedRoute
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -147,6 +150,11 @@ export class InventoryListComponent
         //     .then((response) => response.text())
         //     .then((result) => console.log(result))
         //     .catch((error) => console.log('error', error));
+
+        this.route.queryParams.subscribe(params => {
+          console.log("view params", params);
+          this.viewId = params.viewId;
+        });
 
         // Create the selected product form
         this.selectedProductForm = this._formBuilder.group({
@@ -246,7 +254,8 @@ export class InventoryListComponent
                         10,
                         'sku',
                         'asc',
-                        query
+                        query,
+                        this.viewId
                     );
                 }),
                 map(() => {
@@ -292,7 +301,9 @@ export class InventoryListComponent
                             this._paginator.pageIndex,
                             this._paginator.pageSize,
                             this._sort.active,
-                            this._sort.direction
+                            this._sort.direction,
+                            '',
+                            this.viewId
                         );
                     }),
                     map(() => {
