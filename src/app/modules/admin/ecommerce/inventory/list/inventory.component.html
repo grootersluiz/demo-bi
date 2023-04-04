@@ -58,15 +58,13 @@
                             matSort
                             matSortDisableClear
                         >
-
-                        <ng-container *ngIf="columns | async as _columns">
-                            <ng-container *ngFor="let column of _columns;">
-                                <div class="truncate">
-                                    {{ column }}
-                                </div>
+                            <ng-container *ngIf="columns | async as _columns">
+                                <ng-container *ngFor="let column of _columns">
+                                    <div class="truncate">
+                                        {{ column }}
+                                    </div>
+                                </ng-container>
                             </ng-container>
-                        </ng-container>
-
 
                             <!-- <div></div>
                             <div
@@ -100,21 +98,19 @@
                         <!-- Rows -->
                         <ng-container *ngIf="rows$ | async as rows">
                             <ng-container
-                                *ngFor="
-                                    let product of rows;
-                                    trackBy: trackByFn
-                                "
+                                *ngFor="let product of rows; trackBy: trackByFn"
                             >
                                 <div
                                     class="inventory-grid grid items-center gap-4 py-3 px-6 md:px-8 border-b"
                                 >
-
-                                    <ng-container *ngFor="let cell of product;">
-                                        <div class="truncate">
+                                    <ng-container *ngFor="let cell of product">
+                                        <div
+                                            class="inventory-grid grid items-center md:px-8"
+                                        >
                                             {{ cell }}
                                         </div>
                                     </ng-container>
-                                    
+
                                     <!-- Image -->
                                     <!-- <div class="flex items-center"> -->
                                     <!-- <div
