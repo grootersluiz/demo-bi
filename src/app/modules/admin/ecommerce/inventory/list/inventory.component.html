@@ -60,7 +60,10 @@
                         >
                             <ng-container *ngIf="columns | async as _columns">
                                 <ng-container *ngFor="let column of _columns">
-                                    <div class="truncate">
+                                    <div
+                                        class="truncate"
+                                        [mat-sort-header]="'column'"
+                                    >
                                         {{ column }}
                                     </div>
                                 </ng-container>
@@ -249,10 +252,10 @@
                     <mat-paginator
                         class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
                         [ngClass]="{ 'pointer-events-none': isLoading }"
-                        [length]="1"
-                        [pageIndex]="1"
-                        [pageSize]="rows.length"
-                        [pageSizeOptions]="[5, 10, 25, 100]"
+                        [length]="rows.length"
+                        [pageIndex]="rows.page"
+                        [pageSize]="rows.size"
+                        [pageSizeOptions]="[10, 25, 100]"
                         [showFirstLastButtons]="true"
                     ></mat-paginator>
                 </ng-container>
