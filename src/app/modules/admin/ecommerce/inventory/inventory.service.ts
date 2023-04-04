@@ -31,10 +31,10 @@ export class InventoryService {
         new BehaviorSubject(null);
     private _pagination: BehaviorSubject<InventoryPagination | null> =
         new BehaviorSubject(null);
-    private _columns: BehaviorSubject<String[] | null> =
-        new BehaviorSubject(null);
-    private _rows: BehaviorSubject<any[][] | null> =
-        new BehaviorSubject(null);
+    private _columns: BehaviorSubject<String[] | null> = new BehaviorSubject(
+        null
+    );
+    private _rows: BehaviorSubject<any[][] | null> = new BehaviorSubject(null);
     private _product: BehaviorSubject<InventoryProduct | null> =
         new BehaviorSubject(null);
     private _products: BehaviorSubject<InventoryProduct[] | null> =
