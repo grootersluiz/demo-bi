@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: angular-app
+  namespace: devops-bi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: angular-app
+  template:
+    metadata:
+      labels:
+        app: angular-app
+    spec:
+      containers:
+        - name: angular-app
+          image: gru.ocir.io/grj7uyekqpbi/jsp-bi-front:latest
+          ports:
+            - containerPort: 80
+      imagePullSecrets:
+      - name: devops-oke-auth
