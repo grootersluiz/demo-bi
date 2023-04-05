@@ -1,0 +1,23 @@
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: angular-service
+      namespace: devops-bi
+      annotations:
+        oci.oraclecloud.com/load-balancer-type: "lb"                          #Se for usar clusterIP comentar essa linha
+        service.beta.kubernetes.io/oci-load-balancer-internal: "true"         #Se for usar clusterIP comentar essa linha
+        service.beta.kubernetes.io/oci-load-balancer-shape: "flexible"        #Se for usar clusterIP comentar essa linha
+        service.beta.kubernetes.io/oci-load-balancer-shape-flex-min: "10"     #Se for usar clusterIP comentar essa linha
+        service.beta.kubernetes.io/oci-load-balancer-shape-flex-max: "100"    #Se for usar clusterIP comentar essa linha
+    spec:
+      type: LoadBalancer
+      #type: ClusterIP
+      selector:
+        app: angular-app
+      ports:
+        - name: http
+          port: 80
+          targetPort: 80
+       # - name: https
+       #   port: 443
+       #   targetPort: 4200
