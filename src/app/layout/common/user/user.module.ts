@@ -5,22 +5,20 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { UserComponent } from 'app/layout/common/user/user.component';
 import { SharedModule } from 'app/shared/shared.module';
+import { RouterModule } from '@angular/router';
+import { userRoutes } from './user.routing';
 
 @NgModule({
-    declarations: [
-        UserComponent
-    ],
-    imports     : [
+    declarations: [UserComponent],
+    imports: [
         MatButtonModule,
         MatDividerModule,
         MatIconModule,
         MatMenuModule,
-        SharedModule
+        SharedModule,
+        RouterModule,
+        RouterModule.forChild(userRoutes),
     ],
-    exports     : [
-        UserComponent
-    ]
+    exports: [UserComponent],
 })
-export class UserModule
-{
-}
+export class UserModule {}

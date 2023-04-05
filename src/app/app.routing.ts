@@ -132,6 +132,25 @@ export const appRoutes: Route[] = [
         ],
     },
 
+    //Profile Settings
+    {
+        path: 'settings',
+        canMatch: [AuthGuard],
+        component: LayoutComponent,
+        resolve: {
+            initialData: InitialDataResolver,
+        },
+        children: [
+            {
+                path: 'profile',
+                loadChildren: () =>
+                    import('app/modules/admin/settings/settings.module').then(
+                        (m) => m.SettingsModule
+                    ),
+            },
+        ],
+    },
+
     // Admin routes
     {
         path: '',
@@ -141,18 +160,6 @@ export const appRoutes: Route[] = [
             initialData: InitialDataResolver,
         },
         children: [
-            {
-                path: 'apps',
-                children: [
-                    {
-                        path: 'ecommerce',
-                        loadChildren: () =>
-                            import(
-                                'app/modules/admin/ecommerce/ecommerce.module'
-                            ).then((m) => m.ECommerceModule),
-                    },
-                ],
-            },
             {
                 path: 'dashboards',
                 children: [
@@ -194,24 +201,36 @@ export const appRoutes: Route[] = [
                 ],
             },
             {
-                path: 'user',
+                path: 'apps',
                 children: [
                     {
-                        path: 'profile',
+                        path: 'ecommerce',
                         loadChildren: () =>
                             import(
-                                'app/modules/admin/settings/settings.module'
-                            ).then((m) => m.SettingsModule),
-                    },
-                    {
-                        path: 'settings',
-                        loadChildren: () =>
-                            import(
-                                'app/modules/admin/maintenance/maintenance.module'
-                            ).then((m) => m.MaintenanceModule),
+                                'app/modules/admin/ecommerce/ecommerce.module'
+                            ).then((m) => m.ECommerceModule),
                     },
                 ],
             },
+            // {
+            //     path: 'user',
+            //     children: [
+            //         {
+            //             path: 'profile',
+            //             loadChildren: () =>
+            //                 import(
+            //                     'app/modules/admin/settings/settings.module'
+            //                 ).then((m) => m.SettingsModule),
+            //         },
+            //         {
+            //             path: 'settings',
+            //             loadChildren: () =>
+            //                 import(
+            //                     'app/modules/admin/maintenance/maintenance.module'
+            //                 ).then((m) => m.MaintenanceModule),
+            //         },
+            //     ],
+            // },
             {
                 path: 'records',
                 children: [
@@ -235,6 +254,46 @@ export const appRoutes: Route[] = [
                             import(
                                 'app/modules/admin/layoutsviews/layoutsviews.module'
                             ).then((m) => m.FormsLayoutsViewsModule),
+                    },
+                ],
+            },
+            {
+                path: 'exemplosdashboards',
+                children: [
+                    {
+                        path: 'project',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/dashboards/project/project.module'
+                            ).then((m) => m.ProjectModule),
+                    },
+                    {
+                        path: 'analytics',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/dashboards/analytics/analytics.module'
+                            ).then((m) => m.AnalyticsModule),
+                    },
+                    {
+                        path: 'finance',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/dashboards/finance/finance.module'
+                            ).then((m) => m.FinanceModule),
+                    },
+                    {
+                        path: 'crypto',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/dashboards/crypto/crypto.module'
+                            ).then((m) => m.CryptoModule),
+                    },
+                    {
+                        path: 'rol',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/dashboards/rol/rol.module'
+                            ).then((m) => m.RolModule),
                     },
                 ],
             },
