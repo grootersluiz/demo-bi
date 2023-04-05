@@ -152,18 +152,20 @@ export class InventoryService {
      * @param search
      */
     getProducts(
-        page: number = 0,
-        size: number = 10,
-        sort: string = 'sku',
+        page: number,
+        size: number,
+        sort: string,
         order: 'asc' | 'desc' | '' = 'asc',
         search: string = '',
         viewId: number
     ): Observable<{
+        pagination: InventoryPagination;
         columns: String[];
         rows: any[][];
     }> {
         return this._httpClient
             .get<{
+                pagination: InventoryPagination;
                 columns: String[];
                 rows: any[][];
             }>(
@@ -182,6 +184,7 @@ export class InventoryService {
             )
             .pipe(
                 tap((response) => {
+                    this._pagination.next(response.pagination);
                     console.log('products reponse', response);
                     this._columns.next(response.columns);
                     this._rows.next(response.rows);

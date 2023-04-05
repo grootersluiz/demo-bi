@@ -2385,24 +2385,24 @@ export const rol = {
         },
     ],
     githubIssues: {
-        overview: {
-            'this-week': {
-                'new-issues': 214,
-                'closed-issues': 75,
-                fixed: 3,
-                'wont-fix': 4,
-                're-opened': 8,
-                'needs-triage': 6,
-            },
-            'last-week': {
-                'new-issues': 197,
-                'closed-issues': 72,
-                fixed: 6,
-                'wont-fix': 11,
-                're-opened': 6,
-                'needs-triage': 5,
-            },
-        },
+        // overview: {
+        //     'this-week': {
+        //         'new-issues': 214,
+        //         'closed-issues': 75,
+        //         fixed: 3,
+        //         'wont-fix': 4,
+        //         're-opened': 8,
+        //         'needs-triage': 6,
+        //     },
+        //     'last-week': {
+        //         'new-issues': 197,
+        //         'closed-issues': 72,
+        //         fixed: 6,
+        //         'wont-fix': 11,
+        //         're-opened': 6,
+        //         'needs-triage': 5,
+        //     },
+        // },
         labels: [
             'Jan',
             'Fev',

@@ -143,12 +143,20 @@ export class InventoryProductsResolver implements Resolve<any> {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<{
+        pagination: InventoryPagination;
         columns: String[];
         rows: any[][];
     }> {
         const viewId = state.root.queryParams.viewId;
         console.log('route.paramMap', viewId);
-        return this._inventoryService.getProducts(0,  10, 'sku', 'asc','', Number(viewId));
+        return this._inventoryService.getProducts(
+            0,
+            10,
+            'sku',
+            'asc',
+            '',
+            Number(viewId)
+        );
     }
 }
 
