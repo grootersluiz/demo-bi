@@ -245,15 +245,15 @@ export const appRoutes: Route[] = [
                         path: 'regdashsreports',
                         loadChildren: () =>
                             import(
-                                'app/modules/admin/layouts/layouts.module'
-                            ).then((m) => m.FormsLayoutsModule),
+                                'app/modules/admin/regdashs/regdashs.module'
+                            ).then((m) => m.RegdashsModule),
                     },
                     {
                         path: 'regviews',
                         loadChildren: () =>
                             import(
-                                'app/modules/admin/layoutsviews/layoutsviews.module'
-                            ).then((m) => m.FormsLayoutsViewsModule),
+                                'app/modules/admin/regreports/regreports.module'
+                            ).then((m) => m.RegreportsModule),
                     },
                 ],
             },
