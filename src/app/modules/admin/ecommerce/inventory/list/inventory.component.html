@@ -46,9 +46,7 @@
     <!-- Main -->
     <div class="flex flex-auto overflow-hidden">
         <!-- rows list -->
-        <div
-            class="flex flex-col flex-auto sm:mb-18 overflow-hidden sm:overflow-y-auto"
-        >
+        <div class="flex flex-col flex-auto overflow-hidden sm:overflow-y-auto">
             <ng-container *ngIf="rows$ | async as rows">
                 <ng-container *ngIf="rows.length > 0; else noProducts">
                     <div class="grid">
@@ -226,7 +224,7 @@
                                         </button>
                                     </div> -->
                                 </div>
-                                <div class="grid">
+                                <!-- <div class="grid">
                                     <ng-container
                                         *ngIf="
                                             selectedProduct?.id === product.id
@@ -239,12 +237,12 @@
                                             "
                                         ></ng-container>
                                     </ng-container>
-                                </div>
+                                </div> -->
                             </ng-container>
                         </ng-container>
                     </div>
 
-                    <mat-paginator
+                    <!-- <mat-paginator
                         class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
                         [ngClass]="{ 'pointer-events-none': isLoading }"
                         [length]="rows.length"
@@ -252,7 +250,7 @@
                         [pageSize]="rows.size"
                         [pageSizeOptions]="[25, 50, 100]"
                         [showFirstLastButtons]="true"
-                    ></mat-paginator>
+                    ></mat-paginator> -->
                 </ng-container>
             </ng-container>
 
