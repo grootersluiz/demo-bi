@@ -490,7 +490,7 @@ export class RolComponent implements OnInit, OnDestroy {
                 fontFamily: 'inherit',
                 foreColor: 'inherit',
                 height: '100%',
-                type: 'donut',
+                type: 'radialBar',
                 sparkline: {
                     enabled: true,
                 },
@@ -546,7 +546,7 @@ export class RolComponent implements OnInit, OnDestroy {
                 fontFamily: 'inherit',
                 foreColor: 'inherit',
                 height: '100%',
-                type: 'donut',
+                type: 'radialBar',
                 sparkline: {
                     enabled: true,
                 },
@@ -602,7 +602,7 @@ export class RolComponent implements OnInit, OnDestroy {
                 fontFamily: 'inherit',
                 foreColor: 'inherit',
                 height: '100%',
-                type: 'donut',
+                type: 'radialBar',
                 sparkline: {
                     enabled: true,
                 },
