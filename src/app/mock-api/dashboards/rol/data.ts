@@ -2333,7 +2333,7 @@ export const rol = {
     language: {
         uniqueVisitors: 46085,
         series: [25, 75],
-        labels: ['English'],
+        labels: ['English', 'Other'],
     },
     previousStatement: {
         status: 'paid',
