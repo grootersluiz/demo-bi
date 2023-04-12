@@ -2316,19 +2316,19 @@ export const rol = {
         ],
     },
     newVsReturning: {
-        uniqueVisitors: 46085,
-        series: [80, 15],
+        uniqueVisitors: 679000,
+        series: [106, 100],
         labels: ['ROL', 'Meta'],
     },
     gender: {
-        uniqueVisitors: 46085,
-        series: [55, 45],
-        labels: ['Atingidas', 'Não atingidas'],
+        uniqueVisitors: 12,
+        series: [80, 100],
+        labels: ['Atingidas', 'Total'],
     },
     age: {
-        uniqueVisitors: 46085,
-        series: [35, 65],
-        labels: ['Total', 'Dias úteis'],
+        uniqueVisitors: 30,
+        series: [75, 100],
+        labels: ['Dias úteis', 'Total'],
     },
     language: {
         uniqueVisitors: 46085,

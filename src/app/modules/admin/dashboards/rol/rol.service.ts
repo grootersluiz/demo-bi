@@ -8,15 +8,11 @@ import { rol } from 'app/mock-api/dashboards/rol/data';
 })
 export class RolService {
     private _data: BehaviorSubject<any> = new BehaviorSubject(null);
-    private _dataCCxMetas: BehaviorSubject<any> = new BehaviorSubject(null);
 
     /**
      * Constructor
      */
-    constructor(
-        private _httpClient: HttpClient,
-        private _httpClient1: HttpClient
-    ) {}
+    constructor(private _httpClient: HttpClient) {}
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -27,7 +23,6 @@ export class RolService {
      */
     get data$(): Observable<any> {
         return this._data.asObservable();
-        return this._dataCCxMetas.asObservable();
     }
 
     // -----------------------------------------------------------------------------------------------------
