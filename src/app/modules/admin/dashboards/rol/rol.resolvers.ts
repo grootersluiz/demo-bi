@@ -14,7 +14,10 @@ export class RolResolver implements Resolve<any> {
     /**
      * Constructor
      */
-    constructor(private _rolService: RolService) {}
+    constructor(
+        private _rolService: RolService,
+        private _rolServiceCCxMetas: RolService
+    ) {}
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
@@ -31,5 +34,12 @@ export class RolResolver implements Resolve<any> {
         state: RouterStateSnapshot
     ): Observable<any> {
         return this._rolService.getData();
+    }
+
+    resolveCCxMetas(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot
+    ): Observable<any> {
+        return this._rolServiceCCxMetas.getDataCCxMetas();
     }
 }

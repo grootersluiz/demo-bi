@@ -189,218 +189,218 @@ export class RolComponent implements OnInit, OnDestroy {
      */
     private _prepareChartData(): void {
         // Visitors
-        this.chartVisitors = {
-            chart: {
-                animations: {
-                    speed: 400,
-                    animateGradually: {
-                        enabled: false,
-                    },
-                },
-                fontFamily: 'inherit',
-                foreColor: 'inherit',
-                width: '100%',
-                height: '100%',
-                type: 'area',
-                toolbar: {
-                    show: false,
-                },
-                zoom: {
-                    enabled: false,
-                },
-            },
-            colors: ['#818CF8'],
-            dataLabels: {
-                enabled: false,
-            },
-            fill: {
-                colors: ['#312E81'],
-            },
-            grid: {
-                show: true,
-                borderColor: '#334155',
-                padding: {
-                    top: 10,
-                    bottom: -40,
-                    left: 0,
-                    right: 0,
-                },
-                position: 'back',
-                xaxis: {
-                    lines: {
-                        show: true,
-                    },
-                },
-            },
-            series: this.data.visitors.series,
-            stroke: {
-                width: 2,
-            },
-            tooltip: {
-                followCursor: true,
-                theme: 'dark',
-                x: {
-                    format: 'MMM dd, yyyy',
-                },
-                y: {
-                    formatter: (value: number): string => `${value}`,
-                },
-            },
-            xaxis: {
-                axisBorder: {
-                    show: false,
-                },
-                axisTicks: {
-                    show: false,
-                },
-                crosshairs: {
-                    stroke: {
-                        color: '#475569',
-                        dashArray: 0,
-                        width: 2,
-                    },
-                },
-                labels: {
-                    offsetY: -20,
-                    style: {
-                        colors: '#CBD5E1',
-                    },
-                },
-                tickAmount: 20,
-                tooltip: {
-                    enabled: false,
-                },
-                type: 'datetime',
-            },
-            yaxis: {
-                axisTicks: {
-                    show: false,
-                },
-                axisBorder: {
-                    show: false,
-                },
-                min: (min): number => min - 750,
-                max: (max): number => max + 250,
-                tickAmount: 5,
-                show: false,
-            },
-        };
+        // this.chartVisitors = {
+        //     chart: {
+        //         animations: {
+        //             speed: 400,
+        //             animateGradually: {
+        //                 enabled: false,
+        //             },
+        //         },
+        //         fontFamily: 'inherit',
+        //         foreColor: 'inherit',
+        //         width: '100%',
+        //         height: '100%',
+        //         type: 'area',
+        //         toolbar: {
+        //             show: false,
+        //         },
+        //         zoom: {
+        //             enabled: false,
+        //         },
+        //     },
+        //     colors: ['#818CF8'],
+        //     dataLabels: {
+        //         enabled: false,
+        //     },
+        //     fill: {
+        //         colors: ['#312E81'],
+        //     },
+        //     grid: {
+        //         show: true,
+        //         borderColor: '#334155',
+        //         padding: {
+        //             top: 10,
+        //             bottom: -40,
+        //             left: 0,
+        //             right: 0,
+        //         },
+        //         position: 'back',
+        //         xaxis: {
+        //             lines: {
+        //                 show: true,
+        //             },
+        //         },
+        //     },
+        //     series: this.data.visitors.series,
+        //     stroke: {
+        //         width: 2,
+        //     },
+        //     tooltip: {
+        //         followCursor: true,
+        //         theme: 'dark',
+        //         x: {
+        //             format: 'MMM dd, yyyy',
+        //         },
+        //         y: {
+        //             formatter: (value: number): string => `${value}`,
+        //         },
+        //     },
+        //     xaxis: {
+        //         axisBorder: {
+        //             show: false,
+        //         },
+        //         axisTicks: {
+        //             show: false,
+        //         },
+        //         crosshairs: {
+        //             stroke: {
+        //                 color: '#475569',
+        //                 dashArray: 0,
+        //                 width: 2,
+        //             },
+        //         },
+        //         labels: {
+        //             offsetY: -20,
+        //             style: {
+        //                 colors: '#CBD5E1',
+        //             },
+        //         },
+        //         tickAmount: 20,
+        //         tooltip: {
+        //             enabled: false,
+        //         },
+        //         type: 'datetime',
+        //     },
+        //     yaxis: {
+        //         axisTicks: {
+        //             show: false,
+        //         },
+        //         axisBorder: {
+        //             show: false,
+        //         },
+        //         min: (min): number => min - 750,
+        //         max: (max): number => max + 250,
+        //         tickAmount: 5,
+        //         show: false,
+        //     },
+        // };
 
         // Conversions
-        this.chartConversions = {
-            chart: {
-                animations: {
-                    enabled: false,
-                },
-                fontFamily: 'inherit',
-                foreColor: 'inherit',
-                height: '100%',
-                type: 'area',
-                sparkline: {
-                    enabled: true,
-                },
-            },
-            colors: ['#38BDF8'],
-            fill: {
-                colors: ['#38BDF8'],
-                opacity: 0.5,
-            },
-            series: this.data.conversions.series,
-            stroke: {
-                curve: 'smooth',
-            },
-            tooltip: {
-                followCursor: true,
-                theme: 'dark',
-            },
-            xaxis: {
-                type: 'category',
-                categories: this.data.conversions.labels,
-            },
-            yaxis: {
-                labels: {
-                    formatter: (val): string => val.toString(),
-                },
-            },
-        };
+        // this.chartConversions = {
+        //     chart: {
+        //         animations: {
+        //             enabled: false,
+        //         },
+        //         fontFamily: 'inherit',
+        //         foreColor: 'inherit',
+        //         height: '100%',
+        //         type: 'area',
+        //         sparkline: {
+        //             enabled: true,
+        //         },
+        //     },
+        //     colors: ['#38BDF8'],
+        //     fill: {
+        //         colors: ['#38BDF8'],
+        //         opacity: 0.5,
+        //     },
+        //     series: this.data.conversions.series,
+        //     stroke: {
+        //         curve: 'smooth',
+        //     },
+        //     tooltip: {
+        //         followCursor: true,
+        //         theme: 'dark',
+        //     },
+        //     xaxis: {
+        //         type: 'category',
+        //         categories: this.data.conversions.labels,
+        //     },
+        //     yaxis: {
+        //         labels: {
+        //             formatter: (val): string => val.toString(),
+        //         },
+        //     },
+        // };
 
         // Impressions
-        this.chartImpressions = {
-            chart: {
-                animations: {
-                    enabled: false,
-                },
-                fontFamily: 'inherit',
-                foreColor: 'inherit',
-                height: '100%',
-                type: 'area',
-                sparkline: {
-                    enabled: true,
-                },
-            },
-            colors: ['#34D399'],
-            fill: {
-                colors: ['#34D399'],
-                opacity: 0.5,
-            },
-            series: this.data.impressions.series,
-            stroke: {
-                curve: 'smooth',
-            },
-            tooltip: {
-                followCursor: true,
-                theme: 'dark',
-            },
-            xaxis: {
-                type: 'category',
-                categories: this.data.impressions.labels,
-            },
-            yaxis: {
-                labels: {
-                    formatter: (val): string => val.toString(),
-                },
-            },
-        };
+        // this.chartImpressions = {
+        //     chart: {
+        //         animations: {
+        //             enabled: false,
+        //         },
+        //         fontFamily: 'inherit',
+        //         foreColor: 'inherit',
+        //         height: '100%',
+        //         type: 'area',
+        //         sparkline: {
+        //             enabled: true,
+        //         },
+        //     },
+        //     colors: ['#34D399'],
+        //     fill: {
+        //         colors: ['#34D399'],
+        //         opacity: 0.5,
+        //     },
+        //     series: this.data.impressions.series,
+        //     stroke: {
+        //         curve: 'smooth',
+        //     },
+        //     tooltip: {
+        //         followCursor: true,
+        //         theme: 'dark',
+        //     },
+        //     xaxis: {
+        //         type: 'category',
+        //         categories: this.data.impressions.labels,
+        //     },
+        //     yaxis: {
+        //         labels: {
+        //             formatter: (val): string => val.toString(),
+        //         },
+        //     },
+        // };
 
         // Visits
-        this.chartVisits = {
-            chart: {
-                animations: {
-                    enabled: false,
-                },
-                fontFamily: 'inherit',
-                foreColor: 'inherit',
-                height: '100%',
-                type: 'area',
-                sparkline: {
-                    enabled: true,
-                },
-            },
-            colors: ['#FB7185'],
-            fill: {
-                colors: ['#FB7185'],
-                opacity: 0.5,
-            },
-            series: this.data.visits.series,
-            stroke: {
-                curve: 'smooth',
-            },
-            tooltip: {
-                followCursor: true,
-                theme: 'dark',
-            },
-            xaxis: {
-                type: 'category',
-                categories: this.data.visits.labels,
-            },
-            yaxis: {
-                labels: {
-                    formatter: (val): string => val.toString(),
-                },
-            },
-        };
+        // this.chartVisits = {
+        //     chart: {
+        //         animations: {
+        //             enabled: false,
+        //         },
+        //         fontFamily: 'inherit',
+        //         foreColor: 'inherit',
+        //         height: '100%',
+        //         type: 'area',
+        //         sparkline: {
+        //             enabled: true,
+        //         },
+        //     },
+        //     colors: ['#FB7185'],
+        //     fill: {
+        //         colors: ['#FB7185'],
+        //         opacity: 0.5,
+        //     },
+        //     series: this.data.visits.series,
+        //     stroke: {
+        //         curve: 'smooth',
+        //     },
+        //     tooltip: {
+        //         followCursor: true,
+        //         theme: 'dark',
+        //     },
+        //     xaxis: {
+        //         type: 'category',
+        //         categories: this.data.visits.labels,
+        //     },
+        //     yaxis: {
+        //         labels: {
+        //             formatter: (val): string => val.toString(),
+        //         },
+        //     },
+        // };
 
-        // Visitors vs Page Views
+        // ROL vs ROL Realizada
         this.chartVisitorsVsPageViews = {
             chart: {
                 animations: {
@@ -478,7 +478,7 @@ export class RolComponent implements OnInit, OnDestroy {
             },
         };
 
-        // New vs. returning
+        // ROL vs Meta
         this.chartNewVsReturning = {
             chart: {
                 animations: {
@@ -534,7 +534,7 @@ export class RolComponent implements OnInit, OnDestroy {
             },
         };
 
-        // Gender
+        // Metas Atingidas
         this.chartGender = {
             chart: {
                 animations: {
@@ -590,7 +590,7 @@ export class RolComponent implements OnInit, OnDestroy {
             },
         };
 
-        // Age
+        // Dias Úteis
         this.chartAge = {
             chart: {
                 animations: {
@@ -647,60 +647,62 @@ export class RolComponent implements OnInit, OnDestroy {
         };
 
         // Language
-        this.chartLanguage = {
-            chart: {
-                animations: {
-                    speed: 400,
-                    animateGradually: {
-                        enabled: false,
-                    },
-                },
-                fontFamily: 'inherit',
-                foreColor: 'inherit',
-                height: '100%',
-                type: 'donut',
-                sparkline: {
-                    enabled: true,
-                },
-            },
-            colors: ['#805AD5', '#B794F4'],
-            labels: this.data.language.labels,
-            plotOptions: {
-                pie: {
-                    customScale: 0.9,
-                    expandOnClick: false,
-                    donut: {
-                        size: '70%',
-                    },
-                },
-            },
-            series: this.data.language.series,
-            states: {
-                hover: {
-                    filter: {
-                        type: 'none',
-                    },
-                },
-                active: {
-                    filter: {
-                        type: 'none',
-                    },
-                },
-            },
-            tooltip: {
-                enabled: true,
-                fillSeriesColor: false,
-                theme: 'dark',
-                custom: ({
-                    seriesIndex,
-                    w,
-                }): string => `<div class="flex items-center h-8 min-h-8 max-h-8 px-3">
-                                                    <div class="w-3 h-3 rounded-full" style="background-color: ${w.config.colors[seriesIndex]};"></div>
-                                                    <div class="ml-2 text-md leading-none">${w.config.labels[seriesIndex]}:</div>
-                                                    <div class="ml-2 text-md font-bold leading-none">${w.config.series[seriesIndex]}%</div>
-                                                </div>`,
-            },
-        };
+        // this.chartLanguage = {
+        //     chart: {
+        //         animations: {
+        //             speed: 400,
+        //             animateGradually: {
+        //                 enabled: false,
+        //             },
+        //         },
+        //         fontFamily: 'inherit',
+        //         foreColor: 'inherit',
+        //         height: '100%',
+        //         type: 'donut',
+        //         sparkline: {
+        //             enabled: true,
+        //         },
+        //     },
+        //     colors: ['#805AD5', '#B794F4'],
+        //     labels: this.data.language.labels,
+        //     plotOptions: {
+        //         pie: {
+        //             customScale: 0.9,
+        //             expandOnClick: false,
+        //             donut: {
+        //                 size: '70%',
+        //             },
+        //         },
+        //     },
+        //     series: this.data.language.series,
+        //     states: {
+        //         hover: {
+        //             filter: {
+        //                 type: 'none',
+        //             },
+        //         },
+        //         active: {
+        //             filter: {
+        //                 type: 'none',
+        //             },
+        //         },
+        //     },
+        //     tooltip: {
+        //         enabled: true,
+        //         fillSeriesColor: false,
+        //         theme: 'dark',
+        //         custom: ({
+        //             seriesIndex,
+        //             w,
+        //         }): string => `<div class="flex items-center h-8 min-h-8 max-h-8 px-3">
+        //                                             <div class="w-3 h-3 rounded-full" style="background-color: ${w.config.colors[seriesIndex]};"></div>
+        //                                             <div class="ml-2 text-md leading-none">${w.config.labels[seriesIndex]}:</div>
+        //                                             <div class="ml-2 text-md font-bold leading-none">${w.config.series[seriesIndex]}%</div>
+        //                                         </div>`,
+        //     },
+        // };
+
+        //CC vs Metas
 
         this.chartGithubIssues = {
             chart: {

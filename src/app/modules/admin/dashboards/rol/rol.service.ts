@@ -7,11 +7,15 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 })
 export class RolService {
     private _data: BehaviorSubject<any> = new BehaviorSubject(null);
+    private _dataCCxMetas: BehaviorSubject<any> = new BehaviorSubject(null);
 
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient) {}
+    constructor(
+        private _httpClient: HttpClient,
+        private _httpClient1: HttpClient
+    ) {}
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -22,6 +26,7 @@ export class RolService {
      */
     get data$(): Observable<any> {
         return this._data.asObservable();
+        return this._dataCCxMetas.asObservable();
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -37,5 +42,18 @@ export class RolService {
                 this._data.next(response);
             })
         );
+    }
+
+    getDataCCxMetas(): Observable<any> {
+        return this._httpClient1
+            .get('http://10.2.1.108/v1/reports/3/data')
+            .pipe(
+                tap((response: any) => {
+                    console.log('ddddd', response[4]);
+                    const chartData = response[4];
+
+                    this._dataCCxMetas.next(chartData);
+                })
+            );
     }
 }
