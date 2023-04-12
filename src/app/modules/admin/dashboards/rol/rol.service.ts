@@ -39,7 +39,18 @@ export class RolService {
     getData(): Observable<any> {
         return this._httpClient.get('api/dashboards/rol').pipe(
             tap((response: any) => {
-                this._data.next(response);
+                console.log('test', response);
+                this._httpClient1
+                    .get('http://10.2.1.108/v1/reports/3/data')
+                    .pipe(
+                        tap((response2: any) => {
+                            console.log('ddddd', response2[4]);
+                            const chartData = response2[4];
+
+                            response['githubIssues'] = chartData;
+                            this._data.next(response);
+                        })
+                    );
             })
         );
     }
