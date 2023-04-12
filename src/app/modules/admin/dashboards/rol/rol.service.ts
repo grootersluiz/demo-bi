@@ -40,26 +40,21 @@ export class RolService {
     getData(): Observable<any> {
         return this._httpClient.get('http://10.2.1.108/v1/reports/3/data').pipe(
             tap((response: any) => {
-                const chartData = { ...response[4], series: { 'this-year': response[4].series.map((item) => ({...item, data: item.values }) ) }};
-                
+                const chartData = {
+                    ...response[4],
+                    series: {
+                        'this-year': response[4].series.map((item) => ({
+                            ...item,
+                            data: item.values,
+                        })),
+                    },
+                };
+
                 console.log('rol', chartData);
                 console.log('githubIssues', rol.githubIssues);
-                const dashData = {...rol, githubIssues: chartData};
+                const dashData = { ...rol, githubIssues: chartData };
                 this._data.next(dashData);
             })
         );
-    }
-
-    getDataCCxMetas(): Observable<any> {
-        return this._httpClient1
-            .get('http://10.2.1.108/v1/reports/3/data')
-            .pipe(
-                tap((response: any) => {
-                    console.log('ddddd', response[4]);
-                    const chartData = response[4];
-
-                    this._dataCCxMetas.next(chartData);
-                })
-            );
     }
 }
