@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { rol } from 'app/mock-api/dashboards/rol/data';
 
 @Injectable({
     providedIn: 'root',
@@ -37,20 +38,14 @@ export class RolService {
      * Get data
      */
     getData(): Observable<any> {
-        return this._httpClient.get('api/dashboards/rol').pipe(
+        return this._httpClient.get('http://10.2.1.108/v1/reports/3/data').pipe(
             tap((response: any) => {
-                console.log('test', response);
-                this._httpClient1
-                    .get('http://10.2.1.108/v1/reports/3/data')
-                    .pipe(
-                        tap((response2: any) => {
-                            console.log('ddddd', response2[4]);
-                            const chartData = response2[4];
-
-                            response['githubIssues'] = chartData;
-                            this._data.next(response);
-                        })
-                    );
+                const chartData = { ...response[4], series: { 'this-year': response[4].series.map((item) => ({...item, data: item.values }) ) }};
+                
+                console.log('rol', chartData);
+                console.log('githubIssues', rol.githubIssues);
+                const dashData = {...rol, githubIssues: chartData};
+                this._data.next(dashData);
             })
         );
     }
