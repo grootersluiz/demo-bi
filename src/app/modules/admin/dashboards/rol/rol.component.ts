@@ -612,7 +612,7 @@ export class RolComponent implements OnInit, OnDestroy {
                                                              seriesIndex
                                                          ] *
                                                              100) /
-                                                         w.config.series[1]
+                                                         w.config.series[0]
                                                      ).toFixed(2)}%</div>
                                                  </div>`,
             },
