@@ -43,7 +43,10 @@ export class RolService {
                             'this-year': response['3']['2022'].series,
                         },
                     };
-                    const chartROLxMetas = response['21'];
+                    const chartROLxMetas = {
+                        ...response['21'],
+                        uniqueVisitors: 100,
+                    };
 
                     console.log('rol', chartData);
                     console.log('githubIssues', rol.githubIssues);
