@@ -43,10 +43,17 @@ export class RolService {
                             'this-year': response['3']['2022'].series,
                         },
                     };
+                    const chartROLxMetas = response['21'];
 
                     console.log('rol', chartData);
                     console.log('githubIssues', rol.githubIssues);
-                    const dashData = { ...rol, githubIssues: chartData };
+                    console.log('rol x metas - teste', chartROLxMetas);
+                    console.log('rol x metas', rol.newVsReturning);
+                    const dashData = {
+                        ...rol,
+                        githubIssues: chartData,
+                        newVsReturning: chartROLxMetas,
+                    };
                     this._data.next(dashData);
                 })
             );
