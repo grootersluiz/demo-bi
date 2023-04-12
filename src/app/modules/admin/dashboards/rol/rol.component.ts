@@ -527,9 +527,23 @@ export class RolComponent implements OnInit, OnDestroy {
                     seriesIndex,
                     w,
                 }): string => `<div class="flex items-center h-8 min-h-8 max-h-8 px-3">
-                                                    <div class="w-3 h-3 rounded-full" style="background-color: ${w.config.colors[seriesIndex]};"></div>
-                                                    <div class="ml-2 text-md leading-none">${w.config.labels[seriesIndex]}:</div>
-                                                    <div class="ml-2 text-md font-bold leading-none">${w.config.series[seriesIndex]}%</div>
+                                                    <div class="w-3 h-3 rounded-full" style="background-color: ${
+                                                        w.config.colors[
+                                                            seriesIndex
+                                                        ]
+                                                    };"></div>
+                                                    <div class="ml-2 text-md leading-none">${
+                                                        w.config.labels[
+                                                            seriesIndex
+                                                        ]
+                                                    }:</div>
+                                                    <div class="ml-2 text-md font-bold leading-none">${(
+                                                        (w.config.series[
+                                                            seriesIndex
+                                                        ] *
+                                                            100) /
+                                                        w.config.series[0]
+                                                    ).toFixed(2)}%</div>
                                                 </div>`,
             },
         };
@@ -583,9 +597,23 @@ export class RolComponent implements OnInit, OnDestroy {
                     seriesIndex,
                     w,
                 }): string => `<div class="flex items-center h-8 min-h-8 max-h-8 px-3">
-                                                     <div class="w-3 h-3 rounded-full" style="background-color: ${w.config.colors[seriesIndex]};"></div>
-                                                     <div class="ml-2 text-md leading-none">${w.config.labels[seriesIndex]}:</div>
-                                                     <div class="ml-2 text-md font-bold leading-none">${w.config.series[seriesIndex]}%</div>
+                                                     <div class="w-3 h-3 rounded-full" style="background-color: ${
+                                                         w.config.colors[
+                                                             seriesIndex
+                                                         ]
+                                                     };"></div>
+                                                     <div class="ml-2 text-md leading-none">${
+                                                         w.config.labels[
+                                                             seriesIndex
+                                                         ]
+                                                     }:</div>
+                                                     <div class="ml-2 text-md font-bold leading-none">${(
+                                                         (w.config.series[
+                                                             seriesIndex
+                                                         ] *
+                                                             100) /
+                                                         w.config.series[1]
+                                                     ).toFixed(2)}%</div>
                                                  </div>`,
             },
         };

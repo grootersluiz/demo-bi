@@ -2322,8 +2322,8 @@ export const rol = {
     },
     gender: {
         uniqueVisitors: 12,
-        series: [80, 100],
-        labels: ['Atingidas', 'Total'],
+        series: [66.66, 100],
+        labels: ['Atingidas', 'Meta'],
     },
     age: {
         uniqueVisitors: 30,
