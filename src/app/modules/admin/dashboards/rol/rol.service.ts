@@ -62,9 +62,14 @@ export class RolService {
                             'this-year': ccMeta.series,
                         },
                     };
+                    let gap =
+                        response['21'].series['0'] - response['21'].series['1'];
+                    response['21'].series.push(gap);
+                    response['21'].labels.push('GAP');
+
                     const chartROLxMetas = {
                         ...response['21'],
-                        uniqueVisitors: 100,
+                        uniqueVisitors: response['21'].series['0'],
                     };
 
                     console.log('rol', chartData);

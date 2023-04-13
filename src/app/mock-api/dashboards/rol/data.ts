@@ -2317,8 +2317,8 @@ export const rol = {
     },
     newVsReturning: {
         uniqueVisitors: 679000,
-        series: [106, 100],
-        labels: ['ROL', 'Meta'],
+        series: [106, 100, 6],
+        labels: ['ROL', 'Meta', 'GAP'],
     },
     gender: {
         uniqueVisitors: 12,
