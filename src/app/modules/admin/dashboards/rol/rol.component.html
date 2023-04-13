@@ -7,7 +7,7 @@
                     ROL
                 </div>
                 <div class="font-medium tracking-tight text-secondary">
-                    Filiais E5
+                    Rankings e Metas
                 </div>
             </div>
 
@@ -265,7 +265,11 @@
                                     </div>
                                 </div>
                                 <div class="font-medium text-right">
-                                    {{ dataset }}
+                                    {{
+                                        (data.newVsReturning.uniqueVisitors *
+                                            dataset) /
+                                            100 | number : "1.0-0"
+                                    }}
                                 </div>
                             </div>
                         </ng-container>
@@ -512,7 +516,7 @@
                         </div>
                         <div class="mt-2 font-medium text-3xl leading-none">
                             {{
-                                data.previousStatement.LIMITE | currency : "USD"
+                                data.previousStatement.LIMITE | currency : "BRL"
                             }}
                         </div>
                     </div>
@@ -524,7 +528,7 @@
                         </div>
                         <div class="mt-2 font-medium text-3xl leading-none">
                             {{
-                                data.previousStatement.SPENT | currency : "USD"
+                                data.previousStatement.SPENT | currency : "BRL"
                             }}
                         </div>
                     </div>
@@ -537,7 +541,7 @@
                         <div class="mt-2 font-medium text-3xl leading-none">
                             {{
                                 data.previousStatement.MINIMUM
-                                    | currency : "USD"
+                                    | currency : "BRL"
                             }}
                         </div>
                     </div>
@@ -609,7 +613,7 @@
                                 mat-sort-header
                                 *matHeaderCellDef
                             >
-                                Consultor
+                                Vendedor
                             </th>
                             <td mat-cell *matCellDef="let transaction">
                                 <span class="pr-6 whitespace-nowrap">
@@ -761,7 +765,7 @@
                                 mat-sort-header
                                 *matHeaderCellDef
                             >
-                                Consultor
+                                Vendedor
                             </th>
                             <td mat-cell *matCellDef="let transaction">
                                 <span class="pr-6 whitespace-nowrap">

@@ -406,6 +406,72 @@ export class RolComponent implements OnInit, OnDestroy {
                 animations: {
                     enabled: false,
                 },
+                locales: [
+                    {
+                        name: 'pt-br',
+                        options: {
+                            months: [
+                                'Janeiro',
+                                'Fevereiro',
+                                'Março',
+                                'Abril',
+                                'Maio',
+                                'Junho',
+                                'Julho',
+                                'Agosto',
+                                'Setembro',
+                                'Outubro',
+                                'Novembro',
+                                'Dezembro',
+                            ],
+                            shortMonths: [
+                                'Jan',
+                                'Fev',
+                                'Mar',
+                                'Abr',
+                                'Mai',
+                                'Jun',
+                                'Jul',
+                                'Ago',
+                                'Set',
+                                'Out',
+                                'Nov',
+                                'Dez',
+                            ],
+                            days: [
+                                'Domingo',
+                                'Segunda',
+                                'Terça',
+                                'Quarta',
+                                'Quinta',
+                                'Sexta',
+                                'Sábado',
+                            ],
+                            shortDays: [
+                                'Dom',
+                                'Seg',
+                                'Ter',
+                                'Qua',
+                                'Qui',
+                                'Sex',
+                                'Sab',
+                            ],
+                            toolbar: {
+                                exportToSVG: 'Baixar SVG',
+                                exportToPNG: 'Baixar PNG',
+                                exportToCSV: 'Baixar CSV',
+                                menu: 'Menu',
+                                selection: 'Selecionar',
+                                selectionZoom: 'Selecionar Zoom',
+                                zoomIn: 'Aumentar',
+                                zoomOut: 'Diminuir',
+                                pan: 'Navegação',
+                                reset: 'Reiniciar Zoom',
+                            },
+                        },
+                    },
+                ],
+                defaultLocale: 'pt-br',
                 fontFamily: 'inherit',
                 foreColor: 'inherit',
                 height: '100%',
@@ -445,7 +511,7 @@ export class RolComponent implements OnInit, OnDestroy {
                 followCursor: true,
                 theme: 'dark',
                 x: {
-                    format: 'MMM dd, yyyy',
+                    format: 'dd MMM, yyyy',
                 },
             },
             xaxis: {
@@ -612,7 +678,7 @@ export class RolComponent implements OnInit, OnDestroy {
                                                              seriesIndex
                                                          ] *
                                                              100) /
-                                                         w.config.series[1]
+                                                         w.config.series[0]
                                                      ).toFixed(2)}%</div>
                                                  </div>`,
             },
