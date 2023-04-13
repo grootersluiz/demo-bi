@@ -34,18 +34,27 @@ export class RolService {
      */
     getData(): Observable<any> {
         return this._httpClient
-            .get('http://10.2.1.108/v1/dashboards/data?reportId=3&reportId=21')
+            .get('http://10.2.1.108/v1/dashboards/data?reportId=3&reportId=21&reportId=41&reportId=42')
             .pipe(
                 tap((response: any) => {
+                    const keyRolVsRolRealizada = 'visitorsVsPageViews';
+                    const keyApiRolVsRolRealizada = '41';
+                    console.log('RolVsRolRealizada', rol[keyRolVsRolRealizada], response[keyApiRolVsRolRealizada])
+
+                    const keyIndicadoresRol = 'previousStatement';
+                    const keyApiIndicadoresRol = '42';
+                    console.log('IndicadoresRol', rol[keyIndicadoresRol], response[keyApiIndicadoresRol])
+
+                    const ccMeta = response['3']['2023'];
                     const chartData = {
-                        ...response['3']['2022'],
+                        ...ccMeta,
                         series: {
-                            'this-year': response['3']['2022'].series,
+                            'this-year': ccMeta.series,
                         },
                     };
                     const chartROLxMetas = {
                         ...response['21'],
-                        uniqueVisitors: 100,
+                        // uniqueVisitors: 100,
                     };
 
                     console.log('rol', chartData);
@@ -56,6 +65,8 @@ export class RolService {
                         ...rol,
                         githubIssues: chartData,
                         newVsReturning: chartROLxMetas,
+                        [keyRolVsRolRealizada]: response[keyApiRolVsRolRealizada],
+                        [keyIndicadoresRol]: response[keyApiIndicadoresRol],
                     };
                     this._data.next(dashData);
                 })

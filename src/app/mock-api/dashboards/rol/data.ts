@@ -1779,9 +1779,9 @@ export const rol = {
         ],
     },
     visitorsVsPageViews: {
-        overallScore: 472,
-        averageRatio: 45,
-        predictedRatio: 55,
+        // overallScore: 472,
+        // averageRatio: 45,
+        // predictedRatio: 55,
         series: [
             {
                 name: 'ROL',
