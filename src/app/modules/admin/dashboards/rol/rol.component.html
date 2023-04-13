@@ -265,7 +265,11 @@
                                     </div>
                                 </div>
                                 <div class="font-medium text-right">
-                                    {{ dataset }}
+                                    {{
+                                        (data.newVsReturning.uniqueVisitors *
+                                            dataset) /
+                                            100 | number : "1.0-0"
+                                    }}
                                 </div>
                             </div>
                         </ng-container>
