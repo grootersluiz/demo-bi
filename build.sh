@@ -12,12 +12,12 @@
 #=================================================================#     
 
 #Colocar o dados da cloud
-USER="grj7uyekqpbi/cloud-adm-jsp@3db.net.br"
+USER="grj7uyekqpbi/ludemeury@vedastech.com.br"
 
 TENANT="grj7uyekqpbi" 
 
 APP="jsp-bi-front"
-VERSION="1.0.2"
+VERSION="1.0.3"
 
 echo "Construindo a imagem ${VERSION}"
 #Faz um build baseado no Dockfile
