@@ -2327,8 +2327,8 @@ export const rol = {
     },
     age: {
         uniqueVisitors: 30,
-        series: [100, 75],
-        labels: ['Total', 'Dias úteis'],
+        series: [77.57],
+        labels: ['Dias úteis'],
     },
     language: {
         uniqueVisitors: 46085,

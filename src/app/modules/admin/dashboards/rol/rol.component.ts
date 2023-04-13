@@ -695,7 +695,7 @@ export class RolComponent implements OnInit, OnDestroy {
                 },
                 fontFamily: 'inherit',
                 foreColor: 'inherit',
-                height: '100%',
+                height: '90%',
                 type: 'radialBar',
                 sparkline: {
                     enabled: true,

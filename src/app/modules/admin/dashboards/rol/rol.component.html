@@ -20,8 +20,11 @@
                     <mat-label style="font-size: 12px"
                         >Executivo / Filial</mat-label
                     >
-                    <mat-select style="font-size: 12px" [formControl]="filiais">
-                        <mat-option>---</mat-option>
+                    <mat-select
+                        style="font-size: 12px"
+                        [formControl]="filiais"
+                        multiple
+                    >
                         <mat-option
                             style="font-size: 12px"
                             *ngFor="let filial of filiaisLista"
@@ -39,8 +42,8 @@
                     <mat-select
                         style="font-size: 12px"
                         [formControl]="vendedores"
+                        multiple
                     >
-                        <mat-option>---</mat-option>
                         <mat-option
                             style="font-size: 12px"
                             *ngFor="let vendedor of vendedoresLista"
@@ -430,7 +433,7 @@
                                 <div class="font-medium text-right">
                                     {{
                                         (data.age.uniqueVisitors * dataset) /
-                                            100 | number : "1.0-0"
+                                            100 | number : "1.0-2"
                                     }}
                                 </div>
                                 <!-- <div class="text-right text-secondary">
