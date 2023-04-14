@@ -15,7 +15,10 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
-import { MatDatepickerModule } from '@angular/material/datepicker';
+import {
+    MatDatepickerModule,
+    MatDatepickerInputEvent,
+} from '@angular/material/datepicker';
 
 @Component({
     selector: 'rol',
@@ -55,7 +58,6 @@ export class RolComponent implements OnInit, OnDestroy {
     filiais = new FormControl('');
     filiaisLista: string[] = [
         'Campina Grande - PB',
-        'E5',
         'João Pessoa - PB',
         'Maceió - AL',
         'Recife - PE',
@@ -74,6 +76,16 @@ export class RolComponent implements OnInit, OnDestroy {
         start: new FormControl<Date | null>(null),
         end: new FormControl<Date | null>(null),
     });
+
+    events: string[] = [];
+
+    addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
+        this.events.push(`${type}: ${event.value}`);
+        console.log('teste date picker', this.events);
+        if (this.events[this.events.length - 1] === null) {
+            this.events.pop();
+        }
+    }
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 

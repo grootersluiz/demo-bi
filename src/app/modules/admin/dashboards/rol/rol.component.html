@@ -98,13 +98,13 @@
                             style="font-size: 11px"
                             matStartDate
                             formControlName="start"
-                            placeholder="Data Inicial"
+                            (dateInput)="addEvent('input', $event)"
                         />
                         <input
                             style="font-size: 11px"
                             matEndDate
                             formControlName="end"
-                            placeholder="Data Final"
+                            (dateInput)="addEvent('input', $event)"
                         />
                     </mat-date-range-input>
                     <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
