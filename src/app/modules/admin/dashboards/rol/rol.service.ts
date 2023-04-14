@@ -30,35 +30,46 @@ export class RolService {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
-    formatDateUSFormat(date, slash = true) {
-        const dateObj = new Date(date);
-        const month = dateObj.getUTCMonth() + 1;
-        const day = dateObj.getUTCDate();
-        const year = dateObj.getUTCFullYear();
-        if (slash) {
-            return `${month}/${day}/${year}`;
-        }
-        return `${month}-${day}-${year}`;
-    }
+    // formatDateUSFormat(data) {
+    //     const date = new Date(data);
+    //     const day = date.getDate().toString().padStart(2, '0');
+    //     const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    //     const year = date.getFullYear().toString();
+
+    //     return `${day}/${month}/${year}`;
+    // }
 
     /**
      * Get data
      */
-    getData(dtIni: Date, dtFin: Date): Observable<any> {
-        const datepipe = new DatePipe('pt-BR');
-        let formattedDate = datepipe.transform(dtIni, 'dd/MM/YYYY');
+    getData(dtIni, dtFin): Observable<any> {
+        // const datepipe = new DatePipe('pt-BR');
+        // let formattedDate = datepipe.transform(dtIni, 'dd/MM/YYYY');
 
-        const datepipe2 = new DatePipe('pt-BR');
-        let formattedDate2 = datepipe2.transform(dtFin, 'dd/MM/YYYY');
+        // const datepipe2 = new DatePipe('pt-BR');
+        // let formattedDate2 = datepipe2.transform(dtFin, 'dd/MM/YYYY');
         // this.formatDateUSFormat(dtIni);
         // this.formatDateUSFormat(dtFin);
+        // console.log('teste data', formattedDate);
+        // console.log('teste data', formattedDate2);
+
+        // console.log('teste func', dtIni);
+        console.log('teste func', dtFin);
 
         return this._httpClient
             .get(
                 'http://10.2.1.108/v1/dashboards/data?reportId=3&reportId=21&reportId=41&reportId=42&reportId=81&reportId=82&reportId=83&reportId=84&dtini=' +
-                    formattedDate +
+                    dtIni.date +
+                    '/' +
+                    dtIni.month +
+                    '/' +
+                    dtIni.year +
                     '&codvend=null&codemp=2&dtfin=' +
-                    formattedDate2
+                    dtFin.date +
+                    '/' +
+                    dtFin.month +
+                    '/' +
+                    dtFin.year
             )
             .pipe(
                 tap((response: any) => {
@@ -114,7 +125,6 @@ export class RolService {
                     const tableRankingRol = response['83'];
                     const tableRankingMetas = response['84'];
 
-                    console.log('teste data', dtIni);
                     console.log('ranking ROL', tableRankingRol);
                     console.log('Ranking ROL', rol.recentTransactions);
                     console.log('dias uteis teste', chartDiasUteis);

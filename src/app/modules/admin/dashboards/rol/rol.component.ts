@@ -52,7 +52,6 @@ export class RolComponent implements OnInit, OnDestroy {
     ];
     chartGithubIssues: ApexOptions = {};
     data: any;
-    getDatePicker: RolService;
 
     // Filtros principais do dashboard
 
@@ -78,15 +77,17 @@ export class RolComponent implements OnInit, OnDestroy {
         end: new FormControl<Date | null>(null),
     });
 
-    dataInicio: Date;
-    dataFinal: Date;
+    dataInicio: {};
+    dataFinal: {};
 
     addEventBegin(event: MatDatepickerInputEvent<Date>) {
-        this.dataInicio = event.value;
+        this.dataInicio = event.value['_i'];
+        console.log(this.dataInicio);
     }
 
     addEventEnd(event: MatDatepickerInputEvent<Date>) {
-        this.dataFinal = event.value;
+        this.dataFinal = event.value['_i'];
+        console.log(this.dataFinal);
     }
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -94,7 +95,11 @@ export class RolComponent implements OnInit, OnDestroy {
     /**
      * Constructor
      */
-    constructor(private _rolService: RolService, private _router: Router) {}
+    constructor(
+        private _rolService: RolService,
+        private _router: Router,
+        private getDatePicker: RolService
+    ) {}
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -134,6 +139,10 @@ export class RolComponent implements OnInit, OnDestroy {
                 },
             },
         };
+    }
+
+    test(dtIni: {}, dtFin: {}) {
+        this.getDatePicker.getData(dtIni, dtFin);
     }
 
     /**

@@ -31,8 +31,8 @@ export class RolResolver implements Resolve<any> {
         state: RouterStateSnapshot
     ): Observable<any> {
         return this._rolService.getData(
-            new Date(2022, 0, 1),
-            new Date(2022, 11, 31)
+            { year: 2022, month: 10, date: 10 },
+            { year: 2023, month: 1, date: 10 }
         );
     }
 }

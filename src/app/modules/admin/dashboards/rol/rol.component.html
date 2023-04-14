@@ -131,9 +131,7 @@
                     style="width: 80px"
                     mat-flat-button
                     [color]="'primary'"
-                    (click)="
-                        getDatePicker.getData(this.dataInicio, this.dataFinal)
-                    "
+                    (click)="test(this.dataInicio, this.dataFinal)"
                 >
                     <span style="font-size: 12px">Aplicar</span>
                 </button>
@@ -314,7 +312,7 @@
                     <div
                         class="text-lg font-medium tracking-tight leading-6 truncate"
                     >
-                        Metas Atingidas
+                        <p style="font-size: 14px">Metas de Vendas Atingidas</p>
                     </div>
                     <!-- <div class="ml-2">
                         <button
@@ -715,7 +713,7 @@
                     <div
                         class="mr-4 text-lg font-medium tracking-tight leading-6 truncate"
                     >
-                        Ranking - Metas
+                        Ranking - Metas de Vendas Atingidas
                     </div>
                     <!-- <div class="text-secondary font-medium">
                         1 pending, 4 completed
