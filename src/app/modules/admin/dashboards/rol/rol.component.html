@@ -17,9 +17,7 @@
                     class="hidden sm:inline-flex ml-3"
                     style="width: 200px"
                 >
-                    <mat-label style="font-size: 12px"
-                        >Executivo / Filial</mat-label
-                    >
+                    <mat-label style="font-size: 12px">Filial</mat-label>
                     <mat-select
                         style="font-size: 12px"
                         [formControl]="filiais"
@@ -282,15 +280,22 @@
                                             chartNewVsReturning.colors[i]
                                         "
                                     ></div>
-                                    <div class="ml-3 truncate">
+                                    <div
+                                        class="ml-3 truncate"
+                                        style="font-size: 12px"
+                                    >
                                         {{ data.newVsReturning.labels[i] }}
                                     </div>
                                 </div>
-                                <div class="font-medium text-right">
+                                <div
+                                    class="font-medium text-right"
+                                    style="font-size: 10px; text-align: start"
+                                >
                                     {{
-                                        (data.newVsReturning.uniqueVisitors *
-                                            dataset) /
-                                            100 | number : "1.0-0"
+                                        dataset.toLocaleString("pt-BR", {
+                                            style: "currency",
+                                            currency: "BRL"
+                                        })
                                     }}
                                 </div>
                             </div>
@@ -353,15 +358,18 @@
                                             chartGender.colors[i]
                                         "
                                     ></div>
-                                    <div class="ml-3 truncate">
+                                    <div
+                                        class="ml-3 truncate"
+                                        style="font-size: 12px"
+                                    >
                                         {{ data.gender.labels[i] }}
                                     </div>
                                 </div>
-                                <div class="font-medium text-right">
-                                    {{
-                                        (data.gender.uniqueVisitors * dataset) /
-                                            100 | number : "1.0-0"
-                                    }}
+                                <div
+                                    class="font-medium text-right"
+                                    style="font-size: 12px"
+                                >
+                                    {{ dataset }}
                                 </div>
                                 <!-- <div class="text-right text-secondary">
                                     {{ dataset }}%
@@ -426,15 +434,10 @@
                                             chartAge.colors[i]
                                         "
                                     ></div>
-                                    <div class="ml-3 truncate">
-                                        {{ data.age.labels[i] }}
-                                    </div>
+                                    <div class="ml-3 truncate">Dias Úteis</div>
                                 </div>
                                 <div class="font-medium text-right">
-                                    {{
-                                        (data.age.uniqueVisitors * dataset) /
-                                            100 | number : "1.0-2"
-                                    }}
+                                    {{ dataset }}
                                 </div>
                                 <!-- <div class="text-right text-secondary">
                                     {{ dataset }}%
@@ -585,7 +588,10 @@
                         1 pending, 4 completed
                     </div> -->
                 </div>
-                <div class="overflow-x-auto mx-6">
+                <div
+                    class="overflow-x-auto mx-6"
+                    style="overflow-y: scroll; height: 400px"
+                >
                     <table
                         class="w-full bg-transparent"
                         mat-table
@@ -597,8 +603,8 @@
                         <!-- Posição-->
                         <ng-container matColumnDef="transactionId">
                             <th
+                                class="sticky"
                                 mat-header-cell
-                                mat-sort-header
                                 *matHeaderCellDef
                             >
                                 Posição
@@ -607,70 +613,51 @@
                                 <span
                                     class="pr-6 font-medium text-sm text-secondary whitespace-nowrap"
                                 >
-                                    {{ transaction.transactionId }}
+                                    {{ transaction[0] }}
                                 </span>
                             </td>
                         </ng-container>
 
                         <!-- Filial -->
                         <ng-container matColumnDef="date">
-                            <th
-                                mat-header-cell
-                                mat-sort-header
-                                *matHeaderCellDef
-                            >
-                                Filial
-                            </th>
+                            <th mat-header-cell *matHeaderCellDef>Filial</th>
                             <td mat-cell *matCellDef="let transaction">
                                 <span class="pr-6 whitespace-nowrap">
-                                    {{ transaction.date | date : "MMM dd, y" }}
+                                    {{ transaction[1] }}
                                 </span>
                             </td>
                         </ng-container>
 
                         <!-- Consultor -->
                         <ng-container matColumnDef="name">
-                            <th
-                                mat-header-cell
-                                mat-sort-header
-                                *matHeaderCellDef
-                            >
-                                Vendedor
-                            </th>
+                            <th mat-header-cell *matHeaderCellDef>Vendedor</th>
                             <td mat-cell *matCellDef="let transaction">
                                 <span class="pr-6 whitespace-nowrap">
-                                    {{ transaction.name }}
+                                    {{ transaction[2] }}
                                 </span>
                             </td>
                         </ng-container>
 
                         <!-- ROL -->
                         <ng-container matColumnDef="amount">
-                            <th
-                                mat-header-cell
-                                mat-sort-header
-                                *matHeaderCellDef
-                            >
-                                ROL
-                            </th>
+                            <th mat-header-cell *matHeaderCellDef>ROL</th>
                             <td mat-cell *matCellDef="let transaction">
                                 <span
                                     class="pr-6 font-medium whitespace-nowrap"
                                 >
-                                    {{ transaction.amount | currency : "USD" }}
+                                    {{
+                                        transaction[3].toLocaleString("pt-BR", {
+                                            style: "currency",
+                                            currency: "BRL"
+                                        })
+                                    }}
                                 </span>
                             </td>
                         </ng-container>
 
                         <!-- Status -->
                         <ng-container matColumnDef="status">
-                            <th
-                                mat-header-cell
-                                mat-sort-header
-                                *matHeaderCellDef
-                            >
-                                Status
-                            </th>
+                            <th mat-header-cell *matHeaderCellDef>Status</th>
                             <td mat-cell *matCellDef="let transaction">
                                 <span
                                     class="inline-flex items-center font-bold text-xs px-2.5 py-0.5 rounded-full tracking-wide uppercase"
@@ -737,79 +724,60 @@
                         1 pending, 4 completed
                     </div> -->
                 </div>
-                <div class="overflow-x-auto mx-6">
+                <div
+                    class="overflow-x-auto mx-6"
+                    style="overflow-y: scroll; height: 400px"
+                >
                     <table
                         class="w-full bg-transparent"
                         mat-table
                         matSort
-                        [dataSource]="recentTransactionsDataSource"
+                        [dataSource]="recentTransactionsDataSource2"
                         [trackBy]="trackByFn"
                         #recentTransactionsTable
                     >
                         <!-- Posição-->
                         <ng-container matColumnDef="transactionId">
-                            <th
-                                mat-header-cell
-                                mat-sort-header
-                                *matHeaderCellDef
-                            >
-                                Posição
-                            </th>
+                            <th mat-header-cell *matHeaderCellDef>Posição</th>
                             <td mat-cell *matCellDef="let transaction">
                                 <span
                                     class="pr-6 font-medium text-sm text-secondary whitespace-nowrap"
                                 >
-                                    {{ transaction.transactionId }}
+                                    {{ transaction[0] }}
                                 </span>
                             </td>
                         </ng-container>
 
                         <!-- Filial -->
                         <ng-container matColumnDef="date">
-                            <th
-                                mat-header-cell
-                                mat-sort-header
-                                *matHeaderCellDef
-                            >
-                                Filial
-                            </th>
+                            <th mat-header-cell *matHeaderCellDef>Filial</th>
                             <td mat-cell *matCellDef="let transaction">
                                 <span class="pr-6 whitespace-nowrap">
-                                    {{ transaction.date | date : "MMM dd, y" }}
+                                    {{ transaction[1] }}
                                 </span>
                             </td>
                         </ng-container>
 
                         <!-- Consultor -->
                         <ng-container matColumnDef="name">
-                            <th
-                                mat-header-cell
-                                mat-sort-header
-                                *matHeaderCellDef
-                            >
-                                Vendedor
-                            </th>
+                            <th mat-header-cell *matHeaderCellDef>Vendedor</th>
                             <td mat-cell *matCellDef="let transaction">
                                 <span class="pr-6 whitespace-nowrap">
-                                    {{ transaction.name }}
+                                    {{ transaction[2] }}
                                 </span>
                             </td>
                         </ng-container>
 
                         <!-- Metas Atingidas-->
                         <ng-container matColumnDef="amount">
-                            <th
-                                mat-header-cell
-                                mat-sort-header
-                                *matHeaderCellDef
-                            >
+                            <th mat-header-cell *matHeaderCellDef>
                                 Metas Atingidas
                             </th>
                             <td mat-cell *matCellDef="let transaction">
                                 <span
                                     class="pr-6 font-medium whitespace-nowrap"
                                 >
-                                    {{ transaction.amount | currency : "USD" }}
+                                    {{ transaction[3] }}
                                 </span>
                             </td>
                         </ng-container>

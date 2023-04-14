@@ -38,6 +38,8 @@ export class RolComponent implements OnInit, OnDestroy {
     chartLanguage: ApexOptions;
     recentTransactionsDataSource: MatTableDataSource<any> =
         new MatTableDataSource();
+    recentTransactionsDataSource2: MatTableDataSource<any> =
+        new MatTableDataSource();
     recentTransactionsTableColumns: string[] = [
         'transactionId',
         'date',
@@ -97,7 +99,9 @@ export class RolComponent implements OnInit, OnDestroy {
 
                 // Store the table data
                 this.recentTransactionsDataSource.data =
-                    data.recentTransactions;
+                    data.recentTransactions.rows;
+                this.recentTransactionsDataSource2.data =
+                    data.recentTransactions2.rows;
 
                 // Prepare the chart data
                 this._prepareChartData();
@@ -513,6 +517,14 @@ export class RolComponent implements OnInit, OnDestroy {
                 x: {
                     format: 'dd MMM, yyyy',
                 },
+                y: {
+                    formatter: function (value) {
+                        return value.toLocaleString('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL',
+                        });
+                    },
+                },
             },
             xaxis: {
                 axisBorder: {
@@ -608,7 +620,7 @@ export class RolComponent implements OnInit, OnDestroy {
                                                             seriesIndex
                                                         ] *
                                                             100) /
-                                                        w.config.series[0]
+                                                        w.config.series[1]
                                                     ).toFixed(2)}%</div>
                                                 </div>`,
             },
@@ -625,7 +637,7 @@ export class RolComponent implements OnInit, OnDestroy {
                 },
                 fontFamily: 'inherit',
                 foreColor: 'inherit',
-                height: '100%',
+                height: '90%',
                 type: 'radialBar',
                 sparkline: {
                     enabled: true,
@@ -733,9 +745,23 @@ export class RolComponent implements OnInit, OnDestroy {
                     seriesIndex,
                     w,
                 }): string => `<div class="flex items-center h-8 min-h-8 max-h-8 px-3">
-                                                    <div class="w-3 h-3 rounded-full" style="background-color: ${w.config.colors[seriesIndex]};"></div>
-                                                    <div class="ml-2 text-md leading-none">${w.config.labels[seriesIndex]}:</div>
-                                                    <div class="ml-2 text-md font-bold leading-none">${w.config.series[seriesIndex]}%</div>
+                                                    <div class="w-3 h-3 rounded-full" style="background-color: ${
+                                                        w.config.colors[
+                                                            seriesIndex
+                                                        ]
+                                                    };"></div>
+                                                    <div class="ml-2 text-md leading-none">${
+                                                        w.config.labels[
+                                                            seriesIndex
+                                                        ]
+                                                    }:</div>
+                                                    <div class="ml-2 text-md font-bold leading-none">${(
+                                                        (w.config.series[
+                                                            seriesIndex
+                                                        ] *
+                                                            100) /
+                                                        30
+                                                    ).toFixed(2)}%</div>
                                                 </div>`,
             },
         };
