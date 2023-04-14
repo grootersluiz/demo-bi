@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { rol } from 'app/mock-api/dashboards/rol/data';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
     providedIn: 'root',
@@ -32,10 +33,19 @@ export class RolService {
     /**
      * Get data
      */
-    getData(): Observable<any> {
+    getData(dtIni: Date, dtFin: Date): Observable<any> {
+        const datepipe = new DatePipe('pt-BR');
+        let formattedDate = datepipe.transform(dtIni, 'dd/MM/YYYY');
+
+        const datepipe2 = new DatePipe('pt-BR');
+        let formattedDate2 = datepipe2.transform(dtFin, 'dd/MM/YYYY');
+
         return this._httpClient
             .get(
-                'http://10.2.1.108/v1/dashboards/data?reportId=3&reportId=21&reportId=41&reportId=42&reportId=81&reportId=82&reportId=83&reportId=84&dtini=01/01/2022&codvend=null&codemp=null&dtfin=13/04/2023'
+                'http://10.2.1.108/v1/dashboards/data?reportId=3&reportId=21&reportId=41&reportId=42&reportId=81&reportId=82&reportId=83&reportId=84&dtini=' +
+                    formattedDate +
+                    '&codvend=null&codemp=null&dtfin=' +
+                    formattedDate2
             )
             .pipe(
                 tap((response: any) => {
@@ -91,6 +101,7 @@ export class RolService {
                     const tableRankingRol = response['83'];
                     const tableRankingMetas = response['84'];
 
+                    console.log('teste data', formattedDate);
                     console.log('ranking ROL', tableRankingRol);
                     console.log('Ranking ROL', rol.recentTransactions);
                     console.log('dias uteis teste', chartDiasUteis);

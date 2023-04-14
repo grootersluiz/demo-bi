@@ -33,6 +33,11 @@ import {
     MAT_DATE_LOCALE,
 } from '@angular/material/core';
 import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localePt from '@angular/common/locales/pt';
+
+registerLocaleData(localePt);
 
 @NgModule({
     declarations: [RolComponent],
@@ -55,6 +60,9 @@ import { FormControl, NG_VALUE_ACCESSOR } from '@angular/forms';
         MatMomentDateModule,
         MatSelectModule,
     ],
-    providers: [{ provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }],
+    providers: [
+        { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
+        { provide: LOCALE_ID, useValue: 'pt-BR' },
+    ],
 })
 export class RolModule {}
