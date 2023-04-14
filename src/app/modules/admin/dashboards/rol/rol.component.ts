@@ -52,6 +52,7 @@ export class RolComponent implements OnInit, OnDestroy {
     ];
     chartGithubIssues: ApexOptions = {};
     data: any;
+    getDatePicker: RolService;
 
     // Filtros principais do dashboard
 
@@ -77,14 +78,15 @@ export class RolComponent implements OnInit, OnDestroy {
         end: new FormControl<Date | null>(null),
     });
 
-    events: string[] = [];
+    dataInicio: Date;
+    dataFinal: Date;
 
-    addEvent(type: string, event: MatDatepickerInputEvent<Date>) {
-        this.events.push(`${type}: ${event.value}`);
-        console.log('teste date picker', this.events);
-        if (this.events[this.events.length - 1] === null) {
-            this.events.pop();
-        }
+    addEventBegin(event: MatDatepickerInputEvent<Date>) {
+        this.dataInicio = event.value;
+    }
+
+    addEventEnd(event: MatDatepickerInputEvent<Date>) {
+        this.dataFinal = event.value;
     }
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();

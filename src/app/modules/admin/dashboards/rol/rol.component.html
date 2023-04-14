@@ -98,13 +98,13 @@
                             style="font-size: 11px"
                             matStartDate
                             formControlName="start"
-                            (dateInput)="addEvent('input', $event)"
+                            (dateInput)="addEventBegin($event)"
                         />
                         <input
                             style="font-size: 11px"
                             matEndDate
                             formControlName="end"
-                            (dateInput)="addEvent('input', $event)"
+                            (dateInput)="addEventEnd($event)"
                         />
                     </mat-date-range-input>
                     <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
@@ -131,6 +131,9 @@
                     style="width: 80px"
                     mat-flat-button
                     [color]="'primary'"
+                    (click)="
+                        getDatePicker.getData(this.dataInicio, this.dataFinal)
+                    "
                 >
                     <span style="font-size: 12px">Aplicar</span>
                 </button>

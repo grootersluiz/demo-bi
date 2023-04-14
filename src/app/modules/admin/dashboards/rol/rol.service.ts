@@ -30,6 +30,17 @@ export class RolService {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
+    formatDateUSFormat(date, slash = true) {
+        const dateObj = new Date(date);
+        const month = dateObj.getUTCMonth() + 1;
+        const day = dateObj.getUTCDate();
+        const year = dateObj.getUTCFullYear();
+        if (slash) {
+            return `${month}/${day}/${year}`;
+        }
+        return `${month}-${day}-${year}`;
+    }
+
     /**
      * Get data
      */
@@ -39,12 +50,14 @@ export class RolService {
 
         const datepipe2 = new DatePipe('pt-BR');
         let formattedDate2 = datepipe2.transform(dtFin, 'dd/MM/YYYY');
+        // this.formatDateUSFormat(dtIni);
+        // this.formatDateUSFormat(dtFin);
 
         return this._httpClient
             .get(
                 'http://10.2.1.108/v1/dashboards/data?reportId=3&reportId=21&reportId=41&reportId=42&reportId=81&reportId=82&reportId=83&reportId=84&dtini=' +
                     formattedDate +
-                    '&codvend=null&codemp=null&dtfin=' +
+                    '&codvend=null&codemp=2&dtfin=' +
                     formattedDate2
             )
             .pipe(
@@ -101,7 +114,7 @@ export class RolService {
                     const tableRankingRol = response['83'];
                     const tableRankingMetas = response['84'];
 
-                    console.log('teste data', formattedDate);
+                    console.log('teste data', dtIni);
                     console.log('ranking ROL', tableRankingRol);
                     console.log('Ranking ROL', rol.recentTransactions);
                     console.log('dias uteis teste', chartDiasUteis);
