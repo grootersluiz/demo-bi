@@ -73,11 +73,13 @@ export class RolComponent implements OnInit, OnDestroy {
     ];
 
     range = new FormGroup({
-        start: new FormControl<Date | null>(null),
-        end: new FormControl<Date | null>(null),
+        start: new FormControl<Date | null>(
+            new Date(new Date().setMonth(new Date().getMonth() - 1))
+        ),
+        end: new FormControl<Date | null>(new Date()),
     });
 
-    dataInicio: {};
+    dataInicio = {};
     dataFinal: {};
 
     addEventBegin(event: MatDatepickerInputEvent<Date>) {
@@ -142,8 +144,8 @@ export class RolComponent implements OnInit, OnDestroy {
     }
 
     handleApplyFilter(dtIni, dtFin) {
-        if(dtIni && dtFin){
-            this.getDatePicker.getData(dtIni, dtFin);
+        if (dtIni && dtFin) {
+            this.getDatePicker.getData(dtIni, dtFin).subscribe();
         }
     }
 
