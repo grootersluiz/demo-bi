@@ -141,8 +141,10 @@ export class RolComponent implements OnInit, OnDestroy {
         };
     }
 
-    test(dtIni: {}, dtFin: {}) {
-        this.getDatePicker.getData(dtIni, dtFin);
+    handleApplyFilter(dtIni, dtFin) {
+        if(dtIni && dtFin){
+            this.getDatePicker.getData(dtIni, dtFin);
+        }
     }
 
     /**

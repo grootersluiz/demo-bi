@@ -13,7 +13,7 @@ export class RolService {
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient) {}
+    constructor(private _httpClient: HttpClient) { }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -54,22 +54,23 @@ export class RolService {
         // console.log('teste data', formattedDate2);
 
         // console.log('teste func', dtIni);
-        console.log('teste func', dtFin);
+
+        function formatDate(date) {
+            const day = date.date.toString();
+            const month = (date.month + 1).toString();
+            const year = date.year.toString();
+            return `${day}/${month}/${year}`;
+        }
+
+        console.log(formatDate(dtIni));
+        console.log(formatDate(dtFin));
 
         return this._httpClient
             .get(
-                'http://10.2.1.108/v1/dashboards/data?reportId=3&reportId=21&reportId=41&reportId=42&reportId=81&reportId=82&reportId=83&reportId=84&dtini=' +
-                    dtIni.date +
-                    '/' +
-                    dtIni.month +
-                    '/' +
-                    dtIni.year +
-                    '&codvend=null&codemp=2&dtfin=' +
-                    dtFin.date +
-                    '/' +
-                    dtFin.month +
-                    '/' +
-                    dtFin.year
+                `http://10.2.1.108/v1/dashboards/data?reportId=3&reportId=21&reportId=41&reportId=42&reportId=81&reportId=82&reportId=83&reportId=84&dtini=
+                ${formatDate(dtIni)}
+                &codvend=null&codemp=2&dtfin=
+                ${formatDate(dtFin)}`
             )
             .pipe(
                 tap((response: any) => {
