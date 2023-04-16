@@ -74,11 +74,13 @@ export class RolComponent implements OnInit, OnDestroy {
     ];
 
     range = new FormGroup({
-        start: new FormControl<Date | null>(null),
-        end: new FormControl<Date | null>(null),
+        start: new FormControl<Date | null>(
+            new Date(new Date().setMonth(new Date().getMonth() - 1))
+        ),
+        end: new FormControl<Date | null>(new Date()),
     });
 
-    dataInicio: {};
+    dataInicio = {};
     dataFinal: {};
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
