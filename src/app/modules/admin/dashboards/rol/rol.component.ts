@@ -1,5 +1,6 @@
 import {
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     OnDestroy,
     OnInit,
@@ -80,16 +81,6 @@ export class RolComponent implements OnInit, OnDestroy {
     dataInicio: {};
     dataFinal: {};
 
-    addEventBegin(event: MatDatepickerInputEvent<Date>) {
-        this.dataInicio = event.value['_i'];
-        console.log(this.dataInicio);
-    }
-
-    addEventEnd(event: MatDatepickerInputEvent<Date>) {
-        this.dataFinal = event.value['_i'];
-        console.log(this.dataFinal);
-    }
-
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
@@ -98,7 +89,7 @@ export class RolComponent implements OnInit, OnDestroy {
     constructor(
         private _rolService: RolService,
         private _router: Router,
-        private getDatePicker: RolService
+        private _cdr: ChangeDetectorRef
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -124,6 +115,10 @@ export class RolComponent implements OnInit, OnDestroy {
 
                 // Prepare the chart data
                 this._prepareChartData();
+
+                // Trigger the change detection mechanism so that it updates the chart when filtering 
+                this._cdr.detectChanges();
+
             });
 
         // Attach SVG fill fixer to all ApexCharts
@@ -139,12 +134,6 @@ export class RolComponent implements OnInit, OnDestroy {
                 },
             },
         };
-    }
-
-    handleApplyFilter(dtIni, dtFin) {
-        if(dtIni && dtFin){
-            this.getDatePicker.getData(dtIni, dtFin);
-        }
     }
 
     /**
@@ -168,6 +157,26 @@ export class RolComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
+
+    addEventBegin(event: MatDatepickerInputEvent<Date>) {
+        if(event.value){
+            this.dataInicio = event.value['_i'];
+            console.log(this.dataInicio);
+        }
+    }
+
+    addEventEnd(event: MatDatepickerInputEvent<Date>) {
+        if(event.value){
+            this.dataFinal = event.value['_i'];
+            console.log(this.dataFinal);
+        }
+    }
+
+    handleApplyFilter(dtIni, dtFin) {
+        if(dtIni && dtFin){
+            this._rolService.getData(dtIni, dtFin).subscribe();
+        }
+    }
 
     /**
      * Track by function for ngFor loops
