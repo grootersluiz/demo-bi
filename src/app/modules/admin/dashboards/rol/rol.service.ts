@@ -42,7 +42,7 @@ export class RolService {
     /**
      * Get data
      */
-    getData(dtIni, dtFin): Observable<any> {
+    getData(dtIni, dtFin, filiaisIds): Observable<any> {
         // const datepipe = new DatePipe('pt-BR');
         // let formattedDate = datepipe.transform(dtIni, 'dd/MM/YYYY');
 
@@ -62,6 +62,9 @@ export class RolService {
             return `${day}/${month}/${year}`;
         }
 
+
+        console.log("Lista ids filiais", filiaisIds.join(","));
+        console.log(typeof filiaisIds.join(","));
         console.log(formatDate(dtIni));
         console.log(formatDate(dtFin));
 
@@ -69,7 +72,7 @@ export class RolService {
             .get(
                 `http://10.2.1.108/v1/dashboards/data?reportId=3&reportId=21&reportId=41&reportId=42&reportId=81&reportId=82&reportId=83&reportId=84&reportId=101&reportId=121&dtini=
                 ${formatDate(dtIni)}
-                &codvend=null&codemp=2&dtfin=
+                &codvend=null&codemp=${filiaisIds.join(",")}&dtfin=
                 ${formatDate(dtFin)}`
             )
             .pipe(

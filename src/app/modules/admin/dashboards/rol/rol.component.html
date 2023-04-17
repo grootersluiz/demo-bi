@@ -27,7 +27,7 @@
                             style="font-size: 12px"
                             *ngFor="let filial of filiaisStringList; let i = index;"
                             [value]="filiaisObjects[i].id"
-                            (click)="handleFilialFilterClick(filiaisObjects[i].id)"
+                            (click)="handleFilialFilterSelect(filiaisObjects[i].id)"
                             >{{ filial }}</mat-option
                         >
                     </mat-select>
@@ -42,12 +42,13 @@
                         style="font-size: 12px"
                         [formControl]="vendedores"
                         multiple
+                        (click)="handleVendedoresFilterClick(dataInicio, dataFinal)"
                     >
                         <mat-option
                             style="font-size: 12px"
                             *ngFor="let vendedor of vendedoresStringList; let i = index;"
                             [value]="vendedoresObjects[i].id"
-                            (click)="handleVendedoresFilterClick(vendedoresObjects[i].id)"
+                            (click)="handleVendedoresFilterSelect(vendedoresObjects[i].id)"
                             >{{ vendedor }}</mat-option
                         >
                     </mat-select>
@@ -133,7 +134,7 @@
                     style="width: 80px"
                     mat-flat-button
                     [color]="'primary'"
-                    (click)="handleApplyFilter(this.dataInicio, this.dataFinal)"
+                    (click)="handleApplyFilter(dataInicio, dataFinal, filiais.value)"
                 >
                     <span style="font-size: 12px">Aplicar</span>
                 </button>

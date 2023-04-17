@@ -155,13 +155,19 @@ export class RolComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
-    handleVendedoresFilterClick(vendedorId: number){
+
+
+    handleVendedoresFilterClick(dtIni, dtFin){
+        this._rolService.getData(dtIni, dtFin, this.filiais.value).subscribe();
+    }
+
+    handleVendedoresFilterSelect(vendedorId: number){
         console.log(vendedorId);
         console.log(this.vendedores.value);
     }
 
 
-    handleFilialFilterClick(filialId: number) {
+    handleFilialFilterSelect(filialId: number) {
         console.log(filialId);
         console.log(this.filiais.value);
     }
@@ -180,9 +186,10 @@ export class RolComponent implements OnInit, OnDestroy {
         }
     }
 
-    handleApplyFilter(dtIni, dtFin) {
+    handleApplyFilter(dtIni, dtFin, filiaisIds) {
         if (dtIni && dtFin) {
-            this._rolService.getData(dtIni, dtFin).subscribe();
+
+            this._rolService.getData(dtIni, dtFin, filiaisIds).subscribe();
         }
     }
 
