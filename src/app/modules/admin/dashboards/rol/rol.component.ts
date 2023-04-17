@@ -110,6 +110,10 @@ export class RolComponent implements OnInit, OnDestroy {
                 // Trigger the change detection mechanism so that it updates the chart when filtering
                 this._cdr.detectChanges();
 
+                setTimeout(() => {
+                    this._cdr.detectChanges();
+                }, 500);
+
                 this.filiaisObjects = this.data.filiaisLista;
                 this.filiaisStringList = this.filiaisObjects.map(
                     (item) => item.string
@@ -172,6 +176,7 @@ export class RolComponent implements OnInit, OnDestroy {
     }
 
     handleCompanyFilterSelect(filialId: number) {
+        this.vendedoresStringList = ['Carregando...'];
         if (this.filiais.value.length == 0) {
             this.filiais.setValue(this._rolService.INITIAL_COMPANIES_IDS);
         }
