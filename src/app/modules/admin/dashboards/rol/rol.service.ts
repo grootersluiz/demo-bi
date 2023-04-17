@@ -10,6 +10,14 @@ import { DatePipe } from '@angular/common';
 export class RolService {
     private _data: BehaviorSubject<any> = new BehaviorSubject(null);
 
+    readonly INITIAL_INITIAL_DATE = { year: 2022, month: 1, date: 10 };
+    readonly INITIAL_FINAL_DATE = { year: 2023, month: 1, date: 10 };
+
+    readonly INITIAL_COMPANIES_IDS = ['2'];
+    readonly INITIAL_SELLERS_IDS = ['null'];
+
+   
+
     /**
      * Constructor
      */
@@ -42,7 +50,7 @@ export class RolService {
     /**
      * Get data
      */
-    getData(dtIni, dtFin, filiaisIds): Observable<any> {
+    getData(dtIni, dtFin, companiesIds, sellersIds): Observable<any> {
         // const datepipe = new DatePipe('pt-BR');
         // let formattedDate = datepipe.transform(dtIni, 'dd/MM/YYYY');
 
@@ -62,21 +70,22 @@ export class RolService {
             return `${day}/${month}/${year}`;
         }
 
-
-        console.log("Lista ids filiais", filiaisIds.join(","));
-        console.log(typeof filiaisIds.join(","));
+/* 
+        console.log("Lista ids filiais", companiesIds.join(","));
+        console.log(typeof companiesIds.join(","));
         console.log(formatDate(dtIni));
-        console.log(formatDate(dtFin));
+        console.log(formatDate(dtFin)); */
 
+        let url = `http://10.2.1.108/v1/dashboards/data?reportId=3&reportId=21&reportId=41&reportId=42&reportId=81&reportId=82&reportId=83&reportId=84&reportId=101&reportId=121&dtini=
+        ${formatDate(dtIni)}
+        &codvend=${sellersIds.join(",")}&codemp=${companiesIds.join(",")}&dtfin=
+        ${formatDate(dtFin)}`
+        
         return this._httpClient
-            .get(
-                `http://10.2.1.108/v1/dashboards/data?reportId=3&reportId=21&reportId=41&reportId=42&reportId=81&reportId=82&reportId=83&reportId=84&reportId=101&reportId=121&dtini=
-                ${formatDate(dtIni)}
-                &codvend=null&codemp=${filiaisIds.join(",")}&dtfin=
-                ${formatDate(dtFin)}`
-            )
+            .get(url)
             .pipe(
                 tap((response: any) => {
+                
                     const keyRolVsRolRealizada = 'visitorsVsPageViews';
                     const keyApiRolVsRolRealizada = '41';
                     console.log(

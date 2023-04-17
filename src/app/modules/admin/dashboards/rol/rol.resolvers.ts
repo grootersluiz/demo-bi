@@ -31,8 +31,10 @@ export class RolResolver implements Resolve<any> {
         state: RouterStateSnapshot
     ): Observable<any> {
         return this._rolService.getData(
-            { year: 2022, month: 1, date: 10 },
-            { year: 2023, month: 1, date: 10 },['2']
+             this._rolService.INITIAL_INITIAL_DATE,
+             this._rolService.INITIAL_FINAL_DATE,
+             this._rolService.INITIAL_COMPANIES_IDS,
+             this._rolService.INITIAL_SELLERS_IDS
         );
     }
 }

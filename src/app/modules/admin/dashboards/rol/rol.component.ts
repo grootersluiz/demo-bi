@@ -56,11 +56,11 @@ export class RolComponent implements OnInit, OnDestroy {
 
     // Filtros principais do dashboard
     
-    filiais = new FormControl('');
+    filiais = new FormControl(this._rolService.INITIAL_COMPANIES_IDS);
     filiaisObjects: {id: number, string: string}[];
     filiaisStringList: string[];
 
-    vendedores = new FormControl('');
+    vendedores = new FormControl(this._rolService.INITIAL_SELLERS_IDS);
     vendedoresObjects: {id: number, string: string}[];
     vendedoresStringList: string[];
 
@@ -71,8 +71,8 @@ export class RolComponent implements OnInit, OnDestroy {
         end: new FormControl<Date | null>(new Date()),
     });
 
-    dataInicio = {};
-    dataFinal: {};
+    dataInicio = this._rolService.INITIAL_INITIAL_DATE;
+    dataFinal = this._rolService.INITIAL_FINAL_DATE;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -157,17 +157,17 @@ export class RolComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
 
 
-    handleVendedoresFilterClick(dtIni, dtFin){
-        this._rolService.getData(dtIni, dtFin, this.filiais.value).subscribe();
+    handleSellersFilterClick(dtIni, dtFin){
+        this._rolService.getData(dtIni, dtFin, this.filiais.value, this.vendedores.value).subscribe();
     }
 
-    handleVendedoresFilterSelect(vendedorId: number){
+    handleSellersFilterSelect(vendedorId: number){
         console.log(vendedorId);
         console.log(this.vendedores.value);
     }
 
 
-    handleFilialFilterSelect(filialId: number) {
+    handleCompanyFilterSelect(filialId: number) {
         console.log(filialId);
         console.log(this.filiais.value);
     }
@@ -186,10 +186,10 @@ export class RolComponent implements OnInit, OnDestroy {
         }
     }
 
-    handleApplyFilter(dtIni, dtFin, filiaisIds) {
+    handleApplyFilter(dtIni, dtFin, filiaisIds, vendedoresIds) {
         if (dtIni && dtFin) {
 
-            this._rolService.getData(dtIni, dtFin, filiaisIds).subscribe();
+            this._rolService.getData(dtIni, dtFin, filiaisIds, vendedoresIds).subscribe();
         }
     }
 
