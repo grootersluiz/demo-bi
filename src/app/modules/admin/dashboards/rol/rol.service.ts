@@ -126,16 +126,16 @@ export class RolService {
                     const tableRankingRol = response['83'];
                     const tableRankingMetas = response['84'];
 
-                    const companyFilterString = response['101']['rows'].map(
-                        (item) => item[1] + ' - ' + item[0].toString()
+                    const companyFilter = response['101']['rows'].map(
+                        (item) => {return {id: item[0], string: item[1] + ' - ' + item[0].toString()}}
                     );
 
-                    const sellersFilterString = response['121']['rows'].map(
-                        (item) => item[1] + ' - ' + item[0].toString()
+                    const sellersFilter = response['121']['rows'].map(
+                        (item) => {return {id: item[0], string: item[1] + ' - ' + item[0].toString()}}
                     );
 
-                    console.log('teste filiais', companyFilterString);
-                    console.log('teste vendedores', sellersFilterString);
+                    console.log('teste filiais', companyFilter);
+                    console.log('teste vendedores', sellersFilter);
                     console.log('ranking ROL', tableRankingRol);
                     console.log('Ranking ROL', rol.recentTransactions);
                     console.log('dias uteis teste', chartDiasUteis);
@@ -154,8 +154,9 @@ export class RolService {
                         age: chartDiasUteis,
                         recentTransactions: tableRankingRol,
                         recentTransactions2: tableRankingMetas,
-                        filiaisLista: companyFilterString,
-                        vendedoresLista: sellersFilterString,
+                        filiaisLista: companyFilter,
+                        vendedoresLista: sellersFilter,
+
                     };
                     this._data.next(dashData);
                 })

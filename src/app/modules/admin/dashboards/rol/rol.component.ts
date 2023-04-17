@@ -55,12 +55,14 @@ export class RolComponent implements OnInit, OnDestroy {
     data: any;
 
     // Filtros principais do dashboard
-
+    
     filiais = new FormControl('');
-    filiaisLista: string[];
+    filiaisObjects: {id: number, string: string}[];
+    filiaisStringList: string[];
 
     vendedores = new FormControl('');
-    vendedoresLista: string[];
+    vendedoresObjects: {id: number, string: string}[];
+    vendedoresStringList: string[];
 
     range = new FormGroup({
         start: new FormControl<Date | null>(
@@ -110,8 +112,11 @@ export class RolComponent implements OnInit, OnDestroy {
                 // Trigger the change detection mechanism so that it updates the chart when filtering
                 this._cdr.detectChanges();
 
-                this.filiaisLista = this.data.filiaisLista;
-                this.vendedoresLista = this.data.vendedoresLista;
+                this.filiaisObjects = this.data.filiaisLista;
+                this.filiaisStringList = this.filiaisObjects.map( item => item.string);
+                
+                this.vendedoresObjects = this.data.vendedoresLista;
+                this.vendedoresStringList = this.vendedoresObjects.map( item => item.string);;
             });
 
         // Attach SVG fill fixer to all ApexCharts
@@ -150,6 +155,16 @@ export class RolComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
+    handleVendedoresFilterClick(vendedorId: number){
+        console.log(vendedorId);
+        console.log(this.vendedores.value);
+    }
+
+
+    handleFilialFilterClick(filialId: number) {
+        console.log(filialId);
+        console.log(this.filiais.value);
+    }
 
     addEventBegin(event: MatDatepickerInputEvent<Date>) {
         if (event.value) {

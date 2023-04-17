@@ -25,8 +25,9 @@
                     >
                         <mat-option
                             style="font-size: 12px"
-                            *ngFor="let filial of filiaisLista"
-                            [value]="filial"
+                            *ngFor="let filial of filiaisStringList; let i = index;"
+                            [value]="filiaisObjects[i].id"
+                            (click)="handleFilialFilterClick(filiaisObjects[i].id)"
                             >{{ filial }}</mat-option
                         >
                     </mat-select>
@@ -44,8 +45,9 @@
                     >
                         <mat-option
                             style="font-size: 12px"
-                            *ngFor="let vendedor of vendedoresLista"
-                            [value]="vendedor"
+                            *ngFor="let vendedor of vendedoresStringList; let i = index;"
+                            [value]="vendedoresObjects[i].id"
+                            (click)="handleVendedoresFilterClick(vendedoresObjects[i].id)"
                             >{{ vendedor }}</mat-option
                         >
                     </mat-select>
