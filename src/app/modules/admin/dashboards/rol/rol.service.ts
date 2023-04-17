@@ -67,7 +67,7 @@ export class RolService {
 
         return this._httpClient
             .get(
-                `http://10.2.1.108/v1/dashboards/data?reportId=3&reportId=21&reportId=41&reportId=42&reportId=81&reportId=82&reportId=83&reportId=84&reportId=101&dtini=
+                `http://10.2.1.108/v1/dashboards/data?reportId=3&reportId=21&reportId=41&reportId=42&reportId=81&reportId=82&reportId=83&reportId=84&reportId=101&reportId=121&dtini=
                 ${formatDate(dtIni)}
                 &codvend=null&codemp=2&dtfin=
                 ${formatDate(dtFin)}`
@@ -127,11 +127,15 @@ export class RolService {
                     const tableRankingMetas = response['84'];
 
                     const companyFilterString = response['101']['rows'].map(
-                        (item) => item[0].toString() + ' - ' + item[1]
+                        (item) => item[1] + ' - ' + item[0].toString()
+                    );
+
+                    const sellersFilterString = response['121']['rows'].map(
+                        (item) => item[1] + ' - ' + item[0].toString()
                     );
 
                     console.log('teste filiais', companyFilterString);
-
+                    console.log('teste vendedores', sellersFilterString);
                     console.log('ranking ROL', tableRankingRol);
                     console.log('Ranking ROL', rol.recentTransactions);
                     console.log('dias uteis teste', chartDiasUteis);
@@ -151,6 +155,7 @@ export class RolService {
                         recentTransactions: tableRankingRol,
                         recentTransactions2: tableRankingMetas,
                         filiaisLista: companyFilterString,
+                        vendedoresLista: sellersFilterString,
                     };
                     this._data.next(dashData);
                 })

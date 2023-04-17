@@ -60,13 +60,7 @@ export class RolComponent implements OnInit, OnDestroy {
     filiaisLista: string[];
 
     vendedores = new FormControl('');
-    vendedoresLista: string[] = [
-        'Vendedor 1',
-        'Vendedor 2',
-        'Vendedor 3',
-        'Vendedor 4',
-        'Vendedor 5',
-    ];
+    vendedoresLista: string[];
 
     range = new FormGroup({
         start: new FormControl<Date | null>(
@@ -117,6 +111,7 @@ export class RolComponent implements OnInit, OnDestroy {
                 this._cdr.detectChanges();
 
                 this.filiaisLista = this.data.filiaisLista;
+                this.vendedoresLista = this.data.vendedoresLista;
             });
 
         // Attach SVG fill fixer to all ApexCharts
