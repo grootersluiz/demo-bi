@@ -1,10 +1,16 @@
 <div class="flex flex-col flex-auto w-full">
-    <div class="flex items-center p-6 justify-between w-full" style="background-color: rgb(82, 82, 82);">
+    <div
+        class="flex items-center p-6 justify-between w-full"
+        style="background-color: rgb(82, 82, 82)"
+    >
         <div>
-            <div class="text-3xl font-semibold tracking-tight leading-8" style="color: #FFF;">
+            <div
+                class="text-3xl font-semibold tracking-tight leading-8"
+                style="color: #fff"
+            >
                 ROL
             </div>
-            <div class="font-medium tracking-tight" style="color: #FFF;">
+            <div class="font-medium tracking-tight" style="color: #fff">
                 Rankings e Metas
             </div>
         </div>
@@ -16,7 +22,9 @@
                 style="width: 200px"
                 (click)="handleCompaniesFilterClick(dataInicio, dataFinal)"
             >
-                <mat-label style="font-size: 12px; color: #FFF;">Filial</mat-label>
+                <mat-label style="font-size: 12px; color: #fff"
+                    >Filial</mat-label
+                >
                 <mat-select
                     style="font-size: 12px"
                     [formControl]="filiais"
@@ -24,9 +32,11 @@
                 >
                     <mat-option
                         style="font-size: 12px"
-                        *ngFor="let filial of filiaisStringList; let i = index;"
+                        *ngFor="let filial of filiaisStringList; let i = index"
                         [value]="filiaisObjects[i].id"
-                        (click)="handleCompanyFilterSelect(filiaisObjects[i].id)"
+                        (click)="
+                            handleCompanyFilterSelect(filiaisObjects[i].id)
+                        "
                         >{{ filial }}</mat-option
                     >
                 </mat-select>
@@ -37,7 +47,9 @@
                 style="width: 200px"
                 (click)="handleSellersFilterClick(dataInicio, dataFinal)"
             >
-                <mat-label style="font-size: 12px; color: #FFF;">Vendedor</mat-label>
+                <mat-label style="font-size: 12px; color: #fff"
+                    >Vendedor</mat-label
+                >
                 <mat-select
                     style="font-size: 12px"
                     [formControl]="vendedores"
@@ -45,9 +57,14 @@
                 >
                     <mat-option
                         style="font-size: 12px"
-                        *ngFor="let vendedor of vendedoresStringList; let i = index;"
+                        *ngFor="
+                            let vendedor of vendedoresStringList;
+                            let i = index
+                        "
                         [value]="vendedoresObjects[i].id"
-                        (click)="handleSellersFilterSelect(vendedoresObjects[i].id)"
+                        (click)="
+                            handleSellersFilterSelect(vendedoresObjects[i].id)
+                        "
                         >{{ vendedor }}</mat-option
                     >
                 </mat-select>
@@ -90,7 +107,9 @@
                 class="hidden sm:inline-flex ml-3"
                 style="width: 200px"
             >
-                <mat-label style="font-size: 12px; color: #FFF;">Período</mat-label>
+                <mat-label style="font-size: 12px; color: #fff"
+                    >Período</mat-label
+                >
                 <mat-date-range-input
                     style="font-size: 12px"
                     [formGroup]="range"
@@ -117,9 +136,7 @@
                 <mat-date-range-picker #picker></mat-date-range-picker>
 
                 <mat-error
-                    *ngIf="
-                        range.controls.start.hasError('matStartDateInvalid')
-                    "
+                    *ngIf="range.controls.start.hasError('matStartDateInvalid')"
                     >Data inicial inválida</mat-error
                 >
                 <mat-error
@@ -133,7 +150,14 @@
                 style="width: 80px"
                 mat-flat-button
                 [color]="'primary'"
-                (click)="handleApplyFilter(dataInicio, dataFinal, filiais.value, vendedores.value)"
+                (click)="
+                    handleApplyFilter(
+                        dataInicio,
+                        dataFinal,
+                        filiais.value,
+                        vendedores.value
+                    )
+                "
             >
                 <span style="font-size: 12px">Aplicar</span>
             </button>
@@ -141,7 +165,6 @@
     </div>
     <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-6 md:p-8">
         <!-- Title and action buttons -->
-
 
         <!-- Rol vs Rol realizada -->
         <div
@@ -389,13 +412,23 @@
             <div
                 class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden p-6"
             >
-                <div class="flex items-start justify-between">
+                <div
+                    class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5"
+                >
+                    <div
+                        class="text-3xl font-semibold leading-none tracking-tight"
+                    >
+                        Dias Úteis
+                    </div>
+                </div>
+
+                <!-- <div class="flex items-start justify-between">
                     <div
                         class="text-lg font-medium tracking-tight leading-6 truncate"
                     >
                         Dias úteis
                     </div>
-                    <!-- <div class="ml-2">
+                     <div class="ml-2">
                         <button
                             class="h-6 min-h-6 px-2 rounded-full bg-hover"
                             mat-button
@@ -410,10 +443,30 @@
                             <button mat-menu-item>3 months</button>
                             <button mat-menu-item>9 months</button>
                         </mat-menu>
-                    </div> -->
-                </div>
+                    </div>
+                </div> -->
                 <div class="flex flex-col flex-auto mt-6 h-44">
-                    <apx-chart
+                    <ng-container
+                        *ngFor="let dataset of data.age.series; let i = index"
+                    >
+                        <div
+                            class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5"
+                        >
+                            <div
+                                class="text-5xl font-semibold leading-none tracking-tight"
+                            >
+                                {{ dataset }}
+                            </div>
+                            <mat-icon
+                                class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
+                                [svgIcon]="'heroicons_outline:check-circle'"
+                            ></mat-icon>
+                            <!-- <div class="mt-1 text-sm font-medium text-center">
+                                Dias Úteis
+                            </div> -->
+                        </div>
+                    </ng-container>
+                    <!-- <apx-chart
                         class="flex flex-auto items-center justify-center w-full h-full"
                         [chart]="chartAge.chart"
                         [colors]="chartAge.colors"
@@ -422,10 +475,11 @@
                         [series]="chartAge.series"
                         [states]="chartAge.states"
                         [tooltip]="chartAge.tooltip"
-                    ></apx-chart>
+                    ></apx-chart> -->
                 </div>
-                <div class="mt-8">
-                    <div class="-my-3 divide-y">
+
+                <!-- <div>
+                    <div>
                         <ng-container
                             *ngFor="
                                 let dataset of data.age.series;
@@ -445,13 +499,27 @@
                                 <div class="font-medium text-right">
                                     {{ dataset }}
                                 </div>
-                                <!-- <div class="text-right text-secondary">
+                                 <div class="text-right text-secondary">
                                     {{ dataset }}%
-                                </div> -->
+                                </div> 
+                            </div>
+                            <div
+                                class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5"
+                            >
+                                <div
+                                    class="text-5xl font-semibold leading-none tracking-tight"
+                                >
+                                    {{ dataset }}
+                                </div>
+                                <div
+                                    class="mt-1 text-sm font-medium text-center"
+                                >
+                                    Dias Úteis
+                                </div>
                             </div>
                         </ng-container>
                     </div>
-                </div>
+                </div> -->
             </div>
             <!-- Indicadores ROL -->
             <div

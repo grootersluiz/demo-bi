@@ -55,20 +55,18 @@ export class RolComponent implements OnInit, OnDestroy {
     data: any;
 
     // Filtros principais do dashboard
-    
+
     filiais = new FormControl(this._rolService.INITIAL_COMPANIES_IDS);
-    filiaisObjects: {id: number, string: string}[];
+    filiaisObjects: { id: number; string: string }[];
     filiaisStringList: string[];
 
     vendedores = new FormControl(this._rolService.INITIAL_SELLERS_IDS);
-    vendedoresObjects: {id: number, string: string}[];
+    vendedoresObjects: { id: number; string: string }[];
     vendedoresStringList: string[];
 
     range = new FormGroup({
-        start: new FormControl<Date | null>(
-            new Date(new Date().setMonth(new Date().getMonth() - 1))
-        ),
-        end: new FormControl<Date | null>(new Date()),
+        start: new FormControl<Date | null>(null),
+        end: new FormControl<Date | null>(null),
     });
 
     dataInicio = this._rolService.INITIAL_INITIAL_DATE;
@@ -113,10 +111,14 @@ export class RolComponent implements OnInit, OnDestroy {
                 this._cdr.detectChanges();
 
                 this.filiaisObjects = this.data.filiaisLista;
-                this.filiaisStringList = this.filiaisObjects.map( item => item.string);
-                
+                this.filiaisStringList = this.filiaisObjects.map(
+                    (item) => item.string
+                );
+
                 this.vendedoresObjects = this.data.vendedoresLista;
-                this.vendedoresStringList = this.vendedoresObjects.map( item => item.string);;
+                this.vendedoresStringList = this.vendedoresObjects.map(
+                    (item) => item.string
+                );
             });
 
         // Attach SVG fill fixer to all ApexCharts
@@ -156,33 +158,32 @@ export class RolComponent implements OnInit, OnDestroy {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
-
-    handleCompaniesFilterClick(dtIni, dtFin){
+    handleCompaniesFilterClick(dtIni, dtFin) {
         this.vendedores.setValue(this._rolService.INITIAL_SELLERS_IDS);
-       // this._rolService.getData(dtIni, dtFin, this.filiais.value, ['null']).subscribe();
+        // this._rolService.getData(dtIni, dtFin, this.filiais.value, ['null']).subscribe();
     }
 
-    handleSellersFilterClick(dtIni, dtFin){
-        this._rolService.getData(dtIni, dtFin, this.filiais.value, this.vendedores.value).subscribe();
+    handleSellersFilterClick(dtIni, dtFin) {
+        this._rolService
+            .getData(dtIni, dtFin, this.filiais.value, this.vendedores.value)
+            .subscribe();
     }
 
     handleCompanyFilterSelect(filialId: number) {
-        if(this.filiais.value.length == 0){
+        if (this.filiais.value.length == 0) {
             this.filiais.setValue(this._rolService.INITIAL_COMPANIES_IDS);
         }
         console.log(filialId);
         console.log(this.filiais.value);
     }
 
-    handleSellersFilterSelect(vendedorId: number){
-        if(this.vendedores.value.length == 0){
+    handleSellersFilterSelect(vendedorId: number) {
+        if (this.vendedores.value.length == 0) {
             this.vendedores.setValue(this._rolService.INITIAL_SELLERS_IDS);
         }
         console.log(vendedorId);
         console.log(this.vendedores.value);
     }
-
-
 
     addEventBegin(event: MatDatepickerInputEvent<Date>) {
         if (event.value) {
@@ -200,7 +201,9 @@ export class RolComponent implements OnInit, OnDestroy {
 
     handleApplyFilter(dtIni, dtFin, filiaisIds, vendedoresIds) {
         if (dtIni && dtFin) {
-            this._rolService.getData(dtIni, dtFin, filiaisIds, vendedoresIds).subscribe();
+            this._rolService
+                .getData(dtIni, dtFin, filiaisIds, vendedoresIds)
+                .subscribe();
         }
     }
 
@@ -628,7 +631,7 @@ export class RolComponent implements OnInit, OnDestroy {
                 fontFamily: 'inherit',
                 foreColor: 'inherit',
                 height: '100%',
-                type: 'radialBar',
+                type: 'donut',
                 sparkline: {
                     enabled: true,
                 },
@@ -698,7 +701,7 @@ export class RolComponent implements OnInit, OnDestroy {
                 fontFamily: 'inherit',
                 foreColor: 'inherit',
                 height: '90%',
-                type: 'radialBar',
+                type: 'donut',
                 sparkline: {
                     enabled: true,
                 },
