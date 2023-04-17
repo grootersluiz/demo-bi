@@ -1,149 +1,151 @@
 <div class="flex flex-col flex-auto w-full">
-    <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-6 md:p-8">
-        <!-- Title and action buttons -->
-        <div class="flex items-center justify-between w-full">
-            <div>
-                <div class="text-3xl font-semibold tracking-tight leading-8">
-                    ROL
-                </div>
-                <div class="font-medium tracking-tight text-secondary">
-                    Rankings e Metas
-                </div>
+    <div class="flex items-center p-6 justify-between w-full" style="background-color: rgb(82, 82, 82);">
+        <div>
+            <div class="text-3xl font-semibold tracking-tight leading-8" style="color: #FFF;">
+                ROL
             </div>
-
-            <!-- Filtros Filial e Vendedor -->
-            <div class="flex items-center ml-6">
-                <mat-form-field
-                    class="hidden sm:inline-flex ml-3"
-                    style="width: 200px"
-                >
-                    <mat-label style="font-size: 12px">Filial</mat-label>
-                    <mat-select
-                        style="font-size: 12px"
-                        [formControl]="filiais"
-                        multiple
-                    >
-                        <mat-option
-                            style="font-size: 12px"
-                            *ngFor="let filial of filiaisStringList; let i = index;"
-                            [value]="filiaisObjects[i].id"
-                            (click)="handleCompanyFilterSelect(filiaisObjects[i].id)"
-                            >{{ filial }}</mat-option
-                        >
-                    </mat-select>
-                </mat-form-field>
-
-                <mat-form-field
-                    class="hidden sm:inline-flex ml-3"
-                    style="width: 200px"
-                    (click)="handleSellersFilterClick(dataInicio, dataFinal)"
-                >
-                    <mat-label style="font-size: 12px">Vendedor</mat-label>
-                    <mat-select
-                        style="font-size: 12px"
-                        [formControl]="vendedores"
-                        multiple
-                    >
-                        <mat-option
-                            style="font-size: 12px"
-                            *ngFor="let vendedor of vendedoresStringList; let i = index;"
-                            [value]="vendedoresObjects[i].id"
-                            (click)="handleSellersFilterSelect(vendedoresObjects[i].id)"
-                            >{{ vendedor }}</mat-option
-                        >
-                    </mat-select>
-                </mat-form-field>
-
-                <!-- <button
-                    class="hidden sm:inline-flex ml-3"
-                    mat-flat-button
-                    [color]="'primary'"
-                    [matMenuTriggerFor]="filaisMenu"
-                >
-                    <button>Filial</button>
-                </button>
-                <mat-menu #filaisMenu="matMenu">
-                    <button mat-menu-item>Campina Grande - PB</button>
-                    <button mat-menu-item>E5</button>
-                    <button mat-menu-item>João Pessoa - PB</button>
-                    <button mat-menu-item>Maceió - AL</button>
-                    <button mat-menu-item>Recife - PE</button>
-                </mat-menu>
-                <button
-                    class="hidden sm:inline-flex ml-3"
-                    mat-flat-button
-                    [color]="'primary'"
-                    [matMenuTriggerFor]="vendedoresMenu"
-                >
-                    <span>Vendedor</span>
-                </button>
-                <mat-menu #vendedoresMenu="matMenu">
-                    <button mat-menu-item>Vendedor 1</button>
-                    <button mat-menu-item>Vendedor 2</button>
-                    <button mat-menu-item>Vendedor 3</button>
-                    <button mat-menu-item>Vendedor 4</button>
-                    <button mat-menu-item>Vendedor 5</button>
-                </mat-menu> -->
-
-                <!--Filtro Data-->
-
-                <mat-form-field
-                    class="hidden sm:inline-flex ml-3"
-                    style="width: 200px"
-                >
-                    <mat-label style="font-size: 12px">Período</mat-label>
-                    <mat-date-range-input
-                        style="font-size: 12px"
-                        [formGroup]="range"
-                        [rangePicker]="picker"
-                    >
-                        <input
-                            style="font-size: 11px"
-                            matStartDate
-                            formControlName="start"
-                            (dateInput)="addEventBegin($event)"
-                        />
-                        <input
-                            style="font-size: 11px"
-                            matEndDate
-                            formControlName="end"
-                            (dateInput)="addEventEnd($event)"
-                        />
-                    </mat-date-range-input>
-                    <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
-                    <mat-datepicker-toggle
-                        matIconSuffix
-                        [for]="picker"
-                    ></mat-datepicker-toggle>
-                    <mat-date-range-picker #picker></mat-date-range-picker>
-
-                    <mat-error
-                        *ngIf="
-                            range.controls.start.hasError('matStartDateInvalid')
-                        "
-                        >Data inicial inválida</mat-error
-                    >
-                    <mat-error
-                        *ngIf="range.controls.end.hasError('matEndDateInvalid')"
-                        >Data final inválida</mat-error
-                    >
-                </mat-form-field>
-
-                <button
-                    class="hidden sm:inline-flex ml-3"
-                    style="width: 80px"
-                    mat-flat-button
-                    [color]="'primary'"
-                    (click)="handleApplyFilter(dataInicio, dataFinal, filiais.value, vendedores.value)"
-                >
-                    <span style="font-size: 12px">Aplicar</span>
-                </button>
+            <div class="font-medium tracking-tight" style="color: #FFF;">
+                Rankings e Metas
             </div>
         </div>
 
+        <!-- Filtros Filial e Vendedor -->
+        <div class="flex items-center ml-6">
+            <mat-form-field
+                class="hidden sm:inline-flex ml-3"
+                style="width: 200px"
+                (click)="handleCompaniesFilterClick(dataInicio, dataFinal)"
+            >
+                <mat-label style="font-size: 12px; color: #FFF;">Filial</mat-label>
+                <mat-select
+                    style="font-size: 12px"
+                    [formControl]="filiais"
+                    multiple
+                >
+                    <mat-option
+                        style="font-size: 12px"
+                        *ngFor="let filial of filiaisStringList; let i = index;"
+                        [value]="filiaisObjects[i].id"
+                        (click)="handleCompanyFilterSelect(filiaisObjects[i].id)"
+                        >{{ filial }}</mat-option
+                    >
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field
+                class="hidden sm:inline-flex ml-3"
+                style="width: 200px"
+                (click)="handleSellersFilterClick(dataInicio, dataFinal)"
+            >
+                <mat-label style="font-size: 12px; color: #FFF;">Vendedor</mat-label>
+                <mat-select
+                    style="font-size: 12px"
+                    [formControl]="vendedores"
+                    multiple
+                >
+                    <mat-option
+                        style="font-size: 12px"
+                        *ngFor="let vendedor of vendedoresStringList; let i = index;"
+                        [value]="vendedoresObjects[i].id"
+                        (click)="handleSellersFilterSelect(vendedoresObjects[i].id)"
+                        >{{ vendedor }}</mat-option
+                    >
+                </mat-select>
+            </mat-form-field>
+
+            <!-- <button
+                class="hidden sm:inline-flex ml-3"
+                mat-flat-button
+                [color]="'primary'"
+                [matMenuTriggerFor]="filaisMenu"
+            >
+                <button>Filial</button>
+            </button>
+            <mat-menu #filaisMenu="matMenu">
+                <button mat-menu-item>Campina Grande - PB</button>
+                <button mat-menu-item>E5</button>
+                <button mat-menu-item>João Pessoa - PB</button>
+                <button mat-menu-item>Maceió - AL</button>
+                <button mat-menu-item>Recife - PE</button>
+            </mat-menu>
+            <button
+                class="hidden sm:inline-flex ml-3"
+                mat-flat-button
+                [color]="'primary'"
+                [matMenuTriggerFor]="vendedoresMenu"
+            >
+                <span>Vendedor</span>
+            </button>
+            <mat-menu #vendedoresMenu="matMenu">
+                <button mat-menu-item>Vendedor 1</button>
+                <button mat-menu-item>Vendedor 2</button>
+                <button mat-menu-item>Vendedor 3</button>
+                <button mat-menu-item>Vendedor 4</button>
+                <button mat-menu-item>Vendedor 5</button>
+            </mat-menu> -->
+
+            <!--Filtro Data-->
+
+            <mat-form-field
+                class="hidden sm:inline-flex ml-3"
+                style="width: 200px"
+            >
+                <mat-label style="font-size: 12px; color: #FFF;">Período</mat-label>
+                <mat-date-range-input
+                    style="font-size: 12px"
+                    [formGroup]="range"
+                    [rangePicker]="picker"
+                >
+                    <input
+                        style="font-size: 11px"
+                        matStartDate
+                        formControlName="start"
+                        (dateInput)="addEventBegin($event)"
+                    />
+                    <input
+                        style="font-size: 11px"
+                        matEndDate
+                        formControlName="end"
+                        (dateInput)="addEventEnd($event)"
+                    />
+                </mat-date-range-input>
+                <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
+                <mat-datepicker-toggle
+                    matIconSuffix
+                    [for]="picker"
+                ></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+
+                <mat-error
+                    *ngIf="
+                        range.controls.start.hasError('matStartDateInvalid')
+                    "
+                    >Data inicial inválida</mat-error
+                >
+                <mat-error
+                    *ngIf="range.controls.end.hasError('matEndDateInvalid')"
+                    >Data final inválida</mat-error
+                >
+            </mat-form-field>
+
+            <button
+                class="hidden sm:inline-flex ml-3"
+                style="width: 80px"
+                mat-flat-button
+                [color]="'primary'"
+                (click)="handleApplyFilter(dataInicio, dataFinal, filiais.value, vendedores.value)"
+            >
+                <span style="font-size: 12px">Aplicar</span>
+            </button>
+        </div>
+    </div>
+    <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-6 md:p-8">
+        <!-- Title and action buttons -->
+
+
         <!-- Rol vs Rol realizada -->
         <div
-            class="flex flex-col flex-auto mt-8 bg-card shadow rounded-2xl overflow-hidden"
+            class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden"
         >
             <div class="flex items-start justify-between m-6 mb-0">
                 <div
