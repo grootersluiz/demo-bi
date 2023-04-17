@@ -13,10 +13,8 @@ export class RolService {
     readonly INITIAL_INITIAL_DATE = { year: 2022, month: 1, date: 10 };
     readonly INITIAL_FINAL_DATE = { year: 2023, month: 1, date: 10 };
 
-    readonly INITIAL_COMPANIES_IDS = ['2'];
+    readonly INITIAL_COMPANIES_IDS = ['null'];
     readonly INITIAL_SELLERS_IDS = ['null'];
-
-   
 
     /**
      * Constructor
@@ -70,7 +68,7 @@ export class RolService {
             return `${day}/${month}/${year}`;
         }
 
-/* 
+        /* 
         console.log("Lista ids filiais", companiesIds.join(","));
         console.log(typeof companiesIds.join(","));
         console.log(formatDate(dtIni));
@@ -78,100 +76,100 @@ export class RolService {
 
         let url = `http://10.2.1.108/v1/dashboards/data?reportId=3&reportId=21&reportId=41&reportId=42&reportId=81&reportId=82&reportId=83&reportId=84&reportId=101&reportId=121&dtini=
         ${formatDate(dtIni)}
-        &codvend=${sellersIds.join(",")}&codemp=${companiesIds.join(",")}&dtfin=
-        ${formatDate(dtFin)}`
-        
-        return this._httpClient
-            .get(url)
-            .pipe(
-                tap((response: any) => {
-                
-                    const keyRolVsRolRealizada = 'visitorsVsPageViews';
-                    const keyApiRolVsRolRealizada = '41';
-                    console.log(
-                        'RolVsRolRealizada',
-                        rol[keyRolVsRolRealizada],
-                        response[keyApiRolVsRolRealizada]
-                    );
+        &codvend=${sellersIds.join(',')}&codemp=${companiesIds.join(',')}&dtfin=
+        ${formatDate(dtFin)}`;
 
-                    const keyIndicadoresRol = 'previousStatement';
-                    const keyApiIndicadoresRol = '42';
-                    console.log(
-                        'IndicadoresRol',
-                        rol[keyIndicadoresRol],
-                        response[keyApiIndicadoresRol]
-                    );
+        return this._httpClient.get(url).pipe(
+            tap((response: any) => {
+                const keyRolVsRolRealizada = 'visitorsVsPageViews';
+                const keyApiRolVsRolRealizada = '41';
+                console.log(
+                    'RolVsRolRealizada',
+                    rol[keyRolVsRolRealizada],
+                    response[keyApiRolVsRolRealizada]
+                );
 
-                    const ccMeta = response['3']['2023'];
-                    const chartData = {
-                        ...ccMeta,
-                        series: {
-                            'this-year': ccMeta.series,
-                        },
+                const keyIndicadoresRol = 'previousStatement';
+                const keyApiIndicadoresRol = '42';
+                console.log(
+                    'IndicadoresRol',
+                    rol[keyIndicadoresRol],
+                    response[keyApiIndicadoresRol]
+                );
+
+                const ccMeta = response['3']['2023'];
+                const chartData = {
+                    ...ccMeta,
+                    series: {
+                        'this-year': ccMeta.series,
+                    },
+                };
+                // let gap =
+                //     response['21'].series['0'] - response['21'].series['1'];
+                // response['21'].series.push(gap);
+                // response['21'].labels.push('GAP');
+
+                response['21'].series['2'] = response['21'].series['2'] * -1;
+
+                const chartROLxMetas = {
+                    ...response['21'],
+                    uniqueVisitors: response['21'].series['1'],
+                };
+
+                const chartMetasAtingidas = {
+                    ...response['81'],
+                    uniqueVisitors: response['81'].series['0'],
+                };
+
+                response['82'].labels.pop();
+                response['82'].labels.push('Dias Úteis');
+
+                const chartDiasUteis = {
+                    ...response['82'],
+                    uniqueVisitors: 30,
+                };
+
+                const tableRankingRol = response['83'];
+                const tableRankingMetas = response['84'];
+
+                const companyFilter = response['101']['rows'].map((item) => {
+                    return {
+                        id: item[0],
+                        string: item[1] + ' - ' + item[0].toString(),
                     };
-                    // let gap =
-                    //     response['21'].series['0'] - response['21'].series['1'];
-                    // response['21'].series.push(gap);
-                    // response['21'].labels.push('GAP');
+                });
 
-                    response['21'].series['2'] =
-                        response['21'].series['2'] * -1;
-
-                    const chartROLxMetas = {
-                        ...response['21'],
-                        uniqueVisitors: response['21'].series['1'],
+                const sellersFilter = response['121']['rows'].map((item) => {
+                    return {
+                        id: item[0],
+                        string: item[1] + ' - ' + item[0].toString(),
                     };
+                });
 
-                    const chartMetasAtingidas = {
-                        ...response['81'],
-                        uniqueVisitors: response['81'].series['0'],
-                    };
-
-                    response['82'].labels.pop();
-                    response['82'].labels.push('Dias Úteis');
-
-                    const chartDiasUteis = {
-                        ...response['82'],
-                        uniqueVisitors: 30,
-                    };
-
-                    const tableRankingRol = response['83'];
-                    const tableRankingMetas = response['84'];
-
-                    const companyFilter = response['101']['rows'].map(
-                        (item) => {return {id: item[0], string: item[1] + ' - ' + item[0].toString()}}
-                    );
-
-                    const sellersFilter = response['121']['rows'].map(
-                        (item) => {return {id: item[0], string: item[1] + ' - ' + item[0].toString()}}
-                    );
-
-                    console.log('teste filiais', companyFilter);
-                    console.log('teste vendedores', sellersFilter);
-                    console.log('ranking ROL', tableRankingRol);
-                    console.log('Ranking ROL', rol.recentTransactions);
-                    console.log('dias uteis teste', chartDiasUteis);
-                    console.log('rol', chartData);
-                    console.log('githubIssues', rol.githubIssues);
-                    console.log('rol x metas - teste', chartROLxMetas);
-                    console.log('rol x metas', rol.newVsReturning);
-                    const dashData = {
-                        ...rol,
-                        githubIssues: chartData,
-                        newVsReturning: chartROLxMetas,
-                        [keyRolVsRolRealizada]:
-                            response[keyApiRolVsRolRealizada],
-                        [keyIndicadoresRol]: response[keyApiIndicadoresRol],
-                        gender: chartMetasAtingidas,
-                        age: chartDiasUteis,
-                        recentTransactions: tableRankingRol,
-                        recentTransactions2: tableRankingMetas,
-                        filiaisLista: companyFilter,
-                        vendedoresLista: sellersFilter,
-
-                    };
-                    this._data.next(dashData);
-                })
-            );
+                console.log('teste filiais', companyFilter);
+                console.log('teste vendedores', sellersFilter);
+                console.log('ranking ROL', tableRankingRol);
+                console.log('Ranking ROL', rol.recentTransactions);
+                console.log('dias uteis teste', chartDiasUteis);
+                console.log('rol', chartData);
+                console.log('githubIssues', rol.githubIssues);
+                console.log('rol x metas - teste', chartROLxMetas);
+                console.log('rol x metas', rol.newVsReturning);
+                const dashData = {
+                    ...rol,
+                    githubIssues: chartData,
+                    newVsReturning: chartROLxMetas,
+                    [keyRolVsRolRealizada]: response[keyApiRolVsRolRealizada],
+                    [keyIndicadoresRol]: response[keyApiIndicadoresRol],
+                    gender: chartMetasAtingidas,
+                    age: chartDiasUteis,
+                    recentTransactions: tableRankingRol,
+                    recentTransactions2: tableRankingMetas,
+                    filiaisLista: companyFilter,
+                    vendedoresLista: sellersFilter,
+                };
+                this._data.next(dashData);
+            })
+        );
     }
 }

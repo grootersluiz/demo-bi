@@ -160,7 +160,9 @@ export class RolComponent implements OnInit, OnDestroy {
 
     handleCompaniesFilterClick(dtIni, dtFin) {
         this.vendedores.setValue(this._rolService.INITIAL_SELLERS_IDS);
-        // this._rolService.getData(dtIni, dtFin, this.filiais.value, ['null']).subscribe();
+        // this._rolService
+        //     .getData(dtIni, dtFin, this.filiais.value, ['null'])
+        //     .subscribe();
     }
 
     handleSellersFilterClick(dtIni, dtFin) {
