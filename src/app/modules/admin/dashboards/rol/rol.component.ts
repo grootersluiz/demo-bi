@@ -17,6 +17,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import {
+    MatDatepickerToggle,
     MatDatepickerModule,
     MatDatepickerInputEvent,
 } from '@angular/material/datepicker';
@@ -29,9 +30,8 @@ import {
     styleUrls: ['./rol.component.css']
 })
 export class RolComponent implements OnInit, OnDestroy {
-    @ViewChild('recentTransactionsTable', { read: MatSort })
-    recentTransactionsTableMatSort: MatSort;
-
+    @ViewChild('recentTransactionsTable', { read: MatSort }) recentTransactionsTableMatSort: MatSort;
+    @ViewChild('pickerToggle') pickerToggle: MatDatepickerToggle<Date>;
     chartVisitors: ApexOptions;
     chartConversions: ApexOptions;
     chartImpressions: ApexOptions;
@@ -162,6 +162,11 @@ export class RolComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
+
+    handleDatePickerClick(event: Event){
+        // Makes DatePicker open by clicking anywhere in the input
+        this.pickerToggle._open(event);
+    }
 
     handleCompaniesFilterClick(dtIni, dtFin) {
         this.vendedores.setValue(this._rolService.INITIAL_SELLERS_IDS);
