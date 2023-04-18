@@ -111,17 +111,8 @@ export class RolComponent implements OnInit, OnDestroy {
                 // Trigger the change detection mechanism so that it updates the chart when filtering
                 this._cdr.detectChanges();
 
-                setTimeout(() => {
-                    this._cdr.detectChanges();
-                }, 500);
-
                 this.filiaisObjects = this.data.filiaisLista;
                 this.filiaisStringList = this.filiaisObjects.map(
-                    (item) => item.string
-                );
-
-                this.vendedoresObjects = this.data.vendedoresLista;
-                this.vendedoresStringList = this.vendedoresObjects.map(
                     (item) => item.string
                 );
             });
@@ -139,6 +130,19 @@ export class RolComponent implements OnInit, OnDestroy {
                 },
             },
         };
+
+        // Get the sellers data 
+        this._rolService.getSellersData(this.dataInicio,this.dataFinal,this._rolService.INITIAL_COMPANIES_IDS).subscribe()
+        this._rolService.sellersData$.subscribe(data => {
+            
+                this.vendedoresObjects = data;
+                this.vendedoresStringList = this.vendedoresObjects.map(
+                    (item) => item.string
+                );
+                this._cdr.detectChanges();
+            
+        });
+
     }
 
     /**
@@ -170,15 +174,11 @@ export class RolComponent implements OnInit, OnDestroy {
 
     handleCompaniesFilterClick(dtIni, dtFin) {
         this.vendedores.setValue(this._rolService.INITIAL_SELLERS_IDS);
-        // this._rolService
-        //     .getData(dtIni, dtFin, this.filiais.value, ['null'])
-        //     .subscribe();
+
     }
 
     handleSellersFilterClick(dtIni, dtFin) {
-        this._rolService
-            .getData(dtIni, dtFin, this.filiais.value, this.vendedores.value)
-            .subscribe();
+        this._rolService.getSellersData(dtIni, dtFin, this.filiais.value).subscribe();
     }
 
     handleCompanyFilterSelect(filialId: number) {
@@ -186,16 +186,12 @@ export class RolComponent implements OnInit, OnDestroy {
         if (this.filiais.value.length == 0) {
             this.filiais.setValue(this._rolService.INITIAL_COMPANIES_IDS);
         }
-        console.log(filialId);
-        console.log(this.filiais.value);
     }
 
     handleSellersFilterSelect(vendedorId: number) {
         if (this.vendedores.value.length == 0) {
             this.vendedores.setValue(this._rolService.INITIAL_SELLERS_IDS);
         }
-        console.log(vendedorId);
-        console.log(this.vendedores.value);
     }
 
     addEventBegin(event: MatDatepickerInputEvent<Date>) {
