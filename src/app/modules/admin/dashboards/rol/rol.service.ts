@@ -45,6 +45,9 @@ export class RolService {
     //     return `${day}/${month}/${year}`;
     // }
 
+    getSellersData(){
+        
+    }
     /**
      * Get data
      */

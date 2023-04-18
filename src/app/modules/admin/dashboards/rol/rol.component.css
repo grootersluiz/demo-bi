@@ -2,18 +2,14 @@ div.cabecalho-filtro{
     background: rgb(75,75,75);
     background: linear-gradient(0deg, rgba(75,75,75,1) 0%, rgba(82,82,82,1) 12%, rgba(82,82,82,1) 86%, rgba(75,75,75,1) 100%);
     filter: drop-shadow(0 0.4rem 0.7rem #00000065); 
-
-/*     background-color: #525252;
-    opacity: 1;
-    background: repeating-linear-gradient( 45deg, #4e4d4d, #4e4d4d 2px, #525252 2px, #525252 10px );
-    filter: drop-shadow(0 0.4rem 0.7rem #00000065); */
-
+    border-radius: 15px;
 }
 
 
 .cabecalho-filtro div.mat-mdc-form-field-flex{
     /* Cor dos campos do filtros   */
     background-color: rgb(179, 179, 179);
+    filter: drop-shadow(0 0.4rem 0.7rem #00000065); 
 }
 
 .cabecalho-filtro svg.mat-datepicker-toggle-default-icon{
@@ -21,8 +17,6 @@ div.cabecalho-filtro{
 }
 
 .cabecalho-filtro .logo-filter{
-
     width: 4rem;
     height: 4rem;
-   /*  flex-shrink: 0; */
 }
