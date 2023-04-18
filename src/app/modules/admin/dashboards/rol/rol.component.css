@@ -9,6 +9,7 @@ div.cabecalho-filtro{
 .cabecalho-filtro div.mat-mdc-form-field-flex{
     /* Cor dos campos do filtros   */
     background-color: rgb(179, 179, 179);
+    filter: drop-shadow(0 0.4rem 0.7rem #00000065); 
 }
 
 .cabecalho-filtro svg.mat-datepicker-toggle-default-icon{
