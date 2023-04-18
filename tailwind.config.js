@@ -24,7 +24,7 @@ const themes = {
     default: {
         primary: {
             ...colors.amber,
-            DEFAULT: colors.amber[500],
+            DEFAULT: colors.amber[600],
         },
         accent: {
             ...colors.stone,
