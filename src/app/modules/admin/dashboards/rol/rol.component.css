@@ -11,16 +11,16 @@ div.cabecalho-filtro{
 }
 
 
-div.mat-mdc-form-field-flex{
+.cabecalho-filtro div.mat-mdc-form-field-flex{
     /* Cor dos campos do filtros   */
     background-color: rgb(179, 179, 179);
 }
 
-svg.mat-datepicker-toggle-default-icon{
+.cabecalho-filtro svg.mat-datepicker-toggle-default-icon{
     color: #525252;
 }
 
-.logo-filter{
+.cabecalho-filtro .logo-filter{
 
     width: 4rem;
     height: 4rem;
