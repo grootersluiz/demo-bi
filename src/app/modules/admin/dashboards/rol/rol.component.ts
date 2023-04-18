@@ -556,6 +556,7 @@ export class RolComponent implements OnInit, OnDestroy {
                 zoom: {
                     enabled: false,
                 },
+                stacked: true,
             },
             colors: ['#FF8C00', '#94A3B8'],
             dataLabels: {
@@ -568,7 +569,7 @@ export class RolComponent implements OnInit, OnDestroy {
             grid: {
                 show: false,
                 padding: {
-                    bottom: -40,
+                    bottom: -30,
                     left: 0,
                     right: 0,
                 },
@@ -578,8 +579,8 @@ export class RolComponent implements OnInit, OnDestroy {
             },
             series: this.data.visitorsVsPageViews.series,
             stroke: {
-                curve: 'smooth',
-                width: 2,
+                curve: 'straight',
+                width: 1,
             },
             tooltip: {
                 followCursor: true,
@@ -643,7 +644,7 @@ export class RolComponent implements OnInit, OnDestroy {
                     enabled: true,
                 },
             },
-            colors: ['#FF8C00', '#F0E68C'],
+            colors: ['#FF8C00', '#F0E68C', '#FF4500'],
             labels: this.data.newVsReturning.labels,
             plotOptions: {
                 pie: {
