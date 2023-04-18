@@ -112,6 +112,7 @@
             <mat-form-field
                 class="hidden sm:inline-flex ml-3"
                 style="width: 200px"
+                (click)="handleDatePickerClick($event)"
             >
                 <mat-label style="font-size: 12px; color: #fff"
                     >Período</mat-label
@@ -120,8 +121,10 @@
                     style="font-size: 12px"
                     [formGroup]="range"
                     [rangePicker]="picker"
+                    
                 >
                     <input
+                        class="cursor-pointer"
                         style="font-size: 11px"
                         matStartDate
                         formControlName="start"
@@ -130,18 +133,22 @@
                     />
 
                     <input
+                        class="cursor-pointer"
                         style="font-size: 11px"
                         matEndDate
                         formControlName="end"
                         (dateInput)="addEventEnd($event)"
+                    
                         readonly
                     />
                 </mat-date-range-input>
                 <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
-                <mat-datepicker-toggle
+                <mat-datepicker-toggle #pickerToggle
+                       
                     matIconSuffix
                     [for]="picker"
                 ></mat-datepicker-toggle>
+
                 <mat-date-range-picker #picker></mat-date-range-picker>
 
                 <mat-error
@@ -155,7 +162,7 @@
             </mat-form-field>
 
             <button
-                class="hidden sm:inline-flex ml-3"
+                class="hidden sm:inline-flex ml-3 apply-button"
                 style="width: 80px"
                 mat-flat-button
                 [color]="'primary'"
