@@ -19,7 +19,7 @@ export class RolService {
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient) { }
+    constructor(private _httpClient: HttpClient) {}
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -61,8 +61,6 @@ export class RolService {
 
         // console.log('teste func', dtIni);
 
-
-
         function formatDate(date) {
             const day = date.date.toString();
             const month = (date.month + 1).toString();
@@ -91,11 +89,12 @@ export class RolService {
                     response[keyApiRolVsRolRealizada]
                 );
 
-
                 function updateObject(obj) {
                     // Get the first and last dates in the data
                     const firstDate = new Date(obj.series[0].data[0].x);
-                    const lastDate = new Date(obj.series[0].data[obj.series[0].data.length - 1].x);
+                    const lastDate = new Date(
+                        obj.series[0].data[obj.series[0].data.length - 1].x
+                    );
 
                     // Calculate the new dates
                     const newFirstDate = new Date(firstDate.getTime());
@@ -104,7 +103,10 @@ export class RolService {
                     newLastDate.setMonth(lastDate.getMonth() + 1);
 
                     // Create the new data points
-                    const newFirstPoint = { x: newFirstDate.toISOString(), y: 0 };
+                    const newFirstPoint = {
+                        x: newFirstDate.toISOString(),
+                        y: 0,
+                    };
                     const newLastPoint = { x: newLastDate.toISOString(), y: 0 };
 
                     // Add the new points to each series
@@ -117,10 +119,6 @@ export class RolService {
                 }
 
                 updateObject(response['41']);
-
-           
-
-
 
                 const keyIndicadoresRol = 'previousStatement';
                 const keyApiIndicadoresRol = '42';
@@ -153,7 +151,7 @@ export class RolService {
                     ...response['81'],
                     uniqueVisitors: response['81'].series['0'],
                 };
-                console.log("Resposta 41", response['41'])
+                console.log('Resposta 41', response['41']);
 
                 response['82'].labels.pop();
                 response['82'].labels.push('Dias Úteis');
@@ -169,14 +167,14 @@ export class RolService {
                 const companyFilter = response['101']['rows'].map((item) => {
                     return {
                         id: item[0],
-                        string: item[1] + ' - ' + item[0].toString(),
+                        string: item[0].toString() + ' - ' + item[1],
                     };
                 });
 
                 const sellersFilter = response['121']['rows'].map((item) => {
                     return {
                         id: item[0],
-                        string: item[1] + ' - ' + item[0].toString(),
+                        string: item[0].toString() + ' - ' + item[1],
                     };
                 });
 
