@@ -1,0 +1,13 @@
+div.mat-mdc-text-field-wrapper{
+    
+}
+
+div.mat-mdc-form-field-focus-overlay{
+    display: none !important;
+}
+
+div.mat-mdc-form-field-flex{
+    /* Cor dos campos do filtros   */
+    background-color: rgb(179, 179, 179);
+    
+}

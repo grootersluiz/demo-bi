@@ -10,7 +10,7 @@ import { DatePipe } from '@angular/common';
 export class RolService {
     private _data: BehaviorSubject<any> = new BehaviorSubject(null);
 
-    readonly INITIAL_INITIAL_DATE = { year: 2022, month: 1, date: 10 };
+    readonly INITIAL_INITIAL_DATE = { year: 2022, month: 2, date: 10 };
     readonly INITIAL_FINAL_DATE = { year: 2023, month: 1, date: 10 };
 
     readonly INITIAL_COMPANIES_IDS = ['null'];
@@ -19,7 +19,7 @@ export class RolService {
     /**
      * Constructor
      */
-    constructor(private _httpClient: HttpClient) {}
+    constructor(private _httpClient: HttpClient) { }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Accessors
@@ -61,6 +61,8 @@ export class RolService {
 
         // console.log('teste func', dtIni);
 
+
+
         function formatDate(date) {
             const day = date.date.toString();
             const month = (date.month + 1).toString();
@@ -88,6 +90,37 @@ export class RolService {
                     rol[keyRolVsRolRealizada],
                     response[keyApiRolVsRolRealizada]
                 );
+
+
+                function updateObject(obj) {
+                    // Get the first and last dates in the data
+                    const firstDate = new Date(obj.series[0].data[0].x);
+                    const lastDate = new Date(obj.series[0].data[obj.series[0].data.length - 1].x);
+
+                    // Calculate the new dates
+                    const newFirstDate = new Date(firstDate.getTime());
+                    newFirstDate.setMonth(firstDate.getMonth() - 1);
+                    const newLastDate = new Date(lastDate.getTime());
+                    newLastDate.setMonth(lastDate.getMonth() + 1);
+
+                    // Create the new data points
+                    const newFirstPoint = { x: newFirstDate.toISOString(), y: 0 };
+                    const newLastPoint = { x: newLastDate.toISOString(), y: 0 };
+
+                    // Add the new points to each series
+                    for (const series of obj.series) {
+                        series.data.unshift(newFirstPoint);
+                        series.data.push(newLastPoint);
+                    }
+
+                    return obj;
+                }
+
+                updateObject(response['41']);
+
+           
+
+
 
                 const keyIndicadoresRol = 'previousStatement';
                 const keyApiIndicadoresRol = '42';
@@ -120,6 +153,7 @@ export class RolService {
                     ...response['81'],
                     uniqueVisitors: response['81'].series['0'],
                 };
+                console.log("Resposta 41", response['41'])
 
                 response['82'].labels.pop();
                 response['82'].labels.push('Dias Úteis');

@@ -26,6 +26,7 @@ import {
     templateUrl: './rol.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrls: ['./rol.component.css']
 })
 export class RolComponent implements OnInit, OnDestroy {
     @ViewChild('recentTransactionsTable', { read: MatSort })

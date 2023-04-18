@@ -16,17 +16,18 @@
         </div>
 
         <!-- Filtros Filial e Vendedor -->
-        <div class="flex items-center ml-6">
+        <div class="flex items-center ml-6 " >
             <mat-form-field
                 class="hidden sm:inline-flex ml-3"
                 style="width: 200px"
                 (click)="handleCompaniesFilterClick(dataInicio, dataFinal)"
             >
-                <mat-label style="font-size: 12px; color: #fff"
+                <mat-label style="font-size: 12px; color: #fff;"
                     >Filial</mat-label
                 >
                 <mat-select
-                    style="font-size: 12px"
+                    class="my-custom-class"
+                    style="font-size: 12px;"
                     [formControl]="filiais"
                     multiple
                 >
@@ -120,13 +121,17 @@
                         matStartDate
                         formControlName="start"
                         (dateInput)="addEventBegin($event)"
+                        readonly
                     />
+
                     <input
                         style="font-size: 11px"
                         matEndDate
                         formControlName="end"
                         (dateInput)="addEventEnd($event)"
+                        readonly
                     />
+
                 </mat-date-range-input>
                 <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
                 <mat-datepicker-toggle
