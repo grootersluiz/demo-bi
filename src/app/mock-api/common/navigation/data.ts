@@ -93,8 +93,15 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link: '/records/regdashsreports',
             },
             {
-                id: 'regviews',
+                id: 'regreports',
                 title: 'Relatórios',
+                type: 'basic',
+                icon: 'heroicons_outline:clipboard-check',
+                link: '/records/regreports',
+            },
+            {
+                id: 'regviews',
+                title: 'Views',
                 type: 'basic',
                 icon: 'heroicons_outline:clipboard-check',
                 link: '/records/regviews',
