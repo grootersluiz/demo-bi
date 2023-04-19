@@ -249,11 +249,18 @@ export const appRoutes: Route[] = [
                             ).then((m) => m.RegdashsModule),
                     },
                     {
-                        path: 'regviews',
+                        path: 'regreports',
                         loadChildren: () =>
                             import(
                                 'app/modules/admin/regreports/regreports.module'
                             ).then((m) => m.RegreportsModule),
+                    },
+                    {
+                        path: 'regviews',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/regviews/regviews.module'
+                            ).then((m) => m.RegviewsModule),
                     },
                 ],
             },
