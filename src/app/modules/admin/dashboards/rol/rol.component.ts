@@ -558,7 +558,7 @@ export class RolComponent implements OnInit, OnDestroy {
                 zoom: {
                     enabled: false,
                 },
-                stacked: true,
+                stacked: false,
             },
             colors: ['#FF8C00', '#94A3B8'],
             dataLabels: {
