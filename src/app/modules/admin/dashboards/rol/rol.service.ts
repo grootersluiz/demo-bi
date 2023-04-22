@@ -41,7 +41,6 @@ export class RolService {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
-    
     formatDate(date) {
         const day = date.date.toString();
         const month = (date.month + 1).toString();
@@ -49,20 +48,22 @@ export class RolService {
         return `${day}/${month}/${year}`;
     }
 
-    getSellersData(dtIni, dtFin, companiesIds){
+    getSellersData(dtIni, dtFin, companiesIds) {
+        let url = `http://10.2.1.108/v1/dashboards/data?&reportId=121&dtini=${this.formatDate(
+            dtIni
+        )}&codvend=null&codemp=${companiesIds.join(
+            ','
+        )}&dtfin=${this.formatDate(dtFin)}`;
 
-        let url = `http://10.2.1.108/v1/dashboards/data?&reportId=121&dtini=${this.formatDate(dtIni)}&codvend=null&codemp=${companiesIds.join(',')}&dtfin=${this.formatDate(dtFin)}`;
-        
         return this._httpClient.get(url).pipe(
             tap((response: any) => {
-
                 const sellersFilter = response['121']['rows'].map((item) => {
                     return {
                         id: item[0],
                         string: item[0].toString() + ' - ' + item[1],
                     };
                 });
-                
+
                 this._sellersData.next(sellersFilter);
             })
         );
@@ -83,8 +84,6 @@ export class RolService {
 
         // console.log('teste func', dtIni);
 
-
-
         /* 
         console.log("Lista ids filiais", companiesIds.join(","));
         console.log(typeof companiesIds.join(","));
@@ -100,11 +99,11 @@ export class RolService {
             tap((response: any) => {
                 const keyRolVsRolRealizada = 'visitorsVsPageViews';
                 const keyApiRolVsRolRealizada = '41';
-                console.log(
-                    'RolVsRolRealizada',
-                    rol[keyRolVsRolRealizada],
-                    response[keyApiRolVsRolRealizada]
-                );
+                // console.log(
+                //     'RolVsRolRealizada',
+                //     rol[keyRolVsRolRealizada],
+                //     response[keyApiRolVsRolRealizada]
+                // );
 
                 function updateObject(obj) {
                     // Get the first and last dates in the data
@@ -139,11 +138,11 @@ export class RolService {
 
                 const keyIndicadoresRol = 'previousStatement';
                 const keyApiIndicadoresRol = '42';
-                console.log(
-                    'IndicadoresRol',
-                    rol[keyIndicadoresRol],
-                    response[keyApiIndicadoresRol]
-                );
+                // console.log(
+                //     'IndicadoresRol',
+                //     rol[keyIndicadoresRol],
+                //     response[keyApiIndicadoresRol]
+                // );
 
                 const ccMeta = response['3']['2023'];
                 const chartData = {
@@ -194,15 +193,15 @@ export class RolService {
                     };
                 });
 
-                console.log('teste filiais', companyFilter);
-                console.log('teste vendedores', sellersFilter);
-                console.log('ranking ROL', tableRankingRol);
-                console.log('Ranking ROL', rol.recentTransactions);
-                console.log('dias uteis teste', chartDiasUteis);
-                console.log('rol', chartData);
-                console.log('githubIssues', rol.githubIssues);
-                console.log('rol x metas - teste', chartROLxMetas);
-                console.log('rol x metas', rol.newVsReturning);
+                // console.log('teste filiais', companyFilter);
+                // console.log('teste vendedores', sellersFilter);
+                // console.log('ranking ROL', tableRankingRol);
+                // console.log('Ranking ROL', rol.recentTransactions);
+                // console.log('dias uteis teste', chartDiasUteis);
+                // console.log('rol', chartData);
+                // console.log('githubIssues', rol.githubIssues);
+                // console.log('rol x metas - teste', chartROLxMetas);
+                // console.log('rol x metas', rol.newVsReturning);
                 const dashData = {
                     ...rol,
                     githubIssues: chartData,

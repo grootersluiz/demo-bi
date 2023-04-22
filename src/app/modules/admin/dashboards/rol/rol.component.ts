@@ -27,10 +27,11 @@ import {
     templateUrl: './rol.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    styleUrls: ['./rol.component.css']
+    styleUrls: ['./rol.component.css'],
 })
 export class RolComponent implements OnInit, OnDestroy {
-    @ViewChild('recentTransactionsTable', { read: MatSort }) recentTransactionsTableMatSort: MatSort;
+    @ViewChild('recentTransactionsTable', { read: MatSort })
+    recentTransactionsTableMatSort: MatSort;
     @ViewChild('pickerToggle') pickerToggle: MatDatepickerToggle<Date>;
     chartVisitors: ApexOptions;
     chartConversions: ApexOptions;
@@ -131,18 +132,21 @@ export class RolComponent implements OnInit, OnDestroy {
             },
         };
 
-        // Get the sellers data 
-        this._rolService.getSellersData(this.dataInicio,this.dataFinal,this._rolService.INITIAL_COMPANIES_IDS).subscribe()
-        this._rolService.sellersData$.subscribe(data => {
-            
-                this.vendedoresObjects = data;
-                this.vendedoresStringList = this.vendedoresObjects.map(
-                    (item) => item.string
-                );
-                this._cdr.detectChanges();
-            
+        // Get the sellers data
+        this._rolService
+            .getSellersData(
+                this.dataInicio,
+                this.dataFinal,
+                this._rolService.INITIAL_COMPANIES_IDS
+            )
+            .subscribe();
+        this._rolService.sellersData$.subscribe((data) => {
+            this.vendedoresObjects = data;
+            this.vendedoresStringList = this.vendedoresObjects.map(
+                (item) => item.string
+            );
+            this._cdr.detectChanges();
         });
-
     }
 
     /**
@@ -167,18 +171,19 @@ export class RolComponent implements OnInit, OnDestroy {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
-    handleDatePickerClick(event: Event){
+    handleDatePickerClick(event: Event) {
         // Makes DatePicker open by clicking anywhere in the input
         this.pickerToggle._open(event);
     }
 
     handleCompaniesFilterClick(dtIni, dtFin) {
         this.vendedores.setValue(this._rolService.INITIAL_SELLERS_IDS);
-
     }
 
     handleSellersFilterClick(dtIni, dtFin) {
-        this._rolService.getSellersData(dtIni, dtFin, this.filiais.value).subscribe();
+        this._rolService
+            .getSellersData(dtIni, dtFin, this.filiais.value)
+            .subscribe();
     }
 
     handleCompanyFilterSelect(filialId: number) {
@@ -693,7 +698,7 @@ export class RolComponent implements OnInit, OnDestroy {
                                                             seriesIndex
                                                         ] *
                                                             100) /
-                                                        w.config.series[1]
+                                                        w.config.series[0]
                                                     ).toFixed(2)}%</div>
                                                 </div>`,
             },
