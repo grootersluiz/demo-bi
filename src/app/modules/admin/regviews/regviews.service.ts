@@ -78,11 +78,13 @@ export class RegviewsService {
      * Get contacts
      */
     getContacts(): Observable<Contact[]> {
-        return this._httpClient.get<Contact[]>('api/apps/contacts/all').pipe(
-            tap((contacts) => {
-                this._contacts.next(contacts);
-            })
-        );
+        return this._httpClient
+            .get<Contact[]>('http://10.2.1.108/v1/views')
+            .pipe(
+                tap((contacts) => {
+                    this._contacts.next(contacts['data']);
+                })
+            );
     }
 
     /**
@@ -92,12 +94,12 @@ export class RegviewsService {
      */
     searchContacts(query: string): Observable<Contact[]> {
         return this._httpClient
-            .get<Contact[]>('api/apps/contacts/search', {
+            .get<Contact[]>('http://10.2.1.108/v1/views', {
                 params: { query },
             })
             .pipe(
                 tap((contacts) => {
-                    this._contacts.next(contacts);
+                    this._contacts.next(contacts['data']);
                 })
             );
     }
