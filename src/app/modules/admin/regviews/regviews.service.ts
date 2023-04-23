@@ -92,8 +92,18 @@ export class RegviewsService {
         return this._httpClient
             .get<View[]>('http://10.2.1.108/v1/views')
             .pipe(
-                tap((contacts) => {
-                    this._contacts.next(contacts['data']);
+                tap((views) => {
+                    //arrayOfObjects.sort((a, b) => a.name.localeCompare(b.name));
+                    let orderedViews = [...views['data']];
+                    orderedViews.sort((a, b) => a.name.localeCompare(b.name));
+
+
+                    this._contacts.next(orderedViews);
+                   
+
+
+
+
                 })
             );
     }

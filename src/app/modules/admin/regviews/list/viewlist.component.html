@@ -30,11 +30,11 @@
                             Views
                         </div>
                         <div class="ml-0.5 font-medium text-secondary">
-                            <ng-container *ngIf="contactsCount > 0">
-                                {{ contactsCount }}
+                            <ng-container *ngIf="viewsCount > 0">
+                                {{ viewsCount }}
                             </ng-container>
                             {{
-                                contactsCount
+                                viewsCount
                                     | i18nPlural
                                         : {
                                               "=0": "Sem views",
@@ -81,13 +81,13 @@
                     </div>
                 </div>
 
-                <!-- Contacts list -->
+                <!-- Views list -->
                 <div class="relative">
-                    <ng-container *ngIf="contacts$ | async as contacts">
-                        <ng-container *ngIf="contacts.length; else noContacts">
+                    <ng-container *ngIf="views$ | async as views">
+                        <ng-container *ngIf="views.length; else noViews">
                             <ng-container
                                 *ngFor="
-                                    let contact of contacts;
+                                    let view of views;
                                     let i = index;
                                     trackBy: trackByFn
                                 "
@@ -96,28 +96,28 @@
                                 <ng-container
                                     *ngIf="
                                         i === 0 ||
-                                        contact.name.charAt(0) !==
-                                            contacts[i - 1].name.charAt(0)
+                                        view.name.charAt(0).toLowerCase() !==
+                                            views[i - 1].name.charAt(0).toLowerCase()
                                     "
                                 >
                                     <div
                                         class="z-10 sticky top-0 -mt-px px-6 py-1 md:px-8 border-t border-b font-medium uppercase text-secondary bg-gray-50 dark:bg-gray-900"
                                     >
-                                        {{ contact.name.charAt(0) }}
+                                        {{ view.name.charAt(0) }}
                                     </div>
                                 </ng-container>
-                                <!-- Contact -->
+                                <!-- view -->
                                 <a
                                     class="z-20 flex items-center px-6 py-4 md:px-8 cursor-pointer border-b"
                                     [ngClass]="{
                                         'hover:bg-gray-100 dark:hover:bg-hover':
                                             !selectedContact ||
-                                            selectedContact.id !== contact.id,
+                                            selectedContact.id !== view.id,
                                         'bg-primary-50 dark:bg-hover':
                                             selectedContact &&
-                                            selectedContact.id === contact.id
+                                            selectedContact.id === view.id
                                     }"
-                                    [routerLink]="['./', contact.id]"
+                                    [routerLink]="['./', view.id]"
                                 >
                                     <!-- <div
                                         class="flex flex-0 items-center justify-center w-10 h-10 rounded-full overflow-hidden"
@@ -141,7 +141,7 @@
                                         <div
                                             class="font-medium leading-5 truncate"
                                         >
-                                            {{ contact.name }}
+                                            {{ view.name }}
                                         </div>
                                         <!-- <div
                                             class="leading-5 truncate text-secondary"
@@ -154,8 +154,8 @@
                         </ng-container>
                     </ng-container>
 
-                    <!-- No contacts -->
-                    <ng-template #noContacts>
+                    <!-- No views -->
+                    <ng-template #noViews>
                         <div
                             class="p-8 sm:p-16 border-t text-4xl font-semibold tracking-tight text-center"
                         >

@@ -33,14 +33,14 @@ import { RegviewsService } from 'app/modules/admin/regviews/regviews.service';
 export class ViewListComponent implements OnInit, OnDestroy {
     @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
 
-    contacts$: Observable<View[]>;
+    views$: Observable<View[]>;
 
-    contactsCount: number = 0;
-    contactsTableColumns: string[] = ['name', 'email', 'phoneNumber', 'job'];
+    viewsCount: number = 0;
+    viewsTableColumns: string[] = ['name', 'email', 'phoneNumber', 'job'];
     countries: Country[];
     drawerMode: 'side' | 'over';
     searchInputControl: UntypedFormControl = new UntypedFormControl();
-    selectedContact: View;
+    selectedView: View;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
@@ -49,7 +49,7 @@ export class ViewListComponent implements OnInit, OnDestroy {
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
-        private _contactsService: RegviewsService,
+        private _viewsService: RegviewsService,
         @Inject(DOCUMENT) private _document: any,
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService
@@ -63,31 +63,31 @@ export class ViewListComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
-        // Get the contacts
-        this.contacts$ = this._contactsService.contacts$;
-        this._contactsService.contacts$
+        // Get the views
+        this.views$ = this._viewsService.contacts$;
+        this._viewsService.contacts$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((contacts: View[]) => {
+            .subscribe((views: View[]) => {
                 // Update the counts
-                this.contactsCount = contacts.length;
+                this.viewsCount = views.length;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
 
         // Get the contact
-        this._contactsService.contact$
+        this._viewsService.contact$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((contact: View) => {
+            .subscribe((view: View) => {
                 // Update the selected contact
-                this.selectedContact = contact;
+                this.selectedView = view;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
 
         // Get the countries
-        this._contactsService.countries$
+        this._viewsService.countries$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((countries: Country[]) => {
                 // Update the countries
@@ -103,7 +103,7 @@ export class ViewListComponent implements OnInit, OnDestroy {
                 takeUntil(this._unsubscribeAll),
                 switchMap((query) =>
                     // Search
-                    this._contactsService.searchViews(query)
+                    this._viewsService.searchViews(query)
                 )
             )
             .subscribe();
@@ -112,7 +112,7 @@ export class ViewListComponent implements OnInit, OnDestroy {
         this.matDrawer.openedChange.subscribe((opened) => {
             if (!opened) {
                 // Remove the selected contact when drawer closed
-                this.selectedContact = null;
+                this.selectedView = null;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -178,7 +178,7 @@ export class ViewListComponent implements OnInit, OnDestroy {
      */
     createContact(): void {
         // Create the contact
-        this._contactsService.createView().subscribe((newContact) => {
+        this._viewsService.createView().subscribe((newContact) => {
             // Go to the new contact
             this._router.navigate(['./', newContact.id], {
                 relativeTo: this._activatedRoute,
