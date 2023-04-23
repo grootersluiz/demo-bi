@@ -23,11 +23,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import {
-    View,
-    Country,
-    Tag,
-} from 'app/modules/admin/regviews/regviews.types';
+import { View, Country, Tag } from 'app/modules/admin/regviews/regviews.types';
 import { ViewListComponent } from 'app/modules/admin/regviews/list/viewlist.component';
 import { RegviewsService } from 'app/modules/admin/regviews/regviews.service';
 
@@ -127,8 +123,6 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
                 // Setup the emails form array
                 const emailFormGroups = [];
 
-               
-
                 // Add the email form groups to the emails form array
                 emailFormGroups.forEach((emailFormGroup) => {
                     (this.contactForm.get('emails') as UntypedFormArray).push(
@@ -138,8 +132,6 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
 
                 // Setup the phone numbers form array
                 const phoneNumbersFormGroups = [];
-
-                
 
                 // Add the phone numbers form groups to the phone numbers form array
                 phoneNumbersFormGroups.forEach((phoneNumbersFormGroup) => {
@@ -233,12 +225,10 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
         );
 
         // Update the contact on the server
-        this._contactsService
-            .updateView(contact.id, contact)
-            .subscribe(() => {
-                // Toggle the edit mode off
-                this.toggleEditMode(false);
-            });
+        this._contactsService.updateView(contact.id, contact).subscribe(() => {
+            // Toggle the edit mode off
+            this.toggleEditMode(false);
+        });
     }
 
     /**
@@ -247,9 +237,9 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
     deleteContact(): void {
         // Open the confirmation dialog
         const confirmation = this._fuseConfirmationService.open({
-            title: 'Deletar contato',
+            title: 'Deletar View',
             message:
-                'Tem certeza que quer deletar esse contato? Essa ação não poderá ser desfeita!',
+                'Tem certeza que quer deletar essa view? Essa ação não poderá ser desfeita!',
             actions: {
                 confirm: {
                     label: 'Deletar',
@@ -280,37 +270,34 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
                         : this.views[nextContactIndex].id;
 
                 // Delete the contact
-                this._contactsService
-                    .deleteView(id)
-                    .subscribe((isDeleted) => {
-                        // Return if the contact wasn't deleted...
-                        if (!isDeleted) {
-                            return;
-                        }
+                this._contactsService.deleteView(id).subscribe((isDeleted) => {
+                    // Return if the contact wasn't deleted...
+                    if (!isDeleted) {
+                        return;
+                    }
 
-                        // Navigate to the next contact if available
-                        if (nextContactId) {
-                            this._router.navigate(['../', nextContactId], {
-                                relativeTo: this._activatedRoute,
-                            });
-                        }
-                        // Otherwise, navigate to the parent
-                        else {
-                            this._router.navigate(['../'], {
-                                relativeTo: this._activatedRoute,
-                            });
-                        }
+                    // Navigate to the next contact if available
+                    if (nextContactId) {
+                        this._router.navigate(['../', nextContactId], {
+                            relativeTo: this._activatedRoute,
+                        });
+                    }
+                    // Otherwise, navigate to the parent
+                    else {
+                        this._router.navigate(['../'], {
+                            relativeTo: this._activatedRoute,
+                        });
+                    }
 
-                        // Toggle the edit mode off
-                        this.toggleEditMode(false);
-                    });
+                    // Toggle the edit mode off
+                    this.toggleEditMode(false);
+                });
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             }
         });
     }
-
 
     /**
      * Open tags panel
@@ -412,8 +399,6 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
             tag.title.toLowerCase().includes(value)
         );
     }
-
-
 
     /**
      * Should the create tag button be visible
