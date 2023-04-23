@@ -151,7 +151,7 @@ export class RegviewsService {
             take(1),
             switchMap((contacts) =>
                 this._httpClient
-                    .post<View>('api/apps/contacts/contact', {})
+                    .post<View>('http://10.2.1.108/v1/views', { name:'Nova View', query:'Nova Query' })
                     .pipe(
                         map((newContact) => {
                             // Update the contacts with the new contact
@@ -176,10 +176,7 @@ export class RegviewsService {
             take(1),
             switchMap((contacts) =>
                 this._httpClient
-                    .patch<View>('api/apps/contacts/contact', {
-                        id,
-                        contact,
-                    })
+                    .put<View>(`http://10.2.1.108/v1/views/${id.toString()}`, { name: contact.name, query: contact.query })
                     .pipe(
                         map((updatedContact) => {
                             // Find the index of the updated contact
@@ -224,7 +221,7 @@ export class RegviewsService {
             take(1),
             switchMap((contacts) =>
                 this._httpClient
-                    .delete('api/apps/contacts/contact', { params: { id } })
+                    .delete(`http://10.2.1.108/v1/views/${id.toString()}`, {})
                     .pipe(
                         map((isDeleted: boolean) => {
                             // Find the index of the deleted contact
