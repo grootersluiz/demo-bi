@@ -22,7 +22,7 @@ export class RolResolver implements Resolve<any> {
 
     getCurrentDate() {
         let date = new Date();
-        return { year: date.getFullYear(), month: date.getMonth(), date: date.getDay() }
+        return { year: date.getFullYear(), month: date.getMonth(), date: date.getDate() }
     }
 
     /**

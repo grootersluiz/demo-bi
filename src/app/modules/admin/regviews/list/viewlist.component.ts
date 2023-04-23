@@ -21,7 +21,7 @@ import {
     takeUntil,
 } from 'rxjs';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { Contact, Country } from 'app/modules/admin/regviews/regviews.types';
+import { View, Country } from 'app/modules/admin/regviews/regviews.types';
 import { RegviewsService } from 'app/modules/admin/regviews/regviews.service';
 
 @Component({
@@ -33,14 +33,14 @@ import { RegviewsService } from 'app/modules/admin/regviews/regviews.service';
 export class ViewListComponent implements OnInit, OnDestroy {
     @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
 
-    contacts$: Observable<Contact[]>;
+    contacts$: Observable<View[]>;
 
     contactsCount: number = 0;
     contactsTableColumns: string[] = ['name', 'email', 'phoneNumber', 'job'];
     countries: Country[];
     drawerMode: 'side' | 'over';
     searchInputControl: UntypedFormControl = new UntypedFormControl();
-    selectedContact: Contact;
+    selectedContact: View;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
@@ -67,7 +67,7 @@ export class ViewListComponent implements OnInit, OnDestroy {
         this.contacts$ = this._contactsService.contacts$;
         this._contactsService.contacts$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((contacts: Contact[]) => {
+            .subscribe((contacts: View[]) => {
                 // Update the counts
                 this.contactsCount = contacts.length;
 
@@ -78,7 +78,7 @@ export class ViewListComponent implements OnInit, OnDestroy {
         // Get the contact
         this._contactsService.contact$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((contact: Contact) => {
+            .subscribe((contact: View) => {
                 // Update the selected contact
                 this.selectedContact = contact;
 
@@ -103,7 +103,7 @@ export class ViewListComponent implements OnInit, OnDestroy {
                 takeUntil(this._unsubscribeAll),
                 switchMap((query) =>
                     // Search
-                    this._contactsService.searchContacts(query)
+                    this._contactsService.searchViews(query)
                 )
             )
             .subscribe();
@@ -178,7 +178,7 @@ export class ViewListComponent implements OnInit, OnDestroy {
      */
     createContact(): void {
         // Create the contact
-        this._contactsService.createContact().subscribe((newContact) => {
+        this._contactsService.createView().subscribe((newContact) => {
             // Go to the new contact
             this._router.navigate(['./', newContact.id], {
                 relativeTo: this._activatedRoute,

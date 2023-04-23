@@ -8,7 +8,7 @@ import {
 import { catchError, Observable, throwError } from 'rxjs';
 import { RegviewsService } from 'app/modules/admin/regviews/regviews.service';
 import {
-    Contact,
+    View,
     Country,
     Tag,
 } from 'app/modules/admin/regviews/regviews.types';
@@ -35,8 +35,8 @@ export class ContactsResolver implements Resolve<any> {
     resolve(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
-    ): Observable<Contact[]> {
-        return this._contactsService.getContacts();
+    ): Observable<View[]> {
+        return this._contactsService.getViews();
     }
 }
 
@@ -65,9 +65,9 @@ export class ContactsContactResolver implements Resolve<any> {
     resolve(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
-    ): Observable<Contact> {
+    ): Observable<View> {
         return this._contactsService
-            .getContactById(route.paramMap.get('id'))
+            .getViewById(parseInt(route.paramMap.get('id')))
             .pipe(
                 // Error here means the requested contact is not available
                 catchError((error) => {
@@ -90,56 +90,3 @@ export class ContactsContactResolver implements Resolve<any> {
     }
 }
 
-@Injectable({
-    providedIn: 'root',
-})
-export class ContactsCountriesResolver implements Resolve<any> {
-    /**
-     * Constructor
-     */
-    constructor(private _contactsService: RegviewsService) {}
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Resolver
-     *
-     * @param route
-     * @param state
-     */
-    resolve(
-        route: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot
-    ): Observable<Country[]> {
-        return this._contactsService.getCountries();
-    }
-}
-
-@Injectable({
-    providedIn: 'root',
-})
-export class ContactsTagsResolver implements Resolve<any> {
-    /**
-     * Constructor
-     */
-    constructor(private _contactsService: RegviewsService) {}
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Resolver
-     *
-     * @param route
-     * @param state
-     */
-    resolve(
-        route: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot
-    ): Observable<Tag[]> {
-        return this._contactsService.getTags();
-    }
-}
