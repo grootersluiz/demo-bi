@@ -74,20 +74,10 @@ export class RegviewsService {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
+
     /**
-     * Get contacts
+     * Get views
      */
-/*     getContacts(): Observable<Contact[]> {
-        return this._httpClient
-            .get<Contact[]>('http://10.2.1.108/v1/views')
-            .pipe(
-                tap((contacts) => {
-                    this._contacts.next(contacts['data']);
-                })
-            );
-    } */
-
-
     getViews(): Observable<View[]> {
         return this._httpClient
             .get<View[]>('http://10.2.1.108/v1/views')
@@ -96,13 +86,7 @@ export class RegviewsService {
                     //arrayOfObjects.sort((a, b) => a.name.localeCompare(b.name));
                     let orderedViews = [...views['data']];
                     orderedViews.sort((a, b) => a.name.localeCompare(b.name));
-
-
                     this._contacts.next(orderedViews);
-                   
-
-
-
 
                 })
             );
@@ -113,16 +97,17 @@ export class RegviewsService {
     /**
      * Search contacts with given query
      *
-     * @param query
      */
-    searchViews(query: string): Observable<View[]> {
+    searchViews(name: string): Observable<View[]> {
         return this._httpClient
             .get<View[]>('http://10.2.1.108/v1/views', {
-                params: { query },
+                params: { name },
             })
             .pipe(
-                tap((contacts) => {
-                    this._contacts.next(contacts['data']);
+                tap((views) => {
+                    let orderedViews = [...views['data']];
+                    orderedViews.sort((a, b) => a.name.localeCompare(b.name));
+                    this._contacts.next(orderedViews);
                 })
             );
     }

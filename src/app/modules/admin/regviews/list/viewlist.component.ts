@@ -101,9 +101,9 @@ export class ViewListComponent implements OnInit, OnDestroy {
         this.searchInputControl.valueChanges
             .pipe(
                 takeUntil(this._unsubscribeAll),
-                switchMap((query) =>
+                switchMap((name) =>
                     // Search
-                    this._viewsService.searchViews(query)
+                    this._viewsService.searchViews(name)
                 )
             )
             .subscribe();
