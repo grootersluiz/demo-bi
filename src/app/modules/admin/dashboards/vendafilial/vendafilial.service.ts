@@ -24,16 +24,19 @@ export class VendafilialService {
         return this._data.value;
     }
 
-    getData(): Observable<{data:String[];}> {
-        return this._httpClient.get<{data:String[];}>('http://api.portal.jspecas.com.br/v1/views/163/data?ano=2023&mes=03&dtref=31032023').pipe(
-            tap((response: any) => {
-                this._data.next([response.columns,response.rows]);
-            })
-        );
+    getData(): Observable<{ data: String[] }> {
+        return this._httpClient
+            .get<{ data: String[] }>(
+                'http://10.2.1.108/v1/views/163/data?ano=2023&mes=03&dtref=31032023'
+            )
+            .pipe(
+                tap((response: any) => {
+                    this._data.next([response.columns, response.rows]);
+                })
+            );
     }
 
     getDataAplica(param) {
-
         this._data.next(param);
 
         // return this.getData(this.data$.value);
