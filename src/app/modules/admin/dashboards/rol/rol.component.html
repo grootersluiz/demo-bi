@@ -39,12 +39,19 @@
                         multiple
                     >
                         <mat-option
+                            class="select-all-companies"
+                            style="font-size: 12px"
+                            [value]="'-1'"
+                            (click)="selectAllCompanies();"
+                            >{{ allCompaniesSelected ? 'Desmarcar Todos' : 'Marcar Todos'}}</mat-option
+                        >
+                        <mat-option
                             style="font-size: 12px"
                             *ngFor="
                                 let filial of filiaisStringList;
                                 let i = index
                             "
-                            [value]="filiaisObjects[i].id"
+                            [value]="filiaisObjects[i].id.toString()"
                             (click)="
                                 handleCompanyFilterSelect(filiaisObjects[i].id)
                             "
@@ -67,12 +74,20 @@
                         multiple
                     >
                         <mat-option
+                            class="select-all-companies"
+                            style="font-size: 12px"
+                            [value]="'-1'"
+                            (click)="selectAllSellers();"
+                            >{{ allSellersSelected ? 'Desmarcar Todos' : 'Marcar Todos'}}
+                        </mat-option>
+
+                        <mat-option
                             style="font-size: 12px"
                             *ngFor="
                                 let vendedor of vendedoresStringList;
                                 let i = index
                             "
-                            [value]="vendedoresObjects[i].id"
+                            [value]="vendedoresObjects[i].id.toString()"
                             (click)="
                                 handleSellersFilterSelect(
                                     vendedoresObjects[i].id

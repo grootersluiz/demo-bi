@@ -35,3 +35,13 @@ div.cabecalho-filtro {
 .cabecalho-filtro .apply-button:hover {
     filter: drop-shadow(0 0 0.2rem #d8790c59);
 }
+
+.select-all-companies .mat-pseudo-checkbox{
+    display: none;
+} 
+
+#mat-select-0-panel .select-all-companies, #mat-select-2-panel .select-all-companies{
+    min-height: 25px;
+    border-bottom: 1px solid #e2e2e2;
+    padding-bottom: 5px;
+} 

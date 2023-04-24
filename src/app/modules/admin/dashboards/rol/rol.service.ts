@@ -11,8 +11,8 @@ export class RolService {
     private _data: BehaviorSubject<any> = new BehaviorSubject(null);
     private _sellersData: BehaviorSubject<any> = new BehaviorSubject([]);
 
-    readonly INITIAL_INITIAL_DATE = { year: 2022, month: 2, date: 10 };
-    readonly INITIAL_FINAL_DATE = { year: 2023, month: 1, date: 10 };
+    readonly INITIAL_INITIAL_DATE = this.getCurrentDate();
+    readonly INITIAL_FINAL_DATE = this.getCurrentDate();
 
     readonly INITIAL_COMPANIES_IDS = ['null'];
     readonly INITIAL_SELLERS_IDS = ['null'];
@@ -40,6 +40,11 @@ export class RolService {
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
+
+    getCurrentDate() {
+        let date = new Date();
+        return { year: date.getFullYear(), month: date.getMonth(), date: date.getDate() }
+    }
 
     formatDate(date) {
         const day = date.date.toString();
