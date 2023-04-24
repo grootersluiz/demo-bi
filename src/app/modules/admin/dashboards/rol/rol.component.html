@@ -42,8 +42,12 @@
                             class="select-all-companies"
                             style="font-size: 12px"
                             [value]="'-1'"
-                            (click)="selectAllCompanies();"
-                            >{{ allCompaniesSelected ? 'Desmarcar Todos' : 'Marcar Todos'}}</mat-option
+                            (click)="selectAllCompanies()"
+                            >{{
+                                allCompaniesSelected
+                                    ? "Desmarcar Todos"
+                                    : "Marcar Todos"
+                            }}</mat-option
                         >
                         <mat-option
                             style="font-size: 12px"
@@ -77,8 +81,12 @@
                             class="select-all-companies"
                             style="font-size: 12px"
                             [value]="'-1'"
-                            (click)="selectAllSellers();"
-                            >{{ allSellersSelected ? 'Desmarcar Todos' : 'Marcar Todos'}}
+                            (click)="selectAllSellers()"
+                            >{{
+                                allSellersSelected
+                                    ? "Desmarcar Todos"
+                                    : "Marcar Todos"
+                            }}
                         </mat-option>
 
                         <mat-option
@@ -213,7 +221,7 @@
                 <div
                     class="text-lg font-medium tracking-tight leading-6 truncate"
                 >
-                    ROL vs. ROL realizada
+                    Meta ROL vs. ROL realizada
                 </div>
                 <!-- <div class="ml-2">
                     <button
