@@ -22,7 +22,7 @@ import {
 } from 'rxjs';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import {
-    Contact,
+    Reports,
     Country,
 } from 'app/modules/admin/regreports/regreports.types';
 import { RegreportsService } from 'app/modules/admin/regreports/regreports.service';
@@ -36,14 +36,14 @@ import { RegreportsService } from 'app/modules/admin/regreports/regreports.servi
 export class ReportListComponent implements OnInit, OnDestroy {
     @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
 
-    contacts$: Observable<Contact[]>;
+    contacts$: Observable<Reports[]>;
 
     contactsCount: number = 0;
     contactsTableColumns: string[] = ['name', 'email', 'phoneNumber', 'job'];
     countries: Country[];
     drawerMode: 'side' | 'over';
     searchInputControl: UntypedFormControl = new UntypedFormControl();
-    selectedContact: Contact;
+    selectedContact: Reports;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
@@ -70,7 +70,7 @@ export class ReportListComponent implements OnInit, OnDestroy {
         this.contacts$ = this._contactsService.contacts$;
         this._contactsService.contacts$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((contacts: Contact[]) => {
+            .subscribe((contacts: Reports[]) => {
                 // Update the counts
                 this.contactsCount = contacts.length;
 
@@ -81,7 +81,7 @@ export class ReportListComponent implements OnInit, OnDestroy {
         // Get the contact
         this._contactsService.contact$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((contact: Contact) => {
+            .subscribe((contact: Reports) => {
                 // Update the selected contact
                 this.selectedContact = contact;
 
@@ -106,7 +106,7 @@ export class ReportListComponent implements OnInit, OnDestroy {
                 takeUntil(this._unsubscribeAll),
                 switchMap((query) =>
                     // Search
-                    this._contactsService.searchContacts(query)
+                    this._contactsService.searchReports(query)
                 )
             )
             .subscribe();
@@ -181,7 +181,7 @@ export class ReportListComponent implements OnInit, OnDestroy {
      */
     createContact(): void {
         // Create the contact
-        this._contactsService.createContact().subscribe((newContact) => {
+        this._contactsService.createReport().subscribe((newContact) => {
             // Go to the new contact
             this._router.navigate(['./', newContact.id], {
                 relativeTo: this._activatedRoute,
