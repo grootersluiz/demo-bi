@@ -198,6 +198,13 @@ export const appRoutes: Route[] = [
                                 'app/modules/admin/dashboards/rol/rol.module'
                             ).then((m) => m.RolModule),
                     },
+                    {
+                        path: 'vendafilial',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/dashboards/vendafilial/vendafilial.module'
+                            ).then((m) => m.VendafilialModule),
+                    },
                 ],
             },
             {

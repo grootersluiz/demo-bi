@@ -1,0 +1,235 @@
+<div class="container max-w-full max-h-32 sm:h-32 md:h-32 lg:h-32 xl:h-32 2xl:h-32 m-0 p-0" id="painelVendaFilialMes">
+
+    <mat-toolbar class="max-w-full">
+      <button [hidden]="false" [matTooltip]="_tolltip_ShowFIlter" (click)="showFilter($event)">
+        <mat-icon aria-hidden="false" [fontIcon]="_iconShowFilter"></mat-icon>
+      </button>
+      &nbsp;&nbsp;&nbsp;
+      <button [hidden]="false" matTooltip="Consultar" (click)="consulatvendafilial($event)">
+        <mat-icon aria-hidden="false" fontIcon="search"></mat-icon>
+      </button>
+      
+      <div class="text-2xl font-semibold tracking-tight leading-8 pl-1/4" style="text-align: center;">
+       Venda Filial Mês
+    </div>
+    
+      <button [hidden]="false" matTooltip="Settings" class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2">
+        <mat-icon aria-hidden="false" fontIcon="settings"></mat-icon>
+      </button>
+    </mat-toolbar>
+
+    <div class="w-full flex flex-row sm:flex-col md:flex-col lg:flex-row xl:flex-row 2xl:flex-row">
+
+      <div id="containerFilter" class="max-h-96">
+          <mat-form-field appearance="fill" class="max-w-96">
+            <mat-label> Referência </mat-label>
+            <!-- [formControl]="dtRef"  [value]="dtRef" -->
+            <input matInput [matDatepicker]="picker" class="max-w-full" id="dtref" (dateChange)="formatDataMesAno($event)">
+              <mat-hint>DD/MM/YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker ></mat-datepicker>
+          </mat-form-field>
+      </div>
+      <div id="containerDash" class="flex flex-col p-0 w-4/5 sm:w-full md:w-full lg:w-4/5 xl:w-4/5 2xl:w-4/5">
+
+          <!-- <ng-container class="flex w-full sm:w-full md:w-full lg:w-full xl:w-full 2xl:w-full max-h-96">
+              Charts
+          </ng-container> -->
+          <div class="w-full sm:w-full md:w-full lg:w-full xl:w-full 2xl:w-full">
+            <div class="overflow-x-auto overflow-y-auto w-full max-h-full" >
+              <table mat-table [dataSource]="dataSource">
+            
+                <ng-container matColumnDef="NOMEFANTASIA">
+                  <th scope="col" mat-header-cell *matHeaderCellDef > Filial </th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.NOMEFANTASIA}} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+              
+                <ng-container matColumnDef="METAROL">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> Meta ROL </th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.METAROL}} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+              
+                <ng-container matColumnDef="REALROL">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> Real ROL </th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.REALROL}} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+                
+                <ng-container matColumnDef="REALROLINTERCOMP">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> Real Inter </th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.REALROLINTERCOMP}} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="REALROLREGULAR">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> Real Reg </th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.REALROLREGULAR}} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="REALROLINSUMO">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> Real Ins </th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.REALROLINSUMO}} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="REALROLTOTAL">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> Real ROL Total </th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.REALROLTOTAL}} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="PROJECAO">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> Projeção </th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.PROJECAO }} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="ATINGMETAROL">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> % Proj. </th>
+                  <td scope="row" mat-cell *matCellDef="let element" >
+                    <div [ngClass]="element.colorATINGMETAROL">
+                      {{element.ATINGMETAROL }} %
+                    </div>
+                  </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="GAPMETAROL">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> GAP ROL $ </th>
+                  <td scope="row" mat-cell *matCellDef="let element">
+                    <div [ngClass]="element.colorGAPMETAROL">
+                      {{element.GAPMETAROL }} 
+                    </div>
+                  </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="METAVDROL">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> Meta V.D </th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.METAVDROL }} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="REALVDROL">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> Real V.D </th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.REALVDROL }} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="DIFMETAROL">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> Dif V.D </th>
+                  <td scope="row" mat-cell *matCellDef="let element">
+                    <div [ngClass]="element.colorDIFMETAROL">
+                      {{element.DIFMETAROL }} 
+                    </div>
+                  </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="NOVAMETAROL">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> Nova ROL Dia </th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.NOVAMETAROL }} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="METAMB">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> Meta MB % </th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.METAMB }} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="REALMB">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> Real MB % </th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.REALMB }} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="DIFMB">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> Dif MB pp </th>
+                  <td scope="row" mat-cell *matCellDef="let element">
+                    <div [ngClass]="element.colorDIFMB">
+                      {{element.DIFMB }}
+                    </div>
+                    </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="METALB">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> Meta LB </th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.METALB }} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="REALLB">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> Real LB </th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.REALLB }} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="PROJECAOLB">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> Projeção LB </th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.PROJECAOLB }} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="ATINGMETALB">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> % Ating. LB </th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.ATINGMETALB }} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="GAPMETALB">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> GAP LB $</th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.GAPMETALB }} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="METAPMV">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> Meta PMV</th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.METAPMV }} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="REALPMV">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> Real PMV</th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.REALPMV }} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="DIFPMV">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> Dif PMV</th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.DIFPMV }} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="METACC">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> Meta CC</th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.METACC }} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="REALCC">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> Real CC</th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.REALCC }} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                </ng-container>
+          
+                <ng-container matColumnDef="DIFCC">
+                  <th scope="col" mat-header-cell *matHeaderCellDef> Dif CC</th>
+                  <td scope="row" mat-cell *matCellDef="let element"> {{element.DIFCC }} </td>
+                  <!-- <td mat-footer-cell *matFooterCellDef>  </td> -->
+                </ng-container>
+          
+                <tr mat-header-row *matHeaderRowDef="cabecalho"></tr>
+                <tr mat-row *matRowDef="let row; columns: cabecalho;"></tr>
+                <!-- <tr mat-footer-row *matFooterRowDef="cabecalho"></tr> -->
+      
+              </table>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
