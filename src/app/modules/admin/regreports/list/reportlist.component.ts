@@ -67,8 +67,8 @@ export class ReportListComponent implements OnInit, OnDestroy {
      */
     ngOnInit(): void {
         // Get the contacts
-        this.contacts$ = this._contactsService.contacts$;
-        this._contactsService.contacts$
+        this.contacts$ = this._contactsService.reports$;
+        this._contactsService.reports$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((contacts: Reports[]) => {
                 // Update the counts

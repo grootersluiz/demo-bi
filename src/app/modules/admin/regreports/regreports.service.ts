@@ -22,10 +22,10 @@ import {
 })
 export class RegreportsService {
     // Private
-    private _contact: BehaviorSubject<Reports | null> = new BehaviorSubject(
+    private _report: BehaviorSubject<Reports | null> = new BehaviorSubject(
         null
     );
-    private _contacts: BehaviorSubject<Reports[] | null> = new BehaviorSubject(
+    private _reports: BehaviorSubject<Reports[] | null> = new BehaviorSubject(
         null
     );
     private _countries: BehaviorSubject<Country[] | null> = new BehaviorSubject(
@@ -46,14 +46,14 @@ export class RegreportsService {
      * Getter for contact
      */
     get contact$(): Observable<Reports> {
-        return this._contact.asObservable();
+        return this._report.asObservable();
     }
 
     /**
      * Getter for contacts
      */
-    get contacts$(): Observable<Reports[]> {
-        return this._contacts.asObservable();
+    get reports$(): Observable<Reports[]> {
+        return this._reports.asObservable();
     }
 
     /**
@@ -84,7 +84,7 @@ export class RegreportsService {
                 tap((reports) => {
                     let orderedReports = [...reports['data']];
                     orderedReports.sort((a, b) => a.name.localeCompare(b.name));
-                    this._contacts.next(orderedReports);
+                    this._reports.next(orderedReports);
                     console.log('lista reports', reports['data']);
                 })
             );
@@ -104,7 +104,7 @@ export class RegreportsService {
                 tap((reports) => {
                     let orderedReports = [...reports['data']];
                     orderedReports.sort((a, b) => a.name.localeCompare(b.name));
-                    this._contacts.next(orderedReports);
+                    this._reports.next(orderedReports);
                 })
             );
     }
@@ -113,14 +113,14 @@ export class RegreportsService {
      * Get contact by id
      */
     getReportById(id: number): Observable<Reports> {
-        return this._contacts.pipe(
+        return this._reports.pipe(
             take(1),
             map((contacts) => {
                 // Find the contact
                 const contact = contacts.find((item) => item.id === id) || null;
 
                 // Update the contact
-                this._contact.next(contact);
+                this._report.next(contact);
 
                 // Return the contact
                 return contact;
@@ -141,7 +141,7 @@ export class RegreportsService {
      * Create contact
      */
     createReport(): Observable<Reports> {
-        return this.contacts$.pipe(
+        return this.reports$.pipe(
             take(1),
             switchMap((contacts) =>
                 this._httpClient
@@ -153,7 +153,7 @@ export class RegreportsService {
                     .pipe(
                         map((newContact) => {
                             // Update the contacts with the new contact
-                            this._contacts.next([newContact, ...contacts]);
+                            this._reports.next([newContact, ...contacts]);
 
                             // Return the new contact
                             return newContact;
@@ -167,47 +167,56 @@ export class RegreportsService {
      * Update contact
      *
      * @param id
-     * @param contact
+     * @param report
      */
-    updateReport(id: number, contact: Reports): Observable<Reports> {
-        return this.contacts$.pipe(
+    updateReport(id: number, report: Reports): Observable<Reports> {
+        return this.reports$.pipe(
             take(1),
-            switchMap((contacts) =>
+            switchMap((reports) =>
                 this._httpClient
                     .put<Reports>(
                         `http://10.2.1.108/v1/reports/${id.toString()}`,
                         {
-                            name: contact.name,
-                            viewId: contact.viewId,
-                            type: contact.type,
+                            name: report.name,
+                            viewId: report.viewId,
+                            type: report.type,
                         }
                     )
                     .pipe(
-                        map((updatedContact) => {
+                        map((updatedReport) => {
                             // Find the index of the updated contact
-                            const index = contacts.findIndex(
+                            const index = reports.findIndex(
                                 (item) => item.id === id
                             );
 
+                            const myUpdatedReport: Reports = {
+                                id: updatedReport.id,
+                                name: updatedReport.name,
+                                viewId: report.viewId,
+                                type: updatedReport.type,
+                            };
+
+                            console.log(report.viewId);
+
                             // Update the contact
-                            contacts[index] = updatedContact;
+                            reports[index] = myUpdatedReport;
 
                             // Update the contacts
-                            this._contacts.next(contacts);
+                            this._reports.next(reports);
 
                             // Return the updated contact
-                            return updatedContact;
+                            return myUpdatedReport;
                         }),
-                        switchMap((updatedContact) =>
+                        switchMap((updatedReport) =>
                             this.contact$.pipe(
                                 take(1),
                                 filter((item) => item && item.id === id),
                                 tap(() => {
                                     // Update the contact if it's selected
-                                    this._contact.next(updatedContact);
+                                    this._report.next(updatedReport);
 
                                     // Return the updated contact
-                                    return updatedContact;
+                                    return updatedReport;
                                 })
                             )
                         )
@@ -222,7 +231,7 @@ export class RegreportsService {
      * @param id
      */
     deleteReport(id: number): Observable<boolean> {
-        return this.contacts$.pipe(
+        return this.reports$.pipe(
             take(1),
             switchMap((contacts) =>
                 this._httpClient
@@ -238,7 +247,7 @@ export class RegreportsService {
                             contacts.splice(index, 1);
 
                             // Update the contacts
-                            this._contacts.next(contacts);
+                            this._reports.next(contacts);
 
                             // Return the deleted status
                             return isDeleted;

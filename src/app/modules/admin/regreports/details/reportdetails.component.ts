@@ -95,7 +95,7 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
         });
 
         // Get the contacts
-        this._contactsService.contacts$
+        this._contactsService.reports$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((contacts: Reports[]) => {
                 this.contacts = contacts;
@@ -264,12 +264,6 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
         // Get the contact object
         const contact = this.contactForm.getRawValue();
 
-        // Go through the contact object and clear empty values
-        contact.emails = contact.emails.filter((email) => email.email);
-
-        contact.phoneNumbers = contact.phoneNumbers.filter(
-            (phoneNumber) => phoneNumber.phoneNumber
-        );
 
         // Update the contact on the server
         this._contactsService
