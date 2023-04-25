@@ -270,6 +270,7 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
                         : this.views[nextContactIndex].id;
 
                 // Delete the contact
+                this.closeDrawer();
                 this._contactsService.deleteView(id).subscribe((isDeleted) => {
                     // Return if the contact wasn't deleted...
                     if (!isDeleted) {

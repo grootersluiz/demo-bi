@@ -313,6 +313,7 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
                         : this.contacts[nextContactIndex].id;
 
                 // Delete the contact
+                this.closeDrawer();
                 this._contactsService
                     .deleteReport(id)
                     .subscribe((isDeleted) => {
