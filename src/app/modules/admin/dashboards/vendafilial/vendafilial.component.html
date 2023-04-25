@@ -5,16 +5,19 @@
         <mat-icon aria-hidden="false" [fontIcon]="_iconShowFilter"></mat-icon>
       </button>
       &nbsp;&nbsp;&nbsp;
-      <button [hidden]="false" matTooltip="Consultar" (click)="consulatvendafilial($event)">
+      <button [hidden]="false" matTooltip="Consultar" (click)="consulatvendafilial(dataref.value)">
         <mat-icon aria-hidden="false" fontIcon="search"></mat-icon>
       </button>
       
       <div class="text-2xl font-semibold tracking-tight leading-8 pl-1/4" style="text-align: center;">
-       Venda Filial Mês
-    </div>
-    
-      <button [hidden]="false" matTooltip="Settings" class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2">
-        <mat-icon aria-hidden="false" fontIcon="settings"></mat-icon>
+        Venda Filial Mês
+      </div>
+      <div class="tracking-tight p-4" style="text-align: center;">
+        {{_sysdate}}
+      </div>
+
+      <button [hidden]="true" matTooltip="Settings" class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2" style="visibility: hidden !important;">
+        <mat-icon [hidden]="true" aria-hidden="false" fontIcon="settings" ></mat-icon>
       </button>
     </mat-toolbar>
 
@@ -24,7 +27,7 @@
           <mat-form-field appearance="fill" class="max-w-96">
             <mat-label> Referência </mat-label>
             <!-- [formControl]="dtRef"  [value]="dtRef" -->
-            <input matInput [matDatepicker]="picker" class="max-w-full" id="dtref" (dateChange)="formatDataMesAno($event)">
+            <input matInput [matDatepicker]="picker" class="max-w-full" id="dtref" #dataref (dateChange)="formatDataMesAno($event)">
               <mat-hint>DD/MM/YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker ></mat-datepicker>
@@ -153,7 +156,7 @@
                     <div [ngClass]="element.colorDIFMB">
                       {{element.DIFMB }}
                     </div>
-                    </td>
+                  </td>
                   <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
                 </ng-container>
           
@@ -177,13 +180,21 @@
           
                 <ng-container matColumnDef="ATINGMETALB">
                   <th scope="col" mat-header-cell *matHeaderCellDef> % Ating. LB </th>
-                  <td scope="row" mat-cell *matCellDef="let element"> {{element.ATINGMETALB }} </td>
+                  <td scope="row" mat-cell *matCellDef="let element">
+                    <div [ngClass]="element.colorATINGMETALB">
+                      {{element.ATINGMETALB }}
+                    </div>
+                  </td>
                   <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
                 </ng-container>
           
                 <ng-container matColumnDef="GAPMETALB">
                   <th scope="col" mat-header-cell *matHeaderCellDef> GAP LB $</th>
-                  <td scope="row" mat-cell *matCellDef="let element"> {{element.GAPMETALB }} </td>
+                  <td scope="row" mat-cell *matCellDef="let element">
+                    <div [ngClass]="element.colorGAPMETALB">
+                      {{element.GAPMETALB }}
+                    </div>
+                  </td>
                   <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
                 </ng-container>
           
@@ -201,7 +212,11 @@
           
                 <ng-container matColumnDef="DIFPMV">
                   <th scope="col" mat-header-cell *matHeaderCellDef> Dif PMV</th>
-                  <td scope="row" mat-cell *matCellDef="let element"> {{element.DIFPMV }} </td>
+                  <td scope="row" mat-cell *matCellDef="let element">
+                    <div [ngClass]="element.colorDIFPMV">
+                      {{element.DIFPMV }}
+                    </div>
+                  </td>
                   <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
                 </ng-container>
           
@@ -219,7 +234,11 @@
           
                 <ng-container matColumnDef="DIFCC">
                   <th scope="col" mat-header-cell *matHeaderCellDef> Dif CC</th>
-                  <td scope="row" mat-cell *matCellDef="let element"> {{element.DIFCC }} </td>
+                  <td scope="row" mat-cell *matCellDef="let element">
+                    <div [ngClass]="element.colorDIFCC">
+                      {{element.DIFCC }}
+                    </div>
+                  </td>
                   <!-- <td mat-footer-cell *matFooterCellDef>  </td> -->
                 </ng-container>
           
