@@ -1,12 +1,19 @@
 import { Component} from '@angular/core';
 import { VendafilialService } from './vendafilial.service';
+<<<<<<< HEAD
 import { Observable, async } from 'rxjs';
+=======
+import { Observable } from 'rxjs';
+>>>>>>> 214dc12123833e3c890241acb133fcf44c3f5cd6
 
 import { formatNumber } from '@angular/common';
 
 import { Directive, HostListener, ElementRef, Renderer2 } from '@angular/core';
+<<<<<<< HEAD
 import { ArrayDataSource } from '@angular/cdk/collections';
 import { HttpClient } from '@angular/common/http';
+=======
+>>>>>>> 214dc12123833e3c890241acb133fcf44c3f5cd6
 
 export interface TipoColumaElement {
   NOMEFANTASIA: string;
@@ -80,6 +87,7 @@ export class VendafilialComponent {
                       ];
 
   dataSource = ELEMENT_DATA_VENDA;
+<<<<<<< HEAD
   _sysdate:string;
 
   _elementFilter: any;
@@ -88,6 +96,18 @@ export class VendafilialComponent {
 
   formataDataSource(lista){
 
+=======
+
+  _elementFilter: any;
+  _elementRenderer: any;
+
+  constructor(private vendafilialService: VendafilialService,private _element: ElementRef,private _renderer: Renderer2){
+
+    this._elementFilter   = _element;
+    this._elementRenderer = _renderer;
+
+    var lista = this.vendafilialService.data$[1];
+>>>>>>> 214dc12123833e3c890241acb133fcf44c3f5cd6
     var dataSourceVendaElemente ;
     var arrayTeste = [];
 
@@ -124,6 +144,7 @@ export class VendafilialComponent {
                   REALLB:             formatNumber(lista[i][18],'en-US','0.0-0'),
                   PROJECAOLB:         formatNumber(lista[i][19],'en-US','0.0-0'),
                   ATINGMETALB:        formatNumber(lista[i][20],'en-US','0.2-2'),
+<<<<<<< HEAD
                   colorATINGMETALB:   lista[i][20]< 90? red : lista[i][20]>90 && lista[i][20]<100? orange : green ,
                   GAPMETALB:          formatNumber(lista[i][21],'en-US','0.0-0'),
                   colorGAPMETALB:     lista[i][21] > 0 ? green: red,
@@ -135,11 +156,21 @@ export class VendafilialComponent {
                   REALCC:             formatNumber(lista[i][26],'en-US','0.0-0'),
                   DIFCC:              formatNumber(lista[i][27],'en-US','0.0-0'),
                   colorDIFCC:         lista[i][27] > 0 ? green: red
+=======
+                  GAPMETALB:          formatNumber(lista[i][21],'en-US','0.0-0'),
+                  METAPMV:            formatNumber(lista[i][22],'en-US','0.0-0'),
+                  REALPMV:            formatNumber(lista[i][23],'en-US','0.0-0'),
+                  DIFPMV:             formatNumber(lista[i][24],'en-US','0.2-2'),
+                  METACC:             formatNumber(lista[i][25],'en-US','0.0-0'),
+                  REALCC:             formatNumber(lista[i][26],'en-US','0.0-0'),
+                  DIFCC:              formatNumber(lista[i][27],'en-US','0.0-0'),
+>>>>>>> 214dc12123833e3c890241acb133fcf44c3f5cd6
                 };
 
         arrayTeste.push(dataSourceVendaElemente);
     }
 
+<<<<<<< HEAD
     return arrayTeste;
 
   }
@@ -147,6 +178,27 @@ export class VendafilialComponent {
   
   _iconShowFilter: string       = 'filter_list';
   _tolltip_ShowFIlter: string   = 'On filtro';
+=======
+    this.dataSource = arrayTeste;
+
+  }
+
+  formatDataMesAno(dataPicker) {
+
+    var mes = dataPicker.value.getMonth();
+
+    mes = mes < 9 ? '0' + (mes+1) :  (mes+1);
+
+    var dataMes = '01/'+ mes + '/'+ dataPicker.value.getUTCFullYear();
+
+    dataPicker.targetElement.value = dataMes;
+    return true;
+
+  }
+
+  _iconShowFilter: string       = 'filter_list_off';
+  _tolltip_ShowFIlter: string   = 'Off filtro';
+>>>>>>> 214dc12123833e3c890241acb133fcf44c3f5cd6
   _classDashInicial: string[]   = ['flex','flex-col','p-0','w-4/5','sm:w-full','md:w-full','lg:w-4/5','xl:w-4/5','2xl:w-4/5'];
   _classFilterInicial: string[] = ['flex','flex-col','p-2','w-1/5','sm:w-full','md:w-full','lg:w-1/5','xl:w-1/5','2xl:w-1/5'];
   showFilter(thisEvent) {
@@ -164,7 +216,11 @@ export class VendafilialComponent {
       filterHidden = 'hidden';
 
       var pClassDash  = ['flex','flex-col','p-0','w-full','sm:w-full','md:w-full','lg:w-full','xl:w-full','2xl:w-full'];
+<<<<<<< HEAD
       var pClassFilter= ['flex','flex-col','p-0','w-0'   ,'sm:h-0'   ,'md:h-0'   ,'lg:w-0'   ,'xl:w-0'   ,'2xl:w-0'];
+=======
+      var pClassFilter= ['flex','flex-col','p-0','w-0'   ,'sm:w-0'   ,'md:w-0'   ,'lg:w-0'   ,'xl:w-0'   ,'2xl:w-0'];
+>>>>>>> 214dc12123833e3c890241acb133fcf44c3f5cd6
     }
 
     this._elementRenderer.setStyle(
@@ -208,6 +264,7 @@ export class VendafilialComponent {
 
   }
 
+<<<<<<< HEAD
   /////////////////////////////////////// Construtor  ///////////////////////////////////////////////
   constructor(private vendafilialService: VendafilialService
               ,private _element: ElementRef
@@ -283,4 +340,25 @@ export class VendafilialComponent {
 
   }
 
+=======
+  consulatvendafilial(param ){
+
+    
+    console.log(this._elementFilter);
+
+
+    var dtRef = this._elementFilter.nativeElement.lastElementChild.lastElementChild.firstElementChild.firstElementChild.firstElementChild.firstElementChild.nextElementSibling.firstElementChild.offsetParent.firstElementChild.childNodes[4].value;
+
+    var arrayParam = new Array();
+
+    arrayParam.push(dtRef);
+    // var params = new Observable<{data:String[];}>;
+
+    this.vendafilialService.getDataAplica(arrayParam);
+    
+
+  }
+
+
+>>>>>>> 214dc12123833e3c890241acb133fcf44c3f5cd6
 }

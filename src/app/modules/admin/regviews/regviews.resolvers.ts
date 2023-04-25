@@ -6,12 +6,12 @@ import {
     RouterStateSnapshot,
 } from '@angular/router';
 import { catchError, Observable, throwError } from 'rxjs';
-import { RegreportsService } from 'app/modules/admin/regreports/regreports.service';
+import { RegviewsService } from 'app/modules/admin/regviews/regviews.service';
 import {
-    Reports,
+    View,
     Country,
     Tag,
-} from 'app/modules/admin/regreports/regreports.types';
+} from 'app/modules/admin/regviews/regviews.types';
 
 @Injectable({
     providedIn: 'root',
@@ -20,7 +20,7 @@ export class ContactsResolver implements Resolve<any> {
     /**
      * Constructor
      */
-    constructor(private _contactsService: RegreportsService) {}
+    constructor(private _contactsService: RegviewsService) {}
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
@@ -35,8 +35,8 @@ export class ContactsResolver implements Resolve<any> {
     resolve(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
-    ): Observable<Reports[]> {
-        return this._contactsService.getReports();
+    ): Observable<View[]> {
+        return this._contactsService.getViews();
     }
 }
 
@@ -48,7 +48,7 @@ export class ContactsContactResolver implements Resolve<any> {
      * Constructor
      */
     constructor(
-        private _contactsService: RegreportsService,
+        private _contactsService: RegviewsService,
         private _router: Router
     ) {}
 
@@ -65,9 +65,9 @@ export class ContactsContactResolver implements Resolve<any> {
     resolve(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
-    ): Observable<Reports> {
+    ): Observable<View> {
         return this._contactsService
-            .getReportById(parseInt(route.paramMap.get('id')))
+            .getViewById(parseInt(route.paramMap.get('id')))
             .pipe(
                 // Error here means the requested contact is not available
                 catchError((error) => {
@@ -90,55 +90,3 @@ export class ContactsContactResolver implements Resolve<any> {
     }
 }
 
-// @Injectable({
-//     providedIn: 'root',
-// })
-// export class ContactsCountriesResolver implements Resolve<any> {
-//     /**
-//      * Constructor
-//      */
-//     constructor(private _contactsService: RegreportsService) {}
-
-//     // -----------------------------------------------------------------------------------------------------
-//     // @ Public methods
-//     // -----------------------------------------------------------------------------------------------------
-
-//     /**
-//      * Resolver
-//      *
-//      *
-//      */
-//     resolve(
-//         route: ActivatedRouteSnapshot,
-//         state: RouterStateSnapshot
-//     ): Observable<Country[]> {
-//         return this._contactsService.getCountries();
-//     }
-// }
-
-// @Injectable({
-//     providedIn: 'root',
-// })
-// export class ContactsTagsResolver implements Resolve<any> {
-//     /**
-//      * Constructor
-//      */
-//     constructor(private _contactsService: RegreportsService) {}
-
-//     // -----------------------------------------------------------------------------------------------------
-//     // @ Public methods
-//     // -----------------------------------------------------------------------------------------------------
-
-//     /**
-//      * Resolver
-//      *
-//      * @param route
-//      * @param state
-//      */
-//     resolve(
-//         route: ActivatedRouteSnapshot,
-//         state: RouterStateSnapshot
-//     ): Observable<Tag[]> {
-//         return this._contactsService.getTags();
-//     }
-// }

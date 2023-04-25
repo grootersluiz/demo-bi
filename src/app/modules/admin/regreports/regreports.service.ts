@@ -12,7 +12,7 @@ import {
     throwError,
 } from 'rxjs';
 import {
-    Contact,
+    Reports,
     Country,
     Tag,
 } from 'app/modules/admin/regreports/regreports.types';
@@ -22,10 +22,10 @@ import {
 })
 export class RegreportsService {
     // Private
-    private _contact: BehaviorSubject<Contact | null> = new BehaviorSubject(
+    private _contact: BehaviorSubject<Reports | null> = new BehaviorSubject(
         null
     );
-    private _contacts: BehaviorSubject<Contact[] | null> = new BehaviorSubject(
+    private _contacts: BehaviorSubject<Reports[] | null> = new BehaviorSubject(
         null
     );
     private _countries: BehaviorSubject<Country[] | null> = new BehaviorSubject(
@@ -45,14 +45,14 @@ export class RegreportsService {
     /**
      * Getter for contact
      */
-    get contact$(): Observable<Contact> {
+    get contact$(): Observable<Reports> {
         return this._contact.asObservable();
     }
 
     /**
      * Getter for contacts
      */
-    get contacts$(): Observable<Contact[]> {
+    get contacts$(): Observable<Reports[]> {
         return this._contacts.asObservable();
     }
 
@@ -77,27 +77,34 @@ export class RegreportsService {
     /**
      * Get contacts
      */
-    getContacts(): Observable<Contact[]> {
-        return this._httpClient.get<Contact[]>('api/apps/contacts/all').pipe(
-            tap((contacts) => {
-                this._contacts.next(contacts);
-            })
-        );
+    getReports(): Observable<Reports[]> {
+        return this._httpClient
+            .get<Reports[]>('http://10.2.1.108/v1/reports')
+            .pipe(
+                tap((reports) => {
+                    let orderedReports = [...reports['data']];
+                    orderedReports.sort((a, b) => a.name.localeCompare(b.name));
+                    this._contacts.next(orderedReports);
+                    console.log('lista reports', reports['data']);
+                })
+            );
     }
 
     /**
-     * Search contacts with given query
+     * Search contacts with given name
      *
-     * @param query
+     * @param name
      */
-    searchContacts(query: string): Observable<Contact[]> {
+    searchReports(name: string): Observable<Reports[]> {
         return this._httpClient
-            .get<Contact[]>('api/apps/contacts/search', {
-                params: { query },
+            .get<Reports[]>('http://10.2.1.108/v1/reports', {
+                params: { name },
             })
             .pipe(
-                tap((contacts) => {
-                    this._contacts.next(contacts);
+                tap((reports) => {
+                    let orderedReports = [...reports['data']];
+                    orderedReports.sort((a, b) => a.name.localeCompare(b.name));
+                    this._contacts.next(orderedReports);
                 })
             );
     }
@@ -105,7 +112,7 @@ export class RegreportsService {
     /**
      * Get contact by id
      */
-    getContactById(id: string): Observable<Contact> {
+    getReportById(id: number): Observable<Reports> {
         return this._contacts.pipe(
             take(1),
             map((contacts) => {
@@ -133,12 +140,16 @@ export class RegreportsService {
     /**
      * Create contact
      */
-    createContact(): Observable<Contact> {
+    createReport(): Observable<Reports> {
         return this.contacts$.pipe(
             take(1),
             switchMap((contacts) =>
                 this._httpClient
-                    .post<Contact>('api/apps/contacts/contact', {})
+                    .post<Reports>('http://10.2.1.108/v1/reports', {
+                        name: 'Novo Relatório',
+                        viewId: 222,
+                        type: 'table',
+                    })
                     .pipe(
                         map((newContact) => {
                             // Update the contacts with the new contact
@@ -158,15 +169,19 @@ export class RegreportsService {
      * @param id
      * @param contact
      */
-    updateContact(id: string, contact: Contact): Observable<Contact> {
+    updateReport(id: number, contact: Reports): Observable<Reports> {
         return this.contacts$.pipe(
             take(1),
             switchMap((contacts) =>
                 this._httpClient
-                    .patch<Contact>('api/apps/contacts/contact', {
-                        id,
-                        contact,
-                    })
+                    .put<Reports>(
+                        `http://10.2.1.108/v1/reports/${id.toString()}`,
+                        {
+                            name: contact.name,
+                            viewId: contact.viewId,
+                            type: contact.type,
+                        }
+                    )
                     .pipe(
                         map((updatedContact) => {
                             // Find the index of the updated contact
@@ -206,12 +221,12 @@ export class RegreportsService {
      *
      * @param id
      */
-    deleteContact(id: string): Observable<boolean> {
+    deleteReport(id: number): Observable<boolean> {
         return this.contacts$.pipe(
             take(1),
             switchMap((contacts) =>
                 this._httpClient
-                    .delete('api/apps/contacts/contact', { params: { id } })
+                    .delete(`http://10.2.1.108/v1/reports/${id.toString()}`, {})
                     .pipe(
                         map((isDeleted: boolean) => {
                             // Find the index of the deleted contact
@@ -236,196 +251,194 @@ export class RegreportsService {
     /**
      * Get countries
      */
-    getCountries(): Observable<Country[]> {
-        return this._httpClient
-            .get<Country[]>('api/apps/contacts/countries')
-            .pipe(
-                tap((countries) => {
-                    this._countries.next(countries);
-                })
-            );
-    }
+    // getCountries(): Observable<Country[]> {
+    //     return this._httpClient
+    //         .get<Country[]>('api/apps/contacts/countries')
+    //         .pipe(
+    //             tap((countries) => {
+    //                 this._countries.next(countries);
+    //             })
+    //         );
+    // }
 
     /**
      * Get tags
      */
-    getTags(): Observable<Tag[]> {
-        return this._httpClient.get<Tag[]>('api/apps/contacts/tags').pipe(
-            tap((tags) => {
-                this._tags.next(tags);
-            })
-        );
-    }
+    // getTags(): Observable<Tag[]> {
+    //     return this._httpClient.get<Tag[]>('api/apps/contacts/tags').pipe(
+    //         tap((tags) => {
+    //             this._tags.next(tags);
+    //         })
+    //     );
+    // }
 
     /**
      * Create tag
      *
-     * @param tag
+     *
      */
-    createTag(tag: Tag): Observable<Tag> {
-        return this.tags$.pipe(
-            take(1),
-            switchMap((tags) =>
-                this._httpClient
-                    .post<Tag>('api/apps/contacts/tag', { tag })
-                    .pipe(
-                        map((newTag) => {
-                            // Update the tags with the new tag
-                            this._tags.next([...tags, newTag]);
+    // createTag(tag: Tag): Observable<Tag> {
+    //     return this.tags$.pipe(
+    //         take(1),
+    //         switchMap((tags) =>
+    //             this._httpClient
+    //                 .post<Tag>('api/apps/contacts/tag', { tag })
+    //                 .pipe(
+    //                     map((newTag) => {
+    //                         // Update the tags with the new tag
+    //                         this._tags.next([...tags, newTag]);
 
-                            // Return new tag from observable
-                            return newTag;
-                        })
-                    )
-            )
-        );
-    }
+    //                         // Return new tag from observable
+    //                         return newTag;
+    //                     })
+    //                 )
+    //         )
+    //     );
+    // }
 
     /**
      * Update the tag
      *
-     * @param id
-     * @param tag
+     *
      */
-    updateTag(id: string, tag: Tag): Observable<Tag> {
-        return this.tags$.pipe(
-            take(1),
-            switchMap((tags) =>
-                this._httpClient
-                    .patch<Tag>('api/apps/contacts/tag', {
-                        id,
-                        tag,
-                    })
-                    .pipe(
-                        map((updatedTag) => {
-                            // Find the index of the updated tag
-                            const index = tags.findIndex(
-                                (item) => item.id === id
-                            );
+    // updateTag(id: string, tag: Tag): Observable<Tag> {
+    //     return this.tags$.pipe(
+    //         take(1),
+    //         switchMap((tags) =>
+    //             this._httpClient
+    //                 .patch<Tag>('api/apps/contacts/tag', {
+    //                     id,
+    //                     tag,
+    //                 })
+    //                 .pipe(
+    //                     map((updatedTag) => {
+    //                         // Find the index of the updated tag
+    //                         const index = tags.findIndex(
+    //                             (item) => item.id === id
+    //                         );
 
-                            // Update the tag
-                            tags[index] = updatedTag;
+    //                         // Update the tag
+    //                         tags[index] = updatedTag;
 
-                            // Update the tags
-                            this._tags.next(tags);
+    //                         // Update the tags
+    //                         this._tags.next(tags);
 
-                            // Return the updated tag
-                            return updatedTag;
-                        })
-                    )
-            )
-        );
-    }
+    //                         // Return the updated tag
+    //                         return updatedTag;
+    //                     })
+    //                 )
+    //         )
+    //     );
+    // }
 
     /**
      * Delete the tag
      *
-     * @param id
+     *
      */
-    deleteTag(id: string): Observable<boolean> {
-        return this.tags$.pipe(
-            take(1),
-            switchMap((tags) =>
-                this._httpClient
-                    .delete('api/apps/contacts/tag', { params: { id } })
-                    .pipe(
-                        map((isDeleted: boolean) => {
-                            // Find the index of the deleted tag
-                            const index = tags.findIndex(
-                                (item) => item.id === id
-                            );
+    // deleteTag(id: string): Observable<boolean> {
+    //     return this.tags$.pipe(
+    //         take(1),
+    //         switchMap((tags) =>
+    //             this._httpClient
+    //                 .delete('api/apps/contacts/tag', { params: { id } })
+    //                 .pipe(
+    //                     map((isDeleted: boolean) => {
+    //                         // Find the index of the deleted tag
+    //                         const index = tags.findIndex(
+    //                             (item) => item.id === id
+    //                         );
 
-                            // Delete the tag
-                            tags.splice(index, 1);
+    //                         // Delete the tag
+    //                         tags.splice(index, 1);
 
-                            // Update the tags
-                            this._tags.next(tags);
+    //                         // Update the tags
+    //                         this._tags.next(tags);
 
-                            // Return the deleted status
-                            return isDeleted;
-                        }),
-                        filter((isDeleted) => isDeleted),
-                        switchMap((isDeleted) =>
-                            this.contacts$.pipe(
-                                take(1),
-                                map((contacts) => {
-                                    // Iterate through the contacts
-                                    contacts.forEach((contact) => {
-                                        const tagIndex = contact.tags.findIndex(
-                                            (tag) => tag === id
-                                        );
+    //                         // Return the deleted status
+    //                         return isDeleted;
+    //                     }),
+    //                     filter((isDeleted) => isDeleted),
+    //                     switchMap((isDeleted) =>
+    //                         this.contacts$.pipe(
+    //                             take(1),
+    //                             map((contacts) => {
+    //                                 // Iterate through the contacts
+    //                                 contacts.forEach((contact) => {
+    //                                     const tagIndex = contact.tags.findIndex(
+    //                                         (tag) => tag === id
+    //                                     );
 
-                                        // If the contact has the tag, remove it
-                                        if (tagIndex > -1) {
-                                            contact.tags.splice(tagIndex, 1);
-                                        }
-                                    });
+    //                                     // If the contact has the tag, remove it
+    //                                     if (tagIndex > -1) {
+    //                                         contact.tags.splice(tagIndex, 1);
+    //                                     }
+    //                                 });
 
-                                    // Return the deleted status
-                                    return isDeleted;
-                                })
-                            )
-                        )
-                    )
-            )
-        );
-    }
+    //                                 // Return the deleted status
+    //                                 return isDeleted;
+    //                             })
+    //                         )
+    //                     )
+    //                 )
+    //         )
+    //     );
+    // }
 
     /**
      * Update the avatar of the given contact
      *
-     * @param id
-     * @param avatar
+     *
      */
-    uploadAvatar(id: string, avatar: File): Observable<Contact> {
-        return this.contacts$.pipe(
-            take(1),
-            switchMap((contacts) =>
-                this._httpClient
-                    .post<Contact>(
-                        'api/apps/contacts/avatar',
-                        {
-                            id,
-                            avatar,
-                        },
-                        {
-                            headers: {
-                                // eslint-disable-next-line @typescript-eslint/naming-convention
-                                'Content-Type': avatar.type,
-                            },
-                        }
-                    )
-                    .pipe(
-                        map((updatedContact) => {
-                            // Find the index of the updated contact
-                            const index = contacts.findIndex(
-                                (item) => item.id === id
-                            );
+    // uploadAvatar(id: string, avatar: File): Observable<Reports> {
+    //     return this.contacts$.pipe(
+    //         take(1),
+    //         switchMap((contacts) =>
+    //             this._httpClient
+    //                 .post<Reports>(
+    //                     'api/apps/contacts/avatar',
+    //                     {
+    //                         id,
+    //                         avatar,
+    //                     },
+    //                     {
+    //                         headers: {
+    //                             // eslint-disable-next-line @typescript-eslint/naming-convention
+    //                             'Content-Type': avatar.type,
+    //                         },
+    //                     }
+    //                 )
+    //                 .pipe(
+    //                     map((updatedContact) => {
+    //                         // Find the index of the updated contact
+    //                         const index = contacts.findIndex(
+    //                             (item) => item.id === id
+    //                         );
 
-                            // Update the contact
-                            contacts[index] = updatedContact;
+    //                         // Update the contact
+    //                         contacts[index] = updatedContact;
 
-                            // Update the contacts
-                            this._contacts.next(contacts);
+    //                         // Update the contacts
+    //                         this._contacts.next(contacts);
 
-                            // Return the updated contact
-                            return updatedContact;
-                        }),
-                        switchMap((updatedContact) =>
-                            this.contact$.pipe(
-                                take(1),
-                                filter((item) => item && item.id === id),
-                                tap(() => {
-                                    // Update the contact if it's selected
-                                    this._contact.next(updatedContact);
+    //                         // Return the updated contact
+    //                         return updatedContact;
+    //                     }),
+    //                     switchMap((updatedContact) =>
+    //                         this.contact$.pipe(
+    //                             take(1),
+    //                             filter((item) => item && item.id === id),
+    //                             tap(() => {
+    //                                 // Update the contact if it's selected
+    //                                 this._contact.next(updatedContact);
 
-                                    // Return the updated contact
-                                    return updatedContact;
-                                })
-                            )
-                        )
-                    )
-            )
-        );
-    }
+    //                                 // Return the updated contact
+    //                                 return updatedContact;
+    //                             })
+    //                         )
+    //                     )
+    //                 )
+    //         )
+    //     );
+    // }
 }

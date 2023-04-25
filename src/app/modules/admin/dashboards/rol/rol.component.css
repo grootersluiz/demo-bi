@@ -1,32 +1,47 @@
-div.cabecalho-filtro{
-    background: rgb(75,75,75);
-    background: linear-gradient(0deg, rgba(75,75,75,1) 0%, rgba(82,82,82,1) 12%, rgba(82,82,82,1) 86%, rgba(75,75,75,1) 100%);
-    filter: drop-shadow(0 0.4rem 0.7rem #00000065); 
+div.cabecalho-filtro {
+    background: rgb(75, 75, 75);
+    background: linear-gradient(
+        0deg,
+        rgba(75, 75, 75, 1) 0%,
+        rgba(82, 82, 82, 1) 12%,
+        rgba(82, 82, 82, 1) 86%,
+        rgba(75, 75, 75, 1) 100%
+    );
+    filter: drop-shadow(0 0.4rem 0.7rem #00000065);
     border-radius: 15px;
 }
 
-
-.cabecalho-filtro div.mat-mdc-form-field-flex{
+.cabecalho-filtro div.mat-mdc-form-field-flex {
     /* Cor dos campos do filtros   */
     background-color: rgb(179, 179, 179);
-    filter: drop-shadow(0 0.4rem 0.7rem #00000065); 
+    filter: drop-shadow(0 0.4rem 0.7rem #00000065);
     cursor: pointer;
 }
 
-.cabecalho-filtro svg.mat-datepicker-toggle-default-icon{
+.cabecalho-filtro svg.mat-datepicker-toggle-default-icon {
     color: #525252;
 }
 
-.cabecalho-filtro .logo-filter{
+.cabecalho-filtro .logo-filter {
     width: 4rem;
     height: 4rem;
 }
 
-.cabecalho-filtro .apply-button{
-    filter: drop-shadow(0 0.4rem 0.7rem #00000065); 
+.cabecalho-filtro .apply-button {
+    filter: drop-shadow(0 0.4rem 0.7rem #00000065);
     transition: filter 150ms;
 }
 
-.cabecalho-filtro .apply-button:hover{
+.cabecalho-filtro .apply-button:hover {
     filter: drop-shadow(0 0 0.2rem #d8790c59);
 }
+
+.select-all-companies .mat-pseudo-checkbox{
+    display: none;
+} 
+
+#mat-select-0-panel .select-all-companies, #mat-select-2-panel .select-all-companies{
+    min-height: 25px;
+    border-bottom: 1px solid #e2e2e2;
+    padding-bottom: 5px;
+} 

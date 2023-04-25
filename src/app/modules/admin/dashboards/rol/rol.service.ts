@@ -9,9 +9,10 @@ import { DatePipe } from '@angular/common';
 })
 export class RolService {
     private _data: BehaviorSubject<any> = new BehaviorSubject(null);
+    private _sellersData: BehaviorSubject<any> = new BehaviorSubject([]);
 
-    readonly INITIAL_INITIAL_DATE = { year: 2022, month: 2, date: 10 };
-    readonly INITIAL_FINAL_DATE = { year: 2023, month: 1, date: 10 };
+    readonly INITIAL_INITIAL_DATE = this.getCurrentDate();
+    readonly INITIAL_FINAL_DATE = this.getCurrentDate();
 
     readonly INITIAL_COMPANIES_IDS = ['null'];
     readonly INITIAL_SELLERS_IDS = ['null'];
@@ -32,21 +33,45 @@ export class RolService {
         return this._data.asObservable();
     }
 
+    get sellersData$(): Observable<any> {
+        return this._sellersData.asObservable();
+    }
+
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
-    // formatDateUSFormat(data) {
-    //     const date = new Date(data);
-    //     const day = date.getDate().toString().padStart(2, '0');
-    //     const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    //     const year = date.getFullYear().toString();
+    getCurrentDate() {
+        let date = new Date();
+        return { year: date.getFullYear(), month: date.getMonth(), date: date.getDate() }
+    }
 
-    //     return `${day}/${month}/${year}`;
-    // }
+    formatDate(date) {
+        const day = date.date.toString();
+        const month = (date.month + 1).toString();
+        const year = date.year.toString();
+        return `${day}/${month}/${year}`;
+    }
 
-    getSellersData(){
-        
+    getSellersData(dtIni, dtFin, companiesIds) {
+        let url = `http://10.2.1.108/v1/dashboards/data?&reportId=121&dtini=${this.formatDate(
+            dtIni
+        )}&codvend=null&codemp=${companiesIds.join(
+            ','
+        )}&dtfin=${this.formatDate(dtFin)}`;
+
+        return this._httpClient.get(url).pipe(
+            tap((response: any) => {
+                const sellersFilter = response['121']['rows'].map((item) => {
+                    return {
+                        id: item[0],
+                        string: item[0].toString() + ' - ' + item[1],
+                    };
+                });
+
+                this._sellersData.next(sellersFilter);
+            })
+        );
     }
     /**
      * Get data
@@ -64,13 +89,6 @@ export class RolService {
 
         // console.log('teste func', dtIni);
 
-        function formatDate(date) {
-            const day = date.date.toString();
-            const month = (date.month + 1).toString();
-            const year = date.year.toString();
-            return `${day}/${month}/${year}`;
-        }
-
         /* 
         console.log("Lista ids filiais", companiesIds.join(","));
         console.log(typeof companiesIds.join(","));
@@ -78,19 +96,19 @@ export class RolService {
         console.log(formatDate(dtFin)); */
 
         let url = `http://10.2.1.108/v1/dashboards/data?reportId=3&reportId=21&reportId=41&reportId=42&reportId=81&reportId=82&reportId=83&reportId=84&reportId=101&reportId=121&dtini=
-        ${formatDate(dtIni)}
+        ${this.formatDate(dtIni)}
         &codvend=${sellersIds.join(',')}&codemp=${companiesIds.join(',')}&dtfin=
-        ${formatDate(dtFin)}`;
+        ${this.formatDate(dtFin)}`;
 
         return this._httpClient.get(url).pipe(
             tap((response: any) => {
                 const keyRolVsRolRealizada = 'visitorsVsPageViews';
                 const keyApiRolVsRolRealizada = '41';
-                console.log(
-                    'RolVsRolRealizada',
-                    rol[keyRolVsRolRealizada],
-                    response[keyApiRolVsRolRealizada]
-                );
+                // console.log(
+                //     'RolVsRolRealizada',
+                //     rol[keyRolVsRolRealizada],
+                //     response[keyApiRolVsRolRealizada]
+                // );
 
                 function updateObject(obj) {
                     // Get the first and last dates in the data
@@ -125,11 +143,11 @@ export class RolService {
 
                 const keyIndicadoresRol = 'previousStatement';
                 const keyApiIndicadoresRol = '42';
-                console.log(
-                    'IndicadoresRol',
-                    rol[keyIndicadoresRol],
-                    response[keyApiIndicadoresRol]
-                );
+                // console.log(
+                //     'IndicadoresRol',
+                //     rol[keyIndicadoresRol],
+                //     response[keyApiIndicadoresRol]
+                // );
 
                 const ccMeta = response['3']['2023'];
                 const chartData = {
@@ -154,7 +172,6 @@ export class RolService {
                     ...response['81'],
                     uniqueVisitors: response['81'].series['0'],
                 };
-                console.log('Resposta 41', response['41']);
 
                 response['82'].labels.pop();
                 response['82'].labels.push('Dias Úteis');
@@ -181,15 +198,15 @@ export class RolService {
                     };
                 });
 
-                console.log('teste filiais', companyFilter);
-                console.log('teste vendedores', sellersFilter);
-                console.log('ranking ROL', tableRankingRol);
-                console.log('Ranking ROL', rol.recentTransactions);
-                console.log('dias uteis teste', chartDiasUteis);
-                console.log('rol', chartData);
-                console.log('githubIssues', rol.githubIssues);
-                console.log('rol x metas - teste', chartROLxMetas);
-                console.log('rol x metas', rol.newVsReturning);
+                // console.log('teste filiais', companyFilter);
+                // console.log('teste vendedores', sellersFilter);
+                // console.log('ranking ROL', tableRankingRol);
+                // console.log('Ranking ROL', rol.recentTransactions);
+                // console.log('dias uteis teste', chartDiasUteis);
+                // console.log('rol', chartData);
+                // console.log('githubIssues', rol.githubIssues);
+                // console.log('rol x metas - teste', chartROLxMetas);
+                // console.log('rol x metas', rol.newVsReturning);
                 const dashData = {
                     ...rol,
                     githubIssues: chartData,

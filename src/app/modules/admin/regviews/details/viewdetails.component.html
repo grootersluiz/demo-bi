@@ -80,7 +80,7 @@
 
                 <!-- Name -->
                 <div class="mt-3 text-4xl font-bold truncate">
-                    {{ report.name }}
+                    {{ view.name }}
                 </div>
 
                 <!-- Tags -->
@@ -107,26 +107,14 @@
                 </ng-container> -->
 
                 <div class="flex flex-col mt-4 pt-6 border-t space-y-8">
-                    <!-- View ID -->
-                    <ng-container *ngIf="report.viewId">
+                    <!-- Title -->
+                    <ng-container *ngIf="view.query">
                         <div class="flex sm:items-center">
                             <!-- <mat-icon
                                 [svgIcon]="'heroicons_outline:briefcase'"
                             ></mat-icon> -->
                             <div class="ml-6 leading-6">
-                                View ID: {{ report.viewId }}
-                            </div>
-                        </div>
-                    </ng-container>
-
-                    <!-- Report Type -->
-                    <ng-container *ngIf="report.type">
-                        <div class="flex sm:items-center">
-                            <!-- <mat-icon
-                                [svgIcon]="'heroicons_outline:briefcase'"
-                            ></mat-icon> -->
-                            <div class="ml-6 leading-6">
-                                Tipo: {{ report.type }}
+                                {{view.query}}
                             </div>
                         </div>
                     </ng-container>
@@ -621,24 +609,24 @@
                     </div> -->
 
                     <!-- Title -->
-                    <div class="mt-8">
+                    <!-- <div class="mt-8">
                         <mat-form-field
                             class="w-full"
                             [subscriptSizing]="'dynamic'"
                         >
-                            <mat-label>Tipo</mat-label>
-                            <!-- <mat-icon
+                            <mat-label>Query</mat-label>
+                             <mat-icon
                                 matPrefix
                                 class="hidden sm:flex icon-size-5"
                                 [svgIcon]="'heroicons_solid:briefcase'"
-                            ></mat-icon> -->
+                            ></mat-icon>
                             <input
                                 matInput
-                                [formControlName]="'type'"
-                                [placeholder]="'Tipo'"
+                                [formControlName]="'title'"
+                                [placeholder]="'Query'"
                             />
                         </mat-form-field>
-                    </div>
+                    </div> -->
 
                     <!-- Company -->
                     <div class="mt-8">
@@ -646,7 +634,7 @@
                             class="w-full"
                             [subscriptSizing]="'dynamic'"
                         >
-                            <mat-label>Classe de estilo</mat-label>
+                            <mat-label>Alias</mat-label>
                             <!-- <mat-icon
                                 matPrefix
                                 class="hidden sm:flex icon-size-5"
@@ -655,7 +643,7 @@
                             <input
                                 matInput
                                 [formControlName]="'company'"
-                                [placeholder]="'Classe de estilo'"
+                                [placeholder]="'Alias'"
                             />
                         </mat-form-field>
                     </div>
@@ -665,7 +653,7 @@
                             class="w-full"
                             [subscriptSizing]="'dynamic'"
                         >
-                            <mat-label>View ID</mat-label>
+                            <mat-label>Data Source ID</mat-label>
                             <!-- <mat-icon
                                 matPrefix
                                 class="hidden sm:flex icon-size-5"
@@ -673,8 +661,8 @@
                             ></mat-icon> -->
                             <input
                                 matInput
-                                [formControlName]="'viewId'"
-                                [placeholder]="'View ID'"
+                                [formControlName]="'company'"
+                                [placeholder]="'Data Source ID'"
                             />
                         </mat-form-field>
                     </div>
@@ -1004,12 +992,12 @@
                     </div> -->
 
                     <!-- Notes -->
-                    <!-- <div class="mt-8">
+                    <div class="mt-8">
                         <mat-form-field
                             class="w-full"
                             [subscriptSizing]="'dynamic'"
                         >
-                            <mat-label>Notes</mat-label>
+                            <mat-label>Query</mat-label>
                             <mat-icon
                                 matPrefix
                                 class="hidden sm:flex icon-size-5"
@@ -1017,14 +1005,14 @@
                             ></mat-icon>
                             <textarea
                                 matInput
-                                [formControlName]="'notes'"
-                                [placeholder]="'Notes'"
+                                [formControlName]="'query'"
+                                [placeholder]="'Query'"
                                 [rows]="5"
                                 [spellcheck]="false"
                                 cdkTextareaAutosize
                             ></textarea>
                         </mat-form-field>
-                    </div> -->
+                    </div>
 
                     <!-- Actions -->
                     <div

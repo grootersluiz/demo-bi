@@ -23,18 +23,17 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { Country, Tag } from 'app/modules/admin/regreports/regreports.types';
-import { ReportListComponent } from 'app/modules/admin/regreports/list/reportlist.component';
-import { RegreportsService } from 'app/modules/admin/regreports/regreports.service';
-import { Reports } from '../regreports.types';
+import { View, Country, Tag } from 'app/modules/admin/regviews/regviews.types';
+import { ViewListComponent } from 'app/modules/admin/regviews/list/viewlist.component';
+import { RegviewsService } from 'app/modules/admin/regviews/regviews.service';
 
 @Component({
-    selector: 'reports-details',
-    templateUrl: './reportdetails.component.html',
+    selector: 'views-details',
+    templateUrl: './viewdetails.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ReportDetailsComponent implements OnInit, OnDestroy {
+export class ViewDetailsComponent implements OnInit, OnDestroy {
     @ViewChild('avatarFileInput') private _avatarFileInput: ElementRef;
     @ViewChild('tagsPanel') private _tagsPanel: TemplateRef<any>;
     @ViewChild('tagsPanelOrigin') private _tagsPanelOrigin: ElementRef;
@@ -43,9 +42,9 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
     tags: Tag[];
     tagsEditMode: boolean = false;
     filteredTags: Tag[];
-    report: Reports;
+    view: View;
     contactForm: UntypedFormGroup;
-    contacts: Reports[];
+    views: View[];
     countries: Country[];
     private _tagsPanelOverlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -56,8 +55,8 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
-        private _contactsListComponent: ReportListComponent,
-        private _contactsService: RegreportsService,
+        private _contactsListComponent: ViewListComponent,
+        private _contactsService: RegviewsService,
         private _formBuilder: UntypedFormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
         private _renderer2: Renderer2,
@@ -88,17 +87,15 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
             company: [''],
             birthday: [null],
             address: [null],
-            notes: [null],
+            query: [null],
             tags: [[]],
-            viewId: [null],
-            type: [null],
         });
 
         // Get the contacts
         this._contactsService.contacts$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((contacts: Reports[]) => {
-                this.contacts = contacts;
+            .subscribe((contacts: View[]) => {
+                this.views = contacts;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -107,12 +104,12 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
         // Get the contact
         this._contactsService.contact$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((contact: Reports) => {
+            .subscribe((view: View) => {
                 // Open the drawer in case it is closed
                 this._contactsListComponent.matDrawer.open();
 
                 // Get the contact
-                this.report = contact;
+                this.view = view;
 
                 // Clear the emails and phoneNumbers form arrays
                 (this.contactForm.get('emails') as UntypedFormArray).clear();
@@ -121,71 +118,27 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
                 ).clear();
 
                 // Patch values to the form
-                this.contactForm.patchValue(contact);
+                this.contactForm.patchValue(view);
 
                 // Setup the emails form array
-                // const emailFormGroups = [];
-
-                // if (contact.emails.length > 0) {
-                //     // Iterate through them
-                //     contact.emails.forEach((email) => {
-                //         // Create an email form group
-                //         emailFormGroups.push(
-                //             this._formBuilder.group({
-                //                 email: [email.email],
-                //                 label: [email.label],
-                //             })
-                //         );
-                //     });
-                // } else {
-                //     // Create an email form group
-                //     emailFormGroups.push(
-                //         this._formBuilder.group({
-                //             email: [''],
-                //             label: [''],
-                //         })
-                //     );
-                // }
+                const emailFormGroups = [];
 
                 // Add the email form groups to the emails form array
-                // emailFormGroups.forEach((emailFormGroup) => {
-                //     (this.contactForm.get('emails') as UntypedFormArray).push(
-                //         emailFormGroup
-                //     );
-                // });
+                emailFormGroups.forEach((emailFormGroup) => {
+                    (this.contactForm.get('emails') as UntypedFormArray).push(
+                        emailFormGroup
+                    );
+                });
 
                 // Setup the phone numbers form array
-                // const phoneNumbersFormGroups = [];
-
-                // if (contact.phoneNumbers.length > 0) {
-                //     // Iterate through them
-                //     contact.phoneNumbers.forEach((phoneNumber) => {
-                //         // Create an email form group
-                //         phoneNumbersFormGroups.push(
-                //             this._formBuilder.group({
-                //                 country: [phoneNumber.country],
-                //                 phoneNumber: [phoneNumber.phoneNumber],
-                //                 label: [phoneNumber.label],
-                //             })
-                //         );
-                //     });
-                // } else {
-                //     // Create a phone number form group
-                //     phoneNumbersFormGroups.push(
-                //         this._formBuilder.group({
-                //             country: ['us'],
-                //             phoneNumber: [''],
-                //             label: [''],
-                //         })
-                //     );
-                // }
+                const phoneNumbersFormGroups = [];
 
                 // Add the phone numbers form groups to the phone numbers form array
-                // phoneNumbersFormGroups.forEach((phoneNumbersFormGroup) => {
-                //     (
-                //         this.contactForm.get('phoneNumbers') as UntypedFormArray
-                //     ).push(phoneNumbersFormGroup);
-                // });
+                phoneNumbersFormGroups.forEach((phoneNumbersFormGroup) => {
+                    (
+                        this.contactForm.get('phoneNumbers') as UntypedFormArray
+                    ).push(phoneNumbersFormGroup);
+                });
 
                 // Toggle the edit mode off
                 this.toggleEditMode(false);
@@ -272,12 +225,10 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
         );
 
         // Update the contact on the server
-        this._contactsService
-            .updateReport(contact.id, contact)
-            .subscribe(() => {
-                // Toggle the edit mode off
-                this.toggleEditMode(false);
-            });
+        this._contactsService.updateView(contact.id, contact).subscribe(() => {
+            // Toggle the edit mode off
+            this.toggleEditMode(false);
+        });
     }
 
     /**
@@ -286,9 +237,9 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
     deleteContact(): void {
         // Open the confirmation dialog
         const confirmation = this._fuseConfirmationService.open({
-            title: 'Deletar Relatório',
+            title: 'Deletar View',
             message:
-                'Tem certeza que quer deletar esse relatório? Essa ação não poderá ser desfeita!',
+                'Tem certeza que quer deletar essa view? Essa ação não poderá ser desfeita!',
             actions: {
                 confirm: {
                     label: 'Deletar',
@@ -304,92 +255,50 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
             // If the confirm button pressed...
             if (result === 'confirmed') {
                 // Get the current contact's id
-                const id = this.report.id;
+                const id = this.view.id;
 
                 // Get the next/previous contact's id
-                const currentContactIndex = this.contacts.findIndex(
+                const currentContactIndex = this.views.findIndex(
                     (item) => item.id === id
                 );
                 const nextContactIndex =
                     currentContactIndex +
-                    (currentContactIndex === this.contacts.length - 1 ? -1 : 1);
+                    (currentContactIndex === this.views.length - 1 ? -1 : 1);
                 const nextContactId =
-                    this.contacts.length === 1 && this.contacts[0].id === id
+                    this.views.length === 1 && this.views[0].id === id
                         ? null
-                        : this.contacts[nextContactIndex].id;
+                        : this.views[nextContactIndex].id;
 
                 // Delete the contact
                 this.closeDrawer();
-                this._contactsService
-                    .deleteReport(id)
-                    .subscribe((isDeleted) => {
-                        // Return if the contact wasn't deleted...
-                        if (!isDeleted) {
-                            return;
-                        }
+                this._contactsService.deleteView(id).subscribe((isDeleted) => {
+                    // Return if the contact wasn't deleted...
+                    if (!isDeleted) {
+                        return;
+                    }
 
-                        // Navigate to the next contact if available
-                        if (nextContactId) {
-                            this._router.navigate(['../', nextContactId], {
-                                relativeTo: this._activatedRoute,
-                            });
-                        }
-                        // Otherwise, navigate to the parent
-                        else {
-                            this._router.navigate(['../'], {
-                                relativeTo: this._activatedRoute,
-                            });
-                        }
+                    // Navigate to the next contact if available
+                    if (nextContactId) {
+                        this._router.navigate(['../', nextContactId], {
+                            relativeTo: this._activatedRoute,
+                        });
+                    }
+                    // Otherwise, navigate to the parent
+                    else {
+                        this._router.navigate(['../'], {
+                            relativeTo: this._activatedRoute,
+                        });
+                    }
 
-                        // Toggle the edit mode off
-                        this.toggleEditMode(false);
-                    });
+                    // Toggle the edit mode off
+                    this.toggleEditMode(false);
+                });
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             }
         });
     }
-
-    /**
-     * Upload avatar
-     *
-     *
-     */
-    // uploadAvatar(fileList: FileList): void {
-    //     // Return if canceled
-    //     if (!fileList.length) {
-    //         return;
-    //     }
-
-    //     const allowedTypes = ['image/jpeg', 'image/png'];
-    //     const file = fileList[0];
-
-    //     // Return if the file is not allowed
-    //     if (!allowedTypes.includes(file.type)) {
-    //         return;
-    //     }
-
-    //     // Upload the avatar
-    //     this._contactsService.uploadAvatar(this.contact.id, file).subscribe();
-    // }
-
-    /**
-     * Remove the avatar
-     */
-    // removeAvatar(): void {
-    //     // Get the form control for 'avatar'
-    //     const avatarFormControl = this.contactForm.get('avatar');
-
-    //     // Set the avatar as null
-    //     avatarFormControl.setValue(null);
-
-    //     // Set the file input value as null
-    //     this._avatarFileInput.nativeElement.value = null;
-
-    //     // Update the contact
-    //     this.contact.avatar = null;
-    // }
 
     /**
      * Open tags panel
@@ -491,140 +400,6 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
             tag.title.toLowerCase().includes(value)
         );
     }
-
-    /**
-     * Filter tags input key down event
-     *
-     *
-     */
-    // filterTagsInputKeyDown(event): void {
-    //     // Return if the pressed key is not 'Enter'
-    //     if (event.key !== 'Enter') {
-    //         return;
-    //     }
-
-    //     // If there is no tag available...
-    //     if (this.filteredTags.length === 0) {
-    //         // Create the tag
-    //         this.createTag(event.target.value);
-
-    //         // Clear the input
-    //         event.target.value = '';
-
-    //         // Return
-    //         return;
-    //     }
-
-    //     // If there is a tag...
-    //     const tag = this.filteredTags[0];
-    //     const isTagApplied = this.contact.tags.find((id) => id === tag.id);
-
-    //     // If the found tag is already applied to the contact...
-    //     if (isTagApplied) {
-    //         // Remove the tag from the contact
-    //         this.removeTagFromContact(tag);
-    //     } else {
-    //         // Otherwise add the tag to the contact
-    //         this.addTagToContact(tag);
-    //     }
-    // }
-
-    /**
-     * Create a new tag
-     *
-     *
-     */
-    // createTag(title: string): void {
-    //     const tag = {
-    //         title,
-    //     };
-
-    //     // Create tag on the server
-    //     this._contactsService.createTag(tag).subscribe((response) => {
-    //         // Add the tag to the contact
-    //         this.addTagToContact(response);
-    //     });
-    // }
-
-    /**
-     * Update the tag title
-     *
-     *
-     */
-    // updateTagTitle(tag: Tag, event): void {
-    //     // Update the title on the tag
-    //     tag.title = event.target.value;
-
-    //     // Update the tag on the server
-    //     this._contactsService
-    //         .updateTag(tag.id, tag)
-    //         .pipe(debounceTime(300))
-    //         .subscribe();
-
-    //     // Mark for check
-    //     this._changeDetectorRef.markForCheck();
-    // }
-
-    /**
-     * Delete the tag
-     *
-     *
-     */
-    // deleteTag(tag: Tag): void {
-    //     // Delete the tag from the server
-    //     this._contactsService.deleteTag(tag.id).subscribe();
-
-    //     // Mark for check
-    //     this._changeDetectorRef.markForCheck();
-    // }
-
-    /**
-     * Add tag to the contact
-     *
-     *
-     */
-    // addTagToContact(tag: Tag): void {
-    //     // Add the tag
-    //     this.contact.tags.unshift(tag.id);
-
-    //     // Update the contact form
-    //     this.contactForm.get('tags').patchValue(this.contact.tags);
-
-    //     // Mark for check
-    //     this._changeDetectorRef.markForCheck();
-    // }
-
-    /**
-     * Remove tag from the contact
-     *
-     *
-     */
-    // removeTagFromContact(tag: Tag): void {
-    //     // Remove the tag
-    //     this.contact.tags.splice(
-    //         this.contact.tags.findIndex((item) => item === tag.id),
-    //         1
-    //     );
-
-    //     // Update the contact form
-    //     this.contactForm.get('tags').patchValue(this.contact.tags);
-
-    //     // Mark for check
-    //     this._changeDetectorRef.markForCheck();
-    // }
-
-    /**
-     * Toggle contact tag
-     *
-     *
-     */
-    // toggleContactTag(tag: Tag): void {
-    //     if (this.contact.tags.includes(tag.id)) {
-    //         this.removeTagFromContact(tag);
-    //     } else {
-    //         this.addTagToContact(tag);
-    //     }
-    // }
 
     /**
      * Should the create tag button be visible

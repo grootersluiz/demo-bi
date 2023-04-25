@@ -14,11 +14,13 @@ export class RolResolver implements Resolve<any> {
     /**
      * Constructor
      */
-    constructor(private _rolService: RolService) {}
+    constructor(private _rolService: RolService) { }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
+
+
 
     /**
      * Resolver
@@ -31,10 +33,10 @@ export class RolResolver implements Resolve<any> {
         state: RouterStateSnapshot
     ): Observable<any> {
         return this._rolService.getData(
-             this._rolService.INITIAL_INITIAL_DATE,
-             this._rolService.INITIAL_FINAL_DATE,
-             this._rolService.INITIAL_COMPANIES_IDS,
-             this._rolService.INITIAL_SELLERS_IDS
+            this._rolService.INITIAL_INITIAL_DATE,
+            this._rolService.INITIAL_FINAL_DATE,
+            this._rolService.INITIAL_COMPANIES_IDS,
+            this._rolService.INITIAL_SELLERS_IDS
         );
     }
 }
