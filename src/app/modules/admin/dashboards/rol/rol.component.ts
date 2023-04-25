@@ -46,13 +46,21 @@ export class RolComponent implements OnInit, OnDestroy {
         new MatTableDataSource();
     recentTransactionsDataSource2: MatTableDataSource<any> =
         new MatTableDataSource();
+
     recentTransactionsTableColumns: string[] = [
-        'transactionId',
-        'date',
-        'name',
-        'amount',
-        // 'status',
+        'Posição',
+        'Filial',
+        'Vendedor',
+        'ROL',
     ];
+
+    recentTransactionsTableColumns2: string[] = [
+        'Posição',
+        'Filial',
+        'Vendedor',
+        'Metas Atingidas',
+    ];
+
     chartGithubIssues: ApexOptions = {};
     data: any;
 
@@ -109,6 +117,10 @@ export class RolComponent implements OnInit, OnDestroy {
                     data.recentTransactions.rows;
                 this.recentTransactionsDataSource2.data =
                     data.recentTransactions2.rows;
+
+                // Uncomment the lines below to get tables headers from backend
+                /* this.recentTransactionsTableColumns = data.recentTransactions.columns ;  */
+                /* this.recentTransactionsTableColumns2 = data.recentTransactions2.columns ; */  
 
                 // Prepare the chart data
                 this._prepareChartData();
