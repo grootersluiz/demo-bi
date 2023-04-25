@@ -107,14 +107,27 @@
                 </ng-container> -->
 
                 <div class="flex flex-col mt-4 pt-6 border-t space-y-8">
-                    <!-- Title -->
+
+                    <!-- View ID -->
+                    <ng-container *ngIf="view.id">
+                        <div class="flex sm:items-center">
+                            <!-- <mat-icon
+                                [svgIcon]="'heroicons_outline:briefcase'"
+                            ></mat-icon> -->
+                            <div class="ml-6 leading-6">
+                                <p class="font-bold"> Id: </p> {{view.id}}
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <!-- View Query -->
                     <ng-container *ngIf="view.query">
                         <div class="flex sm:items-center">
                             <!-- <mat-icon
                                 [svgIcon]="'heroicons_outline:briefcase'"
                             ></mat-icon> -->
                             <div class="ml-6 leading-6">
-                                {{view.query}}
+                                <p class="font-bold"> Query: </p> {{view.query}}
                             </div>
                         </div>
                     </ng-container>
