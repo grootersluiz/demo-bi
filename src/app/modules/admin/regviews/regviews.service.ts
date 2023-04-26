@@ -121,7 +121,6 @@ export class RegviewsService {
             map((contacts) => {
          
                 // Find the contact
-                console.log(contacts);
                 const contact = contacts.find((item) => item.id === id) || null;
 
                 // Update the contact
@@ -131,7 +130,7 @@ export class RegviewsService {
                 return contact;
             }),
             switchMap((contact) => {
-                console.log(contact);
+                
                 if (!contact) {
                     return throwError(
                         'Could not found contact with id of ' + id + '!'

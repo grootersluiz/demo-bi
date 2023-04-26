@@ -13,18 +13,21 @@
                 />
             </ng-container> -->
         <!-- Close button -->
-        <div
-            class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6"
-        >
+        <div class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6" >
+
             <div class="flex items-center ml-auto mb-1">
-                <button mat-stroked-button (click)="toggleEditMode(true)">
+
+                <button mat-stroked-button (click)="toggleEditMode(true)" class="view-details-btn-edit">
                     <mat-icon
                         class="icon-size-5"
                         [svgIcon]="'heroicons_solid:pencil-alt'"
+                        
                     ></mat-icon>
                     <span class="ml-2">Editar</span>
                 </button>
+
             </div>
+
             <a
                 mat-icon-button
                 [matTooltip]="'Fechar'"
@@ -124,13 +127,18 @@
                     <ng-container *ngIf="view.query">
                         <div class="flex sm:items-center">
                             <!-- <mat-icon
-                                [svgIcon]="'heroicons_outline:briefcase'"
-                            ></mat-icon> -->
+                                                    [svgIcon]="'heroicons_outline:briefcase'"
+                                                ></mat-icon> -->
                             <div class="ml-6 leading-6">
-                                <p class="font-bold"> Query: </p> {{view.query}}
+                                <p class="font-bold"> Query: </p>
                             </div>
                         </div>
                     </ng-container>
+
+                    <ngx-codemirror class="code-mirror-display" #codemirror [options]="codeMirrorOptions2"
+                        [(ngModel)]="codeMirrorInitialQuery" [ngModelOptions]="{standalone: true}">
+                    </ngx-codemirror>
+
 
                     <!-- Company -->
                     <!-- <ng-container *ngIf="contact.company">

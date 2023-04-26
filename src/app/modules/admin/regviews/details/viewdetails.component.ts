@@ -26,6 +26,7 @@ import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { View, Country, Tag } from 'app/modules/admin/regviews/regviews.types';
 import { ViewListComponent } from 'app/modules/admin/regviews/list/viewlist.component';
 import { RegviewsService } from 'app/modules/admin/regviews/regviews.service';
+import { FuseConfigService } from '@fuse/services/config';
 
 @Component({
     selector: 'views-details',
@@ -50,19 +51,6 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
 
     codeMirrorInitialQuery: string = '';
 
-    codeMirrorOptions: any = {
-        mode: "text/x-mysql",
-        indentWithTabs: true,
-        smartIndent: true,
-        lineNumbers: true,
-        lineWrapping: true,
-        extraKeys: { "Ctrl-Space": "autocomplete" },
-        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
-        autoCloseBrackets: true,
-        matchBrackets: true,
-        lint: true
-      };
-
     private _tagsPanelOverlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -83,9 +71,39 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
         private _renderer2: Renderer2,
         private _router: Router,
         private _overlay: Overlay,
-        private _viewContainerRef: ViewContainerRef
+        private _viewContainerRef: ViewContainerRef,
+        private _fuseConfigService: FuseConfigService
     ) {}
 
+
+    codeMirrorOptions: any = {
+        mode: "text/x-mysql",
+        indentWithTabs: true,
+        smartIndent: true,
+        lineNumbers: true,
+        lineWrapping: true,
+        extraKeys: { "Ctrl-Space": "autocomplete" },
+        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+        autoCloseBrackets: true,
+        matchBrackets: true,
+        lint: true,
+    };
+    
+    codeMirrorOptions2: any = {
+        mode: "text/x-mysql",
+        indentWithTabs: true,
+        smartIndent: true,
+        lineNumbers: true,
+        lineWrapping: true,
+        extraKeys: { "Ctrl-Space": "autocomplete" },
+        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+        autoCloseBrackets: true,
+        matchBrackets: true,
+        lint: true,
+        readOnly: 'nocursor',
+    }; 
+
+    
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
     // -----------------------------------------------------------------------------------------------------
@@ -94,9 +112,22 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
+        // Get the current layout config to update the SQL editor
+        this._fuseConfigService.config$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe(layoutConfig => {
+                this.codeMirrorOptions.theme = layoutConfig.scheme == 'light' ? 'default' :  'midnight';
+                this.codeMirrorOptions2.theme = layoutConfig.scheme == 'light' ? 'default' : 'midnight';
+                this._changeDetectorRef.markForCheck();
+            });
+
+
+
+
+
         // Open the drawer
         this._contactsListComponent.matDrawer.open();
-
+        
         // Create the contact form
         this.contactForm = this._formBuilder.group({
             id: [''],
@@ -210,7 +241,6 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
     setSqlEditorContent(event: string){
         this.codeMirrorInitialQuery = event;
-        console.log(this.codeMirrorInitialQuery);
     }
     /**
      * Close the drawer
@@ -225,6 +255,7 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
      * @param editMode
      */
     toggleEditMode(editMode: boolean | null = null): void {
+   
         if (editMode === null) {
             this.editMode = !this.editMode;
         } else {
@@ -243,7 +274,7 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
         const contact = this.contactForm.getRawValue();
 
         contact.query = this.codeMirrorInitialQuery;
-        console.log(contact);
+       
 
         // Go through the contact object and clear empty values
         contact.emails = contact.emails.filter((email) => email.email);
