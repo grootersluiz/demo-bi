@@ -1,10 +1,12 @@
 import { Component} from '@angular/core';
 import { VendafilialService } from './vendafilial.service';
-import { Observable } from 'rxjs';
+import { Observable, async } from 'rxjs';
 
 import { formatNumber } from '@angular/common';
 
 import { Directive, HostListener, ElementRef, Renderer2 } from '@angular/core';
+import { ArrayDataSource } from '@angular/cdk/collections';
+import { HttpClient } from '@angular/common/http';
 
 export interface TipoColumaElement {
   NOMEFANTASIA: string;
@@ -78,16 +80,14 @@ export class VendafilialComponent {
                       ];
 
   dataSource = ELEMENT_DATA_VENDA;
+  _sysdate:string;
 
   _elementFilter: any;
   _elementRenderer: any;
+  _thishttpClient: any;
 
-  constructor(private vendafilialService: VendafilialService,private _element: ElementRef,private _renderer: Renderer2){
+  formataDataSource(lista){
 
-    this._elementFilter   = _element;
-    this._elementRenderer = _renderer;
-
-    var lista = this.vendafilialService.data$[1];
     var dataSourceVendaElemente ;
     var arrayTeste = [];
 
@@ -124,37 +124,29 @@ export class VendafilialComponent {
                   REALLB:             formatNumber(lista[i][18],'en-US','0.0-0'),
                   PROJECAOLB:         formatNumber(lista[i][19],'en-US','0.0-0'),
                   ATINGMETALB:        formatNumber(lista[i][20],'en-US','0.2-2'),
+                  colorATINGMETALB:   lista[i][20]< 90? red : lista[i][20]>90 && lista[i][20]<100? orange : green ,
                   GAPMETALB:          formatNumber(lista[i][21],'en-US','0.0-0'),
+                  colorGAPMETALB:     lista[i][21] > 0 ? green: red,
                   METAPMV:            formatNumber(lista[i][22],'en-US','0.0-0'),
                   REALPMV:            formatNumber(lista[i][23],'en-US','0.0-0'),
                   DIFPMV:             formatNumber(lista[i][24],'en-US','0.2-2'),
+                  colorDIFPMV:        lista[i][24] > 0 ? red : green,
                   METACC:             formatNumber(lista[i][25],'en-US','0.0-0'),
                   REALCC:             formatNumber(lista[i][26],'en-US','0.0-0'),
                   DIFCC:              formatNumber(lista[i][27],'en-US','0.0-0'),
+                  colorDIFCC:         lista[i][27] > 0 ? green: red
                 };
 
         arrayTeste.push(dataSourceVendaElemente);
     }
 
-    this.dataSource = arrayTeste;
+    return arrayTeste;
 
   }
 
-  formatDataMesAno(dataPicker) {
-
-    var mes = dataPicker.value.getMonth();
-
-    mes = mes < 9 ? '0' + (mes+1) :  (mes+1);
-
-    var dataMes = '01/'+ mes + '/'+ dataPicker.value.getUTCFullYear();
-
-    dataPicker.targetElement.value = dataMes;
-    return true;
-
-  }
-
-  _iconShowFilter: string       = 'filter_list_off';
-  _tolltip_ShowFIlter: string   = 'Off filtro';
+  
+  _iconShowFilter: string       = 'filter_list';
+  _tolltip_ShowFIlter: string   = 'On filtro';
   _classDashInicial: string[]   = ['flex','flex-col','p-0','w-4/5','sm:w-full','md:w-full','lg:w-4/5','xl:w-4/5','2xl:w-4/5'];
   _classFilterInicial: string[] = ['flex','flex-col','p-2','w-1/5','sm:w-full','md:w-full','lg:w-1/5','xl:w-1/5','2xl:w-1/5'];
   showFilter(thisEvent) {
@@ -172,7 +164,7 @@ export class VendafilialComponent {
       filterHidden = 'hidden';
 
       var pClassDash  = ['flex','flex-col','p-0','w-full','sm:w-full','md:w-full','lg:w-full','xl:w-full','2xl:w-full'];
-      var pClassFilter= ['flex','flex-col','p-0','w-0'   ,'sm:w-0'   ,'md:w-0'   ,'lg:w-0'   ,'xl:w-0'   ,'2xl:w-0'];
+      var pClassFilter= ['flex','flex-col','p-0','w-0'   ,'sm:h-0'   ,'md:h-0'   ,'lg:w-0'   ,'xl:w-0'   ,'2xl:w-0'];
     }
 
     this._elementRenderer.setStyle(
@@ -216,23 +208,79 @@ export class VendafilialComponent {
 
   }
 
-  consulatvendafilial(param ){
+  /////////////////////////////////////// Construtor  ///////////////////////////////////////////////
+  constructor(private vendafilialService: VendafilialService
+              ,private _element: ElementRef
+              ,private _renderer: Renderer2
+              ,private _httpClient : HttpClient){
 
-    
-    console.log(this._elementFilter);
+    this._elementFilter   = _element;
+    this._elementRenderer = _renderer;
+    this._thishttpClient = _httpClient;
 
+    const sysDate = new Date();
+    var mes = ("00" + sysDate.getMonth()).slice(-2) ;
+    this._sysdate  = '('+mes+'/'+sysDate.getFullYear() +')';
 
-    var dtRef = this._elementFilter.nativeElement.lastElementChild.lastElementChild.firstElementChild.firstElementChild.firstElementChild.firstElementChild.nextElementSibling.firstElementChild.offsetParent.firstElementChild.childNodes[4].value;
+    var lista = this.vendafilialService.data$[1];
 
-    var arrayParam = new Array();
+    var arrayDataSource =  this.formataDataSource(lista);
 
-    arrayParam.push(dtRef);
-    // var params = new Observable<{data:String[];}>;
+    this.dataSource = arrayDataSource;
 
-    this.vendafilialService.getDataAplica(arrayParam);
-    
+    //Ajuste para renderizar class 
+    setTimeout(() => {
+      this._elementRenderer.setStyle(
+        this._elementFilter.nativeElement.firstElementChild.lastElementChild.firstElementChild,
+        'visibility','hidden'
+      );
+      this.showFilter('');
+    }, 500);
 
   }
 
+  formatDataMesAno(dataPicker) {
+
+    var mes = dataPicker.value.getMonth();
+
+    mes = mes < 9 ? '0' + (mes+1) :  (mes+1);
+
+    var dataMes = '01/'+ mes + '/'+ dataPicker.value.getUTCFullYear();
+
+    dataPicker.targetElement.value = dataMes;
+    return true;
+
+  }
+
+
+  consulatvendafilial(param ){
+
+    // var dtRef = this._elementFilter.nativeElement.lastElementChild.lastElementChild.firstElementChild.firstElementChild.firstElementChild.firstElementChild.nextElementSibling.firstElementChild.offsetParent.firstElementChild.childNodes[4].value;
+    var dtRef = param;
+    var arrayParam = new Array();
+
+    arrayParam.push(dtRef);
+
+    var dataSplit = arrayParam[0].split('/',3);
+    this._sysdate = '('+dataSplit[1]+'/'+dataSplit[2]+')';
+    const lastDay = new Date(dataSplit[2], dataSplit[1] , 0);
+    const lastDayDate = lastDay.toLocaleDateString(); // ultimo dia do mês
+
+    this._thishttpClient.get('http://api.portal.jspecas.com.br/v1/views/163/data?ano='+dataSplit[2]+'&mes='+dataSplit[1]+'&dtref='+lastDayDate)
+                            .subscribe(dataresponse => {
+                                      var arrayDataSource = this.formataDataSource(dataresponse.rows);
+                                      this.dataSource = arrayDataSource;
+                                });   
+
+    // Não foi utilizado getDataAplica devido asyncronidade na atualização do dataSource
+    // var dataGet = this.vendafilialService.getDataAplica(arrayParam);
+        // setTimeout(() => {
+        // var lista = this.vendafilialService.data$[1];
+        // var arrayDataSource =  this.formataDataSource(lista);
+        // this.dataSource = arrayDataSource;
+        // console.log(this.dataSource);
+      // }, 600);
+
+  }
 
 }
