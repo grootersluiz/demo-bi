@@ -32,6 +32,7 @@ import { RegviewsService } from 'app/modules/admin/regviews/regviews.service';
     templateUrl: './viewdetails.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrls: ['./viewdetails.component.css']
 })
 export class ViewDetailsComponent implements OnInit, OnDestroy {
     @ViewChild('avatarFileInput') private _avatarFileInput: ElementRef;
@@ -46,8 +47,28 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
     contactForm: UntypedFormGroup;
     views: View[];
     countries: Country[];
+
+    codeMirrorInitialQuery: string = '';
+
+    codeMirrorOptions: any = {
+        mode: "text/x-mysql",
+        indentWithTabs: true,
+        smartIndent: true,
+        lineNumbers: true,
+        lineWrapping: true,
+        extraKeys: { "Ctrl-Space": "autocomplete" },
+        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+        autoCloseBrackets: true,
+        matchBrackets: true,
+        lint: true
+      };
+
     private _tagsPanelOverlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+
+
+
+    
 
     /**
      * Constructor
@@ -56,7 +77,7 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
         private _contactsListComponent: ViewListComponent,
-        private _contactsService: RegviewsService,
+        private _viewsService: RegviewsService,
         private _formBuilder: UntypedFormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
         private _renderer2: Renderer2,
@@ -92,25 +113,26 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
         });
 
         // Get the contacts
-        this._contactsService.contacts$
+        this._viewsService.contacts$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((contacts: View[]) => {
-                this.views = contacts;
+            .subscribe((views: View[]) => {
+                this.views = views;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
             });
 
         // Get the contact
-        this._contactsService.contact$
+        this._viewsService.contact$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((view: View) => {
                 // Open the drawer in case it is closed
                 this._contactsListComponent.matDrawer.open();
 
-                // Get the contact
+                // Get the view
                 this.view = view;
-
+                this.codeMirrorInitialQuery = this.view.query;
+                
                 // Clear the emails and phoneNumbers form arrays
                 (this.contactForm.get('emails') as UntypedFormArray).clear();
                 (
@@ -148,7 +170,7 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
             });
 
         // Get the country telephone codes
-        this._contactsService.countries$
+        this._viewsService.countries$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((codes: Country[]) => {
                 this.countries = codes;
@@ -158,7 +180,7 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
             });
 
         // Get the tags
-        this._contactsService.tags$
+        this._viewsService.tags$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((tags: Tag[]) => {
                 this.tags = tags;
@@ -186,7 +208,10 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
-
+    setSqlEditorContent(event: string){
+        this.codeMirrorInitialQuery = event;
+        console.log(this.codeMirrorInitialQuery);
+    }
     /**
      * Close the drawer
      */
@@ -217,6 +242,9 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
         // Get the contact object
         const contact = this.contactForm.getRawValue();
 
+        contact.query = this.codeMirrorInitialQuery;
+        console.log(contact);
+
         // Go through the contact object and clear empty values
         contact.emails = contact.emails.filter((email) => email.email);
 
@@ -225,7 +253,7 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
         );
 
         // Update the contact on the server
-        this._contactsService.updateView(contact.id, contact).subscribe(() => {
+        this._viewsService.updateView(contact.id, contact).subscribe(() => {
             // Toggle the edit mode off
             this.toggleEditMode(false);
         });
@@ -271,7 +299,7 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
 
                 // Delete the contact
                 this.closeDrawer();
-                this._contactsService.deleteView(id).subscribe((isDeleted) => {
+                this._viewsService.deleteView(id).subscribe((isDeleted) => {
                     // Return if the contact wasn't deleted...
                     if (!isDeleted) {
                         return;

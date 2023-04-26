@@ -22,10 +22,10 @@ import {
 })
 export class RegviewsService {
     // Private
-    private _contact: BehaviorSubject<View | null> = new BehaviorSubject(
+    private _view: BehaviorSubject<View | null> = new BehaviorSubject(
         null
     );
-    private _contacts: BehaviorSubject<View[] | null> = new BehaviorSubject(
+    private _views: BehaviorSubject<View[] | null> = new BehaviorSubject(
         null
     );
     private _countries: BehaviorSubject<Country[] | null> = new BehaviorSubject(
@@ -46,14 +46,14 @@ export class RegviewsService {
      * Getter for contact
      */
     get contact$(): Observable<View> {
-        return this._contact.asObservable();
+        return this._view.asObservable();
     }
 
     /**
      * Getter for contacts
      */
     get contacts$(): Observable<View[]> {
-        return this._contacts.asObservable();
+        return this._views.asObservable();
     }
 
     /**
@@ -86,7 +86,7 @@ export class RegviewsService {
                     //arrayOfObjects.sort((a, b) => a.name.localeCompare(b.name));
                     let orderedViews = [...views['data']];
                     orderedViews.sort((a, b) => a.name.localeCompare(b.name));
-                    this._contacts.next(orderedViews);
+                    this._views.next(orderedViews);
 
                 })
             );
@@ -107,7 +107,7 @@ export class RegviewsService {
                 tap((views) => {
                     let orderedViews = [...views['data']];
                     orderedViews.sort((a, b) => a.name.localeCompare(b.name));
-                    this._contacts.next(orderedViews);
+                    this._views.next(orderedViews);
                 })
             );
     }
@@ -116,7 +116,7 @@ export class RegviewsService {
      * Get contact by id
      */
     getViewById(id: number): Observable<View> {
-        return this._contacts.pipe(
+        return this._views.pipe(
             take(1),
             map((contacts) => {
          
@@ -125,7 +125,7 @@ export class RegviewsService {
                 const contact = contacts.find((item) => item.id === id) || null;
 
                 // Update the contact
-                this._contact.next(contact);
+                this._view.next(contact);
                 
                 // Return the contact
                 return contact;
@@ -155,7 +155,7 @@ export class RegviewsService {
                     .pipe(
                         map((newContact) => {
                             // Update the contacts with the new contact
-                            this._contacts.next([newContact, ...contacts]);
+                            this._views.next([newContact, ...contacts]);
 
                             // Return the new contact
                             return newContact;
@@ -188,7 +188,7 @@ export class RegviewsService {
                             contacts[index] = updatedContact;
 
                             // Update the contacts
-                            this._contacts.next(contacts);
+                            this._views.next(contacts);
 
                             // Return the updated contact
                             return updatedContact;
@@ -199,7 +199,7 @@ export class RegviewsService {
                                 filter((item) => item && item.id === id),
                                 tap(() => {
                                     // Update the contact if it's selected
-                                    this._contact.next(updatedContact);
+                                    this._view.next(updatedContact);
 
                                     // Return the updated contact
                                     return updatedContact;
@@ -233,7 +233,7 @@ export class RegviewsService {
                             contacts.splice(index, 1);
 
                             // Update the contacts
-                            this._contacts.next(contacts);
+                            this._views.next(contacts);
 
                             // Return the deleted status
                             return isDeleted;

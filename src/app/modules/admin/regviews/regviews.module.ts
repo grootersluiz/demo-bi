@@ -22,6 +22,7 @@ import { regviewsRoutes } from 'app/modules/admin/regviews/regviews.routing';
 import { RegviewsComponent } from 'app/modules/admin/regviews/regviews.component';
 import { ViewDetailsComponent } from 'app/modules/admin/regviews/details/viewdetails.component';
 import { ViewListComponent } from 'app/modules/admin/regviews/list/viewlist.component';
+import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 
 @NgModule({
     declarations: [RegviewsComponent, ViewListComponent, ViewDetailsComponent],
@@ -45,6 +46,7 @@ import { ViewListComponent } from 'app/modules/admin/regviews/list/viewlist.comp
         MatTooltipModule,
         FuseFindByKeyPipeModule,
         SharedModule,
+        CodemirrorModule
     ],
     providers: [
         {

@@ -316,6 +316,7 @@
             class="relative flex flex-col flex-auto items-center px-6 sm:px-12"
         >
             <div class="w-full max-w-3xl">
+                
                 <form [formGroup]="contactForm">
                     <!-- Avatar -->
                     <!-- <div class="flex flex-auto items-end -mt-16">
@@ -1004,29 +1005,14 @@
                         </mat-form-field>
                     </div> -->
 
-                    <!-- Notes -->
+                    <!-- SQL Query -->
                     <div class="mt-8">
-                        <mat-form-field
-                            class="w-full"
-                            [subscriptSizing]="'dynamic'"
-                        >
                             <mat-label>Query</mat-label>
-                            <mat-icon
-                                matPrefix
-                                class="hidden sm:flex icon-size-5"
-                                [svgIcon]="'heroicons_solid:menu-alt-2'"
-                            ></mat-icon>
-                            <textarea
-                                matInput
-                                [formControlName]="'query'"
-                                [placeholder]="'Query'"
-                                [rows]="5"
-                                [spellcheck]="false"
-                                cdkTextareaAutosize
-                            ></textarea>
-                        </mat-form-field>
                     </div>
+                    <ngx-codemirror class="code-mirror-editor" #codemirror [options]="codeMirrorOptions" [(ngModel)]="codeMirrorInitialQuery" [ngModelOptions]="{standalone: true}" (ngModelChange)="setSqlEditorContent($event)">
+                    </ngx-codemirror>
 
+                    
                     <!-- Actions -->
                     <div
                         class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent"
