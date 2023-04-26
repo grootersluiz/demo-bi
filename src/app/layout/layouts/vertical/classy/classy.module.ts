@@ -12,6 +12,7 @@ import { LanguagesModule } from 'app/layout/common/languages/languages.module';
 import { MessagesModule } from 'app/layout/common/messages/messages.module';
 import { NotificationsModule } from 'app/layout/common/notifications/notifications.module';
 import { QuickChatModule } from 'app/layout/common/quick-chat/quick-chat.module';
+import { SettingsModule } from 'app/layout/common/settings/settings.module';
 import { SearchModule } from 'app/layout/common/search/search.module';
 import { ShortcutsModule } from 'app/layout/common/shortcuts/shortcuts.module';
 import { UserModule } from 'app/layout/common/user/user.module';
@@ -36,6 +37,7 @@ import { ClassyLayoutComponent } from 'app/layout/layouts/vertical/classy/classy
         MessagesModule,
         NotificationsModule,
         QuickChatModule,
+        SettingsModule,
         SearchModule,
         ShortcutsModule,
         UserModule,
