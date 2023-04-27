@@ -746,7 +746,9 @@
                                                       currency: "BRL"
                                                   }
                                               )
-                                            : column === "Percentual Atingido"
+                                            : column ===
+                                                  "Percentual Atingido" &&
+                                              transaction[i]
                                             ? transaction[i] + "%"
                                             : transaction[i]
                                     }}
