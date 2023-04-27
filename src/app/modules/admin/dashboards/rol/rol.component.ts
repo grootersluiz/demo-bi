@@ -52,6 +52,8 @@ export class RolComponent implements OnInit, OnDestroy {
         'Filial',
         'Vendedor',
         'ROL',
+        'Meta',
+        'Percentual Atingido',
     ];
 
     recentTransactionsTableColumns2: string[] = [
@@ -76,7 +78,6 @@ export class RolComponent implements OnInit, OnDestroy {
     vendedoresStringList: string[];
     allSellersSelected: boolean = false;
 
-
     range = new FormGroup({
         start: new FormControl<Date | null>(null),
         end: new FormControl<Date | null>(null),
@@ -86,7 +87,6 @@ export class RolComponent implements OnInit, OnDestroy {
     dataFinal = this._rolService.INITIAL_FINAL_DATE;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
-    
 
     /**
      * Constructor
@@ -95,7 +95,7 @@ export class RolComponent implements OnInit, OnDestroy {
         private _rolService: RolService,
         private _router: Router,
         private _cdr: ChangeDetectorRef
-    ) { }
+    ) {}
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -120,7 +120,7 @@ export class RolComponent implements OnInit, OnDestroy {
 
                 // Uncomment the lines below to get tables headers from backend
                 /* this.recentTransactionsTableColumns = data.recentTransactions.columns ;  */
-                /* this.recentTransactionsTableColumns2 = data.recentTransactions2.columns ; */  
+                /* this.recentTransactionsTableColumns2 = data.recentTransactions2.columns ; */
 
                 // Prepare the chart data
                 this._prepareChartData();
@@ -189,22 +189,26 @@ export class RolComponent implements OnInit, OnDestroy {
 
     selectAllCompanies() {
         if (!this.allCompaniesSelected) {
-            let newFiliais = this.filiaisObjects.map(item => item.id.toString());
+            let newFiliais = this.filiaisObjects.map((item) =>
+                item.id.toString()
+            );
             this.filiais.setValue(newFiliais);
             this.allCompaniesSelected = true;
         } else {
-            this.filiais.setValue(this._rolService.INITIAL_COMPANIES_IDS)
+            this.filiais.setValue(this._rolService.INITIAL_COMPANIES_IDS);
             this.allCompaniesSelected = false;
         }
     }
 
     selectAllSellers() {
         if (!this.allSellersSelected) {
-            let newVendedores = this.vendedoresObjects.map(item => item.id.toString());
+            let newVendedores = this.vendedoresObjects.map((item) =>
+                item.id.toString()
+            );
             this.vendedores.setValue(newVendedores);
             this.allSellersSelected = true;
         } else {
-            this.vendedores.setValue(this._rolService.INITIAL_SELLERS_IDS)
+            this.vendedores.setValue(this._rolService.INITIAL_SELLERS_IDS);
             this.allSellersSelected = false;
         }
     }
@@ -721,21 +725,23 @@ export class RolComponent implements OnInit, OnDestroy {
                     seriesIndex,
                     w,
                 }): string => `<div class="flex items-center h-8 min-h-8 max-h-8 px-3">
-                                                    <div class="w-3 h-3 rounded-full" style="background-color: ${w.config.colors[
-                    seriesIndex
-                    ]
-                    };"></div>
-                                                    <div class="ml-2 text-md leading-none">${w.config.labels[
-                    seriesIndex
-                    ]
-                    }:</div>
+                                                    <div class="w-3 h-3 rounded-full" style="background-color: ${
+                                                        w.config.colors[
+                                                            seriesIndex
+                                                        ]
+                                                    };"></div>
+                                                    <div class="ml-2 text-md leading-none">${
+                                                        w.config.labels[
+                                                            seriesIndex
+                                                        ]
+                                                    }:</div>
                                                     <div class="ml-2 text-md font-bold leading-none">${(
-                        (w.config.series[
-                            seriesIndex
-                        ] *
-                            100) /
-                        w.config.series[0]
-                    ).toFixed(2)}%</div>
+                                                        (w.config.series[
+                                                            seriesIndex
+                                                        ] *
+                                                            100) /
+                                                        w.config.series[0]
+                                                    ).toFixed(2)}%</div>
                                                 </div>`,
             },
         };
@@ -789,21 +795,23 @@ export class RolComponent implements OnInit, OnDestroy {
                     seriesIndex,
                     w,
                 }): string => `<div class="flex items-center h-8 min-h-8 max-h-8 px-3">
-                                                     <div class="w-3 h-3 rounded-full" style="background-color: ${w.config.colors[
-                    seriesIndex
-                    ]
-                    };"></div>
-                                                     <div class="ml-2 text-md leading-none">${w.config.labels[
-                    seriesIndex
-                    ]
-                    }:</div>
+                                                     <div class="w-3 h-3 rounded-full" style="background-color: ${
+                                                         w.config.colors[
+                                                             seriesIndex
+                                                         ]
+                                                     };"></div>
+                                                     <div class="ml-2 text-md leading-none">${
+                                                         w.config.labels[
+                                                             seriesIndex
+                                                         ]
+                                                     }:</div>
                                                      <div class="ml-2 text-md font-bold leading-none">${(
-                        (w.config.series[
-                            seriesIndex
-                        ] *
-                            100) /
-                        w.config.series[0]
-                    ).toFixed(2)}%</div>
+                                                         (w.config.series[
+                                                             seriesIndex
+                                                         ] *
+                                                             100) /
+                                                         w.config.series[0]
+                                                     ).toFixed(2)}%</div>
                                                  </div>`,
             },
         };
@@ -857,21 +865,23 @@ export class RolComponent implements OnInit, OnDestroy {
                     seriesIndex,
                     w,
                 }): string => `<div class="flex items-center h-8 min-h-8 max-h-8 px-3">
-                                                    <div class="w-3 h-3 rounded-full" style="background-color: ${w.config.colors[
-                    seriesIndex
-                    ]
-                    };"></div>
-                                                    <div class="ml-2 text-md leading-none">${w.config.labels[
-                    seriesIndex
-                    ]
-                    }:</div>
+                                                    <div class="w-3 h-3 rounded-full" style="background-color: ${
+                                                        w.config.colors[
+                                                            seriesIndex
+                                                        ]
+                                                    };"></div>
+                                                    <div class="ml-2 text-md leading-none">${
+                                                        w.config.labels[
+                                                            seriesIndex
+                                                        ]
+                                                    }:</div>
                                                     <div class="ml-2 text-md font-bold leading-none">${(
-                        (w.config.series[
-                            seriesIndex
-                        ] *
-                            100) /
-                        30
-                    ).toFixed(2)}%</div>
+                                                        (w.config.series[
+                                                            seriesIndex
+                                                        ] *
+                                                            100) /
+                                                        30
+                                                    ).toFixed(2)}%</div>
                                                 </div>`,
             },
         };
