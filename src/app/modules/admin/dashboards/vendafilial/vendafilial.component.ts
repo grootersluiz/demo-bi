@@ -148,7 +148,7 @@ export class VendafilialComponent {
   _iconShowFilter: string       = 'filter_list';
   _tolltip_ShowFIlter: string   = 'On filtro';
   _classDashInicial: string[]   = ['flex','flex-col','p-0','w-4/5','sm:w-full','md:w-full','lg:w-4/5','xl:w-4/5','2xl:w-4/5'];
-  _classFilterInicial: string[] = ['flex','flex-col','p-2','w-1/5','sm:w-full','md:w-full','lg:w-1/5','xl:w-1/5','2xl:w-1/5'];
+  _classFilterInicial: string[] = ['flex','flex-col','p-0','w-1/5','sm:w-full','md:w-full','lg:w-1/5','xl:w-1/5','2xl:w-1/5'];
   showFilter(thisEvent) {
 
     this._iconShowFilter      = this._iconShowFilter== 'filter_list'? 'filter_list_off' : 'filter_list';
@@ -219,7 +219,7 @@ export class VendafilialComponent {
     this._thishttpClient = _httpClient;
 
     const sysDate = new Date();
-    var mes = ("00" + sysDate.getMonth()).slice(-2) ;
+    var mes = ("00" + (sysDate.getMonth()+1)).slice(-2) ;
     this._sysdate  = '('+mes+'/'+sysDate.getFullYear() +')';
 
     var lista = this.vendafilialService.data$[1];

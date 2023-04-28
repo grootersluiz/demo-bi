@@ -1,6 +1,6 @@
 <div class="container max-w-full max-h-32 sm:h-32 md:h-32 lg:h-32 xl:h-32 2xl:h-32 m-0 p-0" id="painelVendaFilialMes">
-
-    <mat-toolbar class="max-w-full">
+  <div class="flex flex-col full rounded-2xl mt-1 ml-2 mr-2 mb-0">
+    <mat-toolbar class="w-full rounded-2xl">
       <button [hidden]="false" [matTooltip]="_tolltip_ShowFIlter" (click)="showFilter($event)">
         <mat-icon aria-hidden="false" [fontIcon]="_iconShowFilter"></mat-icon>
       </button>
@@ -8,38 +8,47 @@
       <button [hidden]="false" matTooltip="Consultar" (click)="consulatvendafilial(dataref.value)">
         <mat-icon aria-hidden="false" fontIcon="search"></mat-icon>
       </button>
-      
-      <div class="text-2xl font-semibold tracking-tight leading-8 pl-1/4" style="text-align: center;">
-        Venda Filial Mês
-      </div>
-      <div class="tracking-tight p-4" style="text-align: center;">
-        {{_sysdate}}
+
+      <div class="flex flex-row shrink-0 ml-10">
+          <img src="assets/images/logo/Logo-Rede-JS-Pecas_3-40x40.png" alt="" class="mr-2 logo-filter hidden lg:block" style="width: 3rem;height: 3rem;">
+          <div class="flex flex-col">
+            <div class="text-2xl font-semibold tracking-tight mb-0">
+               Venda Filial Mês
+            </div>
+            <div class="font-medium tracking-tight text-sm mt-0">
+              {{_sysdate}}
+            </div>
+          </div>
       </div>
 
       <button [hidden]="true" matTooltip="Settings" class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2" style="visibility: hidden !important;">
         <mat-icon [hidden]="true" aria-hidden="false" fontIcon="settings" ></mat-icon>
       </button>
     </mat-toolbar>
+  </div>
+    
 
-    <div class="w-full flex flex-row sm:flex-col md:flex-col lg:flex-row xl:flex-row 2xl:flex-row">
+    <div class="w-full flex flex-row sm:flex-col md:flex-col lg:flex-row xl:flex-row 2xl:flex-row gap-4">
 
-      <div id="containerFilter" class="max-h-96">
-          <mat-form-field appearance="fill" class="max-w-96">
+      <div id="containerFilter" class="flex flex-col p-0 w-1/5 sm:w-full md:w-full lg:w-1/5 xl:w-1/5 2xl:w-1/5" >
+        <div class="h-full w-full rounded-2xl mt-2 ml-2 bg-white">
+          <mat-form-field appearance="fill" class="p-2 w-full" >
             <mat-label> Referência </mat-label>
             <!-- [formControl]="dtRef"  [value]="dtRef" -->
-            <input matInput [matDatepicker]="picker" class="max-w-full" id="dtref" #dataref (dateChange)="formatDataMesAno($event)">
+            <input matInput [matDatepicker]="picker" id="dtref" #dataref (dateChange)="formatDataMesAno($event)">
               <mat-hint>DD/MM/YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker ></mat-datepicker>
           </mat-form-field>
+        </div>
       </div>
-      <div id="containerDash" class="flex flex-col p-0 w-4/5 sm:w-full md:w-full lg:w-4/5 xl:w-4/5 2xl:w-4/5">
+      <div id="containerDash" class="flex flex-row p-0 w-4/5 sm:w-full md:w-full lg:w-4/5 xl:w-4/5 2xl:w-4/5">
 
-          <!-- <ng-container class="flex w-full sm:w-full md:w-full lg:w-full xl:w-full 2xl:w-full max-h-96">
-              Charts
-          </ng-container> -->
-          <div class="w-full sm:w-full md:w-full lg:w-full xl:w-full 2xl:w-full">
-            <div class="overflow-x-auto overflow-y-auto w-full max-h-full" >
+          <div id="divChart" class="h-60 w-full mt-2 mr-2" [hidden]="true">
+              <app-vendafilialchart></app-vendafilialchart>
+          </div>
+          <div class="flex w-full sm:w-full md:w-full lg:w-full xl:w-full 2xl:w-full mt-2 mr-2" >
+            <div class="overflow-x-auto overflow-y-auto w-full rounded-2xl mr-2" >
               <table mat-table [dataSource]="dataSource">
             
                 <ng-container matColumnDef="NOMEFANTASIA">

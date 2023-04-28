@@ -25,47 +25,36 @@ export class VendafilialService {
         return this._data.value;
     }
 
-    getData(): Observable<{ data: String[] }> {
-        const sysDate = new Date();
-        var mes = ('00' + sysDate.getMonth()).slice(-2);
-        const lastDay = new Date(sysDate.getFullYear(), sysDate.getMonth(), 0);
-        const lastDayDate = lastDay.toLocaleDateString(); // ultimo dia do mês
+    getData(): Observable<{data:String[];}> {
 
-        return this._httpClient
-            .get<{ data: String[] }>(
-                'http://10.2.1.108/v1/views/163/data?ano=' +
-                    sysDate.getFullYear() +
-                    '&mes=' +
-                    mes +
-                    '&dtref=' +
-                    lastDayDate
-            )
-            .pipe(
-                tap((response: any) => {
-                    this._data.next([response.columns, response.rows]);
-                })
-            );
+        const sysDate = new Date();
+        var dia = ("00" + (sysDate.getDate()-1)).slice(-2) ;
+        var mes = ("00" + (sysDate.getMonth()+1)).slice(-2) ;
+        // const lastDay = new Date(sysDate.getFullYear(), sysDate.getMonth() , 0);
+        // const lastDayDate = lastDay.toLocaleDateString(); // ultimo dia do mês
+
+        const lastDayDate = dia + mes + sysDate.getFullYear();
+        
+        return this._httpClient.get<{data:String[];}>('http://api.portal.jspecas.com.br/v1/views/163/data?ano='+sysDate.getFullYear()+'&mes='+mes+'&dtref='+lastDayDate).pipe(
+            tap((response: any) => {
+                this._data.next([response.columns,response.rows]);
+            })
+        );
     }
 
-    private vendafilialcom: VendafilialComponent;
+    private vendafilialcom : VendafilialComponent;
 
     async getDataAplica(param) {
-        var dataSplit = param[0].split('/', 3);
 
-        const lastDay = new Date(dataSplit[2], dataSplit[1], 0);
+        var dataSplit = param[0].split('/',3);
+
+        const lastDay = new Date(dataSplit[2], dataSplit[1] , 0);
         const lastDayDate = lastDay.toLocaleDateString(); // ultimo dia do mês
 
-        this._httpClient
-            .get<{ columns: []; rows: [] }>(
-                'http://api.portal.jspecas.com.br/v1/views/163/data?ano=' +
-                    dataSplit[2] +
-                    '&mes=' +
-                    dataSplit[1] +
-                    '&dtref=' +
-                    lastDayDate
-            )
-            .subscribe((dataresponse) => {
-                this._data.next([dataresponse.columns, dataresponse.rows]);
-            });
+        this._httpClient.get<{columns: [], rows: []}>('http://api.portal.jspecas.com.br/v1/views/163/data?ano='+dataSplit[2]+'&mes='+dataSplit[1]+'&dtref='+lastDayDate)
+                                .subscribe(dataresponse => {
+                                     this._data.next([dataresponse.columns,dataresponse.rows]);
+                                });                                
+
     }
 }
