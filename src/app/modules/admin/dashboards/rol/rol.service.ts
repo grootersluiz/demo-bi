@@ -43,7 +43,11 @@ export class RolService {
 
     getCurrentDate() {
         let date = new Date();
-        return { year: date.getFullYear(), month: date.getMonth(), date: date.getDate() }
+        return {
+            year: date.getFullYear(),
+            month: date.getMonth(),
+            date: date.getDate(),
+        };
     }
 
     formatDate(date) {
@@ -139,7 +143,9 @@ export class RolService {
                     return obj;
                 }
 
-                updateObject(response['41']);
+                if (response['41'].series[0].data[0]) {
+                    updateObject(response['41']);
+                }
 
                 const keyIndicadoresRol = 'previousStatement';
                 const keyApiIndicadoresRol = '42';
@@ -153,7 +159,7 @@ export class RolService {
                 const chartData = {
                     ...ccMeta,
                     series: {
-                        'this-year': ccMeta.series,
+                        'this-year': ccMeta ? ccMeta.series : {},
                     },
                 };
                 // let gap =
