@@ -11,6 +11,19 @@ export class RolService {
     private _data: BehaviorSubject<any> = new BehaviorSubject(null);
     private _sellersData: BehaviorSubject<any> = new BehaviorSubject([]);
 
+    readonly REPORT_ROL = '3';
+    readonly REPORT_ROL_VS_META = '21';
+    readonly REPORT_ROL_VS_ROL_REALIZADA = '41';
+    readonly REPORT_INDICADORES_ROL = '42';
+    readonly REPORT_METAS_ATINGIDAS = '81';
+    readonly REPORT_DIAS_UTEIS = '82';
+    readonly REPORT_RANKING_ROL = '83';
+    readonly REPORT_RANKING_METAS = '84';
+    readonly REPORT_FILTRO_FILIAIS = '101';
+    readonly REPORT_FILTRO_VENDEDORES = '121';
+    readonly CC_META_YEAR = '2023';
+
+
     readonly INITIAL_INITIAL_DATE = this.getCurrentDate();
     readonly INITIAL_FINAL_DATE = this.getCurrentDate();
 
@@ -41,6 +54,35 @@ export class RolService {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
+    updateObject(obj) {
+        // Get the first and last dates in the data
+        const firstDate = new Date(obj.series[0].data[0].x);
+        const lastDate = new Date(
+            obj.series[0].data[obj.series[0].data.length - 1].x
+        );
+
+        // Calculate the new dates
+        const newFirstDate = new Date(firstDate.getTime());
+        newFirstDate.setMonth(firstDate.getMonth() - 1);
+        const newLastDate = new Date(lastDate.getTime());
+        newLastDate.setMonth(lastDate.getMonth() + 1);
+
+        // Create the new data points
+        const newFirstPoint = {
+            x: newFirstDate.toISOString(),
+            y: 0,
+        };
+        const newLastPoint = { x: newLastDate.toISOString(), y: 0 };
+
+        // Add the new points to each series
+        for (const series of obj.series) {
+            series.data.unshift(newFirstPoint);
+            series.data.push(newLastPoint);
+        }
+
+        return obj;
+    }
+
     getCurrentDate() {
         let date = new Date();
         return {
@@ -66,7 +108,7 @@ export class RolService {
 
         return this._httpClient.get(url).pipe(
             tap((response: any) => {
-                const sellersFilter = response['121']['rows'].map((item) => {
+                const sellersFilter = response[this.REPORT_FILTRO_VENDEDORES]['rows'].map((item) => {
                     return {
                         id: item[0],
                         string: item[0].toString() + ' - ' + item[1],
@@ -81,150 +123,108 @@ export class RolService {
      * Get data
      */
     getData(dtIni, dtFin, companiesIds, sellersIds): Observable<any> {
-        // const datepipe = new DatePipe('pt-BR');
-        // let formattedDate = datepipe.transform(dtIni, 'dd/MM/YYYY');
+       
 
-        // const datepipe2 = new DatePipe('pt-BR');
-        // let formattedDate2 = datepipe2.transform(dtFin, 'dd/MM/YYYY');
-        // this.formatDateUSFormat(dtIni);
-        // this.formatDateUSFormat(dtFin);
-        // console.log('teste data', formattedDate);
-        // console.log('teste data', formattedDate2);
-
-        // console.log('teste func', dtIni);
-
-        /* 
-        console.log("Lista ids filiais", companiesIds.join(","));
-        console.log(typeof companiesIds.join(","));
-        console.log(formatDate(dtIni));
-        console.log(formatDate(dtFin)); */
-
-        let url = `http://10.2.1.108/v1/dashboards/data?reportId=3&reportId=21&reportId=41&reportId=42&reportId=81&reportId=82&reportId=83&reportId=84&reportId=101&reportId=121&dtini=
+        let url = `http://10.2.1.108/v1/dashboards/data?reportId=${this.REPORT_ROL}&reportId=${this.REPORT_ROL_VS_META}&reportId=${this.REPORT_ROL_VS_ROL_REALIZADA}&reportId=${this.REPORT_INDICADORES_ROL}&reportId=${this.REPORT_METAS_ATINGIDAS}&reportId=${this.REPORT_DIAS_UTEIS}&reportId=${this.REPORT_RANKING_ROL}&reportId=${this.REPORT_RANKING_METAS}&reportId=${this.REPORT_FILTRO_FILIAIS}&dtini=
         ${this.formatDate(dtIni)}
         &codvend=${sellersIds.join(',')}&codemp=${companiesIds.join(',')}&dtfin=
         ${this.formatDate(dtFin)}`;
 
         return this._httpClient.get(url).pipe(
             tap((response: any) => {
-                const keyRolVsRolRealizada = 'visitorsVsPageViews';
-                const keyApiRolVsRolRealizada = '41';
-                // console.log(
-                //     'RolVsRolRealizada',
-                //     rol[keyRolVsRolRealizada],
-                //     response[keyApiRolVsRolRealizada]
-                // );
 
-                function updateObject(obj) {
-                    // Get the first and last dates in the data
-                    const firstDate = new Date(obj.series[0].data[0].x);
-                    const lastDate = new Date(
-                        obj.series[0].data[obj.series[0].data.length - 1].x
-                    );
-
-                    // Calculate the new dates
-                    const newFirstDate = new Date(firstDate.getTime());
-                    newFirstDate.setMonth(firstDate.getMonth() - 1);
-                    const newLastDate = new Date(lastDate.getTime());
-                    newLastDate.setMonth(lastDate.getMonth() + 1);
-
-                    // Create the new data points
-                    const newFirstPoint = {
-                        x: newFirstDate.toISOString(),
-                        y: 0,
-                    };
-                    const newLastPoint = { x: newLastDate.toISOString(), y: 0 };
-
-                    // Add the new points to each series
-                    for (const series of obj.series) {
-                        series.data.unshift(newFirstPoint);
-                        series.data.push(newLastPoint);
-                    }
-
-                    return obj;
+                // Aplica função que zera o grafico nos extremos
+                if (response[this.REPORT_ROL_VS_ROL_REALIZADA].series[0].data[0]) {
+                    this.updateObject(response[this.REPORT_ROL_VS_ROL_REALIZADA]);
                 }
 
-                if (response['41'].series[0].data[0]) {
-                    updateObject(response['41']);
-                }
+    
+                const rolVsRolRealizada = response[this.REPORT_ROL_VS_ROL_REALIZADA];
+                const indicadoresRol = response[this.REPORT_INDICADORES_ROL];
 
-                const keyIndicadoresRol = 'previousStatement';
-                const keyApiIndicadoresRol = '42';
-                // console.log(
-                //     'IndicadoresRol',
-                //     rol[keyIndicadoresRol],
-                //     response[keyApiIndicadoresRol]
-                // );
 
-                const ccMeta = response['3']['2023'];
-                const chartData = {
-                    ...ccMeta,
+                // Tratamento do CC Meta
+                let ccMeta = {
+                    labels: [],
                     series: {
-                        'this-year': ccMeta ? ccMeta.series : {},
-                    },
-                };
-                // let gap =
-                //     response['21'].series['0'] - response['21'].series['1'];
-                // response['21'].series.push(gap);
-                // response['21'].labels.push('GAP');
+                        'this-year': []
+                    }
+                } 
+                try{
+                    ccMeta.labels = response[this.REPORT_ROL][this.CC_META_YEAR] ? response[this.REPORT_ROL][this.CC_META_YEAR].labels : [];
+                    ccMeta.series = {
+                        'this-year': response[this.REPORT_ROL][this.CC_META_YEAR] ? response[this.REPORT_ROL][this.CC_META_YEAR].series: []
+                    }
+                } catch {
+                    ccMeta = {
+                        labels: [],
+                        series: {
+                            'this-year': []
+                        }
+                    }
+                }
+                //--------------------------------------------------
 
-                response['21'].series['2'] = response['21'].series['2'] * -1;
+
+
+                // Tratamento do grafico Rol x Meta
+                response[this.REPORT_ROL_VS_META].series.forEach((element, index) => {
+                    if(element == null){
+                        response[this.REPORT_ROL_VS_META].series[index] = 0;
+                    }
+                }); 
+
+                const META = 0;
+                const ROL = 1;
+                const GAP = 2;
+
+                response[this.REPORT_ROL_VS_META].series[GAP] *= -1;
 
                 const chartROLxMetas = {
-                    ...response['21'],
-                    uniqueVisitors: response['21'].series['1'],
+                    ...response[this.REPORT_ROL_VS_META],
+                    uniqueVisitors: response[this.REPORT_ROL_VS_META].series[META],
                 };
+                //----------------------------------------------
+
+
 
                 const chartMetasAtingidas = {
-                    ...response['81'],
-                    uniqueVisitors: response['81'].series['0'],
+                    ...response[this.REPORT_METAS_ATINGIDAS],
+                    uniqueVisitors: response[this.REPORT_METAS_ATINGIDAS].series['0'],
                 };
 
-                response['82'].labels.pop();
-                response['82'].labels.push('Dias Úteis');
+                response[this.REPORT_DIAS_UTEIS].labels.pop();
+                response[this.REPORT_DIAS_UTEIS].labels.push('Dias Úteis');
 
                 const chartDiasUteis = {
-                    ...response['82'],
+                    ...response[this.REPORT_DIAS_UTEIS],
                     uniqueVisitors: 30,
                 };
 
-                const tableRankingRol = response['83'];
-                const tableRankingMetas = response['84'];
+                const tableRankingRol = response[this.REPORT_RANKING_ROL];
+                const tableRankingMetas = response[this.REPORT_RANKING_METAS];
 
-                const companyFilter = response['101']['rows'].map((item) => {
+                const COD_EMPRESA = 0;
+                const RAZAO_ABREV = 1;
+
+                const companyFilter = response[this.REPORT_FILTRO_FILIAIS]['rows'].map((item) => {
                     return {
-                        id: item[0],
-                        string: item[0].toString() + ' - ' + item[1],
+                        id: item[COD_EMPRESA],
+                        string: item[COD_EMPRESA].toString() + ' - ' + item[RAZAO_ABREV],
                     };
                 });
 
-                const sellersFilter = response['121']['rows'].map((item) => {
-                    return {
-                        id: item[0],
-                        string: item[0].toString() + ' - ' + item[1],
-                    };
-                });
-
-                // console.log('teste filiais', companyFilter);
-                // console.log('teste vendedores', sellersFilter);
-                // console.log('ranking ROL', tableRankingRol);
-                // console.log('Ranking ROL', rol.recentTransactions);
-                // console.log('dias uteis teste', chartDiasUteis);
-                // console.log('rol', chartData);
-                // console.log('githubIssues', rol.githubIssues);
-                // console.log('rol x metas - teste', chartROLxMetas);
-                // console.log('rol x metas', rol.newVsReturning);
                 const dashData = {
                     ...rol,
-                    githubIssues: chartData,
+                    githubIssues: ccMeta,
                     newVsReturning: chartROLxMetas,
-                    [keyRolVsRolRealizada]: response[keyApiRolVsRolRealizada],
-                    [keyIndicadoresRol]: response[keyApiIndicadoresRol],
+                    visitorsVsPageViews: rolVsRolRealizada,
+                    previousStatement: indicadoresRol,
                     gender: chartMetasAtingidas,
                     age: chartDiasUteis,
                     recentTransactions: tableRankingRol,
                     recentTransactions2: tableRankingMetas,
                     filiaisLista: companyFilter,
-                    vendedoresLista: sellersFilter,
                 };
                 this._data.next(dashData);
             })

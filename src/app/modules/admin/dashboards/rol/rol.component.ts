@@ -244,14 +244,14 @@ export class RolComponent implements OnInit, OnDestroy {
     addEventBegin(event: MatDatepickerInputEvent<Date>) {
         if (event.value) {
             this.dataInicio = event.value['_i'];
-            console.log(this.dataInicio);
+            
         }
     }
 
     addEventEnd(event: MatDatepickerInputEvent<Date>) {
         if (event.value) {
             this.dataFinal = event.value['_i'];
-            console.log(this.dataFinal);
+          
         }
     }
 
