@@ -23,7 +23,6 @@ export class RolService {
     readonly REPORT_FILTRO_VENDEDORES = '121';
     readonly CC_META_YEAR = '2023';
 
-
     readonly INITIAL_INITIAL_DATE = this.getCurrentDate();
     readonly INITIAL_FINAL_DATE = this.getCurrentDate();
 
@@ -108,7 +107,9 @@ export class RolService {
 
         return this._httpClient.get(url).pipe(
             tap((response: any) => {
-                const sellersFilter = response[this.REPORT_FILTRO_VENDEDORES]['rows'].map((item) => {
+                const sellersFilter = response[this.REPORT_FILTRO_VENDEDORES][
+                    'rows'
+                ].map((item) => {
                     return {
                         id: item[0],
                         string: item[0].toString() + ' - ' + item[1],
@@ -123,56 +124,104 @@ export class RolService {
      * Get data
      */
     getData(dtIni, dtFin, companiesIds, sellersIds): Observable<any> {
-       
-
-        let url = `http://10.2.1.108/v1/dashboards/data?reportId=${this.REPORT_ROL}&reportId=${this.REPORT_ROL_VS_META}&reportId=${this.REPORT_ROL_VS_ROL_REALIZADA}&reportId=${this.REPORT_INDICADORES_ROL}&reportId=${this.REPORT_METAS_ATINGIDAS}&reportId=${this.REPORT_DIAS_UTEIS}&reportId=${this.REPORT_RANKING_ROL}&reportId=${this.REPORT_RANKING_METAS}&reportId=${this.REPORT_FILTRO_FILIAIS}&dtini=
+        let url = `http://10.2.1.108/v1/dashboards/data?reportId=${
+            this.REPORT_ROL
+        }&reportId=${this.REPORT_ROL_VS_META}&reportId=${
+            this.REPORT_ROL_VS_ROL_REALIZADA
+        }&reportId=${this.REPORT_INDICADORES_ROL}&reportId=${
+            this.REPORT_METAS_ATINGIDAS
+        }&reportId=${this.REPORT_DIAS_UTEIS}&reportId=${
+            this.REPORT_RANKING_ROL
+        }&reportId=${this.REPORT_RANKING_METAS}&reportId=${
+            this.REPORT_FILTRO_FILIAIS
+        }&dtini=
         ${this.formatDate(dtIni)}
         &codvend=${sellersIds.join(',')}&codemp=${companiesIds.join(',')}&dtfin=
         ${this.formatDate(dtFin)}`;
 
         return this._httpClient.get(url).pipe(
             tap((response: any) => {
-
                 // Aplica função que zera o grafico nos extremos
-                if (response[this.REPORT_ROL_VS_ROL_REALIZADA].series[0].data[0]) {
-                    this.updateObject(response[this.REPORT_ROL_VS_ROL_REALIZADA]);
+                if (
+                    response[this.REPORT_ROL_VS_ROL_REALIZADA].series[0].data[0]
+                ) {
+                    this.updateObject(
+                        response[this.REPORT_ROL_VS_ROL_REALIZADA]
+                    );
                 }
 
-    
-                const rolVsRolRealizada = response[this.REPORT_ROL_VS_ROL_REALIZADA];
+                //Tratamento do Gráfico Meta ROL x ROL Realizada
+
+                response[this.REPORT_ROL_VS_ROL_REALIZADA].series.forEach(
+                    (element, index) => {
+                        if (element.data.y == null) {
+                            response[this.REPORT_ROL_VS_ROL_REALIZADA].series[
+                                index
+                            ].data.y = 0;
+                        }
+                    }
+                );
+
+                const rolVsRolRealizada =
+                    response[this.REPORT_ROL_VS_ROL_REALIZADA];
+
+                //----------------------------------------------------------------
+
+                // Tratamento do Gráfico "Indicadores ROL"
+
+                let maxRol = response[this.REPORT_INDICADORES_ROL].LIMITE;
+                let minRol = response[this.REPORT_INDICADORES_ROL].SPENT;
+                let avgRol = response[this.REPORT_INDICADORES_ROL].MINIMUM;
+
+                let indRol = [maxRol, minRol, avgRol];
+
+                indRol.forEach((element, index) => {
+                    if (element == null) {
+                        response[this.REPORT_INDICADORES_ROL][index] = 0;
+                    }
+                });
+
                 const indicadoresRol = response[this.REPORT_INDICADORES_ROL];
 
+                //----------------------------------------------------------------
 
                 // Tratamento do CC Meta
                 let ccMeta = {
                     labels: [],
                     series: {
-                        'this-year': []
-                    }
-                } 
-                try{
-                    ccMeta.labels = response[this.REPORT_ROL][this.CC_META_YEAR] ? response[this.REPORT_ROL][this.CC_META_YEAR].labels : [];
+                        'this-year': [],
+                    },
+                };
+                try {
+                    ccMeta.labels = response[this.REPORT_ROL][this.CC_META_YEAR]
+                        ? response[this.REPORT_ROL][this.CC_META_YEAR].labels
+                        : [];
                     ccMeta.series = {
-                        'this-year': response[this.REPORT_ROL][this.CC_META_YEAR] ? response[this.REPORT_ROL][this.CC_META_YEAR].series: []
-                    }
+                        'this-year': response[this.REPORT_ROL][
+                            this.CC_META_YEAR
+                        ]
+                            ? response[this.REPORT_ROL][this.CC_META_YEAR]
+                                  .series
+                            : [],
+                    };
                 } catch {
                     ccMeta = {
                         labels: [],
                         series: {
-                            'this-year': []
-                        }
-                    }
+                            'this-year': [],
+                        },
+                    };
                 }
                 //--------------------------------------------------
 
-
-
                 // Tratamento do grafico Rol x Meta
-                response[this.REPORT_ROL_VS_META].series.forEach((element, index) => {
-                    if(element == null){
-                        response[this.REPORT_ROL_VS_META].series[index] = 0;
+                response[this.REPORT_ROL_VS_META].series.forEach(
+                    (element, index) => {
+                        if (element == null) {
+                            response[this.REPORT_ROL_VS_META].series[index] = 0;
+                        }
                     }
-                }); 
+                );
 
                 const META = 0;
                 const ROL = 1;
@@ -182,16 +231,40 @@ export class RolService {
 
                 const chartROLxMetas = {
                     ...response[this.REPORT_ROL_VS_META],
-                    uniqueVisitors: response[this.REPORT_ROL_VS_META].series[META],
+                    uniqueVisitors:
+                        response[this.REPORT_ROL_VS_META].series[META],
                 };
                 //----------------------------------------------
 
+                //Tratamento Gráfico "Metas Atingidas"
 
+                response[this.REPORT_METAS_ATINGIDAS].series.forEach(
+                    (element, index) => {
+                        if (element == null) {
+                            response[this.REPORT_METAS_ATINGIDAS].series[
+                                index
+                            ] = 0;
+                        }
+                    }
+                );
 
                 const chartMetasAtingidas = {
                     ...response[this.REPORT_METAS_ATINGIDAS],
-                    uniqueVisitors: response[this.REPORT_METAS_ATINGIDAS].series['0'],
+                    uniqueVisitors:
+                        response[this.REPORT_METAS_ATINGIDAS].series['0'],
                 };
+
+                //---------------------------------------------------
+
+                //Tratamento do Gráfico "Dias Úteis"
+
+                response[this.REPORT_DIAS_UTEIS].series.forEach(
+                    (element, index) => {
+                        if (element == null) {
+                            response[this.REPORT_DIAS_UTEIS].series[index] = 0;
+                        }
+                    }
+                );
 
                 response[this.REPORT_DIAS_UTEIS].labels.pop();
                 response[this.REPORT_DIAS_UTEIS].labels.push('Dias Úteis');
@@ -201,16 +274,23 @@ export class RolService {
                     uniqueVisitors: 30,
                 };
 
+                //---------------------------------------------------
+
                 const tableRankingRol = response[this.REPORT_RANKING_ROL];
                 const tableRankingMetas = response[this.REPORT_RANKING_METAS];
 
                 const COD_EMPRESA = 0;
                 const RAZAO_ABREV = 1;
 
-                const companyFilter = response[this.REPORT_FILTRO_FILIAIS]['rows'].map((item) => {
+                const companyFilter = response[this.REPORT_FILTRO_FILIAIS][
+                    'rows'
+                ].map((item) => {
                     return {
                         id: item[COD_EMPRESA],
-                        string: item[COD_EMPRESA].toString() + ' - ' + item[RAZAO_ABREV],
+                        string:
+                            item[COD_EMPRESA].toString() +
+                            ' - ' +
+                            item[RAZAO_ABREV],
                     };
                 });
 
