@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
 import { RolComponent } from 'app/modules/admin/dashboards/rol/rol.component';
-import { RolResolver } from 'app/modules/admin/dashboards/rol/rol.resolvers';
+import { RolResolver, SellersResolver } from 'app/modules/admin/dashboards/rol/rol.resolvers';
 
 export const rolRoutes: Route[] = [
     {
@@ -8,6 +8,7 @@ export const rolRoutes: Route[] = [
         component: RolComponent,
         resolve: {
             data: RolResolver,
+            sellers: SellersResolver
         },
     },
 ];

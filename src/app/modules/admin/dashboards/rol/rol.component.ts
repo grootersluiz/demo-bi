@@ -125,14 +125,27 @@ export class RolComponent implements OnInit, OnDestroy {
                 // Prepare the chart data
                 this._prepareChartData();
 
-                // Trigger the change detection mechanism so that it updates the chart when filtering
-                this._cdr.detectChanges();
+
 
                 this.filiaisObjects = this.data.filiaisLista;
                 this.filiaisStringList = this.filiaisObjects.map(
                     (item) => item.string
                 );
+
+                // Trigger the change detection mechanism so that it updates the chart when filtering
+                this._cdr.markForCheck();
             });
+
+        // Get the sellers data
+        this._rolService.sellersData$
+        .pipe(takeUntil(this._unsubscribeAll))
+        .subscribe((data) => {
+            this.vendedoresObjects = data;
+            this.vendedoresStringList = this.vendedoresObjects.map(
+                (item) => item.string
+            );
+            this._cdr.markForCheck();
+        });
 
         // Attach SVG fill fixer to all ApexCharts
         window['Apex'] = {
@@ -148,21 +161,7 @@ export class RolComponent implements OnInit, OnDestroy {
             },
         };
 
-        // Get the sellers data
-        this._rolService
-            .getSellersData(
-                this.dataInicio,
-                this.dataFinal,
-                this._rolService.INITIAL_COMPANIES_IDS
-            )
-            .subscribe();
-        this._rolService.sellersData$.subscribe((data) => {
-            this.vendedoresObjects = data;
-            this.vendedoresStringList = this.vendedoresObjects.map(
-                (item) => item.string
-            );
-            this._cdr.detectChanges();
-        });
+
     }
 
     /**

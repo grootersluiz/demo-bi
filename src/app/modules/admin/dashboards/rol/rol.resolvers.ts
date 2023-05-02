@@ -40,3 +40,36 @@ export class RolResolver implements Resolve<any> {
         );
     }
 }
+
+@Injectable({
+    providedIn: 'root',
+})
+export class SellersResolver implements Resolve<any> {
+    /**
+     * Constructor
+     */
+    constructor(private _rolService: RolService) { }
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Public methods
+    // -----------------------------------------------------------------------------------------------------
+
+
+
+    /**
+     * Resolver
+     *
+     * @param route
+     * @param state
+     */
+    resolve(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot
+    ): Observable<any> {
+        return this._rolService.getSellersData(
+            this._rolService.INITIAL_INITIAL_DATE,
+            this._rolService.INITIAL_FINAL_DATE,
+            this._rolService.INITIAL_COMPANIES_IDS
+        );
+    }
+}
