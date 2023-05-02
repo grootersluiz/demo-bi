@@ -201,15 +201,15 @@ export class RolComponent implements OnInit, OnDestroy {
     }
 
     selectAllSellers() {
-        if (!this.allSellersSelected) {
+        if (this.allSellersSelected || this.vendedoresObjects.length === 0) {
+            this.vendedores.setValue(this._rolService.INITIAL_SELLERS_IDS);
+            this.allSellersSelected = false;
+        } else {
             let newVendedores = this.vendedoresObjects.map((item) =>
                 item.id.toString()
             );
             this.vendedores.setValue(newVendedores);
             this.allSellersSelected = true;
-        } else {
-            this.vendedores.setValue(this._rolService.INITIAL_SELLERS_IDS);
-            this.allSellersSelected = false;
         }
     }
 
@@ -229,7 +229,7 @@ export class RolComponent implements OnInit, OnDestroy {
     }
 
     handleCompanyFilterSelect(filialId: number) {
-        this.vendedoresStringList = ['Carregando...'];
+        //this.vendedoresStringList = ['Carregando...'];
         if (this.filiais.value.length == 0) {
             this.filiais.setValue(this._rolService.INITIAL_COMPANIES_IDS);
         }
@@ -244,14 +244,12 @@ export class RolComponent implements OnInit, OnDestroy {
     addEventBegin(event: MatDatepickerInputEvent<Date>) {
         if (event.value) {
             this.dataInicio = event.value['_i'];
-            
         }
     }
 
     addEventEnd(event: MatDatepickerInputEvent<Date>) {
         if (event.value) {
             this.dataFinal = event.value['_i'];
-          
         }
     }
 
