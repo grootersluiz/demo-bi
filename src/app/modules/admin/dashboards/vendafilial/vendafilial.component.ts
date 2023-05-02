@@ -3,10 +3,12 @@ import { VendafilialService } from './vendafilial.service';
 import { Observable, async } from 'rxjs';
 
 import { formatNumber } from '@angular/common';
+import { LocalizedString } from '@angular/compiler';
 
 import { Directive, HostListener, ElementRef, Renderer2 } from '@angular/core';
 import { ArrayDataSource } from '@angular/cdk/collections';
 import { HttpClient } from '@angular/common/http';
+import { toPlainObject } from 'lodash';
 
 export interface TipoColumaElement {
   NOMEFANTASIA: string;
@@ -100,40 +102,40 @@ export class VendafilialComponent {
 
       dataSourceVendaElemente = {
                   NOMEFANTASIA:       lista[i][0],
-                  METAROL:            formatNumber(lista[i][1],'en-US','0.0-0'),
-                  REALROL:            formatNumber(lista[i][2],'en-US','0.0-0'),
-                  REALROLINTERCOMP:   formatNumber(lista[i][3],'en-US','0.0-0'),
-                  REALROLREGULAR:     formatNumber(lista[i][4],'en-US','0.0-0'),
-                  REALROLINSUMO:      formatNumber(lista[i][5],'en-US','0.0-0'),
-                  REALROLTOTAL:       formatNumber(lista[i][6],'en-US','0.0-0'),
-                  PROJECAO:           formatNumber(lista[i][7],'en-US','0.0-0'),
-                  ATINGMETAROL:       formatNumber(lista[i][8],'en-US','0.2-2'),
+                  METAROL:            lista[i][1],
+                  REALROL:            lista[i][2],
+                  REALROLINTERCOMP:   lista[i][3],
+                  REALROLREGULAR:     lista[i][4],
+                  REALROLINSUMO:      lista[i][5],
+                  REALROLTOTAL:       lista[i][6],
+                  PROJECAO:           lista[i][7],
+                  ATINGMETAROL:       lista[i][8],
                   colorATINGMETAROL:  lista[i][8]< 90? red : lista[i][8]>90 && lista[i][8]<100? orange : green ,
-                  GAPMETAROL:         formatNumber(lista[i][9],'en-US','0.0-0'),
+                  GAPMETAROL:         lista[i][9],
                   colorGAPMETAROL:    lista[i][9] > 0 ? green: red,
-                  METAVDROL:          formatNumber(lista[i][10],'en-US','0.0-0'),
-                  REALVDROL:          formatNumber(lista[i][11],'en-US','0.0-0'),
-                  DIFMETAROL:         formatNumber(lista[i][12],'en-US','0.2-2'),
+                  METAVDROL:          lista[i][10],
+                  REALVDROL:          lista[i][11],
+                  DIFMETAROL:         lista[i][12],
                   colorDIFMETAROL:    lista[i][12] > 0 ? green: red,
-                  NOVAMETAROL:        formatNumber(lista[i][13],'en-US','0.0-0'),
-                  METAMB:             formatNumber(lista[i][14],'en-US','0.2-2'),
-                  REALMB:             formatNumber(lista[i][15],'en-US','0.2-2'),
-                  DIFMB:              formatNumber(lista[i][16],'en-US','0.2-2'),
+                  NOVAMETAROL:        lista[i][13],
+                  METAMB:             lista[i][14],
+                  REALMB:             lista[i][15],
+                  DIFMB:              lista[i][16],
                   colorDIFMB:         lista[i][16] > 0 ? green: red,
-                  METALB:             formatNumber(lista[i][17],'en-US','0.0-0'),
-                  REALLB:             formatNumber(lista[i][18],'en-US','0.0-0'),
-                  PROJECAOLB:         formatNumber(lista[i][19],'en-US','0.0-0'),
-                  ATINGMETALB:        formatNumber(lista[i][20],'en-US','0.2-2'),
+                  METALB:             lista[i][17],
+                  REALLB:             lista[i][18],
+                  PROJECAOLB:         lista[i][19],
+                  ATINGMETALB:        lista[i][20],
                   colorATINGMETALB:   lista[i][20]< 90? red : lista[i][20]>90 && lista[i][20]<100? orange : green ,
-                  GAPMETALB:          formatNumber(lista[i][21],'en-US','0.0-0'),
+                  GAPMETALB:          lista[i][21],
                   colorGAPMETALB:     lista[i][21] > 0 ? green: red,
-                  METAPMV:            formatNumber(lista[i][22],'en-US','0.0-0'),
-                  REALPMV:            formatNumber(lista[i][23],'en-US','0.0-0'),
-                  DIFPMV:             formatNumber(lista[i][24],'en-US','0.2-2'),
+                  METAPMV:            lista[i][22],
+                  REALPMV:            lista[i][23],
+                  DIFPMV:             lista[i][24],
                   colorDIFPMV:        lista[i][24] > 0 ? red : green,
-                  METACC:             formatNumber(lista[i][25],'en-US','0.0-0'),
-                  REALCC:             formatNumber(lista[i][26],'en-US','0.0-0'),
-                  DIFCC:              formatNumber(lista[i][27],'en-US','0.0-0'),
+                  METACC:             lista[i][25],
+                  REALCC:             lista[i][26],
+                  DIFCC:              lista[i][27],
                   colorDIFCC:         lista[i][27] > 0 ? green: red
                 };
 

@@ -15,7 +15,7 @@ import {
   // ApexFill
 } from "ng-apexcharts";
 
-import { VendafilialService } from "../vendafilial.service";
+import { VendafilialchartService } from "./vendafilialchart.service";
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -57,30 +57,85 @@ export class VendafilialchartComponent {
     palette10: ['#A300D6','#7D02EB','#5653FE','#2983FF','#00B1F2']
   };
 
-  constructor(private _serviceVendafilial: VendafilialService, ) {
+  posicionaValorXinCategoria(categorias,rows){
 
-    console.log(this._colors);
+    var keyX = 2;
+    var codemp = 99;
+
+    var viewSerie = [
+      {
+        name: "META",
+        data: []
+      },
+      {
+        name: "ROL",
+        data: []
+      }
+    ];
+
+    var indexData =0;
+    for (let index = 0; index < categorias.length; index++) {
+      const element = categorias[index];
+      
+      var valorKey  = rows[indexData];
+
+      // console.log(valorKey);
+
+      // while(valorKey.substr(0,2) != element){
+      //   viewSerie[0].data.push(0);
+      //   viewSerie[1].data.push(0);
+      //   indexData++;
+      // }
+
+      // var valorMeta = rows[indexData][3];
+      // var valorRol  = rows[indexData][4];
+      
+      // if(valorKey.substr(0,2) === element){
+      //   viewSerie[0].data.push(valorMeta);
+      //   viewSerie[1].data.push(valorRol);
+      // }
+
+      // indexData++;
+      
+    }
+
+    // console.log(viewSerie);
+
+  }
+
+  ////////////////////////////////////// Constructor //////////////////////////////////
+  constructor(private servicevendafilial: VendafilialchartService ) {
+
+    var consCategorias = this.servicevendafilial.categorias;
+    // console.log(consCategorias);
+    var series = this.servicevendafilial.series;
+    // console.log(series);
+
+    setTimeout(() => {
+      this.posicionaValorXinCategoria(consCategorias,series.rows);
+    }, 1000);
+
 
     this.chartOptions = {
       series: [
         {
           name: "ROL",
           data: [
-            { y: 10, x: "18"},
-            { y: 41, x: "19"},
+            { y: 10, x: "01"},
+            { y: 41, x: "18"},
             { y: 35, x: "20"},
             { y: 51, x: "21"},
             { y: 49, x: "22"},
             { y: 62, x: "23"},
             { y: 69, x: "24"},
             { y: 91, x: "25"},
-            { y: 148, x: "26"}
+            { y: 148, x: "27"}
             ]
         },
         {
-          name: "ROB",
+          name: "META",
           data: [
-            { y: 10, x: "18"},
+            { y: 10, x: "01"},
             { y: 50, x: "19"},
             { y: 43, x: "20"},
             { y: 30, x: "21"},
@@ -88,7 +143,7 @@ export class VendafilialchartComponent {
             { y: 42, x: "23"},
             { y: 39, x: "24"},
             { y: 120, x: "25"},
-            { y: 78, x: "26"}
+            { y: 78, x: "27"}
           ]
         }
       ],
@@ -138,7 +193,7 @@ export class VendafilialchartComponent {
         {
           show: false,
           title: {
-            text: 'ROB',
+            text: 'META',
             style: {
               color: this._colors.palette1[1],
               fontSize: '12px',
@@ -149,8 +204,8 @@ export class VendafilialchartComponent {
           },
           labels: {
             show: false,
-            minWidth: 0,
-            maxWidth: 60,
+            minWidth: 20,
+            maxWidth: 80,
             style: {
               colors: this._colors.palette1[1],
               cssClass: 'apexcharts-yaxis-label'
@@ -160,7 +215,7 @@ export class VendafilialchartComponent {
       ],
       xaxis: {
           type: 'category',
-          categories: ["18","19","20","21","22","23","24","25","26"]
+          categories: consCategorias
       },
       responsive: [
         {
