@@ -24,7 +24,7 @@ import { MatDrawerToggleResult } from '@angular/material/sidenav';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import {
-    Contact,
+    User,
     Country,
     Tag,
 } from 'app/modules/admin/contacts/contacts.types';
@@ -46,9 +46,9 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
     tags: Tag[];
     tagsEditMode: boolean = false;
     filteredTags: Tag[];
-    contact: Contact;
+    contact: User;
     contactForm: UntypedFormGroup;
-    contacts: Contact[];
+    contacts: User[];
     countries: Country[];
     private _tagsPanelOverlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -98,7 +98,7 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
         // Get the contacts
         this._contactsService.contacts$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((contacts: Contact[]) => {
+            .subscribe((contacts: User[]) => {
                 this.contacts = contacts;
 
                 // Mark for check
@@ -108,7 +108,7 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
         // Get the contact
         this._contactsService.contact$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((contact: Contact) => {
+            .subscribe((contact: User) => {
                 // Open the drawer in case it is closed
                 this._contactsListComponent.matDrawer.open();
 

@@ -21,7 +21,7 @@ import {
     takeUntil,
 } from 'rxjs';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { Contact, Country } from 'app/modules/admin/contacts/contacts.types';
+import { User, Country } from 'app/modules/admin/contacts/contacts.types';
 import { ContactsService } from 'app/modules/admin/contacts/contacts.service';
 
 @Component({
@@ -33,14 +33,14 @@ import { ContactsService } from 'app/modules/admin/contacts/contacts.service';
 export class ContactsListComponent implements OnInit, OnDestroy {
     @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
 
-    contacts$: Observable<Contact[]>;
+    contacts$: Observable<User[]>;
 
     contactsCount: number = 0;
     contactsTableColumns: string[] = ['name', 'email', 'phoneNumber', 'job'];
     countries: Country[];
     drawerMode: 'side' | 'over';
     searchInputControl: UntypedFormControl = new UntypedFormControl();
-    selectedContact: Contact;
+    selectedContact: User;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
@@ -67,7 +67,7 @@ export class ContactsListComponent implements OnInit, OnDestroy {
         this.contacts$ = this._contactsService.contacts$;
         this._contactsService.contacts$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((contacts: Contact[]) => {
+            .subscribe((contacts: User[]) => {
                 // Update the counts
                 this.contactsCount = contacts.length;
 
@@ -78,7 +78,7 @@ export class ContactsListComponent implements OnInit, OnDestroy {
         // Get the contact
         this._contactsService.contact$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((contact: Contact) => {
+            .subscribe((contact: User) => {
                 // Update the selected contact
                 this.selectedContact = contact;
 
