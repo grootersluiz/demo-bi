@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
-import { rol } from 'app/mock-api/dashboards/rol/data';
+// import { rol } from 'app/mock-api/dashboards/rol/data';
 import { DatePipe } from '@angular/common';
 
 @Injectable({
@@ -295,7 +295,7 @@ export class RolService {
                 });
 
                 const dashData = {
-                    ...rol,
+                    // ...rol,
                     githubIssues: ccMeta,
                     newVsReturning: chartROLxMetas,
                     visitorsVsPageViews: rolVsRolRealizada,
