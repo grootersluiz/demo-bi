@@ -73,20 +73,32 @@ export class AuthService
             return throwError('User is already logged in.');
         }
 
-        return this._httpClient.post('api/auth/sign-in', credentials).pipe(
+        const myCrendentials = { username: credentials.email, password: credentials.password }
+        return this._httpClient.post('http://10.2.1.108/v1/users/login', myCrendentials).pipe(
             switchMap((response: any) => {
 
+                const myResponse = {
+                    accessToken: response.token,
+                    tokenType: "bearer",
+                    user: {
+                        ...response,
+                        status: "online",
+                        avatar: ""
+                    }
+            
+                }
+
                 // Store the access token in the local storage
-                this.accessToken = response.accessToken;
+                this.accessToken = myResponse.accessToken;
 
                 // Set the authenticated flag to true
                 this._authenticated = true;
 
                 // Store the user on the user service
-                this._userService.user = response.user;
+                this._userService.user = myResponse.user;
 
                 // Return a new observable with the response
-                return of(response);
+                return of(myResponse);
             })
         );
     }
