@@ -1,6 +1,11 @@
-import { LOCALE_ID, NgModule, forwardRef } from '@angular/core';
+import { NgModule, forwardRef } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';import { MAT_DATE_LOCALE} from '@angular/material/core';
+import { CommonModule } from '@angular/common';
+// import { MAT_DATE_LOCALE} from '@angular/material/core';
+import { DEFAULT_CURRENCY_CODE, LOCALE_ID } from '@angular/core';
+import ptBr from '@angular/common/locales/pt';
+import { registerLocaleData } from '@angular/common';
+
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,6 +25,8 @@ import { vendafilialRoutes } from 'app/modules/admin/dashboards/vendafilial/vend
 import { VendafilialchartComponent } from './vendafilialchart/vendafilialchart.component';
 // import { VendafilialchartModule } from './vendafilialchart/vendafilialchart.module';
 
+registerLocaleData(ptBr);
+
 @NgModule({
     declarations: [VendafilialComponent, VendafilialchartComponent],
     imports: [
@@ -38,13 +45,13 @@ import { VendafilialchartComponent } from './vendafilialchart/vendafilialchart.c
         // FormControl
     ],
     providers: [
-        { 
-            provide: MAT_DATE_LOCALE,
-            useValue: 'pt-BR'
-        },
-        { 
+        {
             provide: LOCALE_ID,
-            useValue: 'pt-BR'
+            useValue: 'pt',
+        },
+        {
+            provide: DEFAULT_CURRENCY_CODE,
+            useValue: 'BRL',
         }
     ],
 })
