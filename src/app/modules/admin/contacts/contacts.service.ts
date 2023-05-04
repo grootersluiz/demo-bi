@@ -77,10 +77,11 @@ export class ContactsService {
     /**
      * Get contacts
      */
-    getContacts(): Observable<{data: User[]}> {
-        return this._httpClient.get<{data: User[]}>('http://10.2.1.108/v1/users').pipe(
+    getContacts(): Observable<User[]> {
+        return this._httpClient.get<any>('http://10.2.1.108/v1/users').pipe(
             tap((contacts) => {
-                const myContacts = contacts.data;
+                
+               
 /*                 const myContacts = contacts.data.map((contact => ({
                     id: contact.id,
                     avatar: null,
@@ -88,10 +89,10 @@ export class ContactsService {
                     name: contact.name,
                     emails: [contact.email],
                     tags: []
-                } as User))); */
+                } as User)));  */
 
-                console.log(myContacts);
-                this._contacts.next(myContacts);
+                
+                this._contacts.next(contacts.data);
             })
         );
     }
@@ -116,13 +117,13 @@ export class ContactsService {
     /**
      * Get contact by id
      */
-    getContactById(id: string): Observable<User> {
+    getContactById(id: number): Observable<User> {
         return this._contacts.pipe(
             take(1),
             map((contacts) => {
                 
                 // Find the contact
-                const contact = contacts.find((item) => item.id.toString() === id) || null;
+                const contact = contacts.find((item) => item.id === id) || null;
                 // Update the contact
                 this._contact.next(contact);
 
