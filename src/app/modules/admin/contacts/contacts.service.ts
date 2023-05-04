@@ -12,7 +12,7 @@ import {
     throwError,
 } from 'rxjs';
 import {
-    Contact,
+    User,
     Country,
     Tag,
 } from 'app/modules/admin/contacts/contacts.types';
@@ -22,10 +22,10 @@ import {
 })
 export class ContactsService {
     // Private
-    private _contact: BehaviorSubject<Contact | null> = new BehaviorSubject(
+    private _contact: BehaviorSubject<User | null> = new BehaviorSubject(
         null
     );
-    private _contacts: BehaviorSubject<Contact[] | null> = new BehaviorSubject(
+    private _contacts: BehaviorSubject<User[] | null> = new BehaviorSubject(
         null
     );
     private _countries: BehaviorSubject<Country[] | null> = new BehaviorSubject(
@@ -45,14 +45,14 @@ export class ContactsService {
     /**
      * Getter for contact
      */
-    get contact$(): Observable<Contact> {
+    get contact$(): Observable<User> {
         return this._contact.asObservable();
     }
 
     /**
      * Getter for contacts
      */
-    get contacts$(): Observable<Contact[]> {
+    get contacts$(): Observable<User[]> {
         return this._contacts.asObservable();
     }
 
@@ -77,10 +77,22 @@ export class ContactsService {
     /**
      * Get contacts
      */
-    getContacts(): Observable<Contact[]> {
-        return this._httpClient.get<Contact[]>('api/apps/contacts/all').pipe(
+    getContacts(): Observable<User[]> {
+        return this._httpClient.get<any>('http://10.2.1.108/v1/users').pipe(
             tap((contacts) => {
-                this._contacts.next(contacts);
+                
+               
+/*                 const myContacts = contacts.data.map((contact => ({
+                    id: contact.id,
+                    avatar: null,
+                    background: null,
+                    name: contact.name,
+                    emails: [contact.email],
+                    tags: []
+                } as User)));  */
+
+                
+                this._contacts.next(contacts.data);
             })
         );
     }
@@ -90,9 +102,9 @@ export class ContactsService {
      *
      * @param query
      */
-    searchContacts(query: string): Observable<Contact[]> {
+    searchContacts(query: string): Observable<User[]> {
         return this._httpClient
-            .get<Contact[]>('api/apps/contacts/search', {
+            .get<User[]>('api/apps/contacts/search', {
                 params: { query },
             })
             .pipe(
@@ -105,13 +117,13 @@ export class ContactsService {
     /**
      * Get contact by id
      */
-    getContactById(id: string): Observable<Contact> {
+    getContactById(id: number): Observable<User> {
         return this._contacts.pipe(
             take(1),
             map((contacts) => {
+                
                 // Find the contact
                 const contact = contacts.find((item) => item.id === id) || null;
-
                 // Update the contact
                 this._contact.next(contact);
 
@@ -133,12 +145,12 @@ export class ContactsService {
     /**
      * Create contact
      */
-    createContact(): Observable<Contact> {
+    createContact(): Observable<User> {
         return this.contacts$.pipe(
             take(1),
             switchMap((contacts) =>
                 this._httpClient
-                    .post<Contact>('api/apps/contacts/contact', {})
+                    .post<User>('api/apps/contacts/contact', {})
                     .pipe(
                         map((newContact) => {
                             // Update the contacts with the new contact
@@ -158,12 +170,12 @@ export class ContactsService {
      * @param id
      * @param contact
      */
-    updateContact(id: string, contact: Contact): Observable<Contact> {
+    updateContact(id: number, contact: User): Observable<User> {
         return this.contacts$.pipe(
             take(1),
             switchMap((contacts) =>
                 this._httpClient
-                    .patch<Contact>('api/apps/contacts/contact', {
+                    .patch<User>('api/apps/contacts/contact', {
                         id,
                         contact,
                     })
@@ -206,7 +218,7 @@ export class ContactsService {
      *
      * @param id
      */
-    deleteContact(id: string): Observable<boolean> {
+    deleteContact(id: number): Observable<boolean> {
         return this.contacts$.pipe(
             take(1),
             switchMap((contacts) =>
@@ -281,108 +293,20 @@ export class ContactsService {
         );
     }
 
-    /**
-     * Update the tag
-     *
-     * @param id
-     * @param tag
-     */
-    updateTag(id: string, tag: Tag): Observable<Tag> {
-        return this.tags$.pipe(
-            take(1),
-            switchMap((tags) =>
-                this._httpClient
-                    .patch<Tag>('api/apps/contacts/tag', {
-                        id,
-                        tag,
-                    })
-                    .pipe(
-                        map((updatedTag) => {
-                            // Find the index of the updated tag
-                            const index = tags.findIndex(
-                                (item) => item.id === id
-                            );
-
-                            // Update the tag
-                            tags[index] = updatedTag;
-
-                            // Update the tags
-                            this._tags.next(tags);
-
-                            // Return the updated tag
-                            return updatedTag;
-                        })
-                    )
-            )
-        );
-    }
-
-    /**
-     * Delete the tag
-     *
-     * @param id
-     */
-    deleteTag(id: string): Observable<boolean> {
-        return this.tags$.pipe(
-            take(1),
-            switchMap((tags) =>
-                this._httpClient
-                    .delete('api/apps/contacts/tag', { params: { id } })
-                    .pipe(
-                        map((isDeleted: boolean) => {
-                            // Find the index of the deleted tag
-                            const index = tags.findIndex(
-                                (item) => item.id === id
-                            );
-
-                            // Delete the tag
-                            tags.splice(index, 1);
-
-                            // Update the tags
-                            this._tags.next(tags);
-
-                            // Return the deleted status
-                            return isDeleted;
-                        }),
-                        filter((isDeleted) => isDeleted),
-                        switchMap((isDeleted) =>
-                            this.contacts$.pipe(
-                                take(1),
-                                map((contacts) => {
-                                    // Iterate through the contacts
-                                    contacts.forEach((contact) => {
-                                        const tagIndex = contact.tags.findIndex(
-                                            (tag) => tag === id
-                                        );
-
-                                        // If the contact has the tag, remove it
-                                        if (tagIndex > -1) {
-                                            contact.tags.splice(tagIndex, 1);
-                                        }
-                                    });
-
-                                    // Return the deleted status
-                                    return isDeleted;
-                                })
-                            )
-                        )
-                    )
-            )
-        );
-    }
-
+ 
+    
     /**
      * Update the avatar of the given contact
      *
      * @param id
      * @param avatar
      */
-    uploadAvatar(id: string, avatar: File): Observable<Contact> {
+    uploadAvatar(id: number, avatar: File): Observable<User> {
         return this.contacts$.pipe(
             take(1),
             switchMap((contacts) =>
                 this._httpClient
-                    .post<Contact>(
+                    .post<User>(
                         'api/apps/contacts/avatar',
                         {
                             id,

@@ -8,7 +8,7 @@ import {
 import { catchError, Observable, throwError } from 'rxjs';
 import { ContactsService } from 'app/modules/admin/contacts/contacts.service';
 import {
-    Contact,
+    User,
     Country,
     Tag,
 } from 'app/modules/admin/contacts/contacts.types';
@@ -35,7 +35,7 @@ export class ContactsResolver implements Resolve<any> {
     resolve(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
-    ): Observable<Contact[]> {
+    ): Observable<User[]> {
         return this._contactsService.getContacts();
     }
 }
@@ -65,9 +65,9 @@ export class ContactsContactResolver implements Resolve<any> {
     resolve(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
-    ): Observable<Contact> {
+    ): Observable<User> {
         return this._contactsService
-            .getContactById(route.paramMap.get('id'))
+            .getContactById(parseInt(route.paramMap.get('id')))
             .pipe(
                 // Error here means the requested contact is not available
                 catchError((error) => {
