@@ -109,15 +109,23 @@ export class AuthService
     signInUsingToken(): Observable<any>
     {
         // Sign in using the token
-        return this._httpClient.post('api/auth/sign-in-with-token', {
-            accessToken: this.accessToken
-        }).pipe(
+        return this._httpClient.get('http://10.2.1.108/v1/users/sing_in').pipe(
             catchError(() =>
 
                 // Return false
                 of(false)
             ),
             switchMap((response: any) => {
+
+                const myResponse = {
+                    accessToken: this.accessToken,
+                    tokenType: "bearer",
+                    user: {
+                        ...response,
+                        status: "online",
+                        avatar: ""
+                    }
+                }
 
                 // Replace the access token with the new one if it's available on
                 // the response object.
@@ -126,16 +134,17 @@ export class AuthService
                 // in using the token, you should generate a new one on the server
                 // side and attach it to the response object. Then the following
                 // piece of code can replace the token with the refreshed one.
+                
                 if ( response.accessToken )
                 {
                     this.accessToken = response.accessToken;
-                }
+                } 
 
                 // Set the authenticated flag to true
                 this._authenticated = true;
-
+                
                 // Store the user on the user service
-                this._userService.user = response.user;
+                this._userService.user = myResponse.user;
 
                 // Return true
                 return of(true);
@@ -200,8 +209,9 @@ export class AuthService
         {
             return of(false);
         } 
-
+        
         // If the access token exists and it didn't expire, sign in using it
         return this.signInUsingToken();
+      
     }
 }
