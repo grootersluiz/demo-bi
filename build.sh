@@ -17,7 +17,7 @@ USER="grj7uyekqpbi/ludemeury@vedastech.com.br"
 TENANT="grj7uyekqpbi" 
 
 APP="jsp-bi-front"
-VERSION="1.0.14"
+VERSION="1.0.15"
 
 echo "Construindo a imagem ${VERSION}"
 #Faz um build baseado no Dockfile
