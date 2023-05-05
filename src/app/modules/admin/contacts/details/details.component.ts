@@ -85,10 +85,10 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
             id: [''],
             avatar: [null],
             name: ['', [Validators.required]],
-            emails: this._formBuilder.array([]),
-            phoneNumbers: this._formBuilder.array([]),
-            title: [''],
-            company: [''],
+            email: [''],
+            role: [''],
+            currentPassword: [''],
+            newPassword: [''],
             birthday: [null],
             address: [null],
             notes: [null],
@@ -114,12 +114,6 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
 
                 // Get the contact
                 this.contact = contact;
-
-                // Clear the emails and phoneNumbers form arrays
-                (this.contactForm.get('emails') as UntypedFormArray).clear();
-                (
-                    this.contactForm.get('phoneNumbers') as UntypedFormArray
-                ).clear();
 
                 // Patch values to the form
                 this.contactForm.patchValue(contact);
@@ -235,21 +229,19 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
     updateContact(): void {
         // Get the contact object
         const contact = this.contactForm.getRawValue();
-
+        const password = this.contactForm.get('newPassword').value;
+        console.log(password);
         // Go through the contact object and clear empty values
-        contact.emails = contact.emails.filter((email) => email.email);
 
-        contact.phoneNumbers = contact.phoneNumbers.filter(
-            (phoneNumber) => phoneNumber.phoneNumber
-        );
+ 
 
         // Update the contact on the server
-        this._contactsService
-            .updateContact(contact.id, contact)
+         this._contactsService
+            .updateContact(contact.id, contact, password)
             .subscribe(() => {
                 // Toggle the edit mode off
                 this.toggleEditMode(false);
-            });
+            }); 
     }
 
     /**
@@ -258,9 +250,9 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
     deleteContact(): void {
         // Open the confirmation dialog
         const confirmation = this._fuseConfirmationService.open({
-            title: 'Deletar contato',
+            title: 'Deletar usuário',
             message:
-                'Tem certeza que quer deletar esse contato? Essa ação não poderá ser desfeita!',
+                'Tem certeza que quer deletar esse usuário? Essa ação não poderá ser desfeita!',
             actions: {
                 confirm: {
                     label: 'Deletar',
@@ -291,6 +283,7 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
                         : this.contacts[nextContactIndex].id;
 
                 // Delete the contact
+                this.closeDrawer();
                 this._contactsService
                     .deleteContact(id)
                     .subscribe((isDeleted) => {

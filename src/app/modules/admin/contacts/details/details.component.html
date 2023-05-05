@@ -56,25 +56,25 @@
 
                 <div class="flex flex-col mt-4 pt-6 border-t space-y-8">
                     <!-- Title -->
-                    <ng-container *ngIf="contact.title">
+                    <ng-container *ngIf="contact.email">
                         <div class="flex sm:items-center">
                             <mat-icon
-                                [svgIcon]="'heroicons_outline:briefcase'"
+                                [svgIcon]="'heroicons_outline:at-symbol'"
                             ></mat-icon>
                             <div class="ml-6 leading-6">
-                                {{ contact.title }}
+                                {{ contact.email }}
                             </div>
                         </div>
                     </ng-container>
 
                     <!-- Company -->
-                    <ng-container *ngIf="contact.company">
+                    <ng-container *ngIf="contact.role">
                         <div class="flex sm:items-center">
                             <mat-icon
-                                [svgIcon]="'heroicons_outline:office-building'"
+                                [svgIcon]="'heroicons_outline:user'"
                             ></mat-icon>
                             <div class="ml-6 leading-6">
-                                {{ contact.company }}
+                                {{ contact.role }}
                             </div>
                         </div>
                     </ng-container>
@@ -277,301 +277,72 @@
 
 
 
-                    <!-- Title -->
+                    <!-- Email -->
                     <div class="mt-8">
                         <mat-form-field
                             class="w-full"
                             [subscriptSizing]="'dynamic'"
                         >
-                            <mat-label>Cargo</mat-label>
+                            <mat-label>Email</mat-label>
                             <mat-icon
                                 matPrefix
                                 class="hidden sm:flex icon-size-5"
-                                [svgIcon]="'heroicons_solid:briefcase'"
+                                [svgIcon]="'heroicons_solid:at-symbol'"
                             ></mat-icon>
                             <input
                                 matInput
-                                [formControlName]="'title'"
-                                [placeholder]="'Job title'"
+                                [formControlName]="'email'"
+                                [placeholder]="'Email'"
                             />
                         </mat-form-field>
                     </div>
 
-                    <!-- Company -->
+                    <!-- Role -->
                     <div class="mt-8">
                         <mat-form-field
                             class="w-full"
                             [subscriptSizing]="'dynamic'"
                         >
-                            <mat-label>Filial</mat-label>
+                            <mat-label>Tipo de Usuário</mat-label>
                             <mat-icon
                                 matPrefix
                                 class="hidden sm:flex icon-size-5"
-                                [svgIcon]="'heroicons_solid:office-building'"
+                                [svgIcon]="'heroicons_solid:user'"
                             ></mat-icon>
                             <input
                                 matInput
-                                [formControlName]="'company'"
-                                [placeholder]="'Company'"
+                                [formControlName]="'role'"
+                                [placeholder]="'Tipo de Usuário'"
                             />
                         </mat-form-field>
                     </div>
 
-                    <!-- Emails -->
-                    <div class="mt-8">
-                        <div class="space-y-4">
-                            <ng-container
-                                *ngFor="
-                                    let email of contactForm.get('emails')[
-                                        'controls'
-                                    ];
-                                    let i = index;
-                                    let first = first;
-                                    let last = last;
-                                    trackBy: trackByFn
-                                "
-                            >
-                                <div class="flex">
-                                    <mat-form-field
-                                        class="flex-auto"
-                                        [subscriptSizing]="'dynamic'"
-                                    >
-                                        <mat-label *ngIf="first"
-                                            >E-mail</mat-label
-                                        >
-                                        <mat-icon
-                                            matPrefix
-                                            class="hidden sm:flex icon-size-5"
-                                            [svgIcon]="'heroicons_solid:mail'"
-                                        ></mat-icon>
-                                        <input
-                                            matInput
-                                            [formControl]="email.get('email')"
-                                            [placeholder]="'Endereço de e-mail'"
-                                            [spellcheck]="false"
-                                        />
-                                    </mat-form-field>
-                                    <!-- <mat-form-field
-                                        class="flex-auto w-full max-w-24 sm:max-w-40 ml-2 sm:ml-4"
-                                        [subscriptSizing]="'dynamic'"
-                                    >
-                                        <mat-label *ngIf="first"
-                                            >Label</mat-label
-                                        >
-                                        <mat-icon
-                                            matPrefix
-                                            class="hidden sm:flex icon-size-5"
-                                            [svgIcon]="'heroicons_solid:tag'"
-                                        ></mat-icon>
-                                        <input
-                                            matInput
-                                            [formControl]="email.get('label')"
-                                            [placeholder]="'Label'"
-                                        />
-                                    </mat-form-field> -->
-                                    <!-- Remove email -->
-                                    <ng-container *ngIf="!(first && last)">
-                                        <div
-                                            class="flex items-center w-10 pl-2"
-                                            [ngClass]="{ 'mt-6': first }"
-                                        >
-                                            <button
-                                                class="w-8 h-8 min-h-8"
-                                                mat-icon-button
-                                                (click)="removeEmailField(i)"
-                                                matTooltip="Remover"
-                                            >
-                                                <mat-icon
-                                                    class="icon-size-5"
-                                                    [svgIcon]="
-                                                        'heroicons_solid:trash'
-                                                    "
-                                                ></mat-icon>
-                                            </button>
-                                        </div>
-                                    </ng-container>
-                                </div>
-                            </ng-container>
+                    <!-- Current password -->
+                    <div class="sm:col-span-4 mt-8">
+                        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+                            <mat-label>Defina a senha</mat-label>
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
+                            <input [formControlName]="'currentPassword'" type="password" matInput />
+                        </mat-form-field>
+                        <div class="mt-1 text-md text-hint">
+                            No mínimo 8 caracteres. Precisa conter números, letras e
+                            caracteres especiais.
                         </div>
-                        <div
-                            class="group inline-flex items-center mt-2 -ml-4 py-2 px-4 rounded cursor-pointer"
-                            (click)="addEmailField()"
-                        >
-                            <mat-icon
-                                class="icon-size-5"
-                                [svgIcon]="'heroicons_solid:plus-circle'"
-                            ></mat-icon>
-                            <span
-                                class="ml-2 font-medium text-secondary group-hover:underline"
-                                >Adicionar e-mail</span
-                            >
-                        </div>
+                    </div>
+                    <!-- New password -->
+                    <div class="sm:col-span-4 mt-8">
+                        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+                            <mat-label>Confirme a senha</mat-label>
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
+                            <input [formControlName]="'newPassword'" type="password" matInput />
+                        </mat-form-field>
+                        <!-- <div class="mt-1 text-md text-hint">
+                                        No mínimo 8 caracteres. Precisa conter números, letras e
+                                        caracteres especiais.
+                                    </div> -->
                     </div>
 
-                    <!-- Phone numbers -->
-                    <div class="mt-8">
-                        <div class="space-y-4">
-                            <ng-container
-                                *ngFor="
-                                    let phoneNumber of contactForm.get(
-                                        'phoneNumbers'
-                                    )['controls'];
-                                    let i = index;
-                                    let first = first;
-                                    let last = last;
-                                    trackBy: trackByFn
-                                "
-                            >
-                                <div class="relative flex">
-                                    <mat-form-field
-                                        class="flex-auto"
-                                        [subscriptSizing]="'dynamic'"
-                                    >
-                                        <mat-label *ngIf="first"
-                                            >Telefone</mat-label
-                                        >
-                                        <input
-                                            matInput
-                                            [formControl]="
-                                                phoneNumber.get('phoneNumber')
-                                            "
-                                            [placeholder]="'Telefone'"
-                                        />
-                                        <!-- <mat-select
-                                            class="mr-1.5"
-                                            [formControl]="
-                                                phoneNumber.get('country')
-                                            "
-                                            matPrefix
-                                        >
-                                            <mat-select-trigger>
-                                                <span class="flex items-center">
-                                                    <span
-                                                        class="hidden sm:flex w-6 h-4 mr-1 overflow-hidden"
-                                                        [style.background]="
-                                                            'url(\'/assets/images/apps/contacts/flags.png\') no-repeat 0 0'
-                                                        "
-                                                        [style.backgroundSize]="
-                                                            '24px 3876px'
-                                                        "
-                                                        [style.backgroundPosition]="
-                                                            getCountryByIso(
-                                                                phoneNumber.get(
-                                                                    'country'
-                                                                ).value
-                                                            ).flagImagePos
-                                                        "
-                                                    ></span>
-                                                    <span
-                                                        class="sm:mx-0.5 font-medium text-default"
-                                                        >{{
-                                                            getCountryByIso(
-                                                                phoneNumber.get(
-                                                                    "country"
-                                                                ).value
-                                                            ).code
-                                                        }}</span
-                                                    >
-                                                </span>
-                                            </mat-select-trigger>
-                                            <ng-container
-                                                *ngFor="
-                                                    let country of countries;
-                                                    trackBy: trackByFn
-                                                "
-                                            >
-                                                <mat-option
-                                                    [value]="country.iso"
-                                                >
-                                                    <span
-                                                        class="flex items-center"
-                                                    >
-                                                        <span
-                                                            class="w-6 h-4 overflow-hidden"
-                                                            [style.background]="
-                                                                'url(\'/assets/images/apps/contacts/flags.png\') no-repeat 0 0'
-                                                            "
-                                                            [style.backgroundSize]="
-                                                                '24px 3876px'
-                                                            "
-                                                            [style.backgroundPosition]="
-                                                                country.flagImagePos
-                                                            "
-                                                        ></span>
-                                                        <span class="ml-2">{{
-                                                            country.name
-                                                        }}</span>
-                                                        <span
-                                                            class="ml-2 font-medium"
-                                                            >{{
-                                                                country.code
-                                                            }}</span
-                                                        >
-                                                    </span>
-                                                </mat-option>
-                                            </ng-container>
-                                        </mat-select> -->
-                                    </mat-form-field>
-                                    <!-- <mat-form-field
-                                        class="flex-auto w-full max-w-24 sm:max-w-40 ml-2 sm:ml-4"
-                                        [subscriptSizing]="'dynamic'"
-                                    >
-                                        <mat-label *ngIf="first"
-                                            >Label</mat-label
-                                        >
-                                        <mat-icon
-                                            matPrefix
-                                            class="hidden sm:flex icon-size-5"
-                                            [svgIcon]="'heroicons_solid:tag'"
-                                        ></mat-icon>
-                                        <input
-                                            matInput
-                                            [formControl]="
-                                                phoneNumber.get('label')
-                                            "
-                                            [placeholder]="'Label'"
-                                        />
-                                    </mat-form-field> -->
-                                    <!-- Remove phone number -->
-                                    <ng-container *ngIf="!(first && last)">
-                                        <div
-                                            class="flex items-center w-10 pl-2"
-                                            [ngClass]="{ 'mt-6': first }"
-                                        >
-                                            <button
-                                                class="w-8 h-8 min-h-8"
-                                                mat-icon-button
-                                                (click)="
-                                                    removePhoneNumberField(i)
-                                                "
-                                                matTooltip="Remover"
-                                            >
-                                                <mat-icon
-                                                    class="icon-size-5"
-                                                    [svgIcon]="
-                                                        'heroicons_solid:trash'
-                                                    "
-                                                ></mat-icon>
-                                            </button>
-                                        </div>
-                                    </ng-container>
-                                </div>
-                            </ng-container>
-                        </div>
-                        <div
-                            class="group inline-flex items-center mt-2 -ml-4 py-2 px-4 rounded cursor-pointer"
-                            (click)="addPhoneNumberField()"
-                        >
-                            <mat-icon
-                                class="icon-size-5"
-                                [svgIcon]="'heroicons_solid:plus-circle'"
-                            ></mat-icon>
-                            <span
-                                class="ml-2 font-medium text-secondary group-hover:underline"
-                                >Adicionar telefone</span
-                            >
-                        </div>
-                    </div>
+                    
 
                     <!-- Address -->
                     <!-- <div class="mt-8">

@@ -80,7 +80,9 @@ export class ContactsService {
     getContacts(): Observable<User[]> {
         return this._httpClient.get<any>('http://10.2.1.108/v1/users').pipe(
             tap((contacts) => {
-               
+                let orderedContacts = [...contacts['data']];
+                orderedContacts.sort((a, b) => a.name.localeCompare(b.name));
+
 /*                 const myContacts = contacts.data.map((contact => ({
                     id: contact.id,
                     avatar: null,
@@ -91,7 +93,7 @@ export class ContactsService {
                 } as User)));  */
 
                 
-                this._contacts.next(contacts.data);
+                this._contacts.next(orderedContacts);
             })
         );
     }
@@ -101,14 +103,18 @@ export class ContactsService {
      *
      * @param query
      */
-    searchContacts(query: string): Observable<User[]> {
+    searchContacts(name: string): Observable<User[]> {
         return this._httpClient
-            .get<User[]>('api/apps/contacts/search', {
-                params: { query },
+            .get<User[]>('http://10.2.1.108/v1/users', {
+                params: { name },
             })
             .pipe(
                 tap((contacts) => {
-                    this._contacts.next(contacts);
+
+                    let orderedContacts = [...contacts['data']];
+                    orderedContacts.sort((a, b) => a.name.localeCompare(b.name));
+                    this._contacts.next(orderedContacts);
+                    
                 })
             );
     }
@@ -149,7 +155,12 @@ export class ContactsService {
             take(1),
             switchMap((contacts) =>
                 this._httpClient
-                    .post<User>('api/apps/contacts/contact', {})
+                    .post<User>('http://10.2.1.108/v1/users', {
+                        name: "Novo Usuário",
+                        email: "user@mail.com",
+                        password: "123",
+                        role: "user"
+                    })
                     .pipe(
                         map((newContact) => {
                             // Update the contacts with the new contact
@@ -169,14 +180,16 @@ export class ContactsService {
      * @param id
      * @param contact
      */
-    updateContact(id: number, contact: User): Observable<User> {
+    updateContact(id: number, contact: User, password: string): Observable<User> {
         return this.contacts$.pipe(
             take(1),
             switchMap((contacts) =>
                 this._httpClient
-                    .patch<User>('api/apps/contacts/contact', {
-                        id,
-                        contact,
+                    .put<User>(`http://10.2.1.108/v1/users/${id.toString()}`, {
+                        name: contact.name,
+                        email: contact.email,
+                        role: contact.role,
+                        //password: password,
                     })
                     .pipe(
                         map((updatedContact) => {
@@ -222,7 +235,7 @@ export class ContactsService {
             take(1),
             switchMap((contacts) =>
                 this._httpClient
-                    .delete('api/apps/contacts/contact', { params: { id } })
+                    .delete(`http://10.2.1.108/v1/users/${id.toString()}`, { params: { id } })
                     .pipe(
                         map((isDeleted: boolean) => {
                             // Find the index of the deleted contact
