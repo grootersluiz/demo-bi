@@ -268,7 +268,20 @@ export class VendafilialComponent {
     const lastDay = new Date(dataSplit[2], dataSplit[1] , 0);
     const lastDayDate = lastDay.toLocaleDateString(); // ultimo dia do mês
 
-    this._thishttpClient.get('http://api.portal.jspecas.com.br/v1/views/163/data?ano='+dataSplit[2]+'&mes='+dataSplit[1]+'&dtref='+lastDayDate)
+    const sysDate = new Date();
+    var dia = ("00" + (sysDate.getDate()-1)).slice(-2) ;
+    var mes = ("00" + (sysDate.getMonth()+1)).slice(-2) ;
+
+    var dataref = lastDayDate;
+    console.log(sysDate.getFullYear());
+    console.log(dataSplit[2])
+    console.log(mes);
+    console.log(dataSplit[1]);
+    if(sysDate.getFullYear() == dataSplit[2] && mes == dataSplit[1]){
+      dataref = dia + mes + sysDate.getFullYear();
+    }
+
+    this._thishttpClient.get('http://api.portal.jspecas.com.br/v1/views/163/data?ano='+dataSplit[2]+'&mes='+dataSplit[1]+'&dtref='+dataref)
                             .subscribe(dataresponse => {
                                       var arrayDataSource = this.formataDataSource(dataresponse.rows);
                                       this.dataSource = arrayDataSource;
