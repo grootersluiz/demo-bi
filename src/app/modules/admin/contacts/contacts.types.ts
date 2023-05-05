@@ -2,7 +2,7 @@ export interface User
 {
     id: number,
     name: string,
-    emails: string[],
+    email: string,
     role: string,
     isAd: boolean
 }

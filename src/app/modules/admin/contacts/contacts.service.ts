@@ -80,7 +80,6 @@ export class ContactsService {
     getContacts(): Observable<User[]> {
         return this._httpClient.get<any>('http://10.2.1.108/v1/users').pipe(
             tap((contacts) => {
-                
                
 /*                 const myContacts = contacts.data.map((contact => ({
                     id: contact.id,
