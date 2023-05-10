@@ -21,6 +21,7 @@ import {
     MatDatepickerModule,
     MatDatepickerInputEvent,
 } from '@angular/material/datepicker';
+import { EventEmitter, Output } from '@angular/core';
 
 @Component({
     selector: 'rol',
@@ -76,7 +77,14 @@ export class RolComponent implements OnInit, OnDestroy {
     vendedores = new FormControl(this._rolService.INITIAL_SELLERS_IDS);
     vendedoresObjects: { id: number; string: string }[];
     vendedoresStringList: string[];
+    filteredVendedoresStringList: string[];
     allSellersSelected: boolean = false;
+
+    @Output() searchChanged = new EventEmitter<string>();
+
+    onInput(value: string) {
+        this.searchChanged.emit(value);
+    }
 
     range = new FormGroup({
         start: new FormControl<Date | null>(null),
@@ -125,8 +133,6 @@ export class RolComponent implements OnInit, OnDestroy {
                 // Prepare the chart data
                 this._prepareChartData();
 
-
-
                 this.filiaisObjects = this.data.filiaisLista;
                 this.filiaisStringList = this.filiaisObjects.map(
                     (item) => item.string
@@ -138,14 +144,14 @@ export class RolComponent implements OnInit, OnDestroy {
 
         // Get the sellers data
         this._rolService.sellersData$
-        .pipe(takeUntil(this._unsubscribeAll))
-        .subscribe((data) => {
-            this.vendedoresObjects = data;
-            this.vendedoresStringList = this.vendedoresObjects.map(
-                (item) => item.string
-            );
-            this._cdr.markForCheck();
-        });
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data) => {
+                this.vendedoresObjects = data;
+                this.vendedoresStringList = this.vendedoresObjects.map(
+                    (item) => item.string
+                );
+                this._cdr.markForCheck();
+            });
 
         // Attach SVG fill fixer to all ApexCharts
         window['Apex'] = {
@@ -160,8 +166,6 @@ export class RolComponent implements OnInit, OnDestroy {
                 },
             },
         };
-
-
     }
 
     /**
@@ -258,6 +262,13 @@ export class RolComponent implements OnInit, OnDestroy {
                 .getData(dtIni, dtFin, filiaisIds, vendedoresIds)
                 .subscribe();
         }
+    }
+
+    onSearch(value: string) {
+        const filteredSellers = this.vendedoresStringList.filter((seller) =>
+            seller.toLowerCase().includes(value.toLowerCase())
+        );
+        this.filteredVendedoresStringList = filteredSellers;
     }
 
     /**

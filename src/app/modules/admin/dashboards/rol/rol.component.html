@@ -77,6 +77,13 @@
                         [formControl]="vendedores"
                         multiple
                     >
+                        <input
+                            type="text"
+                            placeholder="Pesquisar vendedor..."
+                            (input)="onInput($event.target.value)"
+                            (searchChanged)="onSearch($event)"
+                        />
+
                         <mat-option
                             class="select-all-companies"
                             style="font-size: 12px"
