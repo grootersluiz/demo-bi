@@ -77,12 +77,15 @@
                         [formControl]="vendedores"
                         multiple
                     >
-                        <input
-                            type="text"
-                            placeholder="Pesquisar vendedor..."
-                            (input)="onInput($event.target.value)"
-                            (searchChanged)="onSearch($event)"
-                        />
+                        <div class="sellers-search-container flex justify-center">
+                            <input
+                                class="sellers-search-input"
+                                type="text"
+                                placeholder="Buscar vendedores..."
+                                [formControl]="sellersSearchInput"
+                                (input)="onInput($event.target.value)"
+                            />
+                        </div>
 
                         <mat-option
                             class="select-all-companies"
@@ -99,13 +102,13 @@
                         <mat-option
                             style="font-size: 12px"
                             *ngFor="
-                                let vendedor of vendedoresStringList;
+                                let vendedor of filteredVendedoresStringList;
                                 let i = index
                             "
-                            [value]="vendedoresObjects[i].id.toString()"
+                            [value]="filteredVendedoresObjects[i].id.toString()"
                             (click)="
                                 handleSellersFilterSelect(
-                                    vendedoresObjects[i].id
+                                    filteredVendedoresObjects[i].id
                                 )
                             "
                             >{{ vendedor }}</mat-option

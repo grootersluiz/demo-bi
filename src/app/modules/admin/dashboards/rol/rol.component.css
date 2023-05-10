@@ -45,3 +45,13 @@ div.cabecalho-filtro {
     border-bottom: 1px solid #e2e2e2;
     padding-bottom: 5px;
 } 
+
+.sellers-search-container{
+    width: 100%;
+    height: 2rem;
+} 
+.sellers-search-input{
+    width: 95%;
+    padding: 0 .8rem 0 .8rem;
+    margin-bottom: .2rem;
+} 

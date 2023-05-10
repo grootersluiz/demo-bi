@@ -21,7 +21,7 @@ import {
     MatDatepickerModule,
     MatDatepickerInputEvent,
 } from '@angular/material/datepicker';
-import { EventEmitter, Output } from '@angular/core';
+
 
 @Component({
     selector: 'rol',
@@ -64,6 +64,7 @@ export class RolComponent implements OnInit, OnDestroy {
         'Metas Atingidas',
     ];
 
+    
     chartGithubIssues: ApexOptions = {};
     data: any;
 
@@ -76,15 +77,12 @@ export class RolComponent implements OnInit, OnDestroy {
 
     vendedores = new FormControl(this._rolService.INITIAL_SELLERS_IDS);
     vendedoresObjects: { id: number; string: string }[];
+    filteredVendedoresObjects: { id: number; string: string }[];
     vendedoresStringList: string[];
     filteredVendedoresStringList: string[];
     allSellersSelected: boolean = false;
 
-    @Output() searchChanged = new EventEmitter<string>();
-
-    onInput(value: string) {
-        this.searchChanged.emit(value);
-    }
+    sellersSearchInput = new FormControl('');
 
     range = new FormGroup({
         start: new FormControl<Date | null>(null),
@@ -132,11 +130,12 @@ export class RolComponent implements OnInit, OnDestroy {
 
                 // Prepare the chart data
                 this._prepareChartData();
-
                 this.filiaisObjects = this.data.filiaisLista;
                 this.filiaisStringList = this.filiaisObjects.map(
                     (item) => item.string
                 );
+
+                
 
                 // Trigger the change detection mechanism so that it updates the chart when filtering
                 this._cdr.markForCheck();
@@ -150,6 +149,10 @@ export class RolComponent implements OnInit, OnDestroy {
                 this.vendedoresStringList = this.vendedoresObjects.map(
                     (item) => item.string
                 );
+                
+                this.filteredVendedoresObjects = this.vendedoresObjects;
+                this.filteredVendedoresStringList = this.vendedoresStringList;
+
                 this._cdr.markForCheck();
             });
 
@@ -208,7 +211,7 @@ export class RolComponent implements OnInit, OnDestroy {
             this.vendedores.setValue(this._rolService.INITIAL_SELLERS_IDS);
             this.allSellersSelected = false;
         } else {
-            let newVendedores = this.vendedoresObjects.map((item) =>
+            let newVendedores = this.filteredVendedoresObjects.map((item) =>
                 item.id.toString()
             );
             this.vendedores.setValue(newVendedores);
@@ -229,6 +232,7 @@ export class RolComponent implements OnInit, OnDestroy {
         this._rolService
             .getSellersData(dtIni, dtFin, this.filiais.value)
             .subscribe();
+        this.sellersSearchInput.setValue('');
     }
 
     handleCompanyFilterSelect(filialId: number) {
@@ -239,6 +243,8 @@ export class RolComponent implements OnInit, OnDestroy {
     }
 
     handleSellersFilterSelect(vendedorId: number) {
+
+
         if (this.vendedores.value.length == 0) {
             this.vendedores.setValue(this._rolService.INITIAL_SELLERS_IDS);
         }
@@ -264,11 +270,16 @@ export class RolComponent implements OnInit, OnDestroy {
         }
     }
 
-    onSearch(value: string) {
-        const filteredSellers = this.vendedoresStringList.filter((seller) =>
+    onInput(value: string) {
+               
+        const filteredSellers = this.vendedoresObjects.filter((seller) =>
+            seller.string.toLowerCase().includes(value.toLowerCase())
+        );
+        const filteredSellersString = this.vendedoresStringList.filter((seller) =>
             seller.toLowerCase().includes(value.toLowerCase())
         );
-        this.filteredVendedoresStringList = filteredSellers;
+        this.filteredVendedoresStringList = filteredSellersString;
+        this.filteredVendedoresObjects = filteredSellers;
     }
 
     /**
