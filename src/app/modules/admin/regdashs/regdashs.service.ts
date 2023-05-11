@@ -77,27 +77,33 @@ export class RegdashsService {
     /**
      * Get contacts
      */
-    getContacts(): Observable<Contact[]> {
-        return this._httpClient.get<Contact[]>('api/apps/contacts/all').pipe(
-            tap((contacts) => {
-                this._contacts.next(contacts);
-            })
-        );
+    getDashs(): Observable<Contact[]> {
+        return this._httpClient
+            .get<Contact[]>('http://10.2.1.108/v1/dashboards')
+            .pipe(
+                tap((dashs) => {
+                    let orderedDashs = [...dashs['data']];
+                    orderedDashs.sort((a, b) => a.name.localeCompare(b.name));
+                    this._contacts.next(orderedDashs);
+                })
+            );
     }
 
     /**
      * Search contacts with given query
      *
-     * @param query
+     * @param name
      */
-    searchContacts(query: string): Observable<Contact[]> {
+    searchDashs(name: string): Observable<Contact[]> {
         return this._httpClient
-            .get<Contact[]>('api/apps/contacts/search', {
-                params: { query },
+            .get<Contact[]>('http://10.2.1.108/v1/dashboards', {
+                params: { name },
             })
             .pipe(
-                tap((contacts) => {
-                    this._contacts.next(contacts);
+                tap((dashs) => {
+                    let orderedDashs = [...dashs['data']];
+                    orderedDashs.sort((a, b) => a.name.localeCompare(b.name));
+                    this._contacts.next(orderedDashs);
                 })
             );
     }

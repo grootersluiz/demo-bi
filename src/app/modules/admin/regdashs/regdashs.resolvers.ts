@@ -36,7 +36,7 @@ export class ContactsResolver implements Resolve<any> {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<Contact[]> {
-        return this._contactsService.getContacts();
+        return this._contactsService.getDashs();
     }
 }
 

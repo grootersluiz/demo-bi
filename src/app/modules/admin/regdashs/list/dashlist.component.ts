@@ -103,7 +103,7 @@ export class DashListComponent implements OnInit, OnDestroy {
                 takeUntil(this._unsubscribeAll),
                 switchMap((query) =>
                     // Search
-                    this._contactsService.searchContacts(query)
+                    this._contactsService.searchDashs(query)
                 )
             )
             .subscribe();

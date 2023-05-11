@@ -85,7 +85,7 @@ export class RegreportsService {
                     let orderedReports = [...reports['data']];
                     orderedReports.sort((a, b) => a.name.localeCompare(b.name));
                     this._reports.next(orderedReports);
-                    console.log('lista reports', reports['data']);
+                    //console.log('lista reports', reports['data']);
                 })
             );
     }
