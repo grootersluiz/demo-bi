@@ -2,12 +2,19 @@
     <!-- Form -->
     <form [formGroup]="accountForm">
         <!-- Section -->
-        <div class="w-full">
-            <div class="text-xl">Perfil</div>
-            <div class="text-secondary">
-                Atenção, as informações abaixo são exibidas publicamente!
-            </div>
+
+        <div class="sm:col-span-2">
+            <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+                <mat-label>ID</mat-label>
+                <mat-icon
+                    class="icon-size-5"
+                    [svgIcon]="'heroicons_solid:user-circle'"
+                    matPrefix
+                ></mat-icon>
+                <input [formControlName]="'id'" matInput readonly="true" />
+            </mat-form-field>
         </div>
+
         <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
             <!-- Name -->
             <div class="sm:col-span-4">
@@ -18,143 +25,55 @@
                         [svgIcon]="'heroicons_solid:user'"
                         matPrefix
                     ></mat-icon>
-                    <input [formControlName]="'name'" matInput />
+                    <input
+                        [formControlName]="'name'"
+                        matInput
+                        readonly="true"
+                    />
                 </mat-form-field>
             </div>
             <!-- Username -->
             <div class="sm:col-span-4">
-                <mat-form-field
-                    class="fuse-mat-emphasized-affix w-full"
-                    [subscriptSizing]="'dynamic'"
-                >
-                    <mat-label>Nome de usuário</mat-label>
-                    <div class="text-secondary" matPrefix>jspecas.com.br/</div>
-                    <input [formControlName]="'username'" matInput />
+                <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+                    <mat-label>e-mail</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:at-symbol'"
+                        matPrefix
+                    ></mat-icon>
+
+                    <input
+                        [formControlName]="'email'"
+                        matInput
+                        readonly="true"
+                    />
                 </mat-form-field>
             </div>
             <!-- Title -->
-            <div class="sm:col-span-2">
+            <div class="sm:col-span-4">
                 <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
-                    <mat-label>Cargo</mat-label>
+                    <mat-label>Tipo de usuário</mat-label>
                     <mat-icon
                         class="icon-size-5"
                         [svgIcon]="'heroicons_solid:briefcase'"
                         matPrefix
                     ></mat-icon>
-                    <input [formControlName]="'title'" matInput />
-                </mat-form-field>
-            </div>
-            <!-- Company -->
-            <!-- <div class="sm:col-span-2">
-                <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
-                    <mat-label>Empresa</mat-label>
-                    <mat-icon
-                        class="icon-size-5"
-                        [svgIcon]="'heroicons_solid:office-building'"
-                        matPrefix
-                    ></mat-icon>
-                    <input [formControlName]="'company'" matInput />
-                </mat-form-field>
-            </div> -->
-            <!-- About -->
-            <div class="sm:col-span-4">
-                <!-- <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
-                    <mat-label>Sobre</mat-label>
-                    <textarea
+                    <input
+                        [formControlName]="'role'"
                         matInput
-                        [formControlName]="'about'"
-                        cdkTextareaAutosize
-                        [cdkAutosizeMinRows]="5"
-                    ></textarea>
-                </mat-form-field>
-                <div class="mt-1 text-md text-hint">
-                    Breve descrição sobre o seu perfil profissional.
-                </div> -->
-            </div>
-        </div>
-
-        <!-- Divider -->
-        <div class="my-10 border-t"></div>
-
-        <!-- Section -->
-        <div class="w-full">
-            <div class="text-xl">Informações Pessoais</div>
-            <div class="text-secondary">
-                Detalhes de contato, caso precisemos nos comunicar. Essa
-                informações permanecerão privadas.
-            </div>
-        </div>
-        <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
-            <!-- Email -->
-            <div class="sm:col-span-2">
-                <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
-                    <mat-label>E-mail</mat-label>
-                    <mat-icon
-                        class="icon-size-5"
-                        [svgIcon]="'heroicons_solid:mail'"
-                        matPrefix
-                    ></mat-icon>
-                    <input [formControlName]="'email'" matInput />
+                        readonly="true"
+                    />
                 </mat-form-field>
             </div>
-            <!-- Phone -->
-            <div class="sm:col-span-2">
-                <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
-                    <mat-label>Telefone</mat-label>
-                    <mat-icon
-                        class="icon-size-5"
-                        [svgIcon]="'heroicons_solid:phone'"
-                        matPrefix
-                    ></mat-icon>
-                    <input [formControlName]="'phone'" matInput />
-                </mat-form-field>
-            </div>
-            <!-- Country -->
-            <!-- <div class="sm:col-span-2">
-                <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
-                    <mat-label>Country</mat-label>
-                    <mat-icon
-                        class="icon-size-5"
-                        [svgIcon]="'heroicons_solid:location-marker'"
-                        matPrefix
-                    ></mat-icon>
-                    <mat-select [formControlName]="'country'">
-                        <mat-option [value]="'usa'">United States</mat-option>
-                        <mat-option [value]="'canada'">Canada</mat-option>
-                        <mat-option [value]="'mexico'">Mexico</mat-option>
-                        <mat-option [value]="'france'">France</mat-option>
-                        <mat-option [value]="'germany'">Germany</mat-option>
-                        <mat-option [value]="'italy'">Italy</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div> -->
-            <!-- Language -->
-            <!-- <div class="sm:col-span-2">
-                <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
-                    <mat-label>Language</mat-label>
-                    <mat-icon
-                        class="icon-size-5"
-                        [svgIcon]="'heroicons_solid:globe-alt'"
-                        matPrefix
-                    ></mat-icon>
-                    <mat-select [formControlName]="'language'">
-                        <mat-option [value]="'english'">English</mat-option>
-                        <mat-option [value]="'french'">French</mat-option>
-                        <mat-option [value]="'spanish'">Spanish</mat-option>
-                        <mat-option [value]="'german'">German</mat-option>
-                        <mat-option [value]="'italian'">Italian</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div> -->
         </div>
     </form>
 
     <!-- Divider -->
-    <div class="mt-11 mb-10 border-t"></div>
+    <!-- <div class="mt-11 mb-10 border-t"></div> -->
 
     <!-- Form -->
-    <form [formGroup]="securityForm">
-        <!-- Section -->
+    <!-- <form [formGroup]="securityForm">
+         Section 
         <div class="w-full">
             <div class="text-xl">Definição de senha</div>
             <div class="text-secondary">
@@ -162,7 +81,7 @@
             </div>
         </div>
         <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
-            <!-- Current password -->
+             Current password 
             <div class="sm:col-span-4">
                 <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
                     <mat-label>Defina a senha</mat-label>
@@ -182,7 +101,7 @@
                     caracteres especiais.
                 </div>
             </div>
-            <!-- New password -->
+             New password 
             <div class="sm:col-span-4">
                 <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
                     <mat-label>Confirme a senha</mat-label>
@@ -197,17 +116,17 @@
                         matInput
                     />
                 </mat-form-field>
-                <!-- <div class="mt-1 text-md text-hint">
+                 <div class="mt-1 text-md text-hint">
                     No mínimo 8 caracteres. Precisa conter números, letras e
                     caracteres especiais.
-                </div> -->
+                </div> 
             </div>
         </div>
 
-        <!-- Divider -->
+         Divider 
         <div class="my-10 border-t"></div>
 
-        <!-- Section -->
+         Section 
         <div class="w-full">
             <div class="text-xl">Preferências de segurança</div>
             <div class="text-secondary">
@@ -215,7 +134,7 @@
             </div>
         </div>
         <div class="grid sm:grid-cols-4 gap-6 w-full mt-8">
-            <!-- 2-step auth -->
+             2-step auth 
             <div class="sm:col-span-4 flex items-center justify-between">
                 <div
                     class="flex-auto cursor-pointer"
@@ -237,7 +156,7 @@
                 >
                 </mat-slide-toggle>
             </div>
-            <!-- Ask to change password -->
+             Ask to change password 
             <div class="sm:col-span-4 flex items-center justify-between">
                 <div
                     class="flex-auto cursor-pointer"
@@ -263,10 +182,10 @@
 
         <div class="mt-11 mb-10 border-t"></div>
 
-        <!-- Actions -->
+         Actions 
         <div class="flex items-center justify-end">
             <button mat-stroked-button type="button">Cancelar</button>
-            <!-- <button class="ml-4" mat-stroked-button type="button">
+             <button class="ml-4" mat-stroked-button type="button">
                 Editar
             </button>
             <button
@@ -276,7 +195,7 @@
                 [color]="'warn'"
             >
                 Excluir
-            </button> -->
+            </button> 
             <button
                 class="ml-4"
                 mat-flat-button
@@ -286,5 +205,5 @@
                 Salvar
             </button>
         </div>
-    </form>
+    </form> -->
 </div>
