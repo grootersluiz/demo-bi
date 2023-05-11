@@ -9,6 +9,24 @@ import { VendafilialComponent } from './vendafilial.component';
 export class VendafilialService {
     private _data: BehaviorSubject<any> = new BehaviorSubject(null);
 
+    param = {
+        mes: null,
+        ano: null,
+        ultDia:null,
+        filial: 99
+      };
+    
+    setParam(ultDia,mes, ano, filial){
+
+        this.param.ultDia = ultDia;
+        this.param.mes    = mes;
+        this.param.ano    = ano;
+        this.param.filial = filial;
+
+        
+        // console.log('Service');
+        //  console.log(this.param);
+    }
     /**
      * Constructor
      */

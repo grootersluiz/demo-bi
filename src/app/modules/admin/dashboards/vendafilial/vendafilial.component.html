@@ -24,9 +24,11 @@
       <button [hidden]="true" matTooltip="Settings" class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2" style="visibility: hidden !important;">
         <mat-icon [hidden]="true" aria-hidden="false" fontIcon="settings" ></mat-icon>
       </button>
+      <button [hidden]="false" (click)="showDash(divChart)" matTooltip="Gráfico Dia" class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2" style="visibility: visible !important;">
+        <mat-icon aria-hidden="false" fontIcon="fit_screen" ></mat-icon>
+      </button>
     </mat-toolbar>
   </div>
-    
 
     <div class="w-full flex flex-row sm:flex-col md:flex-col lg:flex-row xl:flex-row 2xl:flex-row gap-4">
 
@@ -44,8 +46,21 @@
       </div>
       <div id="containerDash" class="flex flex-row p-0 w-4/5 sm:w-full md:w-full lg:w-4/5 xl:w-4/5 2xl:w-4/5">
 
-          <div id="divChart" class="h-60 w-full mt-2 mr-2" [hidden]="true">
-              <app-vendafilialchart></app-vendafilialchart>
+          <div id="divChart" #divChart class="h-60 w-full mt-2 mr-2" [hidden]="false">
+              <!-- <app-vendafilialchart></app-vendafilialchart> -->
+              <div id="chart" class="h-60 w-full" >
+                <apx-chart class="grid h-60 w-12/12 rounded-2xl mr-2" style="background-color: white;"
+                  [series]="chartOptions.series"
+                  [chart]="chartOptions.chart"
+                  [yaxis]="chartOptions.yaxis"
+                  [xaxis]="chartOptions.xaxis"
+                  [dataLabels]="chartOptions.dataLabels"
+                  [grid]="chartOptions.grid"
+                  [stroke]="chartOptions.stroke"
+                  [title]="chartOptions.title"
+                  [responsive]="chartOptions.responsive"
+                ></apx-chart>
+              </div>
           </div>
           <div class="flex w-full sm:w-full md:w-full lg:w-full xl:w-full 2xl:w-full mt-2 mr-2" >
             <div class="overflow-x-auto overflow-y-auto w-full rounded-2xl mr-2" >

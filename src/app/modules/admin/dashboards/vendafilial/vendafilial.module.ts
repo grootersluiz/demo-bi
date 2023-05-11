@@ -22,14 +22,13 @@ import { NgApexchartsModule } from "ng-apexcharts";
 
 import { VendafilialComponent } from 'app/modules/admin/dashboards/vendafilial/vendafilial.component';
 import { vendafilialRoutes } from 'app/modules/admin/dashboards/vendafilial/vendafilial.routing';
-import { VendafilialchartComponent } from './vendafilialchart/vendafilialchart.component';
-// import { VendafilialchartModule } from './vendafilialchart/vendafilialchart.module';
 
 registerLocaleData(ptBr);
 
 @NgModule({
-    declarations: [VendafilialComponent, VendafilialchartComponent],
+    declarations: [VendafilialComponent],
     imports: [
+        // VendafilialchartModule,
         RouterModule.forChild(vendafilialRoutes),
         CommonModule,
         MatToolbarModule,
@@ -42,9 +41,11 @@ registerLocaleData(ptBr);
         MatDatepickerModule,
         MatNativeDateModule,
         NgApexchartsModule
-        // FormControl
     ],
+    // exports: [VendafilialchartComponent],
     providers: [
+        // VendafilialchartModule,
+        // VendafilialchartService,
         {
             provide: LOCALE_ID,
             useValue: 'pt',
@@ -53,6 +54,6 @@ registerLocaleData(ptBr);
             provide: DEFAULT_CURRENCY_CODE,
             useValue: 'BRL',
         }
-    ],
+    ]
 })
 export class VendafilialModule {}

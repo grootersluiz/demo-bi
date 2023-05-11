@@ -1,14 +1,33 @@
-import { Component} from '@angular/core';
+import { Component, Injectable, TemplateRef, ViewChild} from '@angular/core';
 import { VendafilialService } from './vendafilial.service';
 import { Observable, async } from 'rxjs';
 
+import { Subject, takeUntil } from 'rxjs';
+
 import { formatNumber } from '@angular/common';
-import { LocalizedString } from '@angular/compiler';
+import { LocalizedString, parseTemplate } from '@angular/compiler';
 
 import { Directive, HostListener, ElementRef, Renderer2 } from '@angular/core';
 import { ArrayDataSource } from '@angular/cdk/collections';
 import { HttpClient } from '@angular/common/http';
-import { toPlainObject } from 'lodash';
+import { template, toPlainObject } from 'lodash';
+// import { VendafilialchartComponent } from './vendafilialchart/vendafilialchart.component';
+// import { VendafilialchartService } from './vendafilialchart/vendafilialchart.service';
+
+import ApexCharts from "apexcharts"; //está usando
+import { ApexOptions } from 'ng-apexcharts';
+import {
+  ChartComponent,
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexXAxis,
+  ApexDataLabels,
+  ApexTitleSubtitle,
+  ApexStroke,
+  ApexGrid,
+  ApexResponsive,
+  ApexYAxis
+} from "ng-apexcharts";
 
 export interface TipoColumaElement {
   NOMEFANTASIA: string;
@@ -43,13 +62,178 @@ export interface TipoColumaElement {
 
 let ELEMENT_DATA_VENDA: TipoColumaElement[];
 
+export type ChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  yaxis: ApexYAxis[]; 
+  xaxis: ApexXAxis;
+  dataLabels: ApexDataLabels;
+  grid: ApexGrid;
+  stroke: ApexStroke;
+  title: ApexTitleSubtitle;
+  responsive: ApexResponsive[];
+};
+
 @Component({
   selector: 'app-vendafilial',
   templateUrl: './vendafilial.component.html',
-  styleUrls: ['./vendafilial.component.scss']
+  styleUrls: ['./vendafilial.component.scss'],
+  // providers: [VendafilialchartComponent]
 })
 
+@Injectable()
 export class VendafilialComponent {
+  @ViewChild("chart") chart: ChartComponent;
+  public chartOptions: Partial<ChartOptions>;
+
+  _colors = {
+    palette1:  ['#008FFB','#00E396','#FEB019','#FF4560','#775DD0'],
+    palette2:  ['#3F51B5','#03A9F4','#4CAF50','#F9CE1D','#FF9800'],
+    palette3:  ['#33B2DF','#546E7A','#D4526E','#13D8AA','#A5978B'],
+    palette4:  ['#4ECDC4','#C7F464','#81D4FA','#546E7A','#FD6A6A'],
+    palette5:  ['#2B908F','#F9A3A4','#90EE7E','#FA4443','#69D2E7'],
+    palette6:  ['#449DD1','#F86624','#EA3546','#662E9B','#C5D86D'],
+    palette7:  ['#D7263D','#1B998B','#2E294E','#F46036','#E2C044'],
+    palette8:  ['#662E9B','#F86624','#F9C80E','#EA3546','#43BCCD'],
+    palette9:  ['#5C4742','#A5978B','#8D5B4C','#5A2A27','#C4BBAF'],
+    palette10: ['#A300D6','#7D02EB','#5653FE','#2983FF','#00B1F2']
+  };
+
+  viewSerie = [
+    {
+      name: "META",
+      data: []
+    },
+    {
+      name: "ROL",
+      data: []
+    }
+  ];
+  posicionaValorXinCategoria(categorias,rows){
+
+    var keyX = 2;
+    var codemp = this.param.filial;
+
+    var indexData =0;
+    // console.log('valorKey');
+    for (let index = 0; index < categorias.length; index++) {
+      // const element = categorias[index];
+      
+      var valorKey  = rows[indexData];
+
+      if(rows[indexData][0] == codemp){
+
+        // console.log(valorKey);
+        
+        while(valorKey[1].substr(0,2) != categorias[indexData]){
+          // console.log(valorKey[1].substr(0,2) + ' != '+categorias[indexData]);
+          this.viewSerie[0].data.push(0);
+          this.viewSerie[1].data.push(0);
+          indexData++;
+
+          if(indexData > 31){ break;}
+        }
+  
+        var valorMeta = !rows[indexData][3]?0:rows[indexData][3];
+        var valorRol  = !rows[indexData][4]?0:rows[indexData][4];
+        
+        if(valorKey[1].substr(0,2) === categorias[indexData]){
+          this.viewSerie[0].data.push(valorMeta);
+          this.viewSerie[1].data.push(valorRol);
+        }
+      }
+
+      indexData++;
+      
+    }
+
+    this.chartOptions.series = this.viewSerie;
+    this.chartOptions.xaxis.categories = categorias;
+
+  }
+
+  param = {
+            mes: null,
+            ano: null,
+            ultDia:null,
+            filial:null
+          };
+
+  validaParam(){
+
+    // var chartService = new VendafilialchartService() ;
+    // this.param = chartService.param;
+    this.param.ultDia = this.vendafilialService.param.ultDia;
+    this.param.mes    = this.vendafilialService.param.mes;
+    this.param.ano    = this.vendafilialService.param.ano;
+    this.param.filial = this.vendafilialService.param.filial;
+
+    if(!this.param.ano){
+
+      const sysDate = new Date();
+      this.param.ultDia = ("00" + (sysDate.getDate()-1)).slice(-2); // dia atual -1
+      this.param.mes    = ("00" + (sysDate.getMonth()+1)).slice(-2);
+      this.param.ano    = sysDate.getFullYear();
+      this.param.filial = 99;
+
+    }
+  }
+
+  setParam(ultDia,mes, ano, filial){
+
+    this.param.ultDia = ultDia;
+    this.param.mes    = mes;
+    this.param.ano    = ano;
+    this.param.filial = filial;
+  }
+
+  categorias = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30','31'];
+  getCategorias(){
+
+    var dia = parseInt(this.param.ultDia);
+
+    var contDia: string;
+    for (let index = 1 ; index <= dia; index++) {
+      
+      contDia = ("00" + index).slice(-2) ;
+      this.categorias.push(contDia);
+      
+    }
+
+  }
+
+  series = {columns: [], rows: []};
+  getSeries(){
+
+    var dia = this.param.ultDia;
+    var mes = this.param.mes;
+    var ano = this.param.ano;
+
+    this._httpClient.get<{columns: [], rows: []}>('http://api.portal.jspecas.com.br/v1/views/329/data?ano='+ano+'&mes='+mes+'&dtref1=01'+mes+ano+'&dtref2='+dia+mes+ano)
+                            .subscribe(dataresponse => {
+                                 this.series.columns  = dataresponse.columns;
+                                 this.series.rows     = dataresponse.rows;
+                                 this.posicionaValorXinCategoria(this.categorias,this.series.rows);
+
+                            });
+
+  }
+
+  limpar(){
+    this.series = {columns: [], rows: []};
+    this.categorias = new Array();
+    this.viewSerie = [
+      {
+        name: "META",
+        data: []
+      },
+      {
+        name: "ROL",
+        data: []
+      }
+    ];
+
+  }
 
   cabecalho: string[] = [ 'NOMEFANTASIA'
                         , 'METAROL'
@@ -87,6 +271,8 @@ export class VendafilialComponent {
   _elementFilter: any;
   _elementRenderer: any;
   _thishttpClient: any;
+  _containerChart: any;
+  _serviceChart: any;
 
   formataDataSource(lista){
 
@@ -209,6 +395,17 @@ export class VendafilialComponent {
     return true;
 
   }
+  showDash(thisEvent) {
+
+    if(thisEvent.hidden){
+      thisEvent.hidden = false;
+    }else{
+      thisEvent.hidden = true;
+    }
+  }
+
+    
+
 
   /////////////////////////////////////// Construtor  ///////////////////////////////////////////////
   constructor(private vendafilialService: VendafilialService
@@ -216,9 +413,9 @@ export class VendafilialComponent {
               ,private _renderer: Renderer2
               ,private _httpClient : HttpClient){
 
-    this._elementFilter   = _element;
-    this._elementRenderer = _renderer;
-    this._thishttpClient = _httpClient;
+    this._elementFilter     = _element;
+    this._elementRenderer   = _renderer;
+    this._thishttpClient    = _httpClient;
 
     const sysDate = new Date();
     var mes = ("00" + (sysDate.getMonth()+1)).slice(-2) ;
@@ -239,6 +436,103 @@ export class VendafilialComponent {
       this.showFilter('');
     }, 500);
 
+    this.validaParam();
+    this.getCategorias();
+    this.getSeries();
+
+    // setTimeout(() => { }, 1000);
+
+    this.chartOptions = {
+      series: this.viewSerie,
+      chart: {
+        width: "100%",
+        height: '100%',
+        type: "area",
+        stacked: false,
+        zoom: {
+          enabled: true,
+          type: 'xy', 
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        curve: "straight"
+      },
+      title: {
+        text: " Dia (Rede JS)",
+        align: "left"
+      },
+      yaxis: [
+        {
+          show: true,
+          title: {
+            text: 'META',
+            style: {
+              color: this._colors.palette1[0],
+              fontSize: '12px',
+              fontFamily: 'Helvetica, Arial, sans-serif',
+              fontWeight: 600,
+              cssClass: 'apexcharts-yaxis-title',
+            }
+          },
+          labels: {
+            show: true,
+            style: {
+              colors: this._colors.palette1[0],
+              cssClass: 'apexcharts-yaxis-label'
+            },
+            formatter: function(val, index) {
+              return val.toFixed(0);
+            }
+          }
+        },
+        // {
+        //   show: true,
+        //   title: {
+        //     text: 'ROL',
+        //     style: {
+        //       color: this._colors.palette1[1],
+        //       fontSize: '12px',
+        //       fontFamily: 'Helvetica, Arial, sans-serif',
+        //       fontWeight: 600,
+        //       cssClass: '',
+        //     }
+        //   },
+        //   labels: {
+        //     show: false,
+        //     style: {
+        //       colors: this._colors.palette1[1],
+        //       cssClass: 'apexcharts-yaxis-label'
+        //     },
+        //     formatter: function(val, index) {
+        //       return val.toFixed(0);
+        //     }
+        //   }
+        // }
+      ],
+      xaxis: {
+          type: 'category',
+          categories: this.categorias
+      },
+      responsive: [
+        {
+          breakpoint: 1000,
+          options: {
+            plotOptions: {
+              bar: {
+                horizontal: false
+              }
+            },
+            legend: {
+              position: "bottom"
+            }
+          }
+        }
+      ]
+    };
+
   }
 
   formatDataMesAno(dataPicker) {
@@ -253,7 +547,6 @@ export class VendafilialComponent {
     return true;
 
   }
-
 
   consulatvendafilial(param ){
 
@@ -273,20 +566,20 @@ export class VendafilialComponent {
     var mes = ("00" + (sysDate.getMonth()+1)).slice(-2) ;
 
     var dataref = lastDayDate;
-    console.log(sysDate.getFullYear());
-    console.log(dataSplit[2])
-    console.log(mes);
-    console.log(dataSplit[1]);
-    if(sysDate.getFullYear() == dataSplit[2] && mes == dataSplit[1]){
+
+    if(sysDate.getFullYear() == dataSplit[2] && mes == dataSplit[1]){ // Atualizar dia do mês atual
       dataref = dia + mes + sysDate.getFullYear();
     }
+    var ano = dataSplit[2];
+    mes = dataSplit[1];
+    dia = lastDayDate.substring(0,2); // ultimo dia do mês
 
-    this._thishttpClient.get('http://api.portal.jspecas.com.br/v1/views/163/data?ano='+dataSplit[2]+'&mes='+dataSplit[1]+'&dtref='+dataref)
+    this._thishttpClient.get('http://api.portal.jspecas.com.br/v1/views/163/data?ano='+ano+'&mes='+mes+'&dtref='+dataref)
                             .subscribe(dataresponse => {
                                       var arrayDataSource = this.formataDataSource(dataresponse.rows);
                                       this.dataSource = arrayDataSource;
-                                });   
-
+                                });
+            
     // Não foi utilizado getDataAplica devido asyncronidade na atualização do dataSource
     // var dataGet = this.vendafilialService.getDataAplica(arrayParam);
         // setTimeout(() => {
@@ -295,6 +588,16 @@ export class VendafilialComponent {
         // this.dataSource = arrayDataSource;
         // console.log(this.dataSource);
       // }, 600);
+
+      this.vendafilialService.setParam(dia,mes,ano,99);
+      this.limpar(); // viewSerie, categorias, series
+      this.validaParam();
+      this.getCategorias();
+      this.getSeries();
+
+      // setTimeout(() => {
+      //     console.log(this.chartOptions);
+      // }, 10000);
 
   }
 
