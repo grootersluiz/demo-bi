@@ -7,16 +7,12 @@ import {
 } from '@angular/router';
 import { catchError, Observable, throwError } from 'rxjs';
 import { RegdashsService } from 'app/modules/admin/regdashs/regdashs.service';
-import {
-    Contact,
-    Country,
-    Tag,
-} from 'app/modules/admin/regdashs/regdashs.types';
+import { Dash, Country, Tag } from 'app/modules/admin/regdashs/regdashs.types';
 
 @Injectable({
     providedIn: 'root',
 })
-export class ContactsResolver implements Resolve<any> {
+export class DashsResolver implements Resolve<any> {
     /**
      * Constructor
      */
@@ -35,7 +31,7 @@ export class ContactsResolver implements Resolve<any> {
     resolve(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
-    ): Observable<Contact[]> {
+    ): Observable<Dash[]> {
         return this._contactsService.getDashs();
     }
 }
@@ -43,7 +39,7 @@ export class ContactsResolver implements Resolve<any> {
 @Injectable({
     providedIn: 'root',
 })
-export class ContactsContactResolver implements Resolve<any> {
+export class DashsDashResolver implements Resolve<any> {
     /**
      * Constructor
      */
@@ -65,9 +61,9 @@ export class ContactsContactResolver implements Resolve<any> {
     resolve(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
-    ): Observable<Contact> {
+    ): Observable<Dash> {
         return this._contactsService
-            .getContactById(route.paramMap.get('id'))
+            .getDashById(parseInt(route.paramMap.get('id')))
             .pipe(
                 // Error here means the requested contact is not available
                 catchError((error) => {
@@ -87,59 +83,5 @@ export class ContactsContactResolver implements Resolve<any> {
                     return throwError(error);
                 })
             );
-    }
-}
-
-@Injectable({
-    providedIn: 'root',
-})
-export class ContactsCountriesResolver implements Resolve<any> {
-    /**
-     * Constructor
-     */
-    constructor(private _contactsService: RegdashsService) {}
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Resolver
-     *
-     * @param route
-     * @param state
-     */
-    resolve(
-        route: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot
-    ): Observable<Country[]> {
-        return this._contactsService.getCountries();
-    }
-}
-
-@Injectable({
-    providedIn: 'root',
-})
-export class ContactsTagsResolver implements Resolve<any> {
-    /**
-     * Constructor
-     */
-    constructor(private _contactsService: RegdashsService) {}
-
-    // -----------------------------------------------------------------------------------------------------
-    // @ Public methods
-    // -----------------------------------------------------------------------------------------------------
-
-    /**
-     * Resolver
-     *
-     * @param route
-     * @param state
-     */
-    resolve(
-        route: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot
-    ): Observable<Tag[]> {
-        return this._contactsService.getTags();
     }
 }

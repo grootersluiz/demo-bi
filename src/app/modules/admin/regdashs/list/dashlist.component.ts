@@ -21,7 +21,7 @@ import {
     takeUntil,
 } from 'rxjs';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { Contact, Country } from 'app/modules/admin/regdashs/regdashs.types';
+import { Dash, Country } from 'app/modules/admin/regdashs/regdashs.types';
 import { RegdashsService } from 'app/modules/admin/regdashs/regdashs.service';
 
 @Component({
@@ -33,14 +33,14 @@ import { RegdashsService } from 'app/modules/admin/regdashs/regdashs.service';
 export class DashListComponent implements OnInit, OnDestroy {
     @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
 
-    contacts$: Observable<Contact[]>;
+    contacts$: Observable<Dash[]>;
 
     contactsCount: number = 0;
     contactsTableColumns: string[] = ['name', 'email', 'phoneNumber', 'job'];
     countries: Country[];
     drawerMode: 'side' | 'over';
     searchInputControl: UntypedFormControl = new UntypedFormControl();
-    selectedContact: Contact;
+    selectedContact: Dash;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
@@ -67,7 +67,7 @@ export class DashListComponent implements OnInit, OnDestroy {
         this.contacts$ = this._contactsService.contacts$;
         this._contactsService.contacts$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((contacts: Contact[]) => {
+            .subscribe((contacts: Dash[]) => {
                 // Update the counts
                 this.contactsCount = contacts.length;
 
@@ -78,7 +78,7 @@ export class DashListComponent implements OnInit, OnDestroy {
         // Get the contact
         this._contactsService.contact$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((contact: Contact) => {
+            .subscribe((contact: Dash) => {
                 // Update the selected contact
                 this.selectedContact = contact;
 
