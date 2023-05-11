@@ -49,9 +49,16 @@ div.cabecalho-filtro {
 .sellers-search-container{
     width: 100%;
     height: 2rem;
+    margin-bottom: .5rem;
 } 
 .sellers-search-input{
-    width: 95%;
-    padding: 0 .8rem 0 .8rem;
-    margin-bottom: .2rem;
+    border: 1px solid #CCC;
+    height: 1.8rem;
+    border-radius: 4px;
+    width: 90%;
+    padding: 0 .5rem 0 .5rem;
+    margin-bottom: .5rem;
+} 
+.sellers-search-input:focus{
+    border: 1px solid #D97706;
 } 

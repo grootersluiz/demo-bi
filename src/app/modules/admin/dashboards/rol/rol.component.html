@@ -76,12 +76,14 @@
                         style="font-size: 12px"
                         [formControl]="vendedores"
                         multiple
+                        (selectionChange)="onSellersSelectionChange($event)"
+                    
                     >
                         <div class="sellers-search-container flex justify-center">
                             <input
                                 class="sellers-search-input"
                                 type="text"
-                                placeholder="Buscar vendedores..."
+                                placeholder="Buscar..."
                                 [formControl]="sellersSearchInput"
                                 (input)="onInput($event.target.value)"
                             />

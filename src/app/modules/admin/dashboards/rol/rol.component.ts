@@ -76,6 +76,8 @@ export class RolComponent implements OnInit, OnDestroy {
     allCompaniesSelected: boolean = false;
 
     vendedores = new FormControl(this._rolService.INITIAL_SELLERS_IDS);
+    selectedSellers = new FormControl([]);
+
     vendedoresObjects: { id: number; string: string }[];
     filteredVendedoresObjects: { id: number; string: string }[];
     vendedoresStringList: string[];
@@ -83,6 +85,8 @@ export class RolComponent implements OnInit, OnDestroy {
     allSellersSelected: boolean = false;
 
     sellersSearchInput = new FormControl('');
+
+    
 
     range = new FormGroup({
         start: new FormControl<Date | null>(null),
@@ -209,12 +213,14 @@ export class RolComponent implements OnInit, OnDestroy {
     selectAllSellers() {
         if (this.allSellersSelected || this.vendedoresObjects.length === 0) {
             this.vendedores.setValue(this._rolService.INITIAL_SELLERS_IDS);
+            this.selectedSellers.setValue([]);
             this.allSellersSelected = false;
         } else {
             let newVendedores = this.filteredVendedoresObjects.map((item) =>
                 item.id.toString()
             );
             this.vendedores.setValue(newVendedores);
+            this.selectedSellers.setValue(newVendedores);
             this.allSellersSelected = true;
         }
     }
@@ -243,7 +249,14 @@ export class RolComponent implements OnInit, OnDestroy {
     }
 
     handleSellersFilterSelect(vendedorId: number) {
-
+        const id = vendedorId.toString();
+        if(this.vendedores.value.includes(id)){
+            this.selectedSellers.setValue([...this.selectedSellers.value, id])
+        }else{
+            const updatedItems = this.selectedSellers.value.filter(item => item !== id);
+            this.selectedSellers.setValue(updatedItems);
+        }
+        this.vendedores.setValue(this.selectedSellers.value);
 
         if (this.vendedores.value.length == 0) {
             this.vendedores.setValue(this._rolService.INITIAL_SELLERS_IDS);
@@ -280,6 +293,10 @@ export class RolComponent implements OnInit, OnDestroy {
         );
         this.filteredVendedoresStringList = filteredSellersString;
         this.filteredVendedoresObjects = filteredSellers;
+    }
+
+    onSellersSelectionChange(event){
+        //console.log(this.vendedores.value);
     }
 
     /**
