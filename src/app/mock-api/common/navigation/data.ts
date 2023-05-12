@@ -93,6 +93,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                 link: '/records/regusers',
             },
             {
+                id: 'reggroups',
+                title: 'Grupos',
+                type: 'basic',
+                icon: 'heroicons_outline:user-group',
+                link: '/records/reggroups',
+            },
+            {
                 id: 'regdashsreports',
                 title: 'Dashboards',
                 type: 'basic',

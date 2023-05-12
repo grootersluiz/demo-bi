@@ -249,6 +249,13 @@ export const appRoutes: Route[] = [
                             ).then((m) => m.ContactsModule),
                     },
                     {
+                        path: 'reggroups',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/reggroups/reggroups.module'
+                            ).then((m) => m.ReggroupsModule),
+                    },
+                    {
                         path: 'regdashsreports',
                         loadChildren: () =>
                             import(

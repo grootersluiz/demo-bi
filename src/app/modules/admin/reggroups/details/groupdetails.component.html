@@ -107,26 +107,26 @@
                 </ng-container> -->
 
                 <div class="flex flex-col mt-4 pt-6 border-t space-y-8">
-                    <!-- Dashboard ID -->
+                    <!-- Group ID -->
                     <ng-container *ngIf="contact.id">
                         <div class="flex sm:items-center">
                             <!-- <mat-icon
                                 [svgIcon]="'heroicons_outline:briefcase'"
                             ></mat-icon> -->
                             <div class="ml-6 leading-6">
-                                <p class="font-bold"> Id do Dashboard: </p> {{ contact.id }}
+                                <p class="font-bold"> Id do Grupo: </p> {{ contact.id }}
                             </div>
                         </div>
                     </ng-container>
 
-                    <!-- Dash Type -->
-                    <ng-container *ngIf="contact.type">
+                    <!-- Group Description -->
+                    <ng-container *ngIf="contact.description">
                         <div class="flex sm:items-center">
                             <!-- <mat-icon
                                 [svgIcon]="'heroicons_outline:briefcase'"
                             ></mat-icon> -->
                             <div class="ml-6 leading-6">
-                                <p class="font-bold"> Tipo: </p> {{ contact.type }}
+                                <p class="font-bold"> Descrição: </p> {{ contact.description }}
                             </div>
                         </div>
                     </ng-container>
@@ -626,7 +626,7 @@
                             class="w-full"
                             [subscriptSizing]="'dynamic'"
                         >
-                            <mat-label>Tipo</mat-label>
+                            <mat-label>Descrição</mat-label>
                             <!-- <mat-icon
                                 matPrefix
                                 class="hidden sm:flex icon-size-5"
@@ -634,7 +634,7 @@
                             ></mat-icon> -->
                             <input
                                 matInput
-                                [formControlName]="'type'"
+                                [formControlName]="'description'"
                                 [placeholder]="'Tipo'"
                             />
                         </mat-form-field>
