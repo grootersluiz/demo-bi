@@ -102,11 +102,18 @@ export class VendafilialComponent {
   viewSerie = [
     {
       name: "META",
-      data: []
+      data: [],
+      yAxis:0
     },
     {
       name: "ROL",
-      data: []
+      data: [],
+      yAxis:0
+    },
+    {
+      name: "MB",
+      data: [],
+      yAxis: 2
     }
   ];
   posicionaValorXinCategoria(categorias,rows){
@@ -129,6 +136,7 @@ export class VendafilialComponent {
           // console.log(valorKey[1].substr(0,2) + ' != '+categorias[indexData]);
           this.viewSerie[0].data.push(0);
           this.viewSerie[1].data.push(0);
+          this.viewSerie[2].data.push(0);
           indexData++;
 
           if(indexData > 31){ break;}
@@ -136,10 +144,12 @@ export class VendafilialComponent {
   
         var valorMeta = !rows[indexData][3]?0:rows[indexData][3];
         var valorRol  = !rows[indexData][4]?0:rows[indexData][4];
+        var valorMb   = !rows[indexData][10]?0:rows[indexData][10];
         
         if(valorKey[1].substr(0,2) === categorias[indexData]){
           this.viewSerie[0].data.push(valorMeta);
           this.viewSerie[1].data.push(valorRol);
+          this.viewSerie[2].data.push(valorMb);
         }
       }
 
@@ -225,11 +235,18 @@ export class VendafilialComponent {
     this.viewSerie = [
       {
         name: "META",
-        data: []
+        data: [],
+        yAxis:0
       },
       {
         name: "ROL",
-        data: []
+        data: [],
+        yAxis:0
+      },
+      {
+        name: "MB",
+        data: [],
+        yAxis: 1
       }
     ];
 
@@ -404,9 +421,6 @@ export class VendafilialComponent {
     }
   }
 
-    
-
-
   /////////////////////////////////////// Construtor  ///////////////////////////////////////////////
   constructor(private vendafilialService: VendafilialService
               ,private _element: ElementRef
@@ -467,6 +481,7 @@ export class VendafilialComponent {
       yaxis: [
         {
           show: true,
+          seriesName: 'META',
           title: {
             text: 'META',
             style: {
@@ -484,33 +499,61 @@ export class VendafilialComponent {
               cssClass: 'apexcharts-yaxis-label'
             },
             formatter: function(val, index) {
-              return val.toFixed(0);
+              var valor = val? val.toFixed(0) : '';
+              return valor;
             }
           }
         },
-        // {
-        //   show: true,
-        //   title: {
-        //     text: 'ROL',
-        //     style: {
-        //       color: this._colors.palette1[1],
-        //       fontSize: '12px',
-        //       fontFamily: 'Helvetica, Arial, sans-serif',
-        //       fontWeight: 600,
-        //       cssClass: '',
-        //     }
-        //   },
-        //   labels: {
-        //     show: false,
-        //     style: {
-        //       colors: this._colors.palette1[1],
-        //       cssClass: 'apexcharts-yaxis-label'
-        //     },
-        //     formatter: function(val, index) {
-        //       return val.toFixed(0);
-        //     }
-        //   }
-        // }
+        {
+          show: false,
+          seriesName: 'META',
+          title: {
+            text: 'ROL',
+            style: {
+              color: this._colors.palette1[1],
+              fontSize: '12px',
+              fontFamily: 'Helvetica, Arial, sans-serif',
+              fontWeight: 600,
+              cssClass: '',
+            }
+          },
+          labels: {
+            show: false,
+            style: {
+              colors: this._colors.palette1[1],
+              cssClass: 'apexcharts-yaxis-label'
+            },
+            formatter: function(val, index) {
+              var valor = val? val.toFixed(0) : '';
+              return valor;
+            }
+          }
+        },
+        {
+          show: true,
+          seriesName: 'MB',
+          title: {
+            text: 'MB',
+            style: {
+              color: this._colors.palette1[2],
+              fontSize: '12px',
+              fontFamily: 'Helvetica, Arial, sans-serif',
+              fontWeight: 600,
+              cssClass: 'apexcharts-yaxis-title',
+            }
+          },
+          labels: {
+            show: true,
+            style: {
+              colors: this._colors.palette1[2],
+              cssClass: 'apexcharts-yaxis-label'
+            },
+            formatter: function(val, index) {
+              var valor = val? val.toFixed(2) : '';
+              return valor;
+            }
+          }
+        }
       ],
       xaxis: {
           type: 'category',
