@@ -133,12 +133,15 @@ export class RegdashsService {
     /**
      * Create contact
      */
-    createContact(): Observable<Dash> {
+    createDash(): Observable<Dash> {
         return this.contacts$.pipe(
             take(1),
             switchMap((contacts) =>
                 this._httpClient
-                    .post<Dash>('api/apps/contacts/contact', {})
+                    .post<Dash>('http://10.2.1.108/v1/dashboards', {
+                        name: "Novo Dashboard",
+                        type: "dash"
+                    })
                     .pipe(
                         map((newContact) => {
                             // Update the contacts with the new contact
@@ -158,14 +161,14 @@ export class RegdashsService {
      * @param id
      * @param contact
      */
-    updateContact(id: number, contact: Dash): Observable<Dash> {
+    updateDash(id: number, contact: Dash): Observable<Dash> {
         return this.contacts$.pipe(
             take(1),
             switchMap((contacts) =>
                 this._httpClient
-                    .patch<Dash>('api/apps/contacts/contact', {
-                        id,
-                        contact,
+                    .put<Dash>(`http://10.2.1.108/v1/dashboards/${id}`, {
+                        name: contact.name,
+                        type: contact.type,
                     })
                     .pipe(
                         map((updatedContact) => {
@@ -206,12 +209,12 @@ export class RegdashsService {
      *
      * @param id
      */
-    deleteContact(id: number): Observable<boolean> {
+    deleteDash(id: number): Observable<boolean> {
         return this.contacts$.pipe(
             take(1),
             switchMap((contacts) =>
                 this._httpClient
-                    .delete('api/apps/contacts/contact', { params: { id } })
+                    .delete(`http://10.2.1.108/v1/dashboards/${id}`)
                     .pipe(
                         map((isDeleted: boolean) => {
                             // Find the index of the deleted contact

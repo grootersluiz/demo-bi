@@ -178,7 +178,7 @@ export class DashListComponent implements OnInit, OnDestroy {
      */
     createContact(): void {
         // Create the contact
-        this._contactsService.createContact().subscribe((newContact) => {
+        this._contactsService.createDash().subscribe((newContact) => {
             // Go to the new contact
             this._router.navigate(['./', newContact.id], {
                 relativeTo: this._activatedRoute,

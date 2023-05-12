@@ -186,7 +186,7 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
 
         // Update the contact on the server
         this._contactsService
-            .updateContact(contact.id, contact)
+            .updateDash(contact.id, contact)
             .subscribe(() => {
                 // Toggle the edit mode off
                 this.toggleEditMode(false);
@@ -232,8 +232,9 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
                         : this.contacts[nextContactIndex].id;
 
                 // Delete the contact
+                this.closeDrawer();
                 this._contactsService
-                    .deleteContact(id)
+                    .deleteDash(id)
                     .subscribe((isDeleted) => {
                         // Return if the contact wasn't deleted...
                         if (!isDeleted) {
