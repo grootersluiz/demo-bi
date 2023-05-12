@@ -52,7 +52,7 @@ export const navigationData: Navigation = {
                 },
                 {
                     id: 'reggroups',
-                    title: 'Grupos',
+                    title: 'Grupos de Usuários',
                     type: 'basic',
                     icon: 'heroicons_outline:user-group',
                     link: '/records/reggroups',
@@ -129,5 +129,5 @@ export const navigationData: Navigation = {
         },
     ],
     futuristic: [{}],
-    horizontal: [{}]
-} as Navigation
+    horizontal: [{}],
+} as Navigation;

@@ -96,8 +96,10 @@
                                 <ng-container
                                     *ngIf="
                                         i === 0 ||
-                                        contact.name.charAt(0) !==
-                                            contacts[i - 1].name.charAt(0)
+                                        contact.name.charAt(0).toUpperCase() !==
+                                            contacts[i - 1].name
+                                                .charAt(0)
+                                                .toUpperCase()
                                     "
                                 >
                                     <div
