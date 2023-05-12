@@ -21,7 +21,7 @@ import {
     takeUntil,
 } from 'rxjs';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { Group, Country } from 'app/modules/admin/reggroups/reggroups.types';
+import { Group } from 'app/modules/admin/reggroups/reggroups.types';
 import { ReggroupsService } from 'app/modules/admin/reggroups/reggroups.service';
 
 @Component({
@@ -37,7 +37,6 @@ export class GroupListComponent implements OnInit, OnDestroy {
 
     groupsCount: number = 0;
     groupsTableColumns: string[] = ['name', 'email', 'phoneNumber', 'job'];
-    countries: Country[];
     drawerMode: 'side' | 'over';
     searchInputControl: UntypedFormControl = new UntypedFormControl();
     selectedGroup: Group;
@@ -86,16 +85,6 @@ export class GroupListComponent implements OnInit, OnDestroy {
                 this._changeDetectorRef.markForCheck();
             });
 
-        // Get the countries
-        this._groupsService.countries$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((countries: Country[]) => {
-                // Update the countries
-                this.countries = countries;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
 
         // Subscribe to search input field value changes
         this.searchInputControl.valueChanges

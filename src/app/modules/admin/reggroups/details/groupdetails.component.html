@@ -6,10 +6,10 @@
             class="relative w-full h-40 sm:h-48 px-8 sm:px-12 bg-accent-100 dark:bg-accent-700"
         > -->
         <!-- Background -->
-        <!-- <ng-container *ngIf="contact.background">
+        <!-- <ng-container *ngIf="group.background">
                 <img
                     class="absolute inset-0 object-cover w-full h-full"
-                    [src]="contact.background"
+                    [src]="group.background"
                 />
             </ng-container> -->
         <!-- Close button -->
@@ -53,14 +53,14 @@
                     >
                         <img
                             class="object-cover w-full h-full"
-                            *ngIf="contact.avatar"
-                            [src]="contact.avatar"
+                            *ngIf="group.avatar"
+                            [src]="group.avatar"
                         />
                         <div
                             class="flex items-center justify-center w-full h-full rounded overflow-hidden uppercase text-8xl font-bold leading-none bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200"
-                            *ngIf="!contact.avatar"
+                            *ngIf="!group.avatar"
                         >
-                            {{ contact.name.charAt(0) }}
+                            {{ group.name.charAt(0) }}
                         </div>
                     </div> -->
                     <!-- Actions -->
@@ -80,16 +80,16 @@
 
                 <!-- Name -->
                 <div class="mt-3 text-4xl font-bold truncate">
-                    {{ contact.name }}
+                    {{ group.name }}
                 </div>
 
                 <!-- Tags -->
-                <!-- <ng-container *ngIf="contact.tags.length">
+                <!-- <ng-container *ngIf="group.tags.length">
                     <div class="flex flex-wrap items-center mt-2">
                          Tag 
                         <ng-container
                             *ngFor="
-                                let tag of contact.tags
+                                let tag of group.tags
                                     | fuseFindByKey : 'id' : tags;
                                 trackBy: trackByFn
                             "
@@ -108,43 +108,43 @@
 
                 <div class="flex flex-col mt-4 pt-6 border-t space-y-8">
                     <!-- Group ID -->
-                    <ng-container *ngIf="contact.id">
+                    <ng-container *ngIf="group.id">
                         <div class="flex sm:items-center">
                             <!-- <mat-icon
                                 [svgIcon]="'heroicons_outline:briefcase'"
                             ></mat-icon> -->
                             <div class="ml-6 leading-6">
-                                <p class="font-bold"> Id do Grupo: </p> {{ contact.id }}
+                                <p class="font-bold"> Id do Grupo: </p> {{ group.id }}
                             </div>
                         </div>
                     </ng-container>
 
                     <!-- Group Description -->
-                    <ng-container *ngIf="contact.description">
+                    <ng-container *ngIf="group.description">
                         <div class="flex sm:items-center">
                             <!-- <mat-icon
                                 [svgIcon]="'heroicons_outline:briefcase'"
                             ></mat-icon> -->
                             <div class="ml-6 leading-6">
-                                <p class="font-bold"> Descrição: </p> {{ contact.description }}
+                                <p class="font-bold"> Descrição: </p> {{ group.description }}
                             </div>
                         </div>
                     </ng-container>
 
                     <!-- Company -->
-                    <!-- <ng-container *ngIf="contact.company">
+                    <!-- <ng-container *ngIf="group.company">
                         <div class="flex sm:items-center">
                             <mat-icon
                                 [svgIcon]="'heroicons_outline:office-building'"
                             ></mat-icon>
                             <div class="ml-6 leading-6">
-                                {{ contact.company }}
+                                {{ group.company }}
                             </div>
                         </div>
                     </ng-container> -->
 
                     <!-- Emails -->
-                    <!-- <ng-container *ngIf="contact.emails.length">
+                    <!-- <ng-container *ngIf="group.emails.length">
                         <div class="flex">
                             <mat-icon
                                 [svgIcon]="'heroicons_outline:mail'"
@@ -152,7 +152,7 @@
                             <div class="min-w-0 ml-6 space-y-1">
                                 <ng-container
                                     *ngFor="
-                                        let email of contact.emails;
+                                        let email of group.emails;
                                         trackBy: trackByFn
                                     "
                                 >
@@ -180,7 +180,7 @@
                     </ng-container> -->
 
                     <!-- Phone -->
-                    <!-- <ng-container *ngIf="contact.phoneNumbers.length">
+                    <!-- <ng-container *ngIf="group.phoneNumbers.length">
                         <div class="flex">
                             <mat-icon
                                 [svgIcon]="'heroicons_outline:phone'"
@@ -188,7 +188,7 @@
                             <div class="min-w-0 ml-6 space-y-1">
                                 <ng-container
                                     *ngFor="
-                                        let phoneNumber of contact.phoneNumbers;
+                                        let phoneNumber of group.phoneNumbers;
                                         trackBy: trackByFn
                                     "
                                 >
@@ -201,7 +201,7 @@
                                                 ).name
                                             "
                                             [style.background]="
-                                                'url(\'/assets/images/apps/contacts/flags.png\') no-repeat 0 0'
+                                                'url(\'/assets/images/apps/groups/flags.png\') no-repeat 0 0'
                                             "
                                             [style.backgroundSize]="
                                                 '24px 3876px'
@@ -238,38 +238,38 @@
                     </ng-container> -->
 
                     <!-- Address
-                    <ng-container *ngIf="contact.address">
+                    <ng-container *ngIf="group.address">
                         <div class="flex sm:items-center">
                             <mat-icon
                                 [svgIcon]="'heroicons_outline:location-marker'"
                             ></mat-icon>
                             <div class="ml-6 leading-6">
-                                {{ contact.address }}
+                                {{ group.address }}
                             </div>
                         </div>
                     </ng-container> -->
 
                     <!-- Birthday -->
-                    <!-- <ng-container *ngIf="contact.birthday">
+                    <!-- <ng-container *ngIf="group.birthday">
                         <div class="flex sm:items-center">
                             <mat-icon
                                 [svgIcon]="'heroicons_outline:cake'"
                             ></mat-icon>
                             <div class="ml-6 leading-6">
-                                {{ contact.birthday | date : "longDate" }}
+                                {{ group.birthday | date : "longDate" }}
                             </div>
                         </div>
                     </ng-container> -->
 
                     <!-- Notes -->
-                    <!-- <ng-container *ngIf="contact.notes">
+                    <!-- <ng-container *ngIf="group.notes">
                         <div class="flex">
                             <mat-icon
                                 [svgIcon]="'heroicons_outline:menu-alt-2'"
                             ></mat-icon>
                             <div
                                 class="max-w-none ml-6 prose prose-sm"
-                                [innerHTML]="contact.notes"
+                                [innerHTML]="group.notes"
                             ></div>
                         </div>
                     </ng-container> -->
@@ -285,10 +285,10 @@
             class="relative w-full h-40 sm:h-48 px-8 sm:px-12 bg-accent-100 dark:bg-accent-700"
         > -->
         <!-- Background -->
-        <!-- <ng-container *ngIf="contact.background">
+        <!-- <ng-container *ngIf="group.background">
                 <img
                     class="absolute inset-0 object-cover w-full h-full"
-                    [src]="contact.background"
+                    [src]="group.background"
                 />
             </ng-container> -->
         <!-- Close button -->

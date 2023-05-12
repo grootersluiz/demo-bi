@@ -11,7 +11,7 @@ import {
     tap,
     throwError,
 } from 'rxjs';
-import { Group, Country, Tag } from 'app/modules/admin/reggroups/reggroups.types';
+import { Group } from 'app/modules/admin/reggroups/reggroups.types';
 
 @Injectable({
     providedIn: 'root',
@@ -22,10 +22,6 @@ export class ReggroupsService {
     private _groups: BehaviorSubject<Group[] | null> = new BehaviorSubject(
         null
     );
-    private _countries: BehaviorSubject<Country[] | null> = new BehaviorSubject(
-        null
-    );
-    private _tags: BehaviorSubject<Tag[] | null> = new BehaviorSubject(null);
 
     /**
      * Constructor
@@ -50,19 +46,6 @@ export class ReggroupsService {
         return this._groups.asObservable();
     }
 
-    /**
-     * Getter for countries
-     */
-    get countries$(): Observable<Country[]> {
-        return this._countries.asObservable();
-    }
-
-    /**
-     * Getter for tags
-     */
-    get tags$(): Observable<Tag[]> {
-        return this._tags.asObservable();
-    }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods

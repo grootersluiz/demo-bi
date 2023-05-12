@@ -23,7 +23,7 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { Group, Country, Tag } from 'app/modules/admin/reggroups/reggroups.types';
+import { Group } from 'app/modules/admin/reggroups/reggroups.types';
 import { GroupListComponent } from 'app/modules/admin/reggroups/list/grouplist.component';
 import { ReggroupsService } from 'app/modules/admin/reggroups/reggroups.service';
 
@@ -39,13 +39,10 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     @ViewChild('tagsPanelOrigin') private _tagsPanelOrigin: ElementRef;
 
     editMode: boolean = false;
-    tags: Tag[];
     tagsEditMode: boolean = false;
-    filteredTags: Tag[];
-    contact: Group;
+    group: Group;
     contactForm: UntypedFormGroup;
-    contacts: Group[];
-    countries: Country[];
+    groups: Group[];
     private _tagsPanelOverlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -96,7 +93,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         this._contactsService.groups$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((contacts: Group[]) => {
-                this.contacts = contacts;
+                this.groups = contacts;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -110,7 +107,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
                 this._contactsListComponent.matDrawer.open();
 
                 // Get the contact
-                this.contact = contact;
+                this.group = contact;
 
                 // Clear the emails and phoneNumbers form arrays
                 (this.contactForm.get('emails') as UntypedFormArray).clear();
@@ -217,19 +214,19 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
             // If the confirm button pressed...
             if (result === 'confirmed') {
                 // Get the current contact's id
-                const id = this.contact.id;
+                const id = this.group.id;
 
                 // Get the next/previous contact's id
-                const currentContactIndex = this.contacts.findIndex(
+                const currentContactIndex = this.groups.findIndex(
                     (item) => item.id === id
                 );
                 const nextContactIndex =
                     currentContactIndex +
-                    (currentContactIndex === this.contacts.length - 1 ? -1 : 1);
+                    (currentContactIndex === this.groups.length - 1 ? -1 : 1);
                 const nextContactId =
-                    this.contacts.length === 1 && this.contacts[0].id === id
+                    this.groups.length === 1 && this.groups[0].id === id
                         ? null
-                        : this.contacts[nextContactIndex].id;
+                        : this.groups[nextContactIndex].id;
 
                 // Delete the contact
                 this.closeDrawer();
@@ -327,9 +324,6 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
             ) {
                 // Detach it
                 this._tagsPanelOverlayRef.detach();
-
-                // Reset the tag filter
-                this.filteredTags = this.tags;
 
                 // Toggle the edit mode off
                 this.tagsEditMode = false;

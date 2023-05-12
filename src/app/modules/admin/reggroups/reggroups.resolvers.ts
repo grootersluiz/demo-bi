@@ -7,7 +7,7 @@ import {
 } from '@angular/router';
 import { catchError, Observable, throwError } from 'rxjs';
 import { ReggroupsService } from 'app/modules/admin/reggroups/reggroups.service';
-import { Group, Country, Tag } from 'app/modules/admin/reggroups/reggroups.types';
+import { Group } from 'app/modules/admin/reggroups/reggroups.types';
 
 @Injectable({
     providedIn: 'root',
