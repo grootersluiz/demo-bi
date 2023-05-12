@@ -2,11 +2,12 @@ import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { FuseNavigationService, FuseVerticalNavigationComponent } from '@fuse/components/navigation';
+import { FuseNavigationItem, FuseNavigationService, FuseVerticalNavigationComponent } from '@fuse/components/navigation';
 import { Navigation } from 'app/core/navigation/navigation.types';
 import { NavigationService } from 'app/core/navigation/navigation.service';
 import { User } from 'app/core/user/user.types';
 import { UserService } from 'app/core/user/user.service';
+import { navigationData } from 'app/layout/layouts/vertical/classy/classy.data';
 
 @Component({
     selector     : 'classy-layout',
@@ -55,20 +56,34 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
+
+
+
         // Subscribe to navigation data
-        this._navigationService.navigation$
+/*          this._navigationService.navigation$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((navigation: Navigation) => {
                 this.navigation = navigation;
-            });
+            });  */
 
         // Subscribe to the user service
         this._userService.user$
             .pipe((takeUntil(this._unsubscribeAll)))
             .subscribe((user: User) => {
                 this.user = user;
+
+                // Controle de acesso do menu
+                let myNavigation = JSON.parse(JSON.stringify(navigationData));
+                if (!(this.user.role === 'admin')) {
+                    myNavigation.default[1] = {} as FuseNavigationItem;
+                    myNavigation.default[2] = {} as FuseNavigationItem;
+                }
+                this.navigation = myNavigation;
             });
 
+
+
+    
         // Subscribe to media changes
         this._fuseMediaWatcherService.onMediaChange$
             .pipe(takeUntil(this._unsubscribeAll))
