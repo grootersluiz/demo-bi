@@ -153,7 +153,7 @@ export class VendafilialComponent {
       }
       
     }
-    
+
     this.chartOptions.title.text =  " Dia ("+descemp+")";
     this.chartOptions.series = this.viewSerie;
     this.chartOptions.xaxis.categories = categorias;
@@ -845,13 +845,17 @@ export class VendafilialComponent {
 
   formatDataMesAno(dataPicker) {
 
-    var mes = dataPicker.value.getMonth();
-
-    mes = mes < 9 ? '0' + (mes+1) :  (mes+1);
-
-    var dataMes = '01/'+ mes + '/'+ dataPicker.value.getUTCFullYear();
-
+    // console.log(dataPicker);
+    var mes = dataPicker.value._i.month;
+    mes = ("00" + (mes+1)).slice(-2)
+    var dataMes = '01/'+ mes + '/'+ dataPicker.value._i.year;
     dataPicker.targetElement.value = dataMes;
+
+    // var mes = dataPicker.value.getMonth();
+    // mes = mes < 9 ? '0' + (mes+1) :  (mes+1);
+    // var dataMes = '01/'+ mes + '/'+ dataPicker.value.getUTCFullYear();
+    // dataPicker.targetElement.value = dataMes;
+
     return true;
 
   }
