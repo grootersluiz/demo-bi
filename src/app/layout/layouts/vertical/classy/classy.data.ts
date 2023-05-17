@@ -18,14 +18,14 @@ export const navigationData: Navigation = {
                     link: '/analiseindicadores/dashboards',
                     children: [
                         {
-                            id: 'dashboards.rol',
+                            id: '41',
                             title: 'ROL',
                             type: 'basic',
                             icon: 'heroicons_outline:chart-bar',
                             link: '/dashboards/rol',
                         },
                         {
-                            id: 'dashboards.vendafilial',
+                            id: '42',
                             title: 'Venda Filial Mês',
                             type: 'basic',
                             icon: 'heroicons_outline:chart-bar',

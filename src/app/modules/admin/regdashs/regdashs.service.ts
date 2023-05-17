@@ -139,8 +139,8 @@ export class RegdashsService {
             switchMap((contacts) =>
                 this._httpClient
                     .post<Dash>('http://10.2.1.108/v1/dashboards', {
-                        name: "Novo Dashboard",
-                        type: "dash"
+                        name: 'Novo Dashboard',
+                        type: 'dash',
                     })
                     .pipe(
                         map((newContact) => {
