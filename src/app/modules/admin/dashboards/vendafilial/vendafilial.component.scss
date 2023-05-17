@@ -43,3 +43,30 @@ tr.mat-mdc-header-row {
 tr.mat-mdc-row {
     height: 30px;
 }
+
+
+.charts-menu {
+    background: #fff;
+    position: absolute;
+    top: 100%;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 3px;
+    right: 10px;
+    opacity: 0;
+    min-width: 110px;
+    transition: .15s ease all;
+    pointer-events: none;
+}
+
+.charts-menu-open {
+    opacity: 1;
+    pointer-events: all;
+    transition: .15s ease all;
+}
+
+.charts-menu-item {
+    padding: 6px 7px;
+    font-size: 12px;
+    cursor: pointer;
+}

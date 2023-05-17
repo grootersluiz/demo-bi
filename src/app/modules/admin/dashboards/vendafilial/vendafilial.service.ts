@@ -13,17 +13,18 @@ export class VendafilialService {
         mes: null,
         ano: null,
         ultDia:null,
-        filial: 99
+        filial: 99,
+        descFilial: 'REDE'
       };
     
-    setParam(ultDia,mes, ano, filial){
+    setParam(ultDia,mes, ano, filial,descFilial){
 
-        this.param.ultDia = ultDia;
-        this.param.mes    = mes;
-        this.param.ano    = ano;
-        this.param.filial = filial;
+        this.param.ultDia       = ultDia;
+        this.param.mes          = mes;
+        this.param.ano          = ano;
+        this.param.filial       = filial;
+        this.param.descFilial   = descFilial;
 
-        
         // console.log('Service');
         //  console.log(this.param);
     }
