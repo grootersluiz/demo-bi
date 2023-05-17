@@ -32,7 +32,7 @@ export const appRoutes: Route[] = [
     {
         path: 'signed-in-redirect',
         pathMatch: 'full',
-        redirectTo: 'dashboards/rol',
+        redirectTo: 'settings/profile',
     },
 
     // Auth routes for guests

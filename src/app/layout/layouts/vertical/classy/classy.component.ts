@@ -86,7 +86,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((dash: Dash[]) => {
                 this.dash = dash;
-                console.log(this.dash);
+
                 // Controle de acesso do menu
                 for (let i = 0; i < dash.length; i++) {
                     this.dashsIds.push(dash[i].id);
