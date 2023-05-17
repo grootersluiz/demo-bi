@@ -845,7 +845,8 @@ export class VendafilialComponent {
 
   formatDataMesAno(dataPicker) {
 
-    // console.log(dataPicker);
+    if (!dataPicker.value){ return null}
+
     var mes = dataPicker.value._i.month;
     mes = ("00" + (mes+1)).slice(-2)
     var dataMes = '01/'+ mes + '/'+ dataPicker.value._i.year;
@@ -856,6 +857,29 @@ export class VendafilialComponent {
     // var dataMes = '01/'+ mes + '/'+ dataPicker.value.getUTCFullYear();
     // dataPicker.targetElement.value = dataMes;
 
+    return true;
+
+  }
+
+  formatDataMesAno2(dataPicker) {
+
+    var value = dataPicker.value;
+
+    if(value.length >= 8){
+      var arrayData = value.split("/");
+
+      if(arrayData.length ==1){
+        dataPicker.value = '01/'+value.substr(2,2)+'/'+value.substr(4,4);
+
+      }else{
+        // var dia = ("00" + (arrayData[0])).slice(-2);
+        var mes =  ("00" + (arrayData[1])).slice(-2);
+        var ano = arrayData[2];
+
+        dataPicker.value = '01/'+mes+'/'+ano;
+      }
+      
+    }
     return true;
 
   }
