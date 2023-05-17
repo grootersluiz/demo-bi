@@ -16,14 +16,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
+import localePt from '@angular/common/locales/pt';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 // import {FormControl} from "@angular/forms";
 
 import { NgApexchartsModule } from "ng-apexcharts";
 
 import { VendafilialComponent } from 'app/modules/admin/dashboards/vendafilial/vendafilial.component';
 import { vendafilialRoutes } from 'app/modules/admin/dashboards/vendafilial/vendafilial.routing';
-import localePt from '@angular/common/locales/pt';
-import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 // registerLocaleData(ptBr);
 registerLocaleData(localePt);

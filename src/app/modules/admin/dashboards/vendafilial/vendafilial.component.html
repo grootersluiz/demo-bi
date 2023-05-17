@@ -37,7 +37,7 @@
           <mat-form-field appearance="fill" class="p-2 w-full" >
             <mat-label> Referência </mat-label>
             <!-- [formControl]="dtRef"  [value]="dtRef" -->
-            <input matInput [matDatepicker]="picker" id="dtref" #dataref (dateChange)="formatDataMesAno($event)">
+            <input matInput [matDatepicker]="picker" id="dtref" #dataref (dateChange)="formatDataMesAno($event)" (blur)="formatDataMesAno2(dataref)">
               <mat-hint>DD/MM/YYYY</mat-hint>
               <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker ></mat-datepicker>
