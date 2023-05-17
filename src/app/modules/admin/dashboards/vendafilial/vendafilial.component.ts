@@ -119,21 +119,18 @@ export class VendafilialComponent {
   posicionaValorXinCategoria(categorias,rows){
 
     var keyX = 2;
-    var codemp = this.param.filial;
+    var codemp  = this.param.filial;
+    var descemp = this.param.descFilial;
 
     var indexData =0;
-    // console.log('valorKey');
-    for (let index = 0; index < categorias.length; index++) {
-      // const element = categorias[index];
+    for (let index = 0; index < rows.length; index++) {
       
-      var valorKey  = rows[indexData];
+      if(rows[index][0] == codemp){
 
-      if(rows[indexData][0] == codemp){
-
-        // console.log(valorKey);
+        var valorKey  = rows[index];
         
         while(valorKey[1].substr(0,2) != categorias[indexData]){
-          // console.log(valorKey[1].substr(0,2) + ' != '+categorias[indexData]);
+
           this.viewSerie[0].data.push(0);
           this.viewSerie[1].data.push(0);
           this.viewSerie[2].data.push(0);
@@ -142,21 +139,22 @@ export class VendafilialComponent {
           if(indexData > 31){ break;}
         }
   
-        var valorMeta = !rows[indexData][3]?0:rows[indexData][3];
-        var valorRol  = !rows[indexData][4]?0:rows[indexData][4];
-        var valorMb   = !rows[indexData][10]?0:rows[indexData][10];
+        var valorMeta = !rows[index][3]?0:rows[index][3];
+        var valorRol  = !rows[index][4]?0:rows[index][4];
+        var valorMb   = !rows[index][10]?0:rows[index][10];
         
         if(valorKey[1].substr(0,2) === categorias[indexData]){
           this.viewSerie[0].data.push(valorMeta);
           this.viewSerie[1].data.push(valorRol);
           this.viewSerie[2].data.push(valorMb);
         }
-      }
 
-      indexData++;
+        indexData++;
+      }
       
     }
 
+    this.chartOptions.title.text =  " Dia ("+descemp+")";
     this.chartOptions.series = this.viewSerie;
     this.chartOptions.xaxis.categories = categorias;
 
@@ -166,17 +164,19 @@ export class VendafilialComponent {
             mes: null,
             ano: null,
             ultDia:null,
-            filial:null
+            filial:null,
+            descFilial: null
           };
 
   validaParam(){
 
     // var chartService = new VendafilialchartService() ;
     // this.param = chartService.param;
-    this.param.ultDia = this.vendafilialService.param.ultDia;
-    this.param.mes    = this.vendafilialService.param.mes;
-    this.param.ano    = this.vendafilialService.param.ano;
-    this.param.filial = this.vendafilialService.param.filial;
+    this.param.ultDia     = this.vendafilialService.param.ultDia;
+    this.param.mes        = this.vendafilialService.param.mes;
+    this.param.ano        = this.vendafilialService.param.ano;
+    this.param.filial     = this.vendafilialService.param.filial;
+    this.param.descFilial = this.vendafilialService.param.descFilial;
 
     if(!this.param.ano){
 
@@ -185,23 +185,25 @@ export class VendafilialComponent {
       this.param.mes    = ("00" + (sysDate.getMonth()+1)).slice(-2);
       this.param.ano    = sysDate.getFullYear();
       this.param.filial = 99;
+      this.param.descFilial = 'REDE';
 
     }
   }
 
-  setParam(ultDia,mes, ano, filial){
+  // setParam(ultDia,mes, ano, filial){
 
-    this.param.ultDia = ultDia;
-    this.param.mes    = mes;
-    this.param.ano    = ano;
-    this.param.filial = filial;
-  }
+  //   this.param.ultDia = ultDia;
+  //   this.param.mes    = mes;
+  //   this.param.ano    = ano;
+  //   this.param.filial = filial;
+  // }
 
   categorias = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30','31'];
   getCategorias(){
 
     var dia = parseInt(this.param.ultDia);
 
+    // this.categorias = [];
     var contDia: string;
     for (let index = 1 ; index <= dia; index++) {
       
@@ -412,6 +414,7 @@ export class VendafilialComponent {
     return true;
 
   }
+
   showDash(thisEvent) {
 
     if(thisEvent.hidden){
@@ -419,6 +422,70 @@ export class VendafilialComponent {
     }else{
       thisEvent.hidden = true;
     }
+  }
+
+  public menuFilialChart(el): void {
+
+    // this.vendafilialService.param.filial = el.srcElement.attributes[1].value ;
+
+    this.param.filial     = el.srcElement.attributes[1].value ;
+    this.param.descFilial = el.srcElement.innerText ;
+
+    this.vendafilialService.setParam(this.param.ultDia,this.param.mes, this.param.ano, this.param.filial, this.param.descFilial );
+
+    this.viewSerie = [
+      {
+        name: "META",
+        data: [],
+        yAxis:0
+      },
+      {
+        name: "ROL",
+        data: [],
+        yAxis:0
+      },
+      {
+        name: "MB",
+        data: [],
+        yAxis: 2
+      }
+    ];
+
+    this.validaParam();
+    this.posicionaValorXinCategoria(this.categorias,this.series.rows);
+
+  }
+
+  // codEx = [100,200,300,400,500,600,700];
+  codEx = ['E1','E2','E3','E4','E5','E6','E7'];
+  public mostraMenuFilial2Chart(el): void {
+
+    if(!el){ return null;}
+
+    for (let index = 0; index < this.codEx.length; index++) {
+
+      var elMenuFiliais = document.getElementById('item'+this.codEx[index]);
+      
+      if(this.codEx[index] == el.srcElement.innerText ){
+
+        if(elMenuFiliais.className == 'charts-menu2'){
+
+          var classe ="charts-menu2 charts-menu-open";
+          var classes = elMenuFiliais.className.split(' ');
+          var getIndex = classes.indexOf(classe);
+        
+          if (getIndex === -1) {
+            classes.push(classe);
+            elMenuFiliais.className = classes.join(' ');
+          }
+
+        }
+      } else{
+        elMenuFiliais.className = "charts-menu2";
+      }
+      
+    }
+
   }
 
   /////////////////////////////////////// Construtor  ///////////////////////////////////////////////
@@ -451,10 +518,64 @@ export class VendafilialComponent {
     }, 500);
 
     this.validaParam();
-    this.getCategorias();
+    // this.getCategorias();
     this.getSeries();
 
-    // setTimeout(() => { }, 1000);
+    var iconFilial = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 96 960 960" width="24"><path d="M226 896q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19ZM226 642q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19ZM226 388q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Z"/></svg>`;
+    var styleMenu = `<style>
+                      .charts-menu {
+                        background: #fff;
+                        position: absolute;
+                        top: 100%;
+                        border: 1px solid #ddd;
+                        border-radius: 3px;
+                        padding: 3px;
+                        right: 10px;
+                        opacity: 0;
+                        min-width: 80px;
+                        transition: .15s ease all;
+                        pointer-events: none;
+                      }
+                      
+                      .charts-menu-open {
+                          opacity: 1 !important;
+                          pointer-events: all !important;
+                          transition: .15s ease all;
+                      }
+                      
+                      .charts-menu-item {
+                          padding: 6px 7px;
+                          font-size: 12px;
+                          cursor: pointer;
+                      }
+                      .charts-menu-item:hover {
+                        box-shadow: inset -30px -30px 30px 30px #efefef;
+                      }
+
+                      .charts-menu2 {
+                        background: #fff;
+                        position: absolute;
+                        top: 10px;
+                        border: 1px solid #ddd;
+                        border-radius: 3px;
+                        padding: 1px;
+                        right: 80px;
+                        opacity: 0;
+                        min-width: 80px;
+                        transition: .15s ease all;
+                        pointer-events: none;
+                      }
+
+                      .charts-menu-item2 {
+                        padding: 6px 7px;
+                        font-size: 12px;
+                        cursor: pointer;
+                      }
+                      .charts-menu-item2:hover {
+                        box-shadow: inset -30px -30px 30px 30px #efefef;
+                      }
+
+                    </style>`;
 
     this.chartOptions = {
       series: this.viewSerie,
@@ -463,10 +584,95 @@ export class VendafilialComponent {
         height: '100%',
         type: "area",
         stacked: false,
-        zoom: {
-          enabled: true,
-          type: 'xy', 
+        redrawOnWindowResize: true,
+        redrawOnParentResize: true,
+        toolbar:{
+          show: true,
+          offsetX: 0,
+          offsetY: 0,
+          tools: {
+            download: true,
+            selection: false,
+            zoom: true,
+            zoomin: true,
+            zoomout: true,
+            reset: true,
+            pan: false,
+            customIcons: [{
+              icon: iconFilial + styleMenu +
+                    `<div class="charts-menu" id="menuFilial">
+                      <div class="charts-menu-item" value="99"> REDE </div>
+                      <div class="charts-menu-item" value="100">E1</div>
+                        <div class="charts-menu2" id="itemE1">
+                          <div class="charts-menu-item2" value="10">BH</div>
+                          <div class="charts-menu-item2" value="22">GO</div>
+                          <div class="charts-menu-item2" value="23">RJ</div>
+                          <div class="charts-menu-item2" value="24">JF</div>
+                        </div>
+                      <div class="charts-menu-item" value="200">E2</div>
+                        <div class="charts-menu2" id="itemE2">
+                          <div class="charts-menu-item2" value="3">CB</div>
+                          <div class="charts-menu-item2" value="13">SN</div>
+                          <div class="charts-menu-item2" value="28">CBE</div>
+                        </div>
+                      <div class="charts-menu-item" value="300">E3</div>
+                        <div class="charts-menu2" id="itemE3">
+                          <div class="charts-menu-item2" value="2">BL</div>
+                          <div class="charts-menu-item2" value="14">MB</div>
+                          <div class="charts-menu-item2" value="18">MP</div>
+                        </div>
+                      <div class="charts-menu-item" value="400">E4</div>
+                        <div class="charts-menu2" id="itemE4">
+                          <div class="charts-menu-item2" value="5">SL</div>
+                          <div class="charts-menu-item2" value="6">TE</div>
+                          <div class="charts-menu-item2" value="17">IM</div>
+                        </div>
+                      <div class="charts-menu-item" value="500">E5</div>
+                        <div class="charts-menu2" id="itemE5">
+                          <div class="charts-menu-item2" value="11">JP</div>
+                          <div class="charts-menu-item2" value="15">CG</div>
+                          <div class="charts-menu-item2" value="20">MC</div>
+                          <div class="charts-menu-item2" value="21">RE</div>
+                        </div>
+                      <div class="charts-menu-item" value="600">E6</div>
+                        <div class="charts-menu2" id="itemE6">
+                          <div class="charts-menu-item2" value="7">SA</div>
+                          <div class="charts-menu-item2" value="12">AR</div>
+                          <div class="charts-menu-item2" value="19">VC</div>
+                        </div>
+                      <div class="charts-menu-item" value="700">E7</div>
+                      <div class="charts-menu2" id="itemE7">
+                        <div class="charts-menu-item2" value="8">FZ</div>
+                        <div class="charts-menu-item2" value="9">NA</div>
+                        <div class="charts-menu-item2" value="16">JN</div>
+                      </div>
+                    </div>`,
+              index: 0,
+              title: 'Filiais',
+              class: 'apexcharts-menu-icon',
+              click: function (chart, options, e) {
+
+                var elemento = document.getElementById("menuFilial");
+
+                if(elemento.className == 'charts-menu'){
+
+                  var classe ="charts-menu charts-menu-open";
+                  var classes = elemento.className.split(' ');
+                  var getIndex = classes.indexOf(classe);
+                
+                  if (getIndex === -1) {
+                    classes.push(classe);
+                    elemento.className = classes.join(' ');
+                  }
+
+                }else{
+                  elemento.className = "charts-menu";
+                }
+              }
+            }]
+          }
         }
+        
       },
       dataLabels: {
         enabled: false
@@ -475,7 +681,7 @@ export class VendafilialComponent {
         curve: "straight"
       },
       title: {
-        text: " Dia (Rede JS)",
+        text: " Dia ("+this.param.descFilial+")",
         align: "left"
       },
       yaxis: [
@@ -576,22 +782,87 @@ export class VendafilialComponent {
       ]
     };
 
+
+  }
+
+  eventUpdateSomenteUmaVez = true; // Cuidado parametro Critico para loop Eterno!
+  // ngOnInit(): void {
+  ngAfterViewInit(): void {
+    
+    window['Apex'] = {
+        
+        chart: {
+            events: {
+              updated: (chartContext?: any, config? :any): void => {
+
+                if(this.param.descFilial == 'REDE' && this.eventUpdateSomenteUmaVez){
+
+                  chartContext.updateOptions({
+                    title: {
+                      text: " Dia ("+this.param.descFilial+")",
+                      align: "left"
+                    }
+                  }) ;
+
+                  this.eventUpdateSomenteUmaVez = false;  // Cuidado parametro Critico para loop Eterno!
+                }
+                
+              },
+              click: (event: any, chartContext?: any, config? :any): void => {
+
+                switch (event.srcElement.className) {
+                  case "charts-menu-item":
+                    this.menuFilialChart(event);
+                    chartContext.updateOptions({
+                        title: {
+                          text: " Dia ("+this.param.descFilial+")",
+                          align: "left"
+                        },
+                        series: this.viewSerie}) ;
+                    break;
+                  case "charts-menu-item2":
+                    this.menuFilialChart(event);
+                    chartContext.updateOptions({
+                      title: {
+                        text: " Dia ( "+this.param.descFilial+" )",
+                        align: "left"
+                      },
+                      series: this.viewSerie}) ;
+                    break;
+                  default:
+                    break;
+                }
+              },
+              mouseMove:(event: any, chartContext?: any, config? :any): void => {
+                if(event.srcElement.className == "charts-menu-item"){
+                    this.mostraMenuFilial2Chart(event);
+                }
+              }
+            }
+        }
+    };
   }
 
   formatDataMesAno(dataPicker) {
 
-    var mes = dataPicker.value.getMonth();
-
-    mes = mes < 9 ? '0' + (mes+1) :  (mes+1);
-
-    var dataMes = '01/'+ mes + '/'+ dataPicker.value.getUTCFullYear();
-
+    // console.log(dataPicker);
+    var mes = dataPicker.value._i.month;
+    mes = ("00" + (mes+1)).slice(-2)
+    var dataMes = '01/'+ mes + '/'+ dataPicker.value._i.year;
     dataPicker.targetElement.value = dataMes;
+
+    // var mes = dataPicker.value.getMonth();
+    // mes = mes < 9 ? '0' + (mes+1) :  (mes+1);
+    // var dataMes = '01/'+ mes + '/'+ dataPicker.value.getUTCFullYear();
+    // dataPicker.targetElement.value = dataMes;
+
     return true;
 
   }
 
-  consulatvendafilial(param ){
+  consultavendafilial(param ){
+
+    this.eventUpdateSomenteUmaVez = true; // Cuidado parametro Critico para loop Eterno! Chart->Events->Update
 
     // var dtRef = this._elementFilter.nativeElement.lastElementChild.lastElementChild.firstElementChild.firstElementChild.firstElementChild.firstElementChild.nextElementSibling.firstElementChild.offsetParent.firstElementChild.childNodes[4].value;
     var dtRef = param;
@@ -631,8 +902,8 @@ export class VendafilialComponent {
         // this.dataSource = arrayDataSource;
         // console.log(this.dataSource);
       // }, 600);
-
-      this.vendafilialService.setParam(dia,mes,ano,99);
+      
+      this.vendafilialService.setParam(dia,mes,ano,99,'REDE');
       this.limpar(); // viewSerie, categorias, series
       this.validaParam();
       this.getCategorias();

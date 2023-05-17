@@ -15,15 +15,19 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 // import {FormControl} from "@angular/forms";
 
 import { NgApexchartsModule } from "ng-apexcharts";
 
 import { VendafilialComponent } from 'app/modules/admin/dashboards/vendafilial/vendafilial.component';
 import { vendafilialRoutes } from 'app/modules/admin/dashboards/vendafilial/vendafilial.routing';
+import localePt from '@angular/common/locales/pt';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
-registerLocaleData(ptBr);
+// registerLocaleData(ptBr);
+registerLocaleData(localePt);
+
 
 @NgModule({
     declarations: [VendafilialComponent],
@@ -40,20 +44,21 @@ registerLocaleData(ptBr);
         MatInputModule,
         MatDatepickerModule,
         MatNativeDateModule,
+        MatMomentDateModule,
         NgApexchartsModule
     ],
     // exports: [VendafilialchartComponent],
     providers: [
-        // VendafilialchartModule,
-        // VendafilialchartService,
-        {
-            provide: LOCALE_ID,
-            useValue: 'pt',
-        },
-        {
-            provide: DEFAULT_CURRENCY_CODE,
-            useValue: 'BRL',
-        }
+        { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
+        { provide: LOCALE_ID, useValue: 'pt-BR' },
+        // {
+        //     provide: LOCALE_ID,
+        //     useValue: 'pt',
+        // },
+        // {
+        //     provide: DEFAULT_CURRENCY_CODE,
+        //     useValue: 'BRL',
+        // }
     ]
 })
 export class VendafilialModule {}
