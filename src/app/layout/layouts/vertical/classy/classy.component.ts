@@ -24,7 +24,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
     isScreenSmall: boolean;
     navigation: Navigation;
     user: User;
-    dash: Dash[];
+    dashList: Dash[];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     dashsIds: number[] = [];
 
@@ -66,6 +66,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
             .subscribe((navigation: Navigation) => {
                 this.navigation = navigation;
             });  */
+
         let myNavigation = JSON.parse(JSON.stringify(navigationData));
         // Subscribe to the user service
         this._userService.user$
@@ -84,30 +85,23 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
         //Controle de acesso - Dashboards
         this._regdashsService.contacts$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((dash: Dash[]) => {
-                this.dash = dash;
-
+            .subscribe((dashList: Dash[]) => {
+                this.dashList = dashList;
+                console.log(dashList);
+                
                 // Controle de acesso do menu
-                for (let i = 0; i < dash.length; i++) {
-                    this.dashsIds.push(dash[i].id);
-                }
+                dashList.forEach(dash=>{
+                    this.dashsIds.push(dash.id)
+                })
 
-                for (
-                    let i = 0;
-                    i < myNavigation.default[0].children[0].children.length;
-                    i++
-                ) {
-                    if (
-                        !this.dashsIds.includes(
-                            parseInt(
-                                myNavigation.default[0].children[0].children[i]
-                                    .id
-                            )
-                        )
-                    ) {
-                        myNavigation.default[0].children[0].children[i] = {};
+                let dashsMenuList = myNavigation.default[0].children[0].children;
+                
+                 dashsMenuList.forEach((dashMenu, index)=>{
+                    if(!this.dashsIds.includes(parseInt(dashMenu.id))){
+                        dashsMenuList[index] = {};
                     }
-                }
+                }) 
+ 
             });
         this.navigation = myNavigation;
 
