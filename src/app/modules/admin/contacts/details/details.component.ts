@@ -29,6 +29,8 @@ import { ContactsListComponent } from 'app/modules/admin/contacts/list/list.comp
 import { ContactsService } from 'app/modules/admin/contacts/contacts.service';
 import { Group } from 'app/modules/admin/reggroups/reggroups.types';
 import { ReggroupsService } from 'app/modules/admin/reggroups/reggroups.service';
+import { RegdashsService } from 'app/modules/admin/regdashs/regdashs.service';
+import { Dash } from 'app/modules/admin/regdashs/regdashs.types';
 
 @Component({
     selector: 'contacts-details',
@@ -42,6 +44,7 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
     @ViewChild('tagsPanelOrigin') private _tagsPanelOrigin: ElementRef;
 
     groups$: Observable<Group[]>;
+    dashs$: Observable<Dash[]>;
 
     editMode: boolean = false;
     tags: Tag[];
@@ -51,9 +54,12 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
     contactForm: UntypedFormGroup;
     contacts: User[];
     countries: Country[];
-    groups = new FormControl('null');
+    groups = new FormControl([]);
     groupsObjects: Group[];
     groupsStringList: string[];
+    dashs = new FormControl([]);
+    dashsObjects: Dash[];
+    dashsStringList: string[];
     private _tagsPanelOverlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -66,6 +72,7 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
         private _contactsListComponent: ContactsListComponent,
         private _contactsService: ContactsService,
         private _groupsService: ReggroupsService,
+        private _dashsService: RegdashsService,
         private _formBuilder: UntypedFormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
         private _renderer2: Renderer2,
@@ -92,6 +99,8 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
             name: ['', [Validators.required]],
             email: [''],
             role: [''],
+            groupIds: [''],
+            dashboardIds: [''],
             currentPassword: [''],
             newPassword: [''],
             birthday: [null],
@@ -177,6 +186,22 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
                 this._changeDetectorRef.markForCheck();
             });
 
+        //Get Dashs
+
+        //this.dashs$ = this._dashsService.contacts$;
+        this._dashsService.contacts$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((dashs: Dash[]) => {
+                this.dashsStringList = dashs.map(
+                    (dash) => dash.id.toString() + ' - ' + dash.name
+                );
+
+                this.dashsObjects = dashs;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
         // Get the country telephone codes
         this._contactsService.countries$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -247,6 +272,8 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
         // Get the contact object
         const contact = this.contactForm.getRawValue();
         const password = this.contactForm.get('newPassword').value;
+        contact.groupIds = this.groups.value;
+        contact.dashboardIds = this.dashs.value;
         console.log(password);
         // Go through the contact object and clear empty values
 

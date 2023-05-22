@@ -5,4 +5,6 @@ export interface User {
     avatar?: string;
     status?: string;
     role: string;
+    groupIds: number[];
+    dashboardIds: number[];
 }

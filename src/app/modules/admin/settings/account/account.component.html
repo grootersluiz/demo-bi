@@ -65,6 +65,38 @@
                     />
                 </mat-form-field>
             </div>
+            <!-- Groups -->
+            <div class="sm:col-span-4">
+                <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+                    <mat-label>Grupos</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_outline:user-group'"
+                        matPrefix
+                    ></mat-icon>
+                    <input
+                        [formControlName]="'groupIds'"
+                        matInput
+                        readonly="true"
+                    />
+                </mat-form-field>
+            </div>
+            <!-- Dashboards -->
+            <div class="sm:col-span-4">
+                <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+                    <mat-label>Dashboards</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_outline:chart-bar'"
+                        matPrefix
+                    ></mat-icon>
+                    <input
+                        [formControlName]="'dashboardIds'"
+                        matInput
+                        readonly="true"
+                    />
+                </mat-form-field>
+            </div>
         </div>
     </form>
 

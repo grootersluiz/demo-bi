@@ -311,9 +311,9 @@
 
                     <!-- Groups -->
 
-                    <div class="mt-8">
+                    <div class="flex mt-8">
                         <mat-form-field
-                            class="w-full"
+                            class="w-full mr-1"
                             [subscriptSizing]="'dynamic'"
                         >
                             <mat-label>Grupos</mat-label>
@@ -331,6 +331,29 @@
                                     "
                                     [value]="groupsObjects[i].id"
                                     >{{ group }}</mat-option
+                                >
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field
+                            class="w-full ml-1"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Dashboards</mat-label>
+                            <mat-select
+                                class="my-custom-class"
+                                style="font-size: 12px"
+                                [formControl]="dashs"
+                                multiple
+                            >
+                                <mat-option
+                                    style="font-size: 12px"
+                                    *ngFor="
+                                        let dash of dashsStringList;
+                                        let i = index
+                                    "
+                                    [value]="dashsObjects[i].id"
+                                    >{{ dash }}</mat-option
                                 >
                             </mat-select>
                         </mat-form-field>

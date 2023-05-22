@@ -47,12 +47,16 @@ export class SettingsAccountComponent implements OnInit {
                 this.user = user;
             });
 
+        console.log(this.user);
+
         // Create the form
         this.accountForm = this._formBuilder.group({
             name: [this.user.name],
             email: [this.user.email],
             role: [this.user.role],
             id: [this.user.id],
+            groupIds: [this.user.groupIds],
+            dashboardIds: [this.user.dashboardIds],
         });
         // Create the form
         // this.securityForm = this._formBuilder.group({
