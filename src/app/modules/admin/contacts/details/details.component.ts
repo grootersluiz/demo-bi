@@ -129,6 +129,12 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
                 // Get the contact
                 this.contact = contact;
 
+                //Set the User Groups
+                this.groups.setValue(this.contact.groupIds);
+
+                //Set the User Dashs
+                this.dashs.setValue(this.contact.dashboardIds);
+
                 // Patch values to the form
                 this.contactForm.patchValue(contact);
 

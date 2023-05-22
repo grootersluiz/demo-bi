@@ -92,6 +92,19 @@ export class ContactsService {
     }
 
     /**
+     * Get user by ID
+     */
+    getUserById(id: number): Observable<User> {
+        return this._httpClient
+            .get<User>(`http://10.2.1.108/v1/users/${id.toString()}`)
+            .pipe(
+                tap((user) => {
+                    this._contact.next(user);
+                })
+            );
+    }
+
+    /**
      * Search contacts with given query
      *
      * @param query

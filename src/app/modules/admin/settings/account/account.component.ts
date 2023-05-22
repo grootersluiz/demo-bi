@@ -11,6 +11,7 @@ import {
 } from '@angular/forms';
 import { User } from 'app/core/user/user.types';
 import { UserService } from 'app/core/user/user.service';
+
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -23,6 +24,7 @@ export class SettingsAccountComponent implements OnInit {
     accountForm: UntypedFormGroup;
     securityForm: UntypedFormGroup;
     user: User;
+
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
@@ -46,8 +48,6 @@ export class SettingsAccountComponent implements OnInit {
             .subscribe((user: User) => {
                 this.user = user;
             });
-
-        console.log(this.user);
 
         // Create the form
         this.accountForm = this._formBuilder.group({

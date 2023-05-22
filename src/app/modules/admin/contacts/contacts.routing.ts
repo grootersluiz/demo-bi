@@ -5,6 +5,7 @@ import {
     ContactsCountriesResolver,
     ContactsResolver,
     ContactsTagsResolver,
+    ContactByIdResolver,
 } from 'app/modules/admin/contacts/contacts.resolvers';
 import { ContactsComponent } from 'app/modules/admin/contacts/contacts.component';
 import { ContactsListComponent } from 'app/modules/admin/contacts/list/list.component';
@@ -36,6 +37,7 @@ export const contactsRoutes: Route[] = [
                             countries: ContactsCountriesResolver,
                             groups: GroupsResolver,
                             dashs: DashsResolver,
+                            userId: ContactByIdResolver,
                         },
                         canDeactivate: [CanDeactivateContactsDetails],
                     },
