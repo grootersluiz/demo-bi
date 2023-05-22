@@ -9,6 +9,7 @@ import {
 import { ContactsComponent } from 'app/modules/admin/contacts/contacts.component';
 import { ContactsListComponent } from 'app/modules/admin/contacts/list/list.component';
 import { ContactsDetailsComponent } from 'app/modules/admin/contacts/details/details.component';
+import { GroupsResolver } from '../reggroups/reggroups.resolvers';
 
 export const contactsRoutes: Route[] = [
     {
@@ -32,6 +33,7 @@ export const contactsRoutes: Route[] = [
                         resolve: {
                             contact: ContactsContactResolver,
                             countries: ContactsCountriesResolver,
+                            groups: GroupsResolver,
                         },
                         canDeactivate: [CanDeactivateContactsDetails],
                     },

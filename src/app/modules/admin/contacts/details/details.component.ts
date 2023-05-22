@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
+    FormControl,
     UntypedFormArray,
     UntypedFormBuilder,
     UntypedFormGroup,
@@ -21,15 +22,13 @@ import {
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
-import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { debounceTime, Observable, Subject, takeUntil } from 'rxjs';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import {
-    User,
-    Country,
-    Tag,
-} from 'app/modules/admin/contacts/contacts.types';
+import { User, Country, Tag } from 'app/modules/admin/contacts/contacts.types';
 import { ContactsListComponent } from 'app/modules/admin/contacts/list/list.component';
 import { ContactsService } from 'app/modules/admin/contacts/contacts.service';
+import { Group } from 'app/modules/admin/reggroups/reggroups.types';
+import { ReggroupsService } from 'app/modules/admin/reggroups/reggroups.service';
 
 @Component({
     selector: 'contacts-details',
@@ -42,6 +41,8 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
     @ViewChild('tagsPanel') private _tagsPanel: TemplateRef<any>;
     @ViewChild('tagsPanelOrigin') private _tagsPanelOrigin: ElementRef;
 
+    groups$: Observable<Group[]>;
+
     editMode: boolean = false;
     tags: Tag[];
     tagsEditMode: boolean = false;
@@ -50,6 +51,9 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
     contactForm: UntypedFormGroup;
     contacts: User[];
     countries: Country[];
+    groups = new FormControl('null');
+    groupsObjects: Group[];
+    groupsStringList: string[];
     private _tagsPanelOverlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -61,6 +65,7 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
         private _changeDetectorRef: ChangeDetectorRef,
         private _contactsListComponent: ContactsListComponent,
         private _contactsService: ContactsService,
+        private _groupsService: ReggroupsService,
         private _formBuilder: UntypedFormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
         private _renderer2: Renderer2,
@@ -121,7 +126,7 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
                 // Setup the emails form array
                 const emailFormGroups = [];
 
-     /*            if (contact.emails.length > 0) {
+                /*            if (contact.emails.length > 0) {
                     // Iterate through them
                     contact.emails.forEach((email) => {
                         // Create an email form group
@@ -149,12 +154,24 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
                     );
                 });
 
-
-
-      
-
                 // Toggle the edit mode off
                 this.toggleEditMode(false);
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
+        //Get Groups
+
+        this.groups$ = this._groupsService.groups$;
+        this._groupsService.groups$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((groups: Group[]) => {
+                this.groupsStringList = groups.map(
+                    (group) => group.id.toString() + ' - ' + group.name
+                );
+
+                this.groupsObjects = groups;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -233,15 +250,13 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
         console.log(password);
         // Go through the contact object and clear empty values
 
- 
-
         // Update the contact on the server
-         this._contactsService
+        this._contactsService
             .updateContact(contact.id, contact, password)
             .subscribe(() => {
                 // Toggle the edit mode off
                 this.toggleEditMode(false);
-            }); 
+            });
     }
 
     /**
@@ -337,7 +352,6 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
         // Upload the avatar
         this._contactsService.uploadAvatar(this.contact.id, file).subscribe();
     }
-
 
     /**
      * Open tags panel
@@ -439,7 +453,6 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
             tag.title.toLowerCase().includes(value)
         );
     }
- 
 
     /**
      * Should the create tag button be visible
