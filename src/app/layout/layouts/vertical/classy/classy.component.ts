@@ -87,21 +87,20 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((dashList: Dash[]) => {
                 this.dashList = dashList;
-                console.log(dashList);
-                
-                // Controle de acesso do menu
-                dashList.forEach(dash=>{
-                    this.dashsIds.push(dash.id)
-                })
 
-                let dashsMenuList = myNavigation.default[0].children[0].children;
-                
-                 dashsMenuList.forEach((dashMenu, index)=>{
-                    if(!this.dashsIds.includes(parseInt(dashMenu.id))){
+                // Controle de acesso do menu
+                dashList.forEach((dash) => {
+                    this.dashsIds.push(dash.id);
+                });
+
+                let dashsMenuList =
+                    myNavigation.default[0].children[0].children;
+
+                dashsMenuList.forEach((dashMenu, index) => {
+                    if (!this.dashsIds.includes(parseInt(dashMenu.id))) {
                         dashsMenuList[index] = {};
                     }
-                }) 
- 
+                });
             });
         this.navigation = myNavigation;
 

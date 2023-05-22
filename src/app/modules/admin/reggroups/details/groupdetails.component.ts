@@ -17,15 +17,18 @@ import {
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
+    FormControl,
 } from '@angular/forms';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
-import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { debounceTime, Subject, Observable, takeUntil } from 'rxjs';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { Group } from 'app/modules/admin/reggroups/reggroups.types';
 import { GroupListComponent } from 'app/modules/admin/reggroups/list/grouplist.component';
 import { ReggroupsService } from 'app/modules/admin/reggroups/reggroups.service';
+import { RegdashsService } from 'app/modules/admin/regdashs/regdashs.service';
+import { Dash } from 'app/modules/admin/regdashs/regdashs.types';
 
 @Component({
     selector: 'group-details',
@@ -38,11 +41,16 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     @ViewChild('tagsPanel') private _tagsPanel: TemplateRef<any>;
     @ViewChild('tagsPanelOrigin') private _tagsPanelOrigin: ElementRef;
 
+    dashs$: Observable<Dash[]>;
+
     editMode: boolean = false;
     tagsEditMode: boolean = false;
     group: Group;
     contactForm: UntypedFormGroup;
     groups: Group[];
+    dashs = new FormControl([]);
+    dashsObjects: Dash[];
+    dashsStringList: string[];
     private _tagsPanelOverlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -54,6 +62,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         private _changeDetectorRef: ChangeDetectorRef,
         private _contactsListComponent: GroupListComponent,
         private _contactsService: ReggroupsService,
+        private _dashsService: RegdashsService,
         private _formBuilder: UntypedFormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
         private _renderer2: Renderer2,
@@ -79,6 +88,8 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
             avatar: [null],
             name: ['', [Validators.required]],
             description: [''],
+            userIds: [],
+            dashboardIds: [],
             emails: this._formBuilder.array([]),
             phoneNumbers: this._formBuilder.array([]),
             title: [''],
@@ -109,6 +120,9 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
                 // Get the contact
                 this.group = contact;
 
+                //Set the User Dashs
+                this.dashs.setValue(this.group.dashboardIds);
+
                 // Clear the emails and phoneNumbers form arrays
                 (this.contactForm.get('emails') as UntypedFormArray).clear();
                 (
@@ -120,6 +134,22 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
 
                 // Toggle the edit mode off
                 this.toggleEditMode(false);
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
+        //Get Dashs
+
+        //this.dashs$ = this._dashsService.contacts$;
+        this._dashsService.contacts$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((dashs: Dash[]) => {
+                this.dashsStringList = dashs.map(
+                    (dash) => dash.id.toString() + ' - ' + dash.name
+                );
+
+                this.dashsObjects = dashs;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -173,6 +203,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
     updateContact(): void {
         // Get the contact object
         const contact = this.contactForm.getRawValue();
+        contact.dashboardIds = this.dashs.value;
 
         // Go through the contact object and clear empty values
         contact.emails = contact.emails.filter((email) => email.email);
@@ -182,12 +213,10 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         );
 
         // Update the contact on the server
-        this._contactsService
-            .updateGroup(contact.id, contact)
-            .subscribe(() => {
-                // Toggle the edit mode off
-                this.toggleEditMode(false);
-            });
+        this._contactsService.updateGroup(contact.id, contact).subscribe(() => {
+            // Toggle the edit mode off
+            this.toggleEditMode(false);
+        });
     }
 
     /**
@@ -230,30 +259,28 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
 
                 // Delete the contact
                 this.closeDrawer();
-                this._contactsService
-                    .deleteGroup(id)
-                    .subscribe((isDeleted) => {
-                        // Return if the contact wasn't deleted...
-                        if (!isDeleted) {
-                            return;
-                        }
+                this._contactsService.deleteGroup(id).subscribe((isDeleted) => {
+                    // Return if the contact wasn't deleted...
+                    if (!isDeleted) {
+                        return;
+                    }
 
-                        // Navigate to the next contact if available
-                        if (nextContactId) {
-                            this._router.navigate(['../', nextContactId], {
-                                relativeTo: this._activatedRoute,
-                            });
-                        }
-                        // Otherwise, navigate to the parent
-                        else {
-                            this._router.navigate(['../'], {
-                                relativeTo: this._activatedRoute,
-                            });
-                        }
+                    // Navigate to the next contact if available
+                    if (nextContactId) {
+                        this._router.navigate(['../', nextContactId], {
+                            relativeTo: this._activatedRoute,
+                        });
+                    }
+                    // Otherwise, navigate to the parent
+                    else {
+                        this._router.navigate(['../'], {
+                            relativeTo: this._activatedRoute,
+                        });
+                    }
 
-                        // Toggle the edit mode off
-                        this.toggleEditMode(false);
-                    });
+                    // Toggle the edit mode off
+                    this.toggleEditMode(false);
+                });
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();

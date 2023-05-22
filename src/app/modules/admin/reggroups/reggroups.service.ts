@@ -46,7 +46,6 @@ export class ReggroupsService {
         return this._groups.asObservable();
     }
 
-
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
@@ -62,6 +61,19 @@ export class ReggroupsService {
                     let orderedGroups = [...groups['data']];
                     orderedGroups.sort((a, b) => a.name.localeCompare(b.name));
                     this._groups.next(orderedGroups);
+                })
+            );
+    }
+
+    /**
+     * Get group by ID
+     */
+    getGpById(id: number): Observable<Group> {
+        return this._httpClient
+            .get<Group>(`http://10.2.1.108/v1/groups/${id}`)
+            .pipe(
+                tap((group) => {
+                    this._group.next(group);
                 })
             );
     }
@@ -122,8 +134,8 @@ export class ReggroupsService {
             switchMap((groups) =>
                 this._httpClient
                     .post<Group>('http://10.2.1.108/v1/groups', {
-                        name: "Novo Grupo",
-                        description: "grupo"
+                        name: 'Novo Grupo',
+                        description: 'grupo',
                     })
                     .pipe(
                         map((newGroup) => {
@@ -152,6 +164,7 @@ export class ReggroupsService {
                     .put<Group>(`http://10.2.1.108/v1/groups/${id}`, {
                         name: group.name,
                         description: group.description,
+                        dashboardIds: group.dashboardIds,
                     })
                     .pipe(
                         map((updatedGroups) => {
@@ -176,7 +189,7 @@ export class ReggroupsService {
                                 tap(() => {
                                     // Update the group if it's selected
                                     this._group.next(updatedGroup);
-
+                                    // console.log(updatedGroup);
                                     // Return the updated group
                                     return updatedGroup;
                                 })
