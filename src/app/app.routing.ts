@@ -194,7 +194,7 @@ export const appRoutes: Route[] = [
                     // },
                     {
                         path: 'rol',
-                        canActivate:[UserTypeGuard],
+                        canActivate: [UserTypeGuard],
                         loadChildren: () =>
                             import(
                                 'app/modules/admin/dashboards/rol/rol.module'
@@ -241,38 +241,38 @@ export const appRoutes: Route[] = [
             //     ],
             // },
             {
-                path: 'records',
+                path: 'cadastros',
                 children: [
                     {
-                        path: 'regusers',
+                        path: 'usuarios',
                         loadChildren: () =>
                             import(
                                 'app/modules/admin/contacts/contacts.module'
                             ).then((m) => m.ContactsModule),
                     },
                     {
-                        path: 'reggroups',
+                        path: 'grupos',
                         loadChildren: () =>
                             import(
                                 'app/modules/admin/reggroups/reggroups.module'
                             ).then((m) => m.ReggroupsModule),
                     },
                     {
-                        path: 'regdashsreports',
+                        path: 'dashboards',
                         loadChildren: () =>
                             import(
                                 'app/modules/admin/regdashs/regdashs.module'
                             ).then((m) => m.RegdashsModule),
                     },
                     {
-                        path: 'regreports',
+                        path: 'relatorios',
                         loadChildren: () =>
                             import(
                                 'app/modules/admin/regreports/regreports.module'
                             ).then((m) => m.RegreportsModule),
                     },
                     {
-                        path: 'regviews',
+                        path: 'views',
                         loadChildren: () =>
                             import(
                                 'app/modules/admin/regviews/regviews.module'
