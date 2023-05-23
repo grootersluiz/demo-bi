@@ -101,8 +101,7 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
             role: [''],
             groupIds: [''],
             dashboardIds: [''],
-            currentPassword: [''],
-            newPassword: [''],
+            password: [''],
             birthday: [null],
             address: [null],
             notes: [null],
@@ -277,15 +276,14 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
     updateContact(): void {
         // Get the contact object
         const contact = this.contactForm.getRawValue();
-        const password = this.contactForm.get('newPassword').value;
+        const password = this.contactForm.get('password').value;
         contact.groupIds = this.groups.value;
         contact.dashboardIds = this.dashs.value;
-        console.log(password);
         // Go through the contact object and clear empty values
 
         // Update the contact on the server
         this._contactsService
-            .updateContact(contact.id, contact, password)
+            .updateContact(contact.id, contact)
             .subscribe(() => {
                 // Toggle the edit mode off
                 this.toggleEditMode(false);

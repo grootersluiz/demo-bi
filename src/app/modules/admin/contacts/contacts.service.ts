@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import {
     BehaviorSubject,
     filter,
@@ -11,6 +11,7 @@ import {
     tap,
     throwError,
 } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { User, Country, Tag } from 'app/modules/admin/contacts/contacts.types';
 
 @Injectable({
@@ -190,6 +191,14 @@ export class ContactsService {
 
                             // Return the new contact
                             return newContact;
+                        }),
+                        catchError((error: HttpErrorResponse) => {
+                            // Handle the error and access the response
+                            console.error('Error:', error);
+                            console.log('Response:', error.error); // Access the response here
+
+                            // Rethrow the error to propagate it further
+                            return throwError(error);
                         })
                     )
             )
@@ -202,11 +211,7 @@ export class ContactsService {
      * @param id
      * @param contact
      */
-    updateContact(
-        id: number,
-        contact: User,
-        password: string
-    ): Observable<User> {
+    updateContact(id: number, contact: User): Observable<User> {
         return this.contacts$.pipe(
             take(1),
             switchMap((contacts) =>
@@ -215,9 +220,12 @@ export class ContactsService {
                         name: contact.name,
                         email: contact.email,
                         role: contact.role,
+                        password:
+                            contact.password != ''
+                                ? contact.password
+                                : undefined,
                         groupIds: contact.groupIds,
                         dashboardIds: contact.dashboardIds,
-                        //password: password,
                     })
                     .pipe(
                         map((updatedContact) => {
