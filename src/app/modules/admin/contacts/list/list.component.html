@@ -53,17 +53,48 @@
                                 class="fuse-mat-dense fuse-mat-rounded w-full min-w-50"
                                 subscriptSizing="dynamic"
                             >
-                                <mat-icon
+                                <!-- <mat-icon
                                     class="icon-size-5"
                                     matPrefix
                                     [svgIcon]="'heroicons_solid:search'"
-                                ></mat-icon>
+                                ></mat-icon> -->
                                 <input
                                     matInput
                                     [formControl]="searchInputControl"
                                     [autocomplete]="'off'"
-                                    [placeholder]="'Buscar Usuários'"
+                                    [placeholder]="'Buscar por nome'"
                                 />
+                            </mat-form-field>
+                        </div>
+                        <!-- Groups Filter -->
+                        <div class="flex-auto">
+                            <mat-form-field
+                                class="fuse-mat-dense fuse-mat-rounded w-full min-w-50 ml-1"
+                                [subscriptSizing]="'dynamic'"
+                            >
+                                <mat-select
+                                    [formControl]="groups"
+                                    [placeholder]="'Buscar por grupo'"
+                                >
+                                    <mat-option (click)="getUsersByGp('')"
+                                        >Todos</mat-option
+                                    >
+
+                                    <mat-option
+                                        style="font-size: 12px"
+                                        *ngFor="
+                                            let group of groupsStringList;
+                                            let i = index
+                                        "
+                                        [value]="groupsObjects[i].id"
+                                        (click)="
+                                            getUsersByGp(
+                                                groupsObjects[i].id.toString()
+                                            )
+                                        "
+                                        >{{ group }}</mat-option
+                                    >
+                                </mat-select>
                             </mat-form-field>
                         </div>
                         <!-- Add contact button -->

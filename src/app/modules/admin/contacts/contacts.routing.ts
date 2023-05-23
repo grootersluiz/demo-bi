@@ -27,6 +27,7 @@ export const contactsRoutes: Route[] = [
                 resolve: {
                     contacts: ContactsResolver,
                     countries: ContactsCountriesResolver,
+                    groups: GroupsResolver,
                 },
                 children: [
                     {

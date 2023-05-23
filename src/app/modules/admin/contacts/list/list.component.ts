@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UntypedFormControl } from '@angular/forms';
+import { UntypedFormControl, FormControl } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';
 import {
     filter,
@@ -23,6 +23,8 @@ import {
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { User, Country } from 'app/modules/admin/contacts/contacts.types';
 import { ContactsService } from 'app/modules/admin/contacts/contacts.service';
+import { Group } from 'app/modules/admin/reggroups/reggroups.types';
+import { ReggroupsService } from 'app/modules/admin/reggroups/reggroups.service';
 
 @Component({
     selector: 'contacts-list',
@@ -34,9 +36,13 @@ export class ContactsListComponent implements OnInit, OnDestroy {
     @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
 
     contacts$: Observable<User[]>;
+    groups$: Observable<Group[]>;
 
     contactsCount: number = 0;
     contactsTableColumns: string[] = ['name', 'email', 'phoneNumber', 'job'];
+    groups = new FormControl([]);
+    groupsObjects: Group[];
+    groupsStringList: string[];
     countries: Country[];
     drawerMode: 'side' | 'over';
     searchInputControl: UntypedFormControl = new UntypedFormControl();
@@ -50,6 +56,7 @@ export class ContactsListComponent implements OnInit, OnDestroy {
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
         private _contactsService: ContactsService,
+        private _groupsService: ReggroupsService,
         @Inject(DOCUMENT) private _document: any,
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService
@@ -86,6 +93,22 @@ export class ContactsListComponent implements OnInit, OnDestroy {
                 this._changeDetectorRef.markForCheck();
             });
 
+        //Get Groups for filter
+
+        this.groups$ = this._groupsService.groups$;
+        this._groupsService.groups$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((groups: Group[]) => {
+                this.groupsStringList = groups.map(
+                    (group) => group.id.toString() + ' - ' + group.name
+                );
+
+                this.groupsObjects = groups;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
         // Get the countries
         this._contactsService.countries$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -101,10 +124,12 @@ export class ContactsListComponent implements OnInit, OnDestroy {
         this.searchInputControl.valueChanges
             .pipe(
                 takeUntil(this._unsubscribeAll),
-                switchMap((query) =>
-                    // Search
-                    this._contactsService.searchContacts(query)
-                )
+                switchMap((query) => {
+                    if (this.searchInputControl.value != '') {
+                        this.groups.setValue([]);
+                    }
+                    return this._contactsService.searchContacts(query);
+                })
             )
             .subscribe();
 
@@ -171,6 +196,13 @@ export class ContactsListComponent implements OnInit, OnDestroy {
 
         // Mark for check
         this._changeDetectorRef.markForCheck();
+    }
+
+    /**
+     * Get user by group
+     */
+    getUsersByGp(id: string) {
+        this._contactsService.getUsersByGroup(id).subscribe();
     }
 
     /**
