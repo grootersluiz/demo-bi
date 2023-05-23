@@ -95,18 +95,14 @@ export class AuthService {
                     this._userService.user = myResponse.user;
 
                     // Retorna a lista de dashboards antes de retornar a resposta do signIn
-                    if(myResponse.user.role === 'admin'){
-                        return this._regdashsService.getDashs().pipe(
-                            switchMap(() => {
-                                // Return a new observable with the response
-                                return of(myResponse);
-                            })
-                        );
-                    }else{
-                        return of(myResponse);
-                    }
-                    
-                })    
+
+                    return this._regdashsService.getDashs().pipe(
+                        switchMap(() => {
+                            // Return a new observable with the response
+                            return of(myResponse);
+                        })
+                    );
+                })
             );
     }
 
@@ -150,17 +146,13 @@ export class AuthService {
                 this._userService.user = myResponse.user;
 
                 // Retorna a lista de dashboards antes de retornar a resposta do signInUsingToken
-                if(myResponse.user.role === 'admin'){
-                    return this._regdashsService.getDashs().pipe(
-                        switchMap(() => {
-                            // Return true
-                            return of(true);
-                        })
-                    );
-                }else{
-                    // Return true
-                    return of(true);
-                }
+
+                return this._regdashsService.getDashs().pipe(
+                    switchMap(() => {
+                        // Return true
+                        return of(true);
+                    })
+                );
             })
         );
     }
