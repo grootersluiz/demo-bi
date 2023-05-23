@@ -17,15 +17,18 @@ import {
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
+    FormControl,
 } from '@angular/forms';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
-import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { debounceTime, Subject, Observable, takeUntil } from 'rxjs';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { Dash, Country, Tag } from 'app/modules/admin/regdashs/regdashs.types';
 import { DashListComponent } from 'app/modules/admin/regdashs/list/dashlist.component';
 import { RegdashsService } from 'app/modules/admin/regdashs/regdashs.service';
+import { Group } from 'app/modules/admin/reggroups/reggroups.types';
+import { ReggroupsService } from 'app/modules/admin/reggroups/reggroups.service';
 
 @Component({
     selector: 'dash-details',
@@ -38,6 +41,8 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
     @ViewChild('tagsPanel') private _tagsPanel: TemplateRef<any>;
     @ViewChild('tagsPanelOrigin') private _tagsPanelOrigin: ElementRef;
 
+    groups$: Observable<Group[]>;
+
     editMode: boolean = false;
     tags: Tag[];
     tagsEditMode: boolean = false;
@@ -46,6 +51,9 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
     contactForm: UntypedFormGroup;
     contacts: Dash[];
     countries: Country[];
+    groups = new FormControl([]);
+    groupsObjects: Group[];
+    groupsStringList: string[];
     private _tagsPanelOverlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -57,6 +65,7 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
         private _changeDetectorRef: ChangeDetectorRef,
         private _contactsListComponent: DashListComponent,
         private _contactsService: RegdashsService,
+        private _groupsService: ReggroupsService,
         private _formBuilder: UntypedFormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
         private _renderer2: Renderer2,
@@ -82,6 +91,8 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
             avatar: [null],
             name: ['', [Validators.required]],
             type: [''],
+            groupIds: [''],
+            userIds: [''],
             emails: this._formBuilder.array([]),
             phoneNumbers: this._formBuilder.array([]),
             title: [''],
@@ -112,6 +123,9 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
                 // Get the contact
                 this.contact = contact;
 
+                //Set the User Groups
+                this.groups.setValue(this.contact.groupIds);
+
                 // Clear the emails and phoneNumbers form arrays
                 (this.contactForm.get('emails') as UntypedFormArray).clear();
                 (
@@ -123,6 +137,22 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
 
                 // Toggle the edit mode off
                 this.toggleEditMode(false);
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
+        //Get Groups
+
+        this.groups$ = this._groupsService.groups$;
+        this._groupsService.groups$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((groups: Group[]) => {
+                this.groupsStringList = groups.map(
+                    (group) => group.id.toString() + ' - ' + group.name
+                );
+
+                this.groupsObjects = groups;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -176,6 +206,7 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
     updateContact(): void {
         // Get the contact object
         const contact = this.contactForm.getRawValue();
+        contact.groupIds = this.groups.value;
 
         // Go through the contact object and clear empty values
         contact.emails = contact.emails.filter((email) => email.email);
@@ -185,12 +216,10 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
         );
 
         // Update the contact on the server
-        this._contactsService
-            .updateDash(contact.id, contact)
-            .subscribe(() => {
-                // Toggle the edit mode off
-                this.toggleEditMode(false);
-            });
+        this._contactsService.updateDash(contact.id, contact).subscribe(() => {
+            // Toggle the edit mode off
+            this.toggleEditMode(false);
+        });
     }
 
     /**
@@ -233,30 +262,28 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
 
                 // Delete the contact
                 this.closeDrawer();
-                this._contactsService
-                    .deleteDash(id)
-                    .subscribe((isDeleted) => {
-                        // Return if the contact wasn't deleted...
-                        if (!isDeleted) {
-                            return;
-                        }
+                this._contactsService.deleteDash(id).subscribe((isDeleted) => {
+                    // Return if the contact wasn't deleted...
+                    if (!isDeleted) {
+                        return;
+                    }
 
-                        // Navigate to the next contact if available
-                        if (nextContactId) {
-                            this._router.navigate(['../', nextContactId], {
-                                relativeTo: this._activatedRoute,
-                            });
-                        }
-                        // Otherwise, navigate to the parent
-                        else {
-                            this._router.navigate(['../'], {
-                                relativeTo: this._activatedRoute,
-                            });
-                        }
+                    // Navigate to the next contact if available
+                    if (nextContactId) {
+                        this._router.navigate(['../', nextContactId], {
+                            relativeTo: this._activatedRoute,
+                        });
+                    }
+                    // Otherwise, navigate to the parent
+                    else {
+                        this._router.navigate(['../'], {
+                            relativeTo: this._activatedRoute,
+                        });
+                    }
 
-                        // Toggle the edit mode off
-                        this.toggleEditMode(false);
-                    });
+                    // Toggle the edit mode off
+                    this.toggleEditMode(false);
+                });
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();

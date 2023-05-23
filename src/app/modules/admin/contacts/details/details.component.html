@@ -45,14 +45,10 @@
             class="relative flex flex-col flex-auto items-center p-6 pt-0 sm:p-12 sm:pt-0"
         >
             <div class="w-full max-w-3xl">
-                
-                
                 <!-- Name -->
                 <div class="mt-3 text-4xl font-bold truncate">
                     {{ contact.name }}
                 </div>
-
-
 
                 <div class="flex flex-col mt-4 pt-6 border-t space-y-8">
                     <!-- Title -->
@@ -80,7 +76,7 @@
                     </ng-container>
 
                     <!-- Emails -->
-<!--                     <ng-container *ngIf="contact.emails.length">
+                    <!--                     <ng-container *ngIf="contact.emails.length">
                         <div class="flex">
                             <mat-icon
                                 [svgIcon]="'heroicons_outline:mail'"
@@ -116,7 +112,7 @@
                     </ng-container> -->
 
                     <!-- Phone -->
-<!--                     <ng-container *ngIf="contact.phoneNumbers.length">
+                    <!--                     <ng-container *ngIf="contact.phoneNumbers.length">
                         <div class="flex">
                             <mat-icon
                                 [svgIcon]="'heroicons_outline:phone'"
@@ -252,8 +248,6 @@
         >
             <div class="w-full max-w-3xl">
                 <form [formGroup]="contactForm">
-                    
-
                     <!-- Name -->
                     <div class="mt-8">
                         <mat-form-field
@@ -274,8 +268,6 @@
                             />
                         </mat-form-field>
                     </div>
-
-
 
                     <!-- Email -->
                     <div class="mt-8">
@@ -317,32 +309,102 @@
                         </mat-form-field>
                     </div>
 
+                    <!-- Groups and Dashs -->
+
+                    <div class="flex mt-8">
+                        <mat-form-field
+                            class="w-full mr-1"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Grupos</mat-label>
+                            <mat-select
+                                class="my-custom-class"
+                                style="font-size: 12px"
+                                [formControl]="groups"
+                                multiple
+                            >
+                                <mat-option
+                                    style="font-size: 12px"
+                                    *ngFor="
+                                        let group of groupsStringList;
+                                        let i = index
+                                    "
+                                    [value]="groupsObjects[i].id"
+                                    >{{ group }}</mat-option
+                                >
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field
+                            class="w-full ml-1"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Dashboards</mat-label>
+                            <mat-select
+                                class="my-custom-class"
+                                style="font-size: 12px"
+                                [formControl]="dashs"
+                                multiple
+                            >
+                                <mat-option
+                                    style="font-size: 12px"
+                                    *ngFor="
+                                        let dash of dashsStringList;
+                                        let i = index
+                                    "
+                                    [value]="dashsObjects[i].id"
+                                    >{{ dash }}</mat-option
+                                >
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
                     <!-- Current password -->
                     <div class="sm:col-span-4 mt-8">
-                        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
                             <mat-label>Defina a senha</mat-label>
-                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
-                            <input [formControlName]="'currentPassword'" type="password" matInput />
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:key'"
+                                matPrefix
+                            ></mat-icon>
+                            <input
+                                [formControlName]="'currentPassword'"
+                                type="password"
+                                matInput
+                            />
                         </mat-form-field>
                         <div class="mt-1 text-md text-hint">
-                            No mínimo 8 caracteres. Precisa conter números, letras e
-                            caracteres especiais.
+                            No mínimo 8 caracteres. Precisa conter números,
+                            letras e caracteres especiais.
                         </div>
                     </div>
                     <!-- New password -->
                     <div class="sm:col-span-4 mt-8">
-                        <mat-form-field class="w-full" [subscriptSizing]="'dynamic'">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
                             <mat-label>Confirme a senha</mat-label>
-                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:key'" matPrefix></mat-icon>
-                            <input [formControlName]="'newPassword'" type="password" matInput />
+                            <mat-icon
+                                class="icon-size-5"
+                                [svgIcon]="'heroicons_solid:key'"
+                                matPrefix
+                            ></mat-icon>
+                            <input
+                                [formControlName]="'newPassword'"
+                                type="password"
+                                matInput
+                            />
                         </mat-form-field>
                         <!-- <div class="mt-1 text-md text-hint">
                                         No mínimo 8 caracteres. Precisa conter números, letras e
                                         caracteres especiais.
                                     </div> -->
                     </div>
-
-                    
 
                     <!-- Address -->
                     <!-- <div class="mt-8">

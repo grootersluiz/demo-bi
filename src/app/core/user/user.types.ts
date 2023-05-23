@@ -1,8 +1,10 @@
 export interface User {
-    id: string;
+    id: number;
     name: string;
     email: string;
     avatar?: string;
     status?: string;
     role: string;
+    groupIds: number[];
+    dashboardIds: number[];
 }

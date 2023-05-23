@@ -11,6 +11,8 @@ import { Navigation } from 'app/core/navigation/navigation.types';
 import { NavigationService } from 'app/core/navigation/navigation.service';
 import { User } from 'app/core/user/user.types';
 import { UserService } from 'app/core/user/user.service';
+import { Dash } from 'app/modules/admin/regdashs/regdashs.types';
+import { RegdashsService } from 'app/modules/admin/regdashs/regdashs.service';
 import { navigationData } from 'app/layout/layouts/vertical/classy/classy.data';
 
 @Component({
@@ -22,7 +24,9 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
     isScreenSmall: boolean;
     navigation: Navigation;
     user: User;
+    dashList: Dash[];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+    dashsIds: number[] = [];
 
     /**
      * Constructor
@@ -32,6 +36,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
         private _router: Router,
         private _navigationService: NavigationService,
         private _userService: UserService,
+        private _regdashsService: RegdashsService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _fuseNavigationService: FuseNavigationService
     ) {}
@@ -62,6 +67,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
                 this.navigation = navigation;
             });  */
 
+        let myNavigation = JSON.parse(JSON.stringify(navigationData));
         // Subscribe to the user service
         this._userService.user$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -69,13 +75,34 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
                 this.user = user;
 
                 // Controle de acesso do menu
-                let myNavigation = JSON.parse(JSON.stringify(navigationData));
+
                 if (this.user.role !== 'admin') {
                     myNavigation.default[1] = {} as FuseNavigationItem;
                     myNavigation.default[2] = {} as FuseNavigationItem;
                 }
-                this.navigation = myNavigation;
             });
+
+        //Controle de acesso - Dashboards
+        this._regdashsService.contacts$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((dashList: Dash[]) => {
+                this.dashList = dashList;
+
+                // Controle de acesso do menu
+                dashList.forEach((dash) => {
+                    this.dashsIds.push(dash.id);
+                });
+
+                let dashsMenuList =
+                    myNavigation.default[0].children[0].children;
+
+                dashsMenuList.forEach((dashMenu, index) => {
+                    if (!this.dashsIds.includes(parseInt(dashMenu.id))) {
+                        dashsMenuList[index] = {};
+                    }
+                });
+            });
+        this.navigation = myNavigation;
 
         // Subscribe to media changes
         this._fuseMediaWatcherService.onMediaChange$

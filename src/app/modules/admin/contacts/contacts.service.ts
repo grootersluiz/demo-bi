@@ -11,20 +11,14 @@ import {
     tap,
     throwError,
 } from 'rxjs';
-import {
-    User,
-    Country,
-    Tag,
-} from 'app/modules/admin/contacts/contacts.types';
+import { User, Country, Tag } from 'app/modules/admin/contacts/contacts.types';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ContactsService {
     // Private
-    private _contact: BehaviorSubject<User | null> = new BehaviorSubject(
-        null
-    );
+    private _contact: BehaviorSubject<User | null> = new BehaviorSubject(null);
     private _contacts: BehaviorSubject<User[] | null> = new BehaviorSubject(
         null
     );
@@ -83,7 +77,7 @@ export class ContactsService {
                 let orderedContacts = [...contacts['data']];
                 orderedContacts.sort((a, b) => a.name.localeCompare(b.name));
 
-/*                 const myContacts = contacts.data.map((contact => ({
+                /*                 const myContacts = contacts.data.map((contact => ({
                     id: contact.id,
                     avatar: null,
                     background: null,
@@ -92,10 +86,39 @@ export class ContactsService {
                     tags: []
                 } as User)));  */
 
-                
                 this._contacts.next(orderedContacts);
             })
         );
+    }
+
+    /**
+     * Get user by Group
+     */
+    getUsersByGroup(id: string): Observable<User[]> {
+        return this._httpClient
+            .get<User[]>(`http://10.2.1.108/v1/users?groupId=${id}`)
+            .pipe(
+                tap((users) => {
+                    let orderedContacts = [...users['data']];
+                    orderedContacts.sort((a, b) =>
+                        a.name.localeCompare(b.name)
+                    );
+                    this._contacts.next(orderedContacts);
+                })
+            );
+    }
+
+    /**
+     * Get user by ID
+     */
+    getUserById(id: number): Observable<User> {
+        return this._httpClient
+            .get<User>(`http://10.2.1.108/v1/users/${id.toString()}`)
+            .pipe(
+                tap((user) => {
+                    this._contact.next(user);
+                })
+            );
     }
 
     /**
@@ -110,11 +133,11 @@ export class ContactsService {
             })
             .pipe(
                 tap((contacts) => {
-
                     let orderedContacts = [...contacts['data']];
-                    orderedContacts.sort((a, b) => a.name.localeCompare(b.name));
+                    orderedContacts.sort((a, b) =>
+                        a.name.localeCompare(b.name)
+                    );
                     this._contacts.next(orderedContacts);
-                    
                 })
             );
     }
@@ -126,7 +149,6 @@ export class ContactsService {
         return this._contacts.pipe(
             take(1),
             map((contacts) => {
-                
                 // Find the contact
                 const contact = contacts.find((item) => item.id === id) || null;
                 // Update the contact
@@ -156,10 +178,10 @@ export class ContactsService {
             switchMap((contacts) =>
                 this._httpClient
                     .post<User>('http://10.2.1.108/v1/users', {
-                        name: "Novo Usuário",
-                        email: "user@mail.com",
-                        password: "123",
-                        role: "user"
+                        name: 'Novo Usuário',
+                        email: 'user@mail.com',
+                        password: '123',
+                        role: 'user',
                     })
                     .pipe(
                         map((newContact) => {
@@ -180,7 +202,11 @@ export class ContactsService {
      * @param id
      * @param contact
      */
-    updateContact(id: number, contact: User, password: string): Observable<User> {
+    updateContact(
+        id: number,
+        contact: User,
+        password: string
+    ): Observable<User> {
         return this.contacts$.pipe(
             take(1),
             switchMap((contacts) =>
@@ -189,6 +215,8 @@ export class ContactsService {
                         name: contact.name,
                         email: contact.email,
                         role: contact.role,
+                        groupIds: contact.groupIds,
+                        dashboardIds: contact.dashboardIds,
                         //password: password,
                     })
                     .pipe(
@@ -235,7 +263,9 @@ export class ContactsService {
             take(1),
             switchMap((contacts) =>
                 this._httpClient
-                    .delete(`http://10.2.1.108/v1/users/${id.toString()}`, { params: { id } })
+                    .delete(`http://10.2.1.108/v1/users/${id.toString()}`, {
+                        params: { id },
+                    })
                     .pipe(
                         map((isDeleted: boolean) => {
                             // Find the index of the deleted contact
@@ -305,8 +335,6 @@ export class ContactsService {
         );
     }
 
- 
-    
     /**
      * Update the avatar of the given contact
      *

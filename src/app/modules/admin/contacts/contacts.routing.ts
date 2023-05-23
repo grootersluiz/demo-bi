@@ -5,10 +5,13 @@ import {
     ContactsCountriesResolver,
     ContactsResolver,
     ContactsTagsResolver,
+    ContactByIdResolver,
 } from 'app/modules/admin/contacts/contacts.resolvers';
 import { ContactsComponent } from 'app/modules/admin/contacts/contacts.component';
 import { ContactsListComponent } from 'app/modules/admin/contacts/list/list.component';
 import { ContactsDetailsComponent } from 'app/modules/admin/contacts/details/details.component';
+import { GroupsResolver } from '../reggroups/reggroups.resolvers';
+import { DashsResolver } from '../regdashs/regdashs.resolvers';
 
 export const contactsRoutes: Route[] = [
     {
@@ -24,6 +27,7 @@ export const contactsRoutes: Route[] = [
                 resolve: {
                     contacts: ContactsResolver,
                     countries: ContactsCountriesResolver,
+                    groups: GroupsResolver,
                 },
                 children: [
                     {
@@ -32,6 +36,9 @@ export const contactsRoutes: Route[] = [
                         resolve: {
                             contact: ContactsContactResolver,
                             countries: ContactsCountriesResolver,
+                            groups: GroupsResolver,
+                            dashs: DashsResolver,
+                            userId: ContactByIdResolver,
                         },
                         canDeactivate: [CanDeactivateContactsDetails],
                     },
