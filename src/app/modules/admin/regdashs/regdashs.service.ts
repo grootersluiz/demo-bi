@@ -84,6 +84,19 @@ export class RegdashsService {
     }
 
     /**
+     * Get user by ID
+     */
+    getDbById(id: number): Observable<Dash> {
+        return this._httpClient
+            .get<Dash>(`http://10.2.1.108/v1/dashboards/${id}`)
+            .pipe(
+                tap((dash) => {
+                    this._contact.next(dash);
+                })
+            );
+    }
+
+    /**
      * Search contacts with given query
      *
      * @param name
@@ -169,6 +182,7 @@ export class RegdashsService {
                     .put<Dash>(`http://10.2.1.108/v1/dashboards/${id}`, {
                         name: contact.name,
                         type: contact.type,
+                        groupIds: contact.groupIds,
                     })
                     .pipe(
                         map((updatedContact) => {

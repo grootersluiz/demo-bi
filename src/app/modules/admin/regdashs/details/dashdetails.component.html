@@ -114,7 +114,8 @@
                                 [svgIcon]="'heroicons_outline:briefcase'"
                             ></mat-icon> -->
                             <div class="ml-6 leading-6">
-                                <p class="font-bold"> Id do Dashboard: </p> {{ contact.id }}
+                                <p class="font-bold">Id do Dashboard:</p>
+                                {{ contact.id }}
                             </div>
                         </div>
                     </ng-container>
@@ -126,7 +127,8 @@
                                 [svgIcon]="'heroicons_outline:briefcase'"
                             ></mat-icon> -->
                             <div class="ml-6 leading-6">
-                                <p class="font-bold"> Tipo: </p> {{ contact.type }}
+                                <p class="font-bold">Tipo:</p>
+                                {{ contact.type }}
                             </div>
                         </div>
                     </ng-container>
@@ -637,6 +639,30 @@
                                 [formControlName]="'type'"
                                 [placeholder]="'Tipo'"
                             />
+                        </mat-form-field>
+                    </div>
+                    <div class="flex mt-8">
+                        <mat-form-field
+                            class="w-full mr-1"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Grupos de usuários</mat-label>
+                            <mat-select
+                                class="my-custom-class"
+                                style="font-size: 12px"
+                                [formControl]="groups"
+                                multiple
+                            >
+                                <mat-option
+                                    style="font-size: 12px"
+                                    *ngFor="
+                                        let group of groupsStringList;
+                                        let i = index
+                                    "
+                                    [value]="groupsObjects[i].id"
+                                    >{{ group }}</mat-option
+                                >
+                            </mat-select>
                         </mat-form-field>
                     </div>
 
