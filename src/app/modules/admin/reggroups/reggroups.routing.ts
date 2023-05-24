@@ -8,6 +8,7 @@ import {
 import { ReggroupsComponent } from 'app/modules/admin/reggroups/reggroups.component';
 import { GroupListComponent } from 'app/modules/admin/reggroups/list/grouplist.component';
 import { GroupDetailsComponent } from 'app/modules/admin/reggroups/details/groupdetails.component';
+import { NewGroupComponent } from './new/newgroup.component';
 import { DashsResolver } from '../regdashs/regdashs.resolvers';
 
 export const reggroupsRoutes: Route[] = [
@@ -24,12 +25,21 @@ export const reggroupsRoutes: Route[] = [
                 },
                 children: [
                     {
-                        path: ':id',
+                        path: 'editar/:id',
                         component: GroupDetailsComponent,
                         resolve: {
                             contact: GroupsGroupResolver,
                             dashs: DashsResolver,
                             groups: GpByIdResolver,
+                        },
+                        canDeactivate: [CanDeactivateContactsDetails],
+                    },
+                    {
+                        path: 'new',
+                        component: NewGroupComponent,
+                        resolve: {
+                            groups: GroupsResolver,
+                            dashs: DashsResolver,
                         },
                         canDeactivate: [CanDeactivateContactsDetails],
                     },

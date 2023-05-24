@@ -128,14 +128,15 @@ export class ReggroupsService {
     /**
      * Create group
      */
-    createGroup(): Observable<Group> {
+    createGroup(group: Group): Observable<Group> {
         return this.groups$.pipe(
             take(1),
             switchMap((groups) =>
                 this._httpClient
                     .post<Group>('http://10.2.1.108/v1/groups', {
-                        name: 'Novo Grupo',
-                        description: 'grupo',
+                        name: group.name,
+                        description: group.description,
+                        dashboardIds: group.dashboardIds,
                     })
                     .pipe(
                         map((newGroup) => {

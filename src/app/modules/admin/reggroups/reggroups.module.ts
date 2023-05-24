@@ -22,9 +22,15 @@ import { reggroupsRoutes } from 'app/modules/admin/reggroups/reggroups.routing';
 import { ReggroupsComponent } from 'app/modules/admin/reggroups/reggroups.component';
 import { GroupDetailsComponent } from 'app/modules/admin/reggroups/details/groupdetails.component';
 import { GroupListComponent } from 'app/modules/admin/reggroups/list/grouplist.component';
+import { NewGroupComponent } from './new/newgroup.component';
 
 @NgModule({
-    declarations: [ReggroupsComponent, GroupListComponent, GroupDetailsComponent],
+    declarations: [
+        ReggroupsComponent,
+        GroupListComponent,
+        GroupDetailsComponent,
+        NewGroupComponent,
+    ],
     imports: [
         RouterModule.forChild(reggroupsRoutes),
         MatButtonModule,

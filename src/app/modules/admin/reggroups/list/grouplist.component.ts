@@ -85,7 +85,6 @@ export class GroupListComponent implements OnInit, OnDestroy {
                 this._changeDetectorRef.markForCheck();
             });
 
-
         // Subscribe to search input field value changes
         this.searchInputControl.valueChanges
             .pipe(
@@ -167,15 +166,20 @@ export class GroupListComponent implements OnInit, OnDestroy {
      */
     createGroup(): void {
         // Create the group
-        this._groupsService.createGroup().subscribe((newGroup) => {
-            // Go to the new group
-            this._router.navigate(['./', newGroup.id], {
-                relativeTo: this._activatedRoute,
-            });
 
-            // Mark for check
-            this._changeDetectorRef.markForCheck();
+        this._router.navigate(['./new'], {
+            relativeTo: this._activatedRoute,
         });
+
+        // this._groupsService.createGroup().subscribe((newGroup) => {
+        //     // Go to the new group
+        //     this._router.navigate(['./', newGroup.id], {
+        //         relativeTo: this._activatedRoute,
+        //     });
+
+        //     // Mark for check
+        //     this._changeDetectorRef.markForCheck();
+        // });
     }
 
     /**
