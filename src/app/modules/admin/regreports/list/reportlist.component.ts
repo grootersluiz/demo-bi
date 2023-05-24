@@ -181,15 +181,20 @@ export class ReportListComponent implements OnInit, OnDestroy {
      */
     createContact(): void {
         // Create the contact
-        this._contactsService.createReport().subscribe((newContact) => {
-            // Go to the new contact
-            this._router.navigate(['./', newContact.id], {
-                relativeTo: this._activatedRoute,
-            });
 
-            // Mark for check
-            this._changeDetectorRef.markForCheck();
+        this._router.navigate(['./new'], {
+            relativeTo: this._activatedRoute,
         });
+
+        // this._contactsService.createReport().subscribe((newContact) => {
+        //     // Go to the new contact
+        //     this._router.navigate(['./', newContact.id], {
+        //         relativeTo: this._activatedRoute,
+        //     });
+
+        //     // Mark for check
+        //     this._changeDetectorRef.markForCheck();
+        // });
     }
 
     /**

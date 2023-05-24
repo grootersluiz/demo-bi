@@ -22,12 +22,14 @@ import { regreportsRoutes } from 'app/modules/admin/regreports/regreports.routin
 import { RegreportsComponent } from 'app/modules/admin/regreports/regreports.component';
 import { ReportDetailsComponent } from 'app/modules/admin/regreports/details/reportdetails.component';
 import { ReportListComponent } from 'app/modules/admin/regreports/list/reportlist.component';
+import { NewReportComponent } from './new/newreport.component';
 
 @NgModule({
     declarations: [
         RegreportsComponent,
         ReportListComponent,
         ReportDetailsComponent,
+        NewReportComponent,
     ],
     imports: [
         RouterModule.forChild(regreportsRoutes),

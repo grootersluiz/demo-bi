@@ -1,0 +1,158 @@
+<div class="flex flex-col w-full">
+    <!-- Create mode -->
+    <ng-container>
+        <div
+            class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6"
+        >
+            <a
+                mat-icon-button
+                [matTooltip]="'Fechar'"
+                [routerLink]="['../']"
+                (click)="closeDrawer()"
+            >
+                <mat-icon
+                    class="text-black"
+                    [svgIcon]="'heroicons_outline:x'"
+                ></mat-icon>
+            </a>
+        </div>
+        <!-- </div> -->
+
+        <br />
+
+        <!-- Contact form -->
+        <div
+            class="relative flex flex-col flex-auto items-center px-6 sm:px-12"
+        >
+            <div class="w-full max-w-3xl">
+                <form [formGroup]="contactForm">
+                    <!-- Name -->
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Nome</mat-label>
+                            <!-- <mat-icon
+                                matPrefix
+                                class="hidden sm:flex icon-size-5"
+                                [svgIcon]="'heroicons_solid:user-circle'"
+                            ></mat-icon> -->
+                            <input
+                                matInput
+                                [formControlName]="'name'"
+                                [placeholder]="'Nome'"
+                                [spellcheck]="false"
+                            />
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Title -->
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Tipo</mat-label>
+                            <!-- <mat-icon
+                                matPrefix
+                                class="hidden sm:flex icon-size-5"
+                                [svgIcon]="'heroicons_solid:briefcase'"
+                            ></mat-icon> -->
+                            <input
+                                matInput
+                                [formControlName]="'type'"
+                                [placeholder]="'Tipo'"
+                            />
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Company -->
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Classe de estilo</mat-label>
+                            <!-- <mat-icon
+                                matPrefix
+                                class="hidden sm:flex icon-size-5"
+                                [svgIcon]="'heroicons_solid:office-building'"
+                            ></mat-icon> -->
+                            <input
+                                matInput
+                                [formControlName]="'company'"
+                                [placeholder]="'Classe de estilo'"
+                            />
+                        </mat-form-field>
+                    </div>
+
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>View ID</mat-label>
+                            <!-- <mat-icon
+                                matPrefix
+                                class="hidden sm:flex icon-size-5"
+                                [svgIcon]="'heroicons_solid:office-building'"
+                            ></mat-icon> -->
+                            <input
+                                matInput
+                                [formControlName]="'viewId'"
+                                [placeholder]="'View ID'"
+                            />
+                        </mat-form-field>
+                    </div>
+
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>ID Empresa</mat-label>
+                            <!-- <mat-icon
+                                matPrefix
+                                class="hidden sm:flex icon-size-5"
+                                [svgIcon]="'heroicons_solid:office-building'"
+                            ></mat-icon> -->
+                            <input
+                                matInput
+                                [formControlName]="'company'"
+                                [placeholder]="'ID Empresa'"
+                            />
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Actions -->
+                    <div
+                        class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent"
+                    >
+                        <!-- Cancel -->
+                        <button
+                            class="ml-auto"
+                            mat-button
+                            [matTooltip]="'Cancelar'"
+                            [routerLink]="['../']"
+                            (click)="closeDrawer()"
+                        >
+                            Cancelar
+                        </button>
+                        <!-- Save -->
+                        <button
+                            class="ml-2"
+                            mat-flat-button
+                            [color]="'primary'"
+                            [disabled]="contactForm.invalid"
+                            [matTooltip]="'Salvar'"
+                            (click)="createContact()"
+                        >
+                            Salvar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </ng-container>
+</div>

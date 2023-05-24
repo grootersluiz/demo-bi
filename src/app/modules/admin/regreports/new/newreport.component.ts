@@ -17,43 +17,36 @@ import {
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
-    FormControl,
 } from '@angular/forms';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
-import { debounceTime, Subject, Observable, takeUntil } from 'rxjs';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { Dash, Country, Tag } from 'app/modules/admin/regdashs/regdashs.types';
-import { DashListComponent } from 'app/modules/admin/regdashs/list/dashlist.component';
-import { RegdashsService } from 'app/modules/admin/regdashs/regdashs.service';
-import { Group } from 'app/modules/admin/reggroups/reggroups.types';
-import { ReggroupsService } from 'app/modules/admin/reggroups/reggroups.service';
+import { Country, Tag } from 'app/modules/admin/regreports/regreports.types';
+import { ReportListComponent } from 'app/modules/admin/regreports/list/reportlist.component';
+import { RegreportsService } from 'app/modules/admin/regreports/regreports.service';
+import { Reports } from '../regreports.types';
 
 @Component({
-    selector: 'new-dash',
-    templateUrl: './newdash.component.html',
+    selector: 'new-report',
+    templateUrl: './newreport.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewDashComponent implements OnInit, OnDestroy {
+export class NewReportComponent implements OnInit, OnDestroy {
     @ViewChild('avatarFileInput') private _avatarFileInput: ElementRef;
     @ViewChild('tagsPanel') private _tagsPanel: TemplateRef<any>;
     @ViewChild('tagsPanelOrigin') private _tagsPanelOrigin: ElementRef;
-
-    groups$: Observable<Group[]>;
 
     editMode: boolean = false;
     tags: Tag[];
     tagsEditMode: boolean = false;
     filteredTags: Tag[];
-    contact: Dash;
+    report: Reports;
     contactForm: UntypedFormGroup;
-    contacts: Dash[];
+    contacts: Reports[];
     countries: Country[];
-    groups = new FormControl([]);
-    groupsObjects: Group[];
-    groupsStringList: string[];
     private _tagsPanelOverlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -63,9 +56,8 @@ export class NewDashComponent implements OnInit, OnDestroy {
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
-        private _contactsListComponent: DashListComponent,
-        private _contactsService: RegdashsService,
-        private _groupsService: ReggroupsService,
+        private _contactsListComponent: ReportListComponent,
+        private _contactsService: RegreportsService,
         private _formBuilder: UntypedFormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
         private _renderer2: Renderer2,
@@ -90,9 +82,6 @@ export class NewDashComponent implements OnInit, OnDestroy {
             id: [''],
             avatar: [null],
             name: ['', [Validators.required]],
-            type: [''],
-            groupIds: [''],
-            userIds: [''],
             emails: this._formBuilder.array([]),
             phoneNumbers: this._formBuilder.array([]),
             title: [''],
@@ -101,23 +90,9 @@ export class NewDashComponent implements OnInit, OnDestroy {
             address: [null],
             notes: [null],
             tags: [[]],
+            viewId: [null],
+            type: [null],
         });
-
-        //Get Groups
-
-        this.groups$ = this._groupsService.groups$;
-        this._groupsService.groups$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((groups: Group[]) => {
-                this.groupsStringList = groups.map(
-                    (group) => group.id.toString() + ' - ' + group.name
-                );
-
-                this.groupsObjects = groups;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
     }
 
     /**
@@ -162,15 +137,14 @@ export class NewDashComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Create Dash
+     * Create View
      */
     createContact(): void {
         // Get the contact object
         const contact = this.contactForm.getRawValue();
-        contact.groupIds = this.groups.value;
 
         // Update the contact on the server
-        this._contactsService.createDash(contact).subscribe(() => {
+        this._contactsService.createReport(contact).subscribe(() => {
             // Toggle the edit mode off
             this.closeDrawer();
             this._router.navigate(['../'], {

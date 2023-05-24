@@ -7,6 +7,7 @@ import {
 import { RegreportsComponent } from 'app/modules/admin/regreports/regreports.component';
 import { ReportListComponent } from 'app/modules/admin/regreports/list/reportlist.component';
 import { ReportDetailsComponent } from 'app/modules/admin/regreports/details/reportdetails.component';
+import { NewReportComponent } from './new/newreport.component';
 
 export const regreportsRoutes: Route[] = [
     {
@@ -22,11 +23,17 @@ export const regreportsRoutes: Route[] = [
                 },
                 children: [
                     {
-                        path: ':id',
+                        path: 'editar/:id',
                         component: ReportDetailsComponent,
                         resolve: {
                             contact: ContactsContactResolver,
                         },
+                        canDeactivate: [CanDeactivateContactsDetails],
+                    },
+                    {
+                        path: 'new',
+                        component: NewReportComponent,
+                        resolve: {},
                         canDeactivate: [CanDeactivateContactsDetails],
                     },
                 ],

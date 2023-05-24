@@ -140,15 +140,15 @@ export class RegreportsService {
     /**
      * Create contact
      */
-    createReport(): Observable<Reports> {
+    createReport(report: Reports): Observable<Reports> {
         return this.reports$.pipe(
             take(1),
             switchMap((contacts) =>
                 this._httpClient
                     .post<Reports>('http://10.2.1.108/v1/reports', {
-                        name: 'Novo Relatório',
-                        viewId: 222,
-                        type: 'table',
+                        name: report.name,
+                        viewId: report.viewId,
+                        type: report.type,
                     })
                     .pipe(
                         map((newContact) => {
