@@ -10,6 +10,7 @@ import {
 import { ContactsComponent } from 'app/modules/admin/contacts/contacts.component';
 import { ContactsListComponent } from 'app/modules/admin/contacts/list/list.component';
 import { ContactsDetailsComponent } from 'app/modules/admin/contacts/details/details.component';
+import { NewContactComponent } from 'app/modules/admin/contacts/new/new.component';
 import { GroupsResolver } from '../reggroups/reggroups.resolvers';
 import { DashsResolver } from '../regdashs/regdashs.resolvers';
 
@@ -31,7 +32,7 @@ export const contactsRoutes: Route[] = [
                 },
                 children: [
                     {
-                        path: ':id',
+                        path: 'editar/:id',
                         component: ContactsDetailsComponent,
                         resolve: {
                             contact: ContactsContactResolver,
@@ -39,6 +40,15 @@ export const contactsRoutes: Route[] = [
                             groups: GroupsResolver,
                             dashs: DashsResolver,
                             userId: ContactByIdResolver,
+                        },
+                        canDeactivate: [CanDeactivateContactsDetails],
+                    },
+                    {
+                        path: 'new',
+                        component: NewContactComponent,
+                        resolve: {
+                            groups: GroupsResolver,
+                            dashs: DashsResolver,
                         },
                         canDeactivate: [CanDeactivateContactsDetails],
                     },

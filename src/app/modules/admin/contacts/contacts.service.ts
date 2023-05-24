@@ -173,16 +173,18 @@ export class ContactsService {
     /**
      * Create contact
      */
-    createContact(): Observable<User> {
+    createContact(contact: User): Observable<User> {
         return this.contacts$.pipe(
             take(1),
             switchMap((contacts) =>
                 this._httpClient
                     .post<User>('http://10.2.1.108/v1/users', {
-                        name: 'Novo Usuário',
-                        email: 'user@mail.com',
-                        password: '123',
-                        role: 'user',
+                        name: contact.name,
+                        email: contact.email,
+                        password: contact.password,
+                        role: contact.role,
+                        groupIds: contact.groupIds,
+                        dashboardIds: contact.dashboardIds,
                     })
                     .pipe(
                         map((newContact) => {

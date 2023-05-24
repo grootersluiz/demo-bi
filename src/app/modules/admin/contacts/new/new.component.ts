@@ -34,11 +34,11 @@ import { Dash } from 'app/modules/admin/regdashs/regdashs.types';
 
 @Component({
     selector: 'contacts-details',
-    templateUrl: './details.component.html',
+    templateUrl: './new.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ContactsDetailsComponent implements OnInit, OnDestroy {
+export class NewContactComponent implements OnInit, OnDestroy {
     @ViewChild('avatarFileInput') private _avatarFileInput: ElementRef;
     @ViewChild('tagsPanel') private _tagsPanel: TemplateRef<any>;
     @ViewChild('tagsPanelOrigin') private _tagsPanelOrigin: ElementRef;
@@ -97,83 +97,17 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
             id: [''],
             avatar: [null],
             name: ['', [Validators.required]],
-            email: [''],
+            email: ['',[Validators.required]],
             role: [''],
             groupIds: [''],
             dashboardIds: [''],
-            password: [''],
+            password: ['',[Validators.required]],
             birthday: [null],
             address: [null],
             notes: [null],
             tags: [[]],
         });
 
-        // Get the contacts
-        this._contactsService.contacts$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((contacts: User[]) => {
-                this.contacts = contacts;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
-
-        // Get the contact
-        this._contactsService.contact$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((contact: User) => {
-                // Open the drawer in case it is closed
-                this._contactsListComponent.matDrawer.open();
-
-                // Get the contact
-                this.contact = contact;
-
-                //Set the User Groups
-                this.groups.setValue(this.contact.groupIds);
-
-                //Set the User Dashs
-                this.dashs.setValue(this.contact.dashboardIds);
-
-                // Patch values to the form
-                this.contactForm.patchValue(contact);
-
-                // Setup the emails form array
-                const emailFormGroups = [];
-
-                /*            if (contact.emails.length > 0) {
-                    // Iterate through them
-                    contact.emails.forEach((email) => {
-                        // Create an email form group
-                        emailFormGroups.push(
-                            this._formBuilder.group({
-                                email: [email.email],
-                                label: [email.label],
-                            })
-                        );
-                    });
-                } else {
-                    // Create an email form group
-                    emailFormGroups.push(
-                        this._formBuilder.group({
-                            email: [''],
-                            label: [''],
-                        })
-                    );
-                } */
-
-                // Add the email form groups to the emails form array
-                emailFormGroups.forEach((emailFormGroup) => {
-                    (this.contactForm.get('emails') as UntypedFormArray).push(
-                        emailFormGroup
-                    );
-                });
-
-                // Toggle the edit mode off
-                this.toggleEditMode(false);
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
 
         //Get Groups
 
@@ -207,26 +141,6 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
                 this._changeDetectorRef.markForCheck();
             });
 
-        // Get the country telephone codes
-        this._contactsService.countries$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((codes: Country[]) => {
-                this.countries = codes;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
-
-        // Get the tags
-        this._contactsService.tags$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((tags: Tag[]) => {
-                this.tags = tags;
-                this.filteredTags = tags;
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
     }
 
     /**
@@ -271,9 +185,9 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Update the contact
+     * Create the contact
      */
-    updateContact(): void {
+    createContact(): void {
         // Get the contact object
         const contact = this.contactForm.getRawValue();
         const password = this.contactForm.get('password').value;
@@ -283,83 +197,18 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
 
         // Update the contact on the server
         this._contactsService
-            .updateContact(contact.id, contact)
+            .createContact(contact)
             .subscribe(() => {
                 // Toggle the edit mode off
-                this.toggleEditMode(false);
+                this.closeDrawer()
+                this._router.navigate(['../'], {
+                    relativeTo: this._activatedRoute,
+                });
+                this._changeDetectorRef.markForCheck();
+
             });
     }
 
-    /**
-     * Delete the contact
-     */
-    deleteContact(): void {
-        // Open the confirmation dialog
-        const confirmation = this._fuseConfirmationService.open({
-            title: 'Deletar usuário',
-            message:
-                'Tem certeza que quer deletar esse usuário? Essa ação não poderá ser desfeita!',
-            actions: {
-                confirm: {
-                    label: 'Deletar',
-                },
-                cancel: {
-                    label: 'Cancelar',
-                },
-            },
-        });
-
-        // Subscribe to the confirmation dialog closed action
-        confirmation.afterClosed().subscribe((result) => {
-            // If the confirm button pressed...
-            if (result === 'confirmed') {
-                // Get the current contact's id
-                const id = this.contact.id;
-
-                // Get the next/previous contact's id
-                const currentContactIndex = this.contacts.findIndex(
-                    (item) => item.id === id
-                );
-                const nextContactIndex =
-                    currentContactIndex +
-                    (currentContactIndex === this.contacts.length - 1 ? -1 : 1);
-                const nextContactId =
-                    this.contacts.length === 1 && this.contacts[0].id === id
-                        ? null
-                        : this.contacts[nextContactIndex].id;
-
-                // Delete the contact
-                this.closeDrawer();
-                this._contactsService
-                    .deleteContact(id)
-                    .subscribe((isDeleted) => {
-                        // Return if the contact wasn't deleted...
-                        if (!isDeleted) {
-                            return;
-                        }
-
-                        // Navigate to the next contact if available
-                        if (nextContactId) {
-                            this._router.navigate(['../', nextContactId], {
-                                relativeTo: this._activatedRoute,
-                            });
-                        }
-                        // Otherwise, navigate to the parent
-                        else {
-                            this._router.navigate(['../../'], {
-                                relativeTo: this._activatedRoute,
-                            });
-                        }
-
-                        // Toggle the edit mode off
-                        this.toggleEditMode(false);
-                    });
-
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            }
-        });
-    }
 
     /**
      * Upload avatar
