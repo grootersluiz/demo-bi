@@ -97,7 +97,9 @@
                                     *ngIf="
                                         i === 0 ||
                                         view.name.charAt(0).toLowerCase() !==
-                                            views[i - 1].name.charAt(0).toLowerCase()
+                                            views[i - 1].name
+                                                .charAt(0)
+                                                .toLowerCase()
                                     "
                                 >
                                     <div
@@ -117,7 +119,7 @@
                                             selectedContact &&
                                             selectedContact.id === view.id
                                     }"
-                                    [routerLink]="['./', view.id]"
+                                    [routerLink]="['./editar/', view.id]"
                                 >
                                     <!-- <div
                                         class="flex flex-0 items-center justify-center w-10 h-10 rounded-full overflow-hidden"
@@ -141,7 +143,7 @@
                                         <div
                                             class="font-medium leading-5 truncate"
                                         >
-                                            {{ view.id  + " - " + view.name }}
+                                            {{ view.id + " - " + view.name }}
                                         </div>
                                         <!-- <div
                                             class="leading-5 truncate text-secondary"

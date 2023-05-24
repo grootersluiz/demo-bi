@@ -11,23 +11,15 @@ import {
     tap,
     throwError,
 } from 'rxjs';
-import {
-    View,
-    Country,
-    Tag,
-} from 'app/modules/admin/regviews/regviews.types';
+import { View, Country, Tag } from 'app/modules/admin/regviews/regviews.types';
 
 @Injectable({
     providedIn: 'root',
 })
 export class RegviewsService {
     // Private
-    private _view: BehaviorSubject<View | null> = new BehaviorSubject(
-        null
-    );
-    private _views: BehaviorSubject<View[] | null> = new BehaviorSubject(
-        null
-    );
+    private _view: BehaviorSubject<View | null> = new BehaviorSubject(null);
+    private _views: BehaviorSubject<View[] | null> = new BehaviorSubject(null);
     private _countries: BehaviorSubject<Country[] | null> = new BehaviorSubject(
         null
     );
@@ -74,25 +66,19 @@ export class RegviewsService {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
-
     /**
      * Get views
      */
     getViews(): Observable<View[]> {
-        return this._httpClient
-            .get<View[]>('http://10.2.1.108/v1/views')
-            .pipe(
-                tap((views) => {
-                    //arrayOfObjects.sort((a, b) => a.name.localeCompare(b.name));
-                    let orderedViews = [...views['data']];
-                    orderedViews.sort((a, b) => a.name.localeCompare(b.name));
-                    this._views.next(orderedViews);
-
-                })
-            );
+        return this._httpClient.get<View[]>('http://10.2.1.108/v1/views').pipe(
+            tap((views) => {
+                //arrayOfObjects.sort((a, b) => a.name.localeCompare(b.name));
+                let orderedViews = [...views['data']];
+                orderedViews.sort((a, b) => a.name.localeCompare(b.name));
+                this._views.next(orderedViews);
+            })
+        );
     }
-
-
 
     /**
      * Search contacts with given query
@@ -119,18 +105,16 @@ export class RegviewsService {
         return this._views.pipe(
             take(1),
             map((contacts) => {
-         
                 // Find the contact
                 const contact = contacts.find((item) => item.id === id) || null;
 
                 // Update the contact
                 this._view.next(contact);
-                
+
                 // Return the contact
                 return contact;
             }),
             switchMap((contact) => {
-                
                 if (!contact) {
                     return throwError(
                         'Could not found contact with id of ' + id + '!'
@@ -145,12 +129,15 @@ export class RegviewsService {
     /**
      * Create contact
      */
-    createView(): Observable<View> {
+    createView(view: View): Observable<View> {
         return this.contacts$.pipe(
             take(1),
             switchMap((contacts) =>
                 this._httpClient
-                    .post<View>('http://10.2.1.108/v1/views', { name:'Nova View', query:'Nova Query' })
+                    .post<View>('http://10.2.1.108/v1/views', {
+                        name: view.name,
+                        query: view.query,
+                    })
                     .pipe(
                         map((newContact) => {
                             // Update the contacts with the new contact
@@ -175,7 +162,10 @@ export class RegviewsService {
             take(1),
             switchMap((contacts) =>
                 this._httpClient
-                    .put<View>(`http://10.2.1.108/v1/views/${id.toString()}`, { name: contact.name, query: contact.query })
+                    .put<View>(`http://10.2.1.108/v1/views/${id.toString()}`, {
+                        name: contact.name,
+                        query: contact.query,
+                    })
                     .pipe(
                         map((updatedContact) => {
                             // Find the index of the updated contact
@@ -211,10 +201,10 @@ export class RegviewsService {
     }
 
     /**
-         * Delete the contact
-         *
-         * @param id
-         */
+     * Delete the contact
+     *
+     * @param id
+     */
     deleteView(id: number): Observable<boolean> {
         return this.contacts$.pipe(
             take(1),
@@ -241,6 +231,4 @@ export class RegviewsService {
             )
         );
     }
-
 }
- 

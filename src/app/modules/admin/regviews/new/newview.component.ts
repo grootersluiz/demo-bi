@@ -23,18 +23,19 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { Country, Tag } from 'app/modules/admin/regreports/regreports.types';
-import { ReportListComponent } from 'app/modules/admin/regreports/list/reportlist.component';
-import { RegreportsService } from 'app/modules/admin/regreports/regreports.service';
-import { Reports } from '../regreports.types';
+import { View, Country, Tag } from 'app/modules/admin/regviews/regviews.types';
+import { ViewListComponent } from 'app/modules/admin/regviews/list/viewlist.component';
+import { RegviewsService } from 'app/modules/admin/regviews/regviews.service';
+import { FuseConfigService } from '@fuse/services/config';
 
 @Component({
-    selector: 'new-report',
-    templateUrl: './newreport.component.html',
+    selector: 'new-view',
+    templateUrl: './newview.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
+    styleUrls: ['./newview.component.css'],
 })
-export class NewReportComponent implements OnInit, OnDestroy {
+export class NewViewComponent implements OnInit, OnDestroy {
     @ViewChild('avatarFileInput') private _avatarFileInput: ElementRef;
     @ViewChild('tagsPanel') private _tagsPanel: TemplateRef<any>;
     @ViewChild('tagsPanelOrigin') private _tagsPanelOrigin: ElementRef;
@@ -43,10 +44,13 @@ export class NewReportComponent implements OnInit, OnDestroy {
     tags: Tag[];
     tagsEditMode: boolean = false;
     filteredTags: Tag[];
-    report: Reports;
+    view: View;
     contactForm: UntypedFormGroup;
-    contacts: Reports[];
+    views: View[];
     countries: Country[];
+
+    codeMirrorInitialQuery: string = '';
+
     private _tagsPanelOverlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -56,15 +60,43 @@ export class NewReportComponent implements OnInit, OnDestroy {
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
-        private _contactsListComponent: ReportListComponent,
-        private _contactsService: RegreportsService,
+        private _contactsListComponent: ViewListComponent,
+        private _viewsService: RegviewsService,
         private _formBuilder: UntypedFormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
         private _renderer2: Renderer2,
         private _router: Router,
         private _overlay: Overlay,
-        private _viewContainerRef: ViewContainerRef
+        private _viewContainerRef: ViewContainerRef,
+        private _fuseConfigService: FuseConfigService
     ) {}
+
+    codeMirrorOptions: any = {
+        mode: 'text/x-mysql',
+        indentWithTabs: true,
+        smartIndent: true,
+        lineNumbers: true,
+        lineWrapping: true,
+        extraKeys: { 'Ctrl-Space': 'autocomplete' },
+        gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
+        autoCloseBrackets: true,
+        matchBrackets: true,
+        lint: true,
+    };
+
+    codeMirrorOptions2: any = {
+        mode: 'text/x-mysql',
+        indentWithTabs: true,
+        smartIndent: true,
+        lineNumbers: true,
+        lineWrapping: true,
+        extraKeys: { 'Ctrl-Space': 'autocomplete' },
+        gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
+        autoCloseBrackets: true,
+        matchBrackets: true,
+        lint: true,
+        readOnly: 'nocursor',
+    };
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -74,6 +106,17 @@ export class NewReportComponent implements OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
+        // Get the current layout config to update the SQL editor
+        this._fuseConfigService.config$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((layoutConfig) => {
+                this.codeMirrorOptions.theme =
+                    layoutConfig.scheme == 'light' ? 'default' : 'midnight';
+                this.codeMirrorOptions2.theme =
+                    layoutConfig.scheme == 'light' ? 'default' : 'midnight';
+                this._changeDetectorRef.markForCheck();
+            });
+
         // Open the drawer
         this._contactsListComponent.matDrawer.open();
 
@@ -88,11 +131,56 @@ export class NewReportComponent implements OnInit, OnDestroy {
             company: [''],
             birthday: [null],
             address: [null],
-            notes: [null],
+            query: [null],
             tags: [[]],
-            viewId: [null],
-            type: [null],
         });
+
+        // // Get the contact
+        // this._viewsService.contact$
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe((view: View) => {
+        //         // Open the drawer in case it is closed
+        //         this._contactsListComponent.matDrawer.open();
+
+        //         // Get the view
+        //         this.view = view;
+        //         this.codeMirrorInitialQuery = this.view.query;
+
+        //         // Clear the emails and phoneNumbers form arrays
+        //         (this.contactForm.get('emails') as UntypedFormArray).clear();
+        //         (
+        //             this.contactForm.get('phoneNumbers') as UntypedFormArray
+        //         ).clear();
+
+        //         // Patch values to the form
+        //         this.contactForm.patchValue(view);
+
+        //         // Setup the emails form array
+        //         const emailFormGroups = [];
+
+        //         // Add the email form groups to the emails form array
+        //         emailFormGroups.forEach((emailFormGroup) => {
+        //             (this.contactForm.get('emails') as UntypedFormArray).push(
+        //                 emailFormGroup
+        //             );
+        //         });
+
+        //         // Setup the phone numbers form array
+        //         const phoneNumbersFormGroups = [];
+
+        //         // Add the phone numbers form groups to the phone numbers form array
+        //         phoneNumbersFormGroups.forEach((phoneNumbersFormGroup) => {
+        //             (
+        //                 this.contactForm.get('phoneNumbers') as UntypedFormArray
+        //             ).push(phoneNumbersFormGroup);
+        //         });
+
+        //         // Toggle the edit mode off
+        //         this.toggleEditMode(false);
+
+        //         // Mark for check
+        //         this._changeDetectorRef.markForCheck();
+        //     });
     }
 
     /**
@@ -112,7 +200,9 @@ export class NewReportComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
-
+    setSqlEditorContent(event: string) {
+        this.codeMirrorInitialQuery = event;
+    }
     /**
      * Close the drawer
      */
@@ -137,14 +227,16 @@ export class NewReportComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Create Report
+     * Create View
      */
     createContact(): void {
         // Get the contact object
         const contact = this.contactForm.getRawValue();
 
+        contact.query = this.codeMirrorInitialQuery;
+
         // Update the contact on the server
-        this._contactsService.createReport(contact).subscribe(() => {
+        this._viewsService.createView(contact).subscribe(() => {
             // Toggle the edit mode off
             this.closeDrawer();
             this._router.navigate(['../'], {

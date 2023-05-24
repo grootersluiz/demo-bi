@@ -7,6 +7,7 @@ import {
 import { RegviewsComponent } from 'app/modules/admin/regviews/regviews.component';
 import { ViewListComponent } from 'app/modules/admin/regviews/list/viewlist.component';
 import { ViewDetailsComponent } from 'app/modules/admin/regviews/details/viewdetails.component';
+import { NewViewComponent } from './new/newview.component';
 
 export const regviewsRoutes: Route[] = [
     {
@@ -22,11 +23,17 @@ export const regviewsRoutes: Route[] = [
                 },
                 children: [
                     {
-                        path: ':id',
+                        path: 'editar/:id',
                         component: ViewDetailsComponent,
                         resolve: {
                             contact: ContactsContactResolver,
                         },
+                        canDeactivate: [CanDeactivateContactsDetails],
+                    },
+                    {
+                        path: 'new',
+                        component: NewViewComponent,
+                        resolve: {},
                         canDeactivate: [CanDeactivateContactsDetails],
                     },
                 ],

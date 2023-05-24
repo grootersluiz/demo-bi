@@ -13,25 +13,27 @@
                 />
             </ng-container> -->
         <!-- Close button -->
-        <div class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6" >
-
+        <div
+            class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6"
+        >
             <div class="flex items-center ml-auto mb-1">
-
-                <button mat-stroked-button (click)="toggleEditMode(true)" class="view-details-btn-edit">
+                <button
+                    mat-stroked-button
+                    (click)="toggleEditMode(true)"
+                    class="view-details-btn-edit"
+                >
                     <mat-icon
                         class="icon-size-5"
                         [svgIcon]="'heroicons_solid:pencil-alt'"
-                        
                     ></mat-icon>
                     <span class="ml-2">Editar</span>
                 </button>
-
             </div>
 
             <a
                 mat-icon-button
                 [matTooltip]="'Fechar'"
-                [routerLink]="['../']"
+                [routerLink]="['../../']"
                 (click)="closeDrawer()"
             >
                 <mat-icon
@@ -110,7 +112,6 @@
                 </ng-container> -->
 
                 <div class="flex flex-col mt-4 pt-6 border-t space-y-8">
-
                     <!-- View ID -->
                     <ng-container *ngIf="view.id">
                         <div class="flex sm:items-center">
@@ -118,7 +119,8 @@
                                 [svgIcon]="'heroicons_outline:briefcase'"
                             ></mat-icon> -->
                             <div class="ml-6 leading-6">
-                                <p class="font-bold"> Id: </p> {{view.id}}
+                                <p class="font-bold">Id:</p>
+                                {{ view.id }}
                             </div>
                         </div>
                     </ng-container>
@@ -130,15 +132,19 @@
                                                     [svgIcon]="'heroicons_outline:briefcase'"
                                                 ></mat-icon> -->
                             <div class="ml-6 leading-6">
-                                <p class="font-bold"> Query: </p>
+                                <p class="font-bold">Query:</p>
                             </div>
                         </div>
                     </ng-container>
 
-                    <ngx-codemirror class="code-mirror-display" #codemirror [options]="codeMirrorOptions2"
-                        [(ngModel)]="codeMirrorInitialQuery" [ngModelOptions]="{standalone: true}">
+                    <ngx-codemirror
+                        class="code-mirror-display"
+                        #codemirror
+                        [options]="codeMirrorOptions2"
+                        [(ngModel)]="codeMirrorInitialQuery"
+                        [ngModelOptions]="{ standalone: true }"
+                    >
                     </ngx-codemirror>
-
 
                     <!-- Company -->
                     <!-- <ng-container *ngIf="contact.company">
@@ -307,7 +313,7 @@
             <a
                 mat-icon-button
                 [matTooltip]="'Fechar'"
-                [routerLink]="['../']"
+                [routerLink]="['../../']"
                 (click)="closeDrawer()"
             >
                 <mat-icon
@@ -324,7 +330,6 @@
             class="relative flex flex-col flex-auto items-center px-6 sm:px-12"
         >
             <div class="w-full max-w-3xl">
-                
                 <form [formGroup]="contactForm">
                     <!-- Avatar -->
                     <!-- <div class="flex flex-auto items-end -mt-16">
@@ -1015,12 +1020,18 @@
 
                     <!-- SQL Query -->
                     <div class="mt-8">
-                            <mat-label>Query</mat-label>
+                        <mat-label>Query</mat-label>
                     </div>
-                    <ngx-codemirror class="code-mirror-editor" #codemirror [options]="codeMirrorOptions" [(ngModel)]="codeMirrorInitialQuery" [ngModelOptions]="{standalone: true}" (ngModelChange)="setSqlEditorContent($event)">
+                    <ngx-codemirror
+                        class="code-mirror-editor"
+                        #codemirror
+                        [options]="codeMirrorOptions"
+                        [(ngModel)]="codeMirrorInitialQuery"
+                        [ngModelOptions]="{ standalone: true }"
+                        (ngModelChange)="setSqlEditorContent($event)"
+                    >
                     </ngx-codemirror>
 
-                    
                     <!-- Actions -->
                     <div
                         class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent"
