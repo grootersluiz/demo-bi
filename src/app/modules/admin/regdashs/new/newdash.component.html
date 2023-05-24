@@ -1,0 +1,135 @@
+<div class="flex flex-col w-full">
+    <!-- View mode -->
+    <ng-container>
+        <!-- Header -->
+        <!-- <div
+            class="relative w-full h-40 sm:h-48 px-8 sm:px-12 bg-accent-100 dark:bg-accent-700"
+        > -->
+        <!-- Background -->
+        <!-- <ng-container *ngIf="contact.background">
+                <img
+                    class="absolute inset-0 object-cover w-full h-full"
+                    [src]="contact.background"
+                />
+            </ng-container> -->
+        <!-- Close button -->
+        <div
+            class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6"
+        >
+            <a
+                mat-icon-button
+                [matTooltip]="'Fechar'"
+                [routerLink]="['../']"
+                (click)="closeDrawer()"
+            >
+                <mat-icon
+                    class="text-black"
+                    [svgIcon]="'heroicons_outline:x'"
+                ></mat-icon>
+            </a>
+        </div>
+        <!-- </div> -->
+        <br />
+
+        <!-- Contact form -->
+        <div
+            class="relative flex flex-col flex-auto items-center px-6 sm:px-12"
+        >
+            <div class="w-full max-w-3xl">
+                <form [formGroup]="contactForm">
+                    <!-- Name -->
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Nome</mat-label>
+                            <!-- <mat-icon
+                                matPrefix
+                                class="hidden sm:flex icon-size-5"
+                                [svgIcon]="'heroicons_solid:user-circle'"
+                            ></mat-icon> -->
+                            <input
+                                matInput
+                                [formControlName]="'name'"
+                                [placeholder]="'Nome'"
+                                [spellcheck]="false"
+                            />
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Title -->
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Tipo</mat-label>
+                            <!-- <mat-icon
+                                matPrefix
+                                class="hidden sm:flex icon-size-5"
+                                [svgIcon]="'heroicons_solid:briefcase'"
+                            ></mat-icon> -->
+                            <input
+                                matInput
+                                [formControlName]="'type'"
+                                [placeholder]="'Tipo'"
+                            />
+                        </mat-form-field>
+                    </div>
+                    <div class="flex mt-8">
+                        <mat-form-field
+                            class="w-full mr-1"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Grupos de usuários</mat-label>
+                            <mat-select
+                                class="my-custom-class"
+                                style="font-size: 12px"
+                                [formControl]="groups"
+                                multiple
+                            >
+                                <mat-option
+                                    style="font-size: 12px"
+                                    *ngFor="
+                                        let group of groupsStringList;
+                                        let i = index
+                                    "
+                                    [value]="groupsObjects[i].id"
+                                    >{{ group }}</mat-option
+                                >
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Actions -->
+                    <div
+                        class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent"
+                    >
+                        <!-- Cancel -->
+                        <button
+                            class="ml-auto"
+                            mat-button
+                            [matTooltip]="'Cancelar'"
+                            [routerLink]="['../']"
+                            (click)="closeDrawer()"
+                        >
+                            Cancelar
+                        </button>
+                        <!-- Save -->
+                        <button
+                            class="ml-2"
+                            mat-flat-button
+                            [color]="'primary'"
+                            [disabled]="contactForm.invalid"
+                            [matTooltip]="'Salvar'"
+                            (click)="createContact()"
+                        >
+                            Salvar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </ng-container>
+</div>

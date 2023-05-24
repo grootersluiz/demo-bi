@@ -71,7 +71,7 @@
                             class="ml-2"
                             mat-flat-button
                             [color]="'primary'"
-                            (click)="createContact()"
+                            (click)="createDash()"
                         >
                             <mat-icon
                                 [svgIcon]="'heroicons_outline:plus'"
@@ -119,7 +119,7 @@
                                             selectedContact &&
                                             selectedContact.id === contact.id
                                     }"
-                                    [routerLink]="['./', contact.id]"
+                                    [routerLink]="['./editar/', contact.id]"
                                 >
                                     <!-- <div
                                         class="flex flex-0 items-center justify-center w-10 h-10 rounded-full overflow-hidden"

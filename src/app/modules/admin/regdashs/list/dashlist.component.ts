@@ -145,7 +145,7 @@ export class DashListComponent implements OnInit, OnDestroy {
                 )
             )
             .subscribe(() => {
-                this.createContact();
+                this.createDash();
             });
     }
 
@@ -174,19 +174,24 @@ export class DashListComponent implements OnInit, OnDestroy {
     }
 
     /**
-     * Create contact
+     * Create Dash
      */
-    createContact(): void {
-        // Create the contact
-        this._contactsService.createDash().subscribe((newContact) => {
-            // Go to the new contact
-            this._router.navigate(['./', newContact.id], {
-                relativeTo: this._activatedRoute,
-            });
+    createDash(): void {
+        // Create Dash
 
-            // Mark for check
-            this._changeDetectorRef.markForCheck();
+        this._router.navigate(['./new'], {
+            relativeTo: this._activatedRoute,
         });
+
+        // this._contactsService.createDash().subscribe((newContact) => {
+        //     // Go to the new contact
+        //     this._router.navigate(['./', newContact.id], {
+        //         relativeTo: this._activatedRoute,
+        //     });
+
+        //     // Mark for check
+        //     this._changeDetectorRef.markForCheck();
+        // });
     }
 
     /**

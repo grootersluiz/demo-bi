@@ -276,7 +276,7 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
                     }
                     // Otherwise, navigate to the parent
                     else {
-                        this._router.navigate(['../'], {
+                        this._router.navigate(['../../'], {
                             relativeTo: this._activatedRoute,
                         });
                     }

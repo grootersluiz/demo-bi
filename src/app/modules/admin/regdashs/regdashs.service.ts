@@ -144,16 +144,17 @@ export class RegdashsService {
     }
 
     /**
-     * Create contact
+     * Create Dash
      */
-    createDash(): Observable<Dash> {
+    createDash(dash: Dash): Observable<Dash> {
         return this.contacts$.pipe(
             take(1),
             switchMap((contacts) =>
                 this._httpClient
                     .post<Dash>('http://10.2.1.108/v1/dashboards', {
-                        name: 'Novo Dashboard',
-                        type: 'dash',
+                        name: dash.name,
+                        type: dash.type,
+                        groupIds: dash.groupIds,
                     })
                     .pipe(
                         map((newContact) => {

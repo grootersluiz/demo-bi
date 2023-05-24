@@ -22,9 +22,15 @@ import { regdashsRoutes } from 'app/modules/admin/regdashs/regdashs.routing';
 import { RegdashsComponent } from 'app/modules/admin/regdashs/regdashs.component';
 import { DashDetailsComponent } from 'app/modules/admin/regdashs/details/dashdetails.component';
 import { DashListComponent } from 'app/modules/admin/regdashs/list/dashlist.component';
+import { NewDashComponent } from './new/newdash.component';
 
 @NgModule({
-    declarations: [RegdashsComponent, DashListComponent, DashDetailsComponent],
+    declarations: [
+        RegdashsComponent,
+        DashListComponent,
+        DashDetailsComponent,
+        NewDashComponent,
+    ],
     imports: [
         RouterModule.forChild(regdashsRoutes),
         MatButtonModule,
