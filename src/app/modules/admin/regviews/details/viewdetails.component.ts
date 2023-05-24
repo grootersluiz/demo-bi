@@ -33,7 +33,7 @@ import { FuseConfigService } from '@fuse/services/config';
     templateUrl: './viewdetails.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    styleUrls: ['./viewdetails.component.css']
+    styleUrls: ['./viewdetails.component.css'],
 })
 export class ViewDetailsComponent implements OnInit, OnDestroy {
     @ViewChild('avatarFileInput') private _avatarFileInput: ElementRef;
@@ -54,10 +54,6 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
     private _tagsPanelOverlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
-
-
-    
-
     /**
      * Constructor
      */
@@ -75,35 +71,33 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
         private _fuseConfigService: FuseConfigService
     ) {}
 
-
     codeMirrorOptions: any = {
-        mode: "text/x-mysql",
+        mode: 'text/x-mysql',
         indentWithTabs: true,
         smartIndent: true,
         lineNumbers: true,
         lineWrapping: true,
-        extraKeys: { "Ctrl-Space": "autocomplete" },
-        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+        extraKeys: { 'Ctrl-Space': 'autocomplete' },
+        gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
         autoCloseBrackets: true,
         matchBrackets: true,
         lint: true,
     };
-    
+
     codeMirrorOptions2: any = {
-        mode: "text/x-mysql",
+        mode: 'text/x-mysql',
         indentWithTabs: true,
         smartIndent: true,
         lineNumbers: true,
         lineWrapping: true,
-        extraKeys: { "Ctrl-Space": "autocomplete" },
-        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+        extraKeys: { 'Ctrl-Space': 'autocomplete' },
+        gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
         autoCloseBrackets: true,
         matchBrackets: true,
         lint: true,
         readOnly: 'nocursor',
-    }; 
+    };
 
-    
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
     // -----------------------------------------------------------------------------------------------------
@@ -115,19 +109,17 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
         // Get the current layout config to update the SQL editor
         this._fuseConfigService.config$
             .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe(layoutConfig => {
-                this.codeMirrorOptions.theme = layoutConfig.scheme == 'light' ? 'default' :  'midnight';
-                this.codeMirrorOptions2.theme = layoutConfig.scheme == 'light' ? 'default' : 'midnight';
+            .subscribe((layoutConfig) => {
+                this.codeMirrorOptions.theme =
+                    layoutConfig.scheme == 'light' ? 'default' : 'midnight';
+                this.codeMirrorOptions2.theme =
+                    layoutConfig.scheme == 'light' ? 'default' : 'midnight';
                 this._changeDetectorRef.markForCheck();
             });
 
-
-
-
-
         // Open the drawer
         this._contactsListComponent.matDrawer.open();
-        
+
         // Create the contact form
         this.contactForm = this._formBuilder.group({
             id: [''],
@@ -163,7 +155,7 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
                 // Get the view
                 this.view = view;
                 this.codeMirrorInitialQuery = this.view.query;
-                
+
                 // Clear the emails and phoneNumbers form arrays
                 (this.contactForm.get('emails') as UntypedFormArray).clear();
                 (
@@ -239,7 +231,7 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
-    setSqlEditorContent(event: string){
+    setSqlEditorContent(event: string) {
         this.codeMirrorInitialQuery = event;
     }
     /**
@@ -255,7 +247,6 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
      * @param editMode
      */
     toggleEditMode(editMode: boolean | null = null): void {
-   
         if (editMode === null) {
             this.editMode = !this.editMode;
         } else {
@@ -274,7 +265,6 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
         const contact = this.contactForm.getRawValue();
 
         contact.query = this.codeMirrorInitialQuery;
-       
 
         // Go through the contact object and clear empty values
         contact.emails = contact.emails.filter((email) => email.email);
@@ -344,7 +334,7 @@ export class ViewDetailsComponent implements OnInit, OnDestroy {
                     }
                     // Otherwise, navigate to the parent
                     else {
-                        this._router.navigate(['../'], {
+                        this._router.navigate(['../../'], {
                             relativeTo: this._activatedRoute,
                         });
                     }

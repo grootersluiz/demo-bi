@@ -264,7 +264,6 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
         // Get the contact object
         const contact = this.contactForm.getRawValue();
 
-
         // Update the contact on the server
         this._contactsService
             .updateReport(contact.id, contact)
@@ -330,7 +329,7 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
                         }
                         // Otherwise, navigate to the parent
                         else {
-                            this._router.navigate(['../'], {
+                            this._router.navigate(['../../'], {
                                 relativeTo: this._activatedRoute,
                             });
                         }
