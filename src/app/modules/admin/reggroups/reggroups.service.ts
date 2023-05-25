@@ -79,6 +79,23 @@ export class ReggroupsService {
     }
 
     /**
+     * Get user by Group
+     */
+    getGroupsByDash(id: string): Observable<Group[]> {
+        return this._httpClient
+            .get<Group[]>(`http://10.2.1.108/v1/groups?dashboardId=${id}`)
+            .pipe(
+                tap((users) => {
+                    let orderedContacts = [...users['data']];
+                    orderedContacts.sort((a, b) =>
+                        a.name.localeCompare(b.name)
+                    );
+                    this._groups.next(orderedContacts);
+                })
+            );
+    }
+
+    /**
      * Search groups with given query
      *
      * @param name

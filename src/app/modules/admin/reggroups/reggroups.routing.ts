@@ -22,6 +22,7 @@ export const reggroupsRoutes: Route[] = [
                 component: GroupListComponent,
                 resolve: {
                     contacts: GroupsResolver,
+                    dashs: DashsResolver,
                 },
                 children: [
                     {
