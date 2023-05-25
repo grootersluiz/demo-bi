@@ -62,8 +62,42 @@
                                     matInput
                                     [formControl]="searchInputControl"
                                     [autocomplete]="'off'"
-                                    [placeholder]="'Buscar Dashboards'"
+                                    [placeholder]="'Buscar por nome'"
+                                    (input)="
+                                        getDashsByName($event.target.value)
+                                    "
                                 />
+                            </mat-form-field>
+                        </div>
+                        <!-- Groups Filter -->
+                        <div class="flex-auto">
+                            <mat-form-field
+                                class="fuse-mat-dense fuse-mat-rounded w-full min-w-50 ml-1"
+                                [subscriptSizing]="'dynamic'"
+                            >
+                                <mat-select
+                                    [formControl]="groups"
+                                    [placeholder]="'Buscar por grupo'"
+                                >
+                                    <mat-option (click)="getDashsByGp('')"
+                                        >Todos</mat-option
+                                    >
+
+                                    <mat-option
+                                        style="font-size: 12px"
+                                        *ngFor="
+                                            let group of groupsStringList;
+                                            let i = index
+                                        "
+                                        [value]="groupsObjects[i].id"
+                                        (click)="
+                                            getDashsByGp(
+                                                groupsObjects[i].id.toString()
+                                            )
+                                        "
+                                        >{{ group }}</mat-option
+                                    >
+                                </mat-select>
                             </mat-form-field>
                         </div>
                         <!-- Add contact button -->

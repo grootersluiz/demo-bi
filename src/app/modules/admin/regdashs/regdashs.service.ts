@@ -97,6 +97,23 @@ export class RegdashsService {
     }
 
     /**
+     * Get dash by group
+     */
+    getDashsByGroup(id: string): Observable<Dash[]> {
+        return this._httpClient
+            .get<Dash[]>(`http://10.2.1.108/v1/dashboards?groupId=${id}`)
+            .pipe(
+                tap((users) => {
+                    let orderedContacts = [...users['data']];
+                    orderedContacts.sort((a, b) =>
+                        a.name.localeCompare(b.name)
+                    );
+                    this._contacts.next(orderedContacts);
+                })
+            );
+    }
+
+    /**
      * Search contacts with given query
      *
      * @param name

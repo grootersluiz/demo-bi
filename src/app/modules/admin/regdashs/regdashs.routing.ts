@@ -22,6 +22,7 @@ export const regdashsRoutes: Route[] = [
                 component: DashListComponent,
                 resolve: {
                     contacts: DashsResolver,
+                    groups: GroupsResolver,
                 },
                 children: [
                     {

@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UntypedFormControl } from '@angular/forms';
+import { UntypedFormControl, FormControl } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';
 import {
     filter,
@@ -23,6 +23,8 @@ import {
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { Dash, Country } from 'app/modules/admin/regdashs/regdashs.types';
 import { RegdashsService } from 'app/modules/admin/regdashs/regdashs.service';
+import { Group } from 'app/modules/admin/reggroups/reggroups.types';
+import { ReggroupsService } from 'app/modules/admin/reggroups/reggroups.service';
 
 @Component({
     selector: 'dash-list',
@@ -34,12 +36,16 @@ export class DashListComponent implements OnInit, OnDestroy {
     @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
 
     contacts$: Observable<Dash[]>;
+    groups$: Observable<Group[]>;
 
     contactsCount: number = 0;
     contactsTableColumns: string[] = ['name', 'email', 'phoneNumber', 'job'];
     countries: Country[];
     drawerMode: 'side' | 'over';
     searchInputControl: UntypedFormControl = new UntypedFormControl();
+    groups = new FormControl([]);
+    groupsObjects: Group[];
+    groupsStringList: string[];
     selectedContact: Dash;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -50,6 +56,7 @@ export class DashListComponent implements OnInit, OnDestroy {
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
         private _contactsService: RegdashsService,
+        private _groupsService: ReggroupsService,
         @Inject(DOCUMENT) private _document: any,
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService
@@ -86,6 +93,22 @@ export class DashListComponent implements OnInit, OnDestroy {
                 this._changeDetectorRef.markForCheck();
             });
 
+        //Get Groups for filter
+
+        this.groups$ = this._groupsService.groups$;
+        this._groupsService.groups$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((groups: Group[]) => {
+                this.groupsStringList = groups.map(
+                    (group) => group.id.toString() + ' - ' + group.name
+                );
+
+                this.groupsObjects = groups;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
         // Get the countries
         this._contactsService.countries$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -98,15 +121,17 @@ export class DashListComponent implements OnInit, OnDestroy {
             });
 
         // Subscribe to search input field value changes
-        this.searchInputControl.valueChanges
-            .pipe(
-                takeUntil(this._unsubscribeAll),
-                switchMap((query) =>
-                    // Search
-                    this._contactsService.searchDashs(query)
-                )
-            )
-            .subscribe();
+        // this.searchInputControl.valueChanges
+        //     .pipe(
+        //         takeUntil(this._unsubscribeAll),
+        //         switchMap((query) => {
+        //             if (this.searchInputControl.value != '') {
+        //                 this.groups.setValue([]);
+        //             }
+        //             return this._contactsService.searchDashs(query);
+        //         })
+        //     )
+        //     .subscribe();
 
         // Subscribe to MatDrawer opened change
         this.matDrawer.openedChange.subscribe((opened) => {
@@ -192,6 +217,22 @@ export class DashListComponent implements OnInit, OnDestroy {
         //     // Mark for check
         //     this._changeDetectorRef.markForCheck();
         // });
+    }
+
+    /**
+     * Get dash by group
+     */
+    getDashsByGp(id: string) {
+        this._contactsService.getDashsByGroup(id).subscribe();
+        this.searchInputControl.setValue('');
+    }
+
+    /**
+     * Get dash by name
+     */
+    getDashsByName(name: string) {
+        this._contactsService.searchDashs(name).subscribe();
+        this.groups.setValue([]);
     }
 
     /**
