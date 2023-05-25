@@ -25,6 +25,8 @@ import { User, Country } from 'app/modules/admin/contacts/contacts.types';
 import { ContactsService } from 'app/modules/admin/contacts/contacts.service';
 import { Group } from 'app/modules/admin/reggroups/reggroups.types';
 import { ReggroupsService } from 'app/modules/admin/reggroups/reggroups.service';
+import { RegdashsService } from 'app/modules/admin/regdashs/regdashs.service';
+import { Dash } from 'app/modules/admin/regdashs/regdashs.types';
 
 @Component({
     selector: 'contacts-list',
@@ -37,12 +39,16 @@ export class ContactsListComponent implements OnInit, OnDestroy {
 
     contacts$: Observable<User[]>;
     groups$: Observable<Group[]>;
+    dashs$: Observable<Dash[]>;
 
     contactsCount: number = 0;
     contactsTableColumns: string[] = ['name', 'email', 'phoneNumber', 'job'];
     groups = new FormControl([]);
     groupsObjects: Group[];
     groupsStringList: string[];
+    dashs = new FormControl([]);
+    dashsObjects: Dash[];
+    dashsStringList: string[];
     countries: Country[];
     drawerMode: 'side' | 'over';
     searchInputControl: UntypedFormControl = new UntypedFormControl();
@@ -57,6 +63,7 @@ export class ContactsListComponent implements OnInit, OnDestroy {
         private _changeDetectorRef: ChangeDetectorRef,
         private _contactsService: ContactsService,
         private _groupsService: ReggroupsService,
+        private _dashsService: RegdashsService,
         @Inject(DOCUMENT) private _document: any,
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService
@@ -109,6 +116,22 @@ export class ContactsListComponent implements OnInit, OnDestroy {
                 this._changeDetectorRef.markForCheck();
             });
 
+        //Get Dashs
+
+        this.dashs$ = this._dashsService.contacts$;
+        this._dashsService.contacts$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((dashs: Dash[]) => {
+                this.dashsStringList = dashs.map(
+                    (dash) => dash.id.toString() + ' - ' + dash.name
+                );
+
+                this.dashsObjects = dashs;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
         // Get the countries
         this._contactsService.countries$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -127,7 +150,9 @@ export class ContactsListComponent implements OnInit, OnDestroy {
                 switchMap((query) => {
                     if (this.searchInputControl.value != '') {
                         this.groups.setValue([]);
+                        this.dashs.setValue([]);
                     }
+
                     return this._contactsService.searchContacts(query);
                 })
             )
@@ -203,6 +228,15 @@ export class ContactsListComponent implements OnInit, OnDestroy {
      */
     getUsersByGp(id: string) {
         this._contactsService.getUsersByGroup(id).subscribe();
+        this.dashs.setValue([]);
+    }
+
+    /**
+     * Get user by dash
+     */
+    getUsersByDb(id: string) {
+        this._contactsService.getUsersByDash(id).subscribe();
+        this.groups.setValue([]);
     }
 
     /**
