@@ -228,9 +228,9 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
     deleteContact(): void {
         // Open the confirmation dialog
         const confirmation = this._fuseConfirmationService.open({
-            title: 'Deletar contato',
+            title: 'Deletar dashboard',
             message:
-                'Tem certeza que quer deletar esse contato? Essa ação não poderá ser desfeita!',
+                'Tem certeza que quer deletar esse dashboard? Essa ação não poderá ser desfeita!',
             actions: {
                 confirm: {
                     label: 'Deletar',
