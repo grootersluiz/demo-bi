@@ -144,19 +144,19 @@ export class ContactsListComponent implements OnInit, OnDestroy {
             });
 
         // Subscribe to search input field value changes
-        this.searchInputControl.valueChanges
-            .pipe(
-                takeUntil(this._unsubscribeAll),
-                switchMap((query) => {
-                    if (this.searchInputControl.value != '') {
-                        this.groups.setValue([]);
-                        this.dashs.setValue([]);
-                    }
+        // this.searchInputControl.valueChanges
+        //     .pipe(
+        //         takeUntil(this._unsubscribeAll),
+        //         switchMap((query) => {
+        //             if (this.searchInputControl.value != '') {
+        //                 this.groups.setValue([]);
+        //                 this.dashs.setValue([]);
+        //             }
 
-                    return this._contactsService.searchContacts(query);
-                })
-            )
-            .subscribe();
+        //             return this._contactsService.searchContacts(query);
+        //         })
+        //     )
+        //     .subscribe();
 
         // Subscribe to MatDrawer opened change
         this.matDrawer.openedChange.subscribe((opened) => {
@@ -229,6 +229,7 @@ export class ContactsListComponent implements OnInit, OnDestroy {
     getUsersByGp(id: string) {
         this._contactsService.getUsersByGroup(id).subscribe();
         this.dashs.setValue([]);
+        this.searchInputControl.setValue('');
     }
 
     /**
@@ -237,6 +238,16 @@ export class ContactsListComponent implements OnInit, OnDestroy {
     getUsersByDb(id: string) {
         this._contactsService.getUsersByDash(id).subscribe();
         this.groups.setValue([]);
+        this.searchInputControl.setValue('');
+    }
+
+    /**
+     * Get user by name
+     */
+    getUsersByName(name: string) {
+        this._contactsService.searchContacts(name).subscribe();
+        this.groups.setValue([]);
+        this.dashs.setValue([]);
     }
 
     /**

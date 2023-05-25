@@ -63,6 +63,9 @@
                                     [formControl]="searchInputControl"
                                     [autocomplete]="'off'"
                                     [placeholder]="'Buscar por nome'"
+                                    (input)="
+                                        getUsersByName($event.target.value)
+                                    "
                                 />
                             </mat-form-field>
                         </div>

@@ -109,18 +109,18 @@ export class GroupListComponent implements OnInit, OnDestroy {
             });
 
         // Subscribe to search input field value changes
-        this.searchInputControl.valueChanges
-            .pipe(
-                takeUntil(this._unsubscribeAll),
-                switchMap((query) => {
-                    if (this.searchInputControl.value != '') {
-                        this.dashs.setValue([]);
-                    }
+        // this.searchInputControl.valueChanges
+        //     .pipe(
+        //         takeUntil(this._unsubscribeAll),
+        //         switchMap((query) => {
+        //             if (this.searchInputControl.value != '') {
+        //                 this.dashs.setValue([]);
+        //             }
 
-                    return this._groupsService.searchGroups(query);
-                })
-            )
-            .subscribe();
+        //             return this._groupsService.searchGroups(query);
+        //         })
+        //     )
+        //     .subscribe();
 
         // Subscribe to MatDrawer opened change
         this.matDrawer.openedChange.subscribe((opened) => {
@@ -213,6 +213,15 @@ export class GroupListComponent implements OnInit, OnDestroy {
      */
     getGroupsByDb(id: string) {
         this._groupsService.getGroupsByDash(id).subscribe();
+        this.searchInputControl.setValue('');
+    }
+
+    /**
+     * Get group by name
+     */
+    getGroupsByName(name: string) {
+        this._groupsService.searchGroups(name).subscribe();
+        this.dashs.setValue([]);
     }
 
     /**
