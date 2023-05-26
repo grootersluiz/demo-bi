@@ -22,7 +22,6 @@ import {
     MatDatepickerInputEvent,
 } from '@angular/material/datepicker';
 
-
 @Component({
     selector: 'rol',
     templateUrl: './rol.component.html',
@@ -47,6 +46,10 @@ export class RolComponent implements OnInit, OnDestroy {
         new MatTableDataSource();
     recentTransactionsDataSource2: MatTableDataSource<any> =
         new MatTableDataSource();
+    maxRolSellerName: string;
+    maxRolSellerBranch: string;
+    minRolSellerName: string;
+    minRolSellerBranch: string;
 
     recentTransactionsTableColumns: string[] = [
         'Posição',
@@ -64,7 +67,6 @@ export class RolComponent implements OnInit, OnDestroy {
         'Metas Atingidas',
     ];
 
-    
     chartGithubIssues: ApexOptions = {};
     data: any;
 
@@ -85,8 +87,6 @@ export class RolComponent implements OnInit, OnDestroy {
     allSellersSelected: boolean = false;
 
     sellersSearchInput = new FormControl('');
-
-    
 
     range = new FormGroup({
         start: new FormControl<Date | null>(null),
@@ -128,6 +128,36 @@ export class RolComponent implements OnInit, OnDestroy {
                 this.recentTransactionsDataSource2.data =
                     data.recentTransactions2.rows;
 
+                console.log(
+                    'table data',
+                    this.recentTransactionsDataSource.data
+                );
+                console.log(
+                    'Máx ROL',
+                    this.recentTransactionsDataSource.data[0][2]
+                );
+                console.log(
+                    'Mín ROL',
+                    this.recentTransactionsDataSource.data[
+                        this.recentTransactionsDataSource.data.length - 1
+                    ][2]
+                );
+                console.log('indicadores ROL', data.previousStatement);
+
+                this.recentTransactionsDataSource.data.forEach((innerArray) => {
+                    if (innerArray[3] === data.previousStatement.LIMITE) {
+                        this.maxRolSellerName = innerArray[2];
+                        this.maxRolSellerBranch = innerArray[1];
+                    }
+                });
+
+                this.recentTransactionsDataSource.data.forEach((innerArray) => {
+                    if (innerArray[3] === data.previousStatement.SPENT) {
+                        this.minRolSellerName = innerArray[2];
+                        this.minRolSellerBranch = innerArray[1];
+                    }
+                });
+
                 // Uncomment the lines below to get tables headers from backend
                 /* this.recentTransactionsTableColumns = data.recentTransactions.columns ;  */
                 /* this.recentTransactionsTableColumns2 = data.recentTransactions2.columns ; */
@@ -138,8 +168,6 @@ export class RolComponent implements OnInit, OnDestroy {
                 this.filiaisStringList = this.filiaisObjects.map(
                     (item) => item.string
                 );
-
-                
 
                 // Trigger the change detection mechanism so that it updates the chart when filtering
                 this._cdr.markForCheck();
@@ -153,7 +181,7 @@ export class RolComponent implements OnInit, OnDestroy {
                 this.vendedoresStringList = this.vendedoresObjects.map(
                     (item) => item.string
                 );
-                
+
                 this.filteredVendedoresObjects = this.vendedoresObjects;
                 this.filteredVendedoresStringList = this.vendedoresStringList;
 
@@ -250,10 +278,12 @@ export class RolComponent implements OnInit, OnDestroy {
 
     handleSellersFilterSelect(vendedorId: number) {
         const id = vendedorId.toString();
-        if(this.vendedores.value.includes(id)){
-            this.selectedSellers.setValue([...this.selectedSellers.value, id])
-        }else{
-            const updatedItems = this.selectedSellers.value.filter(item => item !== id);
+        if (this.vendedores.value.includes(id)) {
+            this.selectedSellers.setValue([...this.selectedSellers.value, id]);
+        } else {
+            const updatedItems = this.selectedSellers.value.filter(
+                (item) => item !== id
+            );
             this.selectedSellers.setValue(updatedItems);
         }
         this.vendedores.setValue(this.selectedSellers.value);
@@ -284,18 +314,17 @@ export class RolComponent implements OnInit, OnDestroy {
     }
 
     onInput(value: string) {
-               
         const filteredSellers = this.vendedoresObjects.filter((seller) =>
             seller.string.toLowerCase().includes(value.toLowerCase())
         );
-        const filteredSellersString = this.vendedoresStringList.filter((seller) =>
-            seller.toLowerCase().includes(value.toLowerCase())
+        const filteredSellersString = this.vendedoresStringList.filter(
+            (seller) => seller.toLowerCase().includes(value.toLowerCase())
         );
         this.filteredVendedoresStringList = filteredSellersString;
         this.filteredVendedoresObjects = filteredSellers;
     }
 
-    onSellersSelectionChange(event){
+    onSellersSelectionChange(event) {
         //console.log(this.vendedores.value);
     }
 
