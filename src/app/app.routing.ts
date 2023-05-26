@@ -1,7 +1,8 @@
 import { Route } from '@angular/router';
 import { AuthGuard } from 'app/core/auth/guards/auth.guard';
 import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
-import { UserTypeGuard } from 'app/core/auth/guards/user-type.guard';
+import { DashRolGuard } from 'app/core/auth/guards/dashRol.guard';
+import { DashVendaFilialGuard } from 'app/core/auth/guards/dashVendaFilial.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
 import { InitialDataResolver } from 'app/app.resolvers';
 import { AuthRedirectGuard } from 'app/core/auth/guards/auth.redirect.guard';
@@ -194,7 +195,7 @@ export const appRoutes: Route[] = [
                     // },
                     {
                         path: 'rol',
-                        canActivate: [UserTypeGuard],
+                        canActivate: [DashRolGuard],
                         loadChildren: () =>
                             import(
                                 'app/modules/admin/dashboards/rol/rol.module'
@@ -202,6 +203,7 @@ export const appRoutes: Route[] = [
                     },
                     {
                         path: 'vendafilial',
+                        canActivate: [DashVendaFilialGuard],
                         loadChildren: () =>
                             import(
                                 'app/modules/admin/dashboards/vendafilial/vendafilial.module'
