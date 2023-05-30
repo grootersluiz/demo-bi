@@ -157,9 +157,15 @@
                     style="width: 200px"
                 >
                     <mat-label style="font-size: 12px; color: #fff"
-                        >Período <input type="checkbox">Mês</mat-label
+                        >Período
+                        <input
+                            type="checkbox"
+                            [(ngModel)]="isChecked"
+                            style="margin-left: 5rem"
+                        />
+                        Mensal</mat-label
                     >
-                    
+
                     <mat-date-range-input
                         style="font-size: 12px"
                         [formGroup]="range"
@@ -191,7 +197,15 @@
                         [for]="picker"
                     ></mat-datepicker-toggle>
 
-                    <mat-date-range-picker #picker></mat-date-range-picker>
+                    <mat-date-range-picker
+                        #picker
+                        [startView]="isChecked ? 'year' : 'month'"
+                        (monthSelected)="
+                            isChecked
+                                ? setMonthAndYear($event, picker)
+                                : undefined
+                        "
+                    ></mat-date-range-picker>
 
                     <mat-error
                         *ngIf="
@@ -203,23 +217,6 @@
                         *ngIf="range.controls.end.hasError('matEndDateInvalid')"
                         >Data final inválida</mat-error
                     >
-                    
-                </mat-form-field>
-                
-
-                <!-- Filtro Data por Mês -->
-
-                <mat-form-field
-                    *ngIf="true"
-                    class="hidden sm:inline-flex ml-3"
-                    style="width: 200px"
-                >
-                    <mat-label style="font-size: 12px; color: #fff">Month and Year</mat-label>
-                    <input matInput [matDatepicker]="dp" [formControl]="date" >
-                    <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
-                    <mat-datepicker #dp startView="year" (monthSelected)="setMonthAndYear($event, dp)"
-                        panelClass="example-month-picker">
-                    </mat-datepicker>
                 </mat-form-field>
 
                 <button

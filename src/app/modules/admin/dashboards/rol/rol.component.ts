@@ -14,12 +14,15 @@ import { RolService } from 'app/modules/admin/dashboards/rol/rol.service';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatDatepicker, MatDatepickerToggle, MatDatepickerInputEvent } from '@angular/material/datepicker';
-import {default as _rollupMoment, Moment} from 'moment';
+import {
+    MatDatepicker,
+    MatDatepickerToggle,
+    MatDatepickerInputEvent,
+} from '@angular/material/datepicker';
+import { default as _rollupMoment, Moment } from 'moment';
 import * as _moment from 'moment';
 
 const moment = _rollupMoment || _moment;
-
 
 @Component({
     selector: 'rol',
@@ -95,10 +98,9 @@ export class RolComponent implements OnInit, OnDestroy {
     dataInicio = this._rolService.INITIAL_INITIAL_DATE;
     dataFinal = this._rolService.INITIAL_FINAL_DATE;
 
-    date = new FormControl();
+    isChecked: boolean;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
-
 
     /**
      * Constructor
@@ -211,11 +213,36 @@ export class RolComponent implements OnInit, OnDestroy {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
-    setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>){
-        console.log(normalizedMonthAndYear.month())
-        
-        const selectedDate = moment(`${normalizedMonthAndYear.month()}/${normalizedMonthAndYear.year()}`, 'M/YYYY').toDate();
-        this.date.setValue(selectedDate);
+    setMonthAndYear(evMY: Moment, datepicker: MatDatepicker<Moment>) {
+        function getLastDayOfMonth(year, month) {
+            // Create a new date object with the given year and month (0-based index)
+            let date = new Date(year, month + 1, 0);
+
+            // Get the last day of the month
+            let lastDay = date.getDate();
+
+            return lastDay;
+        }
+
+        this.dataInicio = { year: evMY.year(), month: evMY.month(), date: 1 };
+        this.dataFinal = {
+            year: evMY.year(),
+            month: evMY.month(),
+            date: getLastDayOfMonth(evMY.year(), evMY.month()),
+        };
+        this.range
+            .get('start')
+            .setValue(new Date(evMY.year(), evMY.month(), 1));
+        this.range
+            .get('end')
+            .setValue(
+                new Date(
+                    evMY.year(),
+                    evMY.month(),
+                    getLastDayOfMonth(evMY.year(), evMY.month())
+                )
+            );
+
         datepicker.close();
     }
 
