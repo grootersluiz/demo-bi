@@ -158,8 +158,9 @@
                     (click)="handleDatePickerClick($event)"
                 >
                     <mat-label style="font-size: 12px; color: #fff"
-                        >Período</mat-label
+                        >Período </mat-label
                     >
+                    
                     <mat-date-range-input
                         style="font-size: 12px"
                         [formGroup]="range"
@@ -202,16 +203,19 @@
                         *ngIf="range.controls.end.hasError('matEndDateInvalid')"
                         >Data final inválida</mat-error
                     >
+                    
                 </mat-form-field>
+                
 
                 <!-- Filtro Data por Mês -->
 
                 <mat-form-field
+                    *ngIf="false"
                     class="hidden sm:inline-flex ml-3"
                     style="width: 200px"
                 >
                     <mat-label style="font-size: 12px; color: #fff">Month and Year</mat-label>
-                    <input matInput [matDatepicker]="dp" [formControl]="date">
+                    <input matInput [matDatepicker]="dp" [formControl]="date" >
                     <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
                     <mat-datepicker #dp startView="year" (monthSelected)="setMonthAndYear($event, dp)"
                         panelClass="example-month-picker">

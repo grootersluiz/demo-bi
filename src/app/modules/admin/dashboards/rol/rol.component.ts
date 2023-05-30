@@ -15,8 +15,10 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDatepicker, MatDatepickerToggle, MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { Moment} from 'moment';
+import {default as _rollupMoment, Moment} from 'moment';
+import * as _moment from 'moment';
 
+const moment = _rollupMoment || _moment;
 
 
 @Component({
@@ -93,7 +95,7 @@ export class RolComponent implements OnInit, OnDestroy {
     dataInicio = this._rolService.INITIAL_INITIAL_DATE;
     dataFinal = this._rolService.INITIAL_FINAL_DATE;
 
-    date = new FormControl<Date | null>(null);
+    date = new FormControl();
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -210,9 +212,11 @@ export class RolComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
 
     setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>){
-        console.log(normalizedMonthAndYear)
-        datepicker.close()
-
+        console.log(normalizedMonthAndYear.month())
+        
+        const selectedDate = moment(`${normalizedMonthAndYear.month()}/${normalizedMonthAndYear.year()}`, 'M/YYYY').toDate();
+        this.date.setValue(selectedDate);
+        datepicker.close();
     }
 
     selectAllCompanies() {
