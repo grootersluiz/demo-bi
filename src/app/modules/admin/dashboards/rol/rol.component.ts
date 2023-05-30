@@ -14,13 +14,10 @@ import { RolService } from 'app/modules/admin/dashboards/rol/rol.service';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatSelectModule } from '@angular/material/select';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
-import {
-    MatDatepickerToggle,
-    MatDatepickerModule,
-    MatDatepickerInputEvent,
-} from '@angular/material/datepicker';
+import { MatDatepicker, MatDatepickerToggle, MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { Moment} from 'moment';
+
+
 
 @Component({
     selector: 'rol',
@@ -96,7 +93,10 @@ export class RolComponent implements OnInit, OnDestroy {
     dataInicio = this._rolService.INITIAL_INITIAL_DATE;
     dataFinal = this._rolService.INITIAL_FINAL_DATE;
 
+    date = new FormControl<Date | null>(null);
+
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+
 
     /**
      * Constructor
@@ -127,22 +127,6 @@ export class RolComponent implements OnInit, OnDestroy {
                     data.recentTransactions.rows;
                 this.recentTransactionsDataSource2.data =
                     data.recentTransactions2.rows;
-
-                console.log(
-                    'table data',
-                    this.recentTransactionsDataSource.data
-                );
-                console.log(
-                    'Máx ROL',
-                    this.recentTransactionsDataSource.data[0][2]
-                );
-                console.log(
-                    'Mín ROL',
-                    this.recentTransactionsDataSource.data[
-                        this.recentTransactionsDataSource.data.length - 1
-                    ][2]
-                );
-                console.log('indicadores ROL', data.previousStatement);
 
                 this.recentTransactionsDataSource.data.forEach((innerArray) => {
                     if (innerArray[3] === data.previousStatement.LIMITE) {
@@ -224,6 +208,12 @@ export class RolComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
+
+    setMonthAndYear(normalizedMonthAndYear: Moment, datepicker: MatDatepicker<Moment>){
+        console.log(normalizedMonthAndYear)
+        datepicker.close()
+
+    }
 
     selectAllCompanies() {
         if (!this.allCompaniesSelected) {

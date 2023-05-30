@@ -204,6 +204,20 @@
                     >
                 </mat-form-field>
 
+                <!-- Filtro Data por Mês -->
+
+                <mat-form-field
+                    class="hidden sm:inline-flex ml-3"
+                    style="width: 200px"
+                >
+                    <mat-label style="font-size: 12px; color: #fff">Month and Year</mat-label>
+                    <input matInput [matDatepicker]="dp" [formControl]="date">
+                    <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+                    <mat-datepicker #dp startView="year" (monthSelected)="setMonthAndYear($event, dp)"
+                        panelClass="example-month-picker">
+                    </mat-datepicker>
+                </mat-form-field>
+
                 <button
                     class="hidden sm:inline-flex ml-3 apply-button"
                     style="width: 80px"
