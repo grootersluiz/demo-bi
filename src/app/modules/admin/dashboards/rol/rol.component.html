@@ -22,202 +22,205 @@
                 </div>
             </div>
 
-            <!-- Filtros Filial e Vendedor -->
+            <!-- Filtros Filial -->
             <div class="flex items-center ml-6">
-                <mat-form-field
-                    class="hidden sm:inline-flex ml-3"
-                    style="width: 200px"
-                    (click)="handleCompaniesFilterClick(dataInicio, dataFinal)"
-                >
-                    <mat-label style="font-size: 12px; color: #fff"
-                        >Filial</mat-label
+                <div class="form-field-container">
+                    <mat-form-field
+                        class="hidden sm:inline-flex ml-3"
+                        style="width: 200px"
+                        (click)="
+                            handleCompaniesFilterClick(dataInicio, dataFinal)
+                        "
                     >
-                    <mat-select
-                        class="my-custom-class"
-                        style="font-size: 12px"
-                        [formControl]="filiais"
-                        multiple
+                        <mat-label style="font-size: 12px; color: #fff"
+                            >Filial</mat-label
+                        >
+                        <mat-select
+                            class="my-custom-class"
+                            style="font-size: 12px"
+                            [formControl]="filiais"
+                            multiple
+                        >
+                            <mat-option
+                                class="select-all-companies"
+                                style="font-size: 12px"
+                                [value]="'-1'"
+                                (click)="selectAllCompanies()"
+                                >{{
+                                    allCompaniesSelected
+                                        ? "Desmarcar Todos"
+                                        : "Marcar Todos"
+                                }}</mat-option
+                            >
+
+                            <mat-option
+                                style="font-size: 12px"
+                                *ngFor="
+                                    let filial of filiaisStringList;
+                                    let i = index
+                                "
+                                [value]="filiaisObjects[i].id.toString()"
+                                (click)="
+                                    handleCompanyFilterSelect(
+                                        filiaisObjects[i].id
+                                    )
+                                "
+                                >{{ filial }}</mat-option
+                            >
+                        </mat-select>
+                    </mat-form-field>
+
+                    <!-- Filtro Vendedor -->
+                    <mat-form-field
+                        class="hidden sm:inline-flex ml-3"
+                        style="width: 200px"
+                        (click)="
+                            handleSellersFilterClick(dataInicio, dataFinal)
+                        "
                     >
-                        <mat-option
-                            class="select-all-companies"
-                            style="font-size: 12px"
-                            [value]="'-1'"
-                            (click)="selectAllCompanies()"
-                            >{{
-                                allCompaniesSelected
-                                    ? "Desmarcar Todos"
-                                    : "Marcar Todos"
-                            }}</mat-option
+                        <mat-label style="font-size: 12px; color: #fff"
+                            >Vendedor</mat-label
                         >
-                        <mat-option
+                        <mat-select
                             style="font-size: 12px"
-                            *ngFor="
-                                let filial of filiaisStringList;
-                                let i = index
-                            "
-                            [value]="filiaisObjects[i].id.toString()"
-                            (click)="
-                                handleCompanyFilterSelect(filiaisObjects[i].id)
-                            "
-                            >{{ filial }}</mat-option
+                            [formControl]="vendedores"
+                            multiple
+                            (selectionChange)="onSellersSelectionChange($event)"
                         >
-                    </mat-select>
-                </mat-form-field>
+                            <div
+                                class="sellers-search-container flex justify-center"
+                            >
+                                <input
+                                    class="sellers-search-input"
+                                    type="text"
+                                    placeholder="Buscar..."
+                                    [formControl]="sellersSearchInput"
+                                    (input)="onInput($event.target.value)"
+                                />
+                            </div>
 
-                <mat-form-field
-                    class="hidden sm:inline-flex ml-3"
-                    style="width: 200px"
-                    (click)="handleSellersFilterClick(dataInicio, dataFinal)"
-                >
-                    <mat-label style="font-size: 12px; color: #fff"
-                        >Vendedor</mat-label
-                    >
-                    <mat-select
-                        style="font-size: 12px"
-                        [formControl]="vendedores"
-                        multiple
-                        (selectionChange)="onSellersSelectionChange($event)"
-                    >
-                        <div
-                            class="sellers-search-container flex justify-center"
-                        >
-                            <input
-                                class="sellers-search-input"
-                                type="text"
-                                placeholder="Buscar..."
-                                [formControl]="sellersSearchInput"
-                                (input)="onInput($event.target.value)"
-                            />
-                        </div>
+                            <mat-option
+                                class="select-all-companies"
+                                style="font-size: 12px"
+                                [value]="'-1'"
+                                (click)="selectAllSellers()"
+                                >{{
+                                    allSellersSelected
+                                        ? "Desmarcar Todos"
+                                        : "Marcar Todos"
+                                }}
+                            </mat-option>
 
-                        <mat-option
-                            class="select-all-companies"
-                            style="font-size: 12px"
-                            [value]="'-1'"
-                            (click)="selectAllSellers()"
-                            >{{
-                                allSellersSelected
-                                    ? "Desmarcar Todos"
-                                    : "Marcar Todos"
-                            }}
-                        </mat-option>
-
-                        <mat-option
-                            style="font-size: 12px"
-                            *ngFor="
-                                let vendedor of filteredVendedoresStringList;
-                                let i = index
-                            "
-                            [value]="filteredVendedoresObjects[i].id.toString()"
-                            (click)="
-                                handleSellersFilterSelect(
-                                    filteredVendedoresObjects[i].id
-                                )
-                            "
-                            >{{ vendedor }}</mat-option
-                        >
-                    </mat-select>
-                </mat-form-field>
-
-                <!-- <button
-                class="hidden sm:inline-flex ml-3"
-                mat-flat-button
-                [color]="'primary'"
-                [matMenuTriggerFor]="filaisMenu"
-            >
-                <button>Filial</button>
-            </button>
-            <mat-menu #filaisMenu="matMenu">
-                <button mat-menu-item>Campina Grande - PB</button>
-                <button mat-menu-item>E5</button>
-                <button mat-menu-item>João Pessoa - PB</button>
-                <button mat-menu-item>Maceió - AL</button>
-                <button mat-menu-item>Recife - PE</button>
-            </mat-menu>
-            <button
-                class="hidden sm:inline-flex ml-3"
-                mat-flat-button
-                [color]="'primary'"
-                [matMenuTriggerFor]="vendedoresMenu"
-            >
-                <span>Vendedor</span>
-            </button>
-            <mat-menu #vendedoresMenu="matMenu">
-                <button mat-menu-item>Vendedor 1</button>
-                <button mat-menu-item>Vendedor 2</button>
-                <button mat-menu-item>Vendedor 3</button>
-                <button mat-menu-item>Vendedor 4</button>
-                <button mat-menu-item>Vendedor 5</button>
-            </mat-menu> -->
-
+                            <mat-option
+                                style="font-size: 12px"
+                                *ngFor="
+                                    let vendedor of filteredVendedoresStringList;
+                                    let i = index
+                                "
+                                [value]="
+                                    filteredVendedoresObjects[i].id.toString()
+                                "
+                                (click)="
+                                    handleSellersFilterSelect(
+                                        filteredVendedoresObjects[i].id
+                                    )
+                                "
+                                >{{ vendedor }}</mat-option
+                            >
+                        </mat-select>
+                    </mat-form-field>
+                </div>
                 <!--Filtro Data-->
-
-                <mat-form-field
-                    class="hidden sm:inline-flex ml-3"
-                    style="width: 200px"
-                >
-                    <mat-label style="font-size: 12px; color: #fff"
-                        >Período
-                        <input
-                            type="checkbox"
-                            [(ngModel)]="isChecked"
-                            style="margin-left: 5rem"
-                        />
-                        Mensal</mat-label
+                <div class="form-field-container">
+                    <mat-form-field
+                        class="hidden sm:inline-flex ml-3"
+                        style="width: 200px"
                     >
-
-                    <mat-date-range-input
-                        style="font-size: 12px"
-                        [formGroup]="range"
-                        [rangePicker]="picker"
-                        (click)="handleDatePickerClick($event)"
-                    >
+                        <mat-label style="font-size: 12px; color: #fff"
+                            >Data Inicial
+                            <input
+                                type="checkbox"
+                                [(ngModel)]="isChecked"
+                                style="margin-left: 3rem"
+                                (change)="resetDateInputs()"
+                            />
+                            Mensal</mat-label
+                        >
                         <input
                             class="cursor-pointer"
-                            style="font-size: 11px"
-                            matStartDate
-                            formControlName="start"
+                            style="font-size: 15px"
+                            matInput
+                            [formControl]="start"
+                            [matDatepicker]="picker"
+                            (click)="handleDatePickerClick($event)"
                             (dateInput)="addEventBegin($event)"
                             readonly
                         />
 
+                        <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
+                        <mat-datepicker-toggle
+                            #pickerToggle
+                            matIconSuffix
+                            [for]="picker"
+                        ></mat-datepicker-toggle>
+
+                        <mat-datepicker
+                            #picker
+                            [startView]="isChecked ? 'year' : 'month'"
+                            (monthSelected)="
+                                isChecked
+                                    ? setInitialMY($event, picker)
+                                    : undefined
+                            "
+                        ></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field
+                        class="hidden sm:inline-flex ml-3"
+                        style="width: 200px"
+                    >
+                        <mat-label style="font-size: 12px; color: #fff"
+                            >Data Final
+                        </mat-label>
+
                         <input
                             class="cursor-pointer"
-                            style="font-size: 11px"
-                            matEndDate
-                            formControlName="end"
+                            style="font-size: 15px"
+                            matInput
+                            [formControl]="end"
+                            [matDatepicker]="pickerFinal"
+                            (click)="handleDatePickerClick($event)"
                             (dateInput)="addEventEnd($event)"
                             readonly
+                            [min]="start.value ? start.value : today"
                         />
-                    </mat-date-range-input>
-                    <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
-                    <mat-datepicker-toggle
-                        #pickerToggle
-                        matIconSuffix
-                        [for]="picker"
-                    ></mat-datepicker-toggle>
 
-                    <mat-date-range-picker
-                        #picker
-                        [startView]="isChecked ? 'year' : 'month'"
-                        (monthSelected)="
-                            isChecked
-                                ? setMonthAndYear($event, picker)
-                                : undefined
-                        "
-                    ></mat-date-range-picker>
+                        <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
+                        <mat-datepicker-toggle
+                            #pickerToggle
+                            matIconSuffix
+                            [for]="pickerFinal"
+                        ></mat-datepicker-toggle>
 
-                    <mat-error
-                        *ngIf="
-                            range.controls.start.hasError('matStartDateInvalid')
-                        "
-                        >Data inicial inválida</mat-error
-                    >
-                    <mat-error
-                        *ngIf="range.controls.end.hasError('matEndDateInvalid')"
-                        >Data final inválida</mat-error
-                    >
-                </mat-form-field>
+                        <mat-datepicker
+                            #pickerFinal
+                            [startView]="isChecked ? 'year' : 'month'"
+                            (monthSelected)="
+                                isChecked
+                                    ? setFinalMY($event, pickerFinal)
+                                    : undefined
+                            "
+                        ></mat-datepicker>
+                        <!-- <mat-error
+                            *ngIf="
+                                convDataIni &&
+                                convDataFin &&
+                                convDataFin < convDataIni
+                            "
+                            >Data final inválida</mat-error
+                        > -->
+                    </mat-form-field>
+                </div>
 
                 <button
                     class="hidden sm:inline-flex ml-3 apply-button"

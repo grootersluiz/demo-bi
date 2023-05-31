@@ -90,13 +90,13 @@ export class RolComponent implements OnInit, OnDestroy {
 
     sellersSearchInput = new FormControl('');
 
-    range = new FormGroup({
-        start: new FormControl<Date | null>(null),
-        end: new FormControl<Date | null>(null),
-    });
+    start = new FormControl<Date | null>(null);
+    end = new FormControl<Date | null>(null);
 
     dataInicio = this._rolService.INITIAL_INITIAL_DATE;
     dataFinal = this._rolService.INITIAL_FINAL_DATE;
+    convDataIni: Date;
+    today = new Date();
 
     isChecked: boolean;
 
@@ -213,7 +213,15 @@ export class RolComponent implements OnInit, OnDestroy {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
-    setMonthAndYear(evMY: Moment, datepicker: MatDatepicker<Moment>) {
+    setInitialMY(evMY: Moment, datepicker: MatDatepicker<Moment>) {
+        this.dataInicio = { year: evMY.year(), month: evMY.month(), date: 1 };
+        this.start.setValue(
+            new Date(this.dataInicio.year, this.dataInicio.month, 1)
+        );
+        datepicker.close();
+    }
+
+    setFinalMY(evMY: Moment, datepicker: MatDatepicker<Moment>) {
         function getLastDayOfMonth(year, month) {
             // Create a new date object with the given year and month (0-based index)
             let date = new Date(year, month + 1, 0);
@@ -224,26 +232,25 @@ export class RolComponent implements OnInit, OnDestroy {
             return lastDay;
         }
 
-        this.dataInicio = { year: evMY.year(), month: evMY.month(), date: 1 };
         this.dataFinal = {
             year: evMY.year(),
             month: evMY.month(),
             date: getLastDayOfMonth(evMY.year(), evMY.month()),
         };
-        this.range
-            .get('start')
-            .setValue(new Date(evMY.year(), evMY.month(), 1));
-        this.range
-            .get('end')
-            .setValue(
-                new Date(
-                    evMY.year(),
-                    evMY.month(),
-                    getLastDayOfMonth(evMY.year(), evMY.month())
-                )
-            );
+        this.end.setValue(
+            new Date(
+                this.dataFinal.year,
+                this.dataFinal.month,
+                getLastDayOfMonth(evMY.year(), evMY.month())
+            )
+        );
 
         datepicker.close();
+    }
+
+    resetDateInputs(): void {
+        this.start.setValue(null);
+        this.end.setValue(null);
     }
 
     selectAllCompanies() {
@@ -317,6 +324,8 @@ export class RolComponent implements OnInit, OnDestroy {
     addEventBegin(event: MatDatepickerInputEvent<Date>) {
         if (event.value) {
             this.dataInicio = event.value['_i'];
+            this.end.setValue(null);
+            this.dataFinal = event.value['_i'];
         }
     }
 

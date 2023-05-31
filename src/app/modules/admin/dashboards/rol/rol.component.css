@@ -102,3 +102,9 @@ div.cabecalho-filtro {
     visibility: visible;
     opacity: 0.5;
 }
+
+.form-field-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px; /* Optional: Add some vertical spacing between form fields */
+}
