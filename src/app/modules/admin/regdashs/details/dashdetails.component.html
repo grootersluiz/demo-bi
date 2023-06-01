@@ -133,6 +133,60 @@
                         </div>
                     </ng-container>
 
+                    <ng-container
+                        *ngIf="contact.users && contact.users.length > 0"
+                    >
+                        <div class="flex sm:items-center">
+                            <mat-icon
+                                [svgIcon]="'heroicons_outline:user'"
+                            ></mat-icon>
+                            <div class="ml-6 leading-6">
+                                <ng-container
+                                    *ngFor="
+                                        let user of contact.users;
+                                        let i = index;
+                                        trackBy: trackByFn
+                                    "
+                                >
+                                    <div class="d-inline-block">
+                                        {{
+                                            contact.users[i].id +
+                                                " - " +
+                                                contact.users[i].name
+                                        }}
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="contact.groups && contact.groups.length > 0"
+                    >
+                        <div class="flex sm:items-center">
+                            <mat-icon
+                                [svgIcon]="'heroicons_outline:user-group'"
+                            ></mat-icon>
+                            <div class="ml-6 leading-6">
+                                <ng-container
+                                    *ngFor="
+                                        let user of contact.groups;
+                                        let i = index;
+                                        trackBy: trackByFn
+                                    "
+                                >
+                                    <div class="d-inline-block">
+                                        {{
+                                            contact.groups[i].id +
+                                                " - " +
+                                                contact.groups[i].name
+                                        }}
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </ng-container>
+
                     <!-- Company -->
                     <!-- <ng-container *ngIf="contact.company">
                         <div class="flex sm:items-center">

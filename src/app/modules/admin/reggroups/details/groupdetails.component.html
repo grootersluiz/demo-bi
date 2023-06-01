@@ -133,6 +133,58 @@
                         </div>
                     </ng-container>
 
+                    <ng-container *ngIf="group.users && group.users.length > 0">
+                        <div class="flex sm:items-center">
+                            <mat-icon
+                                [svgIcon]="'heroicons_outline:user-group'"
+                            ></mat-icon>
+                            <div class="ml-6 leading-6">
+                                <ng-container
+                                    *ngFor="
+                                        let user of group.users;
+                                        let i = index;
+                                        trackBy: trackByFn
+                                    "
+                                >
+                                    <div class="d-inline-block">
+                                        {{
+                                            group.users[i].id +
+                                                " - " +
+                                                group.users[i].name
+                                        }}
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="group.dashboards && group.dashboards.length > 0"
+                    >
+                        <div class="flex sm:items-center">
+                            <mat-icon
+                                [svgIcon]="'heroicons_outline:chart-pie'"
+                            ></mat-icon>
+                            <div class="ml-6 leading-6">
+                                <ng-container
+                                    *ngFor="
+                                        let user of group.dashboards;
+                                        let i = index;
+                                        trackBy: trackByFn
+                                    "
+                                >
+                                    <div class="d-inline-block">
+                                        {{
+                                            group.dashboards[i].id +
+                                                " - " +
+                                                group.dashboards[i].name
+                                        }}
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </ng-container>
+
                     <!-- Company -->
                     <!-- <ng-container *ngIf="group.company">
                         <div class="flex sm:items-center">

@@ -309,6 +309,10 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
             },
         });
 
+        /**
+         * Get groups e dashs details
+         */
+
         // Subscribe to the confirmation dialog closed action
         confirmation.afterClosed().subscribe((result) => {
             // If the confirm button pressed...

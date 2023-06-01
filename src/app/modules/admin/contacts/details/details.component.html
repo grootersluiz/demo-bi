@@ -63,7 +63,7 @@
                         </div>
                     </ng-container>
 
-                    <!-- Company -->
+                    <!-- Role -->
                     <ng-container *ngIf="contact.role">
                         <div class="flex sm:items-center">
                             <mat-icon
@@ -71,6 +71,62 @@
                             ></mat-icon>
                             <div class="ml-6 leading-6">
                                 {{ contact.role }}
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="contact.groups && contact.groups.length > 0"
+                    >
+                        <div class="flex sm:items-center">
+                            <mat-icon
+                                [svgIcon]="'heroicons_outline:user-group'"
+                            ></mat-icon>
+                            <div class="ml-6 leading-6">
+                                <ng-container
+                                    *ngFor="
+                                        let group of contact.groups;
+                                        let i = index;
+                                        trackBy: trackByFn
+                                    "
+                                >
+                                    <div class="d-inline-block">
+                                        {{
+                                            contact.groups[i].id +
+                                                " - " +
+                                                contact.groups[i].name
+                                        }}
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <ng-container
+                        *ngIf="
+                            contact.dashboards && contact.dashboards.length > 0
+                        "
+                    >
+                        <div class="flex sm:items-center">
+                            <mat-icon
+                                [svgIcon]="'heroicons_outline:chart-pie'"
+                            ></mat-icon>
+                            <div class="ml-6 leading-6">
+                                <ng-container
+                                    *ngFor="
+                                        let dash of contact.dashboards;
+                                        let i = index;
+                                        trackBy: trackByFn
+                                    "
+                                >
+                                    <div class="d-inline-block">
+                                        {{
+                                            contact.dashboards[i].id +
+                                                " - " +
+                                                contact.dashboards[i].name
+                                        }}
+                                    </div>
+                                </ng-container>
                             </div>
                         </div>
                     </ng-container>
