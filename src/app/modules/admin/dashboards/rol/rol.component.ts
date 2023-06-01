@@ -128,22 +128,6 @@ export class RolComponent implements OnInit, OnDestroy {
                 this.recentTransactionsDataSource2.data =
                     data.recentTransactions2.rows;
 
-                console.log(
-                    'table data',
-                    this.recentTransactionsDataSource.data
-                );
-                console.log(
-                    'Máx ROL',
-                    this.recentTransactionsDataSource.data[0][2]
-                );
-                console.log(
-                    'Mín ROL',
-                    this.recentTransactionsDataSource.data[
-                        this.recentTransactionsDataSource.data.length - 1
-                    ][2]
-                );
-                console.log('indicadores ROL', data.previousStatement);
-
                 this.recentTransactionsDataSource.data.forEach((innerArray) => {
                     if (innerArray[3] === data.previousStatement.LIMITE) {
                         this.maxRolSellerName = innerArray[2];
