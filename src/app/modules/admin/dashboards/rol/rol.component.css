@@ -108,3 +108,9 @@ div.cabecalho-filtro {
     flex-direction: column;
     margin-bottom: 10px; /* Optional: Add some vertical spacing between form fields */
 }
+
+.sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}

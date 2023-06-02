@@ -299,8 +299,12 @@ export class RolComponent implements OnInit, OnDestroy {
 
     handleCompanyFilterSelect(filialId: number) {
         //this.vendedoresStringList = ['Carregando...'];
+        if (this.filiais.value.length > 0) {
+            this.allCompaniesSelected = true;
+        }
         if (this.filiais.value.length == 0) {
             this.filiais.setValue(this._rolService.INITIAL_COMPANIES_IDS);
+            this.allCompaniesSelected = false;
         }
     }
 
@@ -318,6 +322,11 @@ export class RolComponent implements OnInit, OnDestroy {
 
         if (this.vendedores.value.length == 0) {
             this.vendedores.setValue(this._rolService.INITIAL_SELLERS_IDS);
+        }
+        if (this.selectedSellers.value.length > 0) {
+            this.allSellersSelected = true;
+        } else {
+            this.allSellersSelected = false;
         }
     }
 

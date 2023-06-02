@@ -772,7 +772,11 @@
                             "
                             [matColumnDef]="column"
                         >
-                            <th mat-header-cell *matHeaderCellDef>
+                            <th
+                                class="sticky-header"
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
                                 {{ column }}
                             </th>
                             <td mat-cell *matCellDef="let transaction">
@@ -867,7 +871,11 @@
                             "
                             [matColumnDef]="column"
                         >
-                            <th mat-header-cell *matHeaderCellDef>
+                            <th
+                                class="sticky-header"
+                                mat-header-cell
+                                *matHeaderCellDef
+                            >
                                 {{ column }}
                             </th>
                             <td mat-cell *matCellDef="let transaction">
