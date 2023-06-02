@@ -776,28 +776,28 @@
                                 class="sticky-header"
                                 mat-header-cell
                                 *matHeaderCellDef
+                                mat-sort-header
                             >
-                                {{ column }}
+                                {{ rankingRolHeaders[i] }}
                             </th>
                             <td mat-cell *matCellDef="let transaction">
                                 <span class="pr-6 whitespace-nowrap">
                                     <!-- Conditional formatting for BRL currency -->
                                     {{
-                                        (column === "Meta" ||
-                                            column === "ROL") &&
-                                        transaction[i]
-                                            ? transaction[i].toLocaleString(
-                                                  "pt-BR",
-                                                  {
-                                                      style: "currency",
-                                                      currency: "BRL"
-                                                  }
-                                              )
-                                            : column ===
-                                                  "Percentual Atingido" &&
-                                              transaction[i]
-                                            ? transaction[i] + "%"
-                                            : transaction[i]
+                                        (rankingRolHeaders[i] === "Meta" ||
+                                            rankingRolHeaders[i] === "ROL") &&
+                                        transaction[column]
+                                            ? transaction[
+                                                  column
+                                              ].toLocaleString("pt-BR", {
+                                                  style: "currency",
+                                                  currency: "BRL"
+                                              })
+                                            : rankingRolHeaders[i] ===
+                                                  "Percentual" &&
+                                              transaction[column]
+                                            ? transaction[column] + "%"
+                                            : transaction[column]
                                     }}
                                 </span>
                             </td>

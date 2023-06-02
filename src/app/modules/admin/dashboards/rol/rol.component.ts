@@ -4,6 +4,7 @@ import {
     Component,
     OnDestroy,
     OnInit,
+    AfterViewInit,
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
@@ -31,9 +32,8 @@ const moment = _rollupMoment || _moment;
     changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['./rol.component.css'],
 })
-export class RolComponent implements OnInit, OnDestroy {
-    @ViewChild('recentTransactionsTable', { read: MatSort })
-    recentTransactionsTableMatSort: MatSort;
+export class RolComponent implements AfterViewInit, OnInit, OnDestroy {
+    @ViewChild(MatSort) sort: MatSort;
     @ViewChild('pickerToggle') pickerToggle: MatDatepickerToggle<Date>;
     chartVisitors: ApexOptions;
     chartConversions: ApexOptions;
@@ -45,7 +45,7 @@ export class RolComponent implements OnInit, OnDestroy {
     chartAge: ApexOptions;
     chartLanguage: ApexOptions;
     recentTransactionsDataSource: MatTableDataSource<any> =
-        new MatTableDataSource();
+        new MatTableDataSource([]);
     recentTransactionsDataSource2: MatTableDataSource<any> =
         new MatTableDataSource();
     maxRolSellerName: string;
@@ -53,13 +53,15 @@ export class RolComponent implements OnInit, OnDestroy {
     minRolSellerName: string;
     minRolSellerBranch: string;
 
-    recentTransactionsTableColumns: string[] = [
+    recentTransactionsTableColumns: string[] = [];
+
+    rankingRolHeaders: string[] = [
         'Posição',
         'Filial',
         'Vendedor',
         'ROL',
         'Meta',
-        'Percentual Atingido',
+        'Percentual',
     ];
 
     recentTransactionsTableColumns2: string[] = [
@@ -126,9 +128,27 @@ export class RolComponent implements OnInit, OnDestroy {
                 // Store the data
                 this.data = data;
 
-                // Store the table data
-                this.recentTransactionsDataSource.data =
-                    data.recentTransactions.rows;
+                let myData = data.recentTransactions.rows.map((row) => {
+                    return {
+                        rank: row[0],
+                        razaoabrev: row[1],
+                        apelido: row[2],
+                        rol: row[3],
+                        meta: row[4],
+                        percentual: row[5],
+                    };
+                });
+                this.recentTransactionsDataSource.data = myData;
+
+                this.recentTransactionsTableColumns = [
+                    'rank',
+                    'razaoabrev',
+                    'apelido',
+                    'rol',
+                    'meta',
+                    'percentual',
+                ];
+
                 this.recentTransactionsDataSource2.data =
                     data.recentTransactions2.rows;
 
@@ -196,8 +216,7 @@ export class RolComponent implements OnInit, OnDestroy {
      */
     ngAfterViewInit(): void {
         // Make the data source sortable
-        this.recentTransactionsDataSource.sort =
-            this.recentTransactionsTableMatSort;
+        this.recentTransactionsDataSource.sort = this.sort;
     }
 
     /**
