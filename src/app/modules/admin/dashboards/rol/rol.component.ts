@@ -32,7 +32,7 @@ const moment = _rollupMoment || _moment;
     changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['./rol.component.css'],
 })
-export class RolComponent implements AfterViewInit, OnInit, OnDestroy {
+export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild('pickerToggle') pickerToggle: MatDatepickerToggle<Date>;
     chartVisitors: ApexOptions;
