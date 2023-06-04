@@ -272,6 +272,11 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
         this.end.setValue(null);
     }
 
+    testClick(event: MouseEvent): void {
+        event.stopPropagation();
+        console.log('blah blah');
+    }
+
     selectAllCompanies() {
         if (!this.allCompaniesSelected) {
             let newFiliais = this.filiaisObjects.map((item) =>

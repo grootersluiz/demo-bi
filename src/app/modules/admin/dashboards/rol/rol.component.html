@@ -779,7 +779,14 @@
                                 mat-sort-header
                             >
                                 {{ rankingRolHeaders[i] }}
+                                <mat-icon
+                                    aria-hidden="false"
+                                    aria-label="Example home icon"
+                                    fontIcon="home"
+                                    (click)="testClick($event)"
+                                ></mat-icon>
                             </th>
+
                             <td mat-cell *matCellDef="let transaction">
                                 <span class="pr-6 whitespace-nowrap">
                                     <!-- Conditional formatting for BRL currency -->
