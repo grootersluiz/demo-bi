@@ -20,6 +20,8 @@ import {
     MatDatepickerToggle,
     MatDatepickerInputEvent,
 } from '@angular/material/datepicker';
+import { MatDialog } from '@angular/material/dialog';
+import { FilterDialogComponent } from './filterdialog/filterdialog.component';
 import { default as _rollupMoment, Moment } from 'moment';
 import * as _moment from 'moment';
 
@@ -110,7 +112,8 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
     constructor(
         private _rolService: RolService,
         private _router: Router,
-        private _cdr: ChangeDetectorRef
+        private _cdr: ChangeDetectorRef,
+        private _dialog: MatDialog
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -272,9 +275,28 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
         this.end.setValue(null);
     }
 
-    testClick(event: MouseEvent): void {
+    filterDialog(event: MouseEvent, column: string): void {
+        const columnList = new Set(
+            this.recentTransactionsDataSource.data.map((data) => data[column])
+        );
+
+        const listArray = Array.from(columnList).filter(
+            (element) => element !== null && element !== undefined
+        );
+        if (typeof listArray[0] === 'number') {
+            listArray.sort((a, b) => a - b);
+        } else {
+            listArray.sort();
+        }
+
+        this._dialog.open(FilterDialogComponent, {
+            width: '250px',
+            data: {
+                columnName: column,
+                columnData: listArray,
+            },
+        });
         event.stopPropagation();
-        console.log('blah blah');
     }
 
     selectAllCompanies() {

@@ -17,17 +17,19 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import {  MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import { MatInputModule } from '@angular/material/input';
+import { FilterDialogComponent } from './filterdialog/filterdialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 registerLocaleData(localePt);
 
 @NgModule({
-    declarations: [RolComponent],
+    declarations: [RolComponent, FilterDialogComponent],
     imports: [
         RouterModule.forChild(rolRoutes),
         MatButtonModule,
@@ -47,6 +49,7 @@ registerLocaleData(localePt);
         MatMomentDateModule,
         MatSelectModule,
         MatInputModule,
+        MatDialogModule,
     ],
     providers: [
         { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },

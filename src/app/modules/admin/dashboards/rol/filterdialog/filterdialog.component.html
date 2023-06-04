@@ -1,0 +1,23 @@
+<h1 mat-dialog-title>{{ data.columnName }}</h1>
+<div mat-dialog-content>
+    <div *ngFor="let row of data.columnData">
+        <input type="checkbox" />
+        {{
+            (data.columnName === "meta" || data.columnName === "rol") && row
+                ? row.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL"
+                  })
+                : data.columnName === "percentual" && row
+                ? row + "%"
+                : row
+        }}
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-button mat-dialog-close>No</button>
+    <button mat-button mat-dialog-close (click)="testTest()">Teste</button>
+    <button mat-button [mat-dialog-close]="data.columnName" cdkFocusInitial>
+        Ok
+    </button>
+</div>
