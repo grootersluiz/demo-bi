@@ -780,10 +780,17 @@
                             >
                                 {{ rankingRolHeaders[i] }}
                                 <mat-icon
+                                    style="opacity: 0.4"
                                     aria-hidden="false"
                                     aria-label="Filter Icon"
                                     fontIcon="menu"
-                                    (click)="filterDialog($event, column)"
+                                    (click)="
+                                        filterDialog(
+                                            $event,
+                                            column,
+                                            rankingRolHeaders[i]
+                                        )
+                                    "
                                 ></mat-icon>
                             </th>
 

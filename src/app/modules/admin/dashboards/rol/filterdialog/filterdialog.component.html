@@ -1,7 +1,10 @@
-<h1 mat-dialog-title>{{ data.columnName }}</h1>
+<h1 mat-dialog-title>{{ data.headerLabel }}</h1>
 <div mat-dialog-content>
     <div *ngFor="let row of data.columnData">
-        <input type="checkbox" />
+        <input
+            type="checkbox"
+            (change)="onCheckboxChange($event.target.checked, row)"
+        />
         {{
             (data.columnName === "meta" || data.columnName === "rol") && row
                 ? row.toLocaleString("pt-BR", {
@@ -15,9 +18,8 @@
     </div>
 </div>
 <div mat-dialog-actions>
-    <button mat-button mat-dialog-close>No</button>
-    <button mat-button mat-dialog-close (click)="testTest()">Teste</button>
-    <button mat-button [mat-dialog-close]="data.columnName" cdkFocusInitial>
-        Ok
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <button mat-button [mat-dialog-close]="selectedItems" cdkFocusInitial>
+        Aplicar
     </button>
 </div>

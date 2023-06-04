@@ -48,6 +48,7 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
     chartLanguage: ApexOptions;
     recentTransactionsDataSource: MatTableDataSource<any> =
         new MatTableDataSource([]);
+    filteredRnkRolTable: any;
     recentTransactionsDataSource2: MatTableDataSource<any> =
         new MatTableDataSource();
     maxRolSellerName: string;
@@ -142,6 +143,7 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
                     };
                 });
                 this.recentTransactionsDataSource.data = myData;
+                this.filteredRnkRolTable = myData;
 
                 this.recentTransactionsTableColumns = [
                     'rank',
@@ -275,27 +277,44 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
         this.end.setValue(null);
     }
 
-    filterDialog(event: MouseEvent, column: string): void {
+    filterDialog(event: MouseEvent, column: string, headerLabel: string): void {
         const columnList = new Set(
-            this.recentTransactionsDataSource.data.map((data) => data[column])
+            this.filteredRnkRolTable.map((data) => data[column])
         );
 
         const listArray = Array.from(columnList).filter(
             (element) => element !== null && element !== undefined
         );
         if (typeof listArray[0] === 'number') {
-            listArray.sort((a, b) => a - b);
+            listArray.sort((a: number, b: number) => a - b);
         } else {
             listArray.sort();
         }
 
-        this._dialog.open(FilterDialogComponent, {
-            width: '250px',
+        const dialogRef = this._dialog.open(FilterDialogComponent, {
+            width: '350px',
             data: {
                 columnName: column,
+                headerLabel,
                 columnData: listArray,
             },
         });
+
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                const filteredItems = this.filteredRnkRolTable.filter((item) =>
+                    result.includes(item[column])
+                );
+
+                this.recentTransactionsDataSource.data = filteredItems;
+                console.log(this.recentTransactionsDataSource.data);
+            }
+            if (Array.isArray(result) && result.length == 0) {
+                this.recentTransactionsDataSource.data =
+                    this.filteredRnkRolTable;
+            }
+        });
+
         event.stopPropagation();
     }
 
