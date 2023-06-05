@@ -9,6 +9,7 @@ div.cabecalho-filtro {
     );
     filter: drop-shadow(0 0.4rem 0.7rem #00000065);
     border-radius: 15px;
+    height: 200px;
 }
 
 .cabecalho-filtro div.mat-mdc-form-field-flex {
@@ -106,7 +107,7 @@ div.cabecalho-filtro {
 .form-field-container {
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px; /* Optional: Add some vertical spacing between form fields */
+    margin-bottom: 10px; /*Optional: Add some vertical spacing between form fields */
 }
 
 .sticky-header {

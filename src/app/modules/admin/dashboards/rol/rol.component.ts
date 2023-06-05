@@ -158,16 +158,17 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
                     data.recentTransactions2.rows;
 
                 this.recentTransactionsDataSource.data.forEach((innerArray) => {
-                    if (innerArray[3] === data.previousStatement.LIMITE) {
-                        this.maxRolSellerName = innerArray[2];
-                        this.maxRolSellerBranch = innerArray[1];
+                    if (innerArray['rol'] === data.previousStatement.LIMITE) {
+                        this.maxRolSellerName = innerArray['apelido'];
+                        this.maxRolSellerBranch = innerArray['razaoabrev'];
                     }
+                    console.log(innerArray);
                 });
 
                 this.recentTransactionsDataSource.data.forEach((innerArray) => {
-                    if (innerArray[3] === data.previousStatement.SPENT) {
-                        this.minRolSellerName = innerArray[2];
-                        this.minRolSellerBranch = innerArray[1];
+                    if (innerArray['rol'] === data.previousStatement.SPENT) {
+                        this.minRolSellerName = innerArray['apelido'];
+                        this.minRolSellerBranch = innerArray['razaoabrev'];
                     }
                 });
 
