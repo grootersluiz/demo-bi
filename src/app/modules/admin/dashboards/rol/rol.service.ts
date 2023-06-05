@@ -234,6 +234,11 @@ export class RolService {
                     uniqueVisitors:
                         response[this.REPORT_ROL_VS_META].series[META],
                 };
+
+                chartROLxMetas.series.push(50000000);
+                chartROLxMetas.labels.push('PROJEÇÃO');
+                console.log(chartROLxMetas);
+
                 //----------------------------------------------
 
                 //Tratamento Gráfico "Metas Atingidas"

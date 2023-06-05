@@ -241,7 +241,7 @@
             </div>
         </div>
     </div>
-    <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-6 md:p-8">
+    <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-2 md:p-8">
         <!-- Title and action buttons -->
 
         <!-- Rol vs Rol realizada -->
@@ -254,67 +254,9 @@
                 >
                     Meta ROL vs. ROL realizada
                 </div>
-                <!-- <div class="ml-2">
-                    <button
-                        class="h-6 min-h-6 px-2 rounded-full bg-hover"
-                        mat-button
-                        [matMenuTriggerFor]="conversionMenu"
-                    >
-                        <span class="font-medium text-sm text-secondary"
-                            >30 dias</span
-                        >
-                    </button>
-                    <mat-menu #conversionMenu="matMenu">
-                        <button mat-menu-item>30 dias</button>
-                        <button mat-menu-item>3 meses</button>
-                        <button mat-menu-item>9 meses</button>
-                    </mat-menu>
-                </div> -->
-            </div>
-            <div class="flex items-start mt-6 mx-6">
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12">
-                    <!-- <div class="flex flex-col">
-                        <div class="flex items-center">
-                            <div class="font-medium text-secondary leading-5">
-                                Overall Score
-                            </div>
-                            <mat-icon
-                                class="ml-1.5 icon-size-4 text-hint"
-                                [svgIcon]="'heroicons_solid:information-circle'"
-                                [matTooltip]="
-                                    'Score is calculated by using the historical ratio between Page Views and Visitors. Best score is 1000, worst score is 0.'
-                                "
-                            ></mat-icon>
-                        </div>
-                        <div class="flex items-start mt-2">
-                            <div
-                                class="text-4xl font-bold tracking-tight leading-none"
-                            >
-                                {{ data.visitorsVsPageViews.overallScore }}
-                            </div>
-                        </div>
-                    </div> -->
-                    <!-- <div class="flex flex-col">
-                        <div class="flex items-center">
-                            <div class="font-medium text-secondary leading-5">
-                                ROL realizada
-                            </div>
-                        </div>
-                        <div class="flex items-start mt-2">
-                            <div
-                                class="text-4xl font-bold tracking-tight leading-none"
-                            >
-                                {{
-                                    data.visitorsVsPageViews.averageRatio
-                                        | number : "1.0-0"
-                                }}%
-                            </div>
-                        </div>
-                    </div> -->
-                </div>
             </div>
 
-            <div class="flex flex-col flex-auto h-80 mt-3">
+            <div class="flex flex-col flex-auto mt-3">
                 <apx-chart
                     class="flex-auto w-full h-full"
                     [chart]="chartVisitorsVsPageViews.chart"
@@ -330,6 +272,65 @@
                 ></apx-chart>
             </div>
         </div>
+        <!-- Indicadores ROL -->
+        <div
+            class="relative flex flex-col flex-auto p-6 pr-3 pb-3 ml-6 bg-card rounded-2xl shadow overflow-hidden"
+        >
+            <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
+                <mat-icon
+                    class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
+                    [svgIcon]="'heroicons_outline:check-circle'"
+                ></mat-icon>
+            </div>
+            <div class="flex items-center">
+                <div class="flex flex-col">
+                    <div
+                        class="text-lg font-medium tracking-tight leading-6 truncate"
+                    >
+                        Indicadores ROL
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col flex-wrap mt-4 -mx-6">
+                <div class="flex flex-col mx-6 my-3">
+                    <div
+                        class="text-sm font-medium leading-none text-secondary"
+                    >
+                        MÁX
+                    </div>
+                    <div class="mt-2 font-medium text-3xl leading-none tooltip">
+                        {{ data.previousStatement.LIMITE | currency : "BRL" }}
+                        <span class="tooltiptext">{{
+                            maxRolSellerName + " - " + maxRolSellerBranch
+                        }}</span>
+                    </div>
+                </div>
+                <div class="flex flex-col mx-6 my-3">
+                    <div
+                        class="text-sm font-medium leading-none text-secondary"
+                    >
+                        MÍN
+                    </div>
+                    <div class="mt-2 font-medium text-3xl leading-none tooltip">
+                        {{ data.previousStatement.SPENT | currency : "BRL" }}
+                        <span class="tooltiptext">{{
+                            minRolSellerName + " - " + minRolSellerBranch
+                        }}</span>
+                    </div>
+                </div>
+                <div class="flex flex-col mx-6 my-3">
+                    <div
+                        class="text-sm font-medium leading-none text-secondary"
+                    >
+                        Média
+                    </div>
+                    <div class="mt-2 font-medium text-3xl leading-none">
+                        {{ data.previousStatement.MINIMUM | currency : "BRL" }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div
             class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 w-full mt-6 md:mt-8"
         >
@@ -343,21 +344,6 @@
                     >
                         <p style="font-size: 14px">ROL vs. Meta Vendedores</p>
                     </div>
-                    <!-- <div class="ml-2">
-                        <button
-                            class="h-6 min-h-6 px-2 rounded-full bg-hover"
-                            mat-button
-                            [matMenuTriggerFor]="conversionMenu"
-                        >
-                            <span class="font-medium text-sm text-secondary"
-                                >Período</span
-                            >
-                        </button>
-                        <mat-menu #conversionMenu="matMenu">
-                            <button mat-menu-item>Mensal</button>
-                            <button mat-menu-item>Diário</button>
-                        </mat-menu>
-                    </div> -->
                 </div>
                 <div class="flex flex-col flex-auto mt-6 h-44">
                     <apx-chart
@@ -422,22 +408,6 @@
                     >
                         <p style="font-size: 14px">Metas de Vendas Atingidas</p>
                     </div>
-                    <!-- <div class="ml-2">
-                        <button
-                            class="h-6 min-h-6 px-2 rounded-full bg-hover"
-                            mat-button
-                            [matMenuTriggerFor]="conversionMenu"
-                        >
-                            <span class="font-medium text-sm text-secondary"
-                                >30 days</span
-                            >
-                        </button>
-                        <mat-menu #conversionMenu="matMenu">
-                            <button mat-menu-item>30 days</button>
-                            <button mat-menu-item>3 months</button>
-                            <button mat-menu-item>9 months</button>
-                        </mat-menu>
-                    </div> -->
                 </div>
                 <div class="flex flex-col flex-auto mt-6 h-44">
                     <apx-chart
@@ -480,15 +450,70 @@
                                 >
                                     {{ dataset }}
                                 </div>
-                                <!-- <div class="text-right text-secondary">
-                                    {{ dataset }}%
-                                </div> -->
                             </div>
                         </ng-container>
                     </div>
                 </div>
             </div>
-            <!-- Gráfico - Dias úteis -->
+            <!-- Gráfico - TKM -->
+            <div
+                class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden p-6"
+            >
+                <div class="flex items-start justify-between">
+                    <div
+                        class="text-lg font-medium tracking-tight leading-6 truncate"
+                    >
+                        <p style="font-size: 14px">TKM - Ticket Médio</p>
+                    </div>
+                </div>
+                <div class="flex flex-col flex-auto mt-6 h-44">
+                    <apx-chart
+                        class="flex flex-auto items-center justify-center w-full h-full"
+                        [chart]="chartTKM.chart"
+                        [colors]="chartTKM.colors"
+                        [labels]="chartTKM.labels"
+                        [plotOptions]="chartTKM.plotOptions"
+                        [series]="chartGender.series"
+                        [states]="chartTKM.states"
+                        [tooltip]="chartTKM.tooltip"
+                    ></apx-chart>
+                </div>
+                <div class="mt-8">
+                    <div class="-my-3 divide-y">
+                        <ng-container
+                            *ngFor="
+                                let dataset of data.gender.series;
+                                let i = index
+                            "
+                        >
+                            <div class="grid grid-cols-2 py-2">
+                                <div class="flex items-center">
+                                    <div
+                                        class="flex-0 w-2 h-2 rounded-full"
+                                        [style.backgroundColor]="
+                                            chartTKM.colors[i]
+                                        "
+                                    ></div>
+                                    <div
+                                        class="ml-3 truncate"
+                                        style="font-size: 12px"
+                                    >
+                                        {{ chartTKM.labels[i] }}
+                                    </div>
+                                </div>
+                                <div
+                                    class="font-medium text-right"
+                                    style="font-size: 12px"
+                                >
+                                    {{ dataset }}
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dias úteis -->
             <div
                 class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden p-6"
             >
@@ -502,29 +527,6 @@
                     </div>
                 </div>
 
-                <!-- <div class="flex items-start justify-between">
-                    <div
-                        class="text-lg font-medium tracking-tight leading-6 truncate"
-                    >
-                        Dias úteis
-                    </div>
-                     <div class="ml-2">
-                        <button
-                            class="h-6 min-h-6 px-2 rounded-full bg-hover"
-                            mat-button
-                            [matMenuTriggerFor]="conversionMenu"
-                        >
-                            <span class="font-medium text-sm text-secondary"
-                                >30 days</span
-                            >
-                        </button>
-                        <mat-menu #conversionMenu="matMenu">
-                            <button mat-menu-item>30 days</button>
-                            <button mat-menu-item>3 months</button>
-                            <button mat-menu-item>9 months</button>
-                        </mat-menu>
-                    </div>
-                </div> -->
                 <div class="flex flex-col flex-auto mt-6 h-44">
                     <ng-container
                         *ngFor="let dataset of data.age.series; let i = index"
@@ -541,199 +543,8 @@
                                 class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
                                 [svgIcon]="'heroicons_outline:check-circle'"
                             ></mat-icon>
-                            <!-- <div class="mt-1 text-sm font-medium text-center">
-                                Dias Úteis
-                            </div> -->
                         </div>
                     </ng-container>
-                    <!-- <apx-chart
-                        class="flex flex-auto items-center justify-center w-full h-full"
-                        [chart]="chartAge.chart"
-                        [colors]="chartAge.colors"
-                        [labels]="chartAge.labels"
-                        [plotOptions]="chartAge.plotOptions"
-                        [series]="chartAge.series"
-                        [states]="chartAge.states"
-                        [tooltip]="chartAge.tooltip"
-                    ></apx-chart> -->
-                </div>
-
-                <!-- <div>
-                    <div>
-                        <ng-container
-                            *ngFor="
-                                let dataset of data.age.series;
-                                let i = index
-                            "
-                        >
-                            <div class="grid grid-cols-2 py-2">
-                                <div class="flex items-center">
-                                    <div
-                                        class="flex-0 w-2 h-2 rounded-full"
-                                        [style.backgroundColor]="
-                                            chartAge.colors[i]
-                                        "
-                                    ></div>
-                                    <div class="ml-3 truncate">Dias Úteis</div>
-                                </div>
-                                <div class="font-medium text-right">
-                                    {{ dataset }}
-                                </div>
-                                 <div class="text-right text-secondary">
-                                    {{ dataset }}%
-                                </div> 
-                            </div>
-                            <div
-                                class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5"
-                            >
-                                <div
-                                    class="text-5xl font-semibold leading-none tracking-tight"
-                                >
-                                    {{ dataset }}
-                                </div>
-                                <div
-                                    class="mt-1 text-sm font-medium text-center"
-                                >
-                                    Dias Úteis
-                                </div>
-                            </div>
-                        </ng-container>
-                    </div>
-                </div> -->
-            </div>
-            <!-- Indicadores ROL -->
-            <div
-                class="relative flex flex-col flex-auto p-6 pr-3 pb-3 bg-card rounded-2xl shadow overflow-hidden"
-            >
-                <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
-                    <mat-icon
-                        class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
-                        [svgIcon]="'heroicons_outline:check-circle'"
-                    ></mat-icon>
-                </div>
-                <div class="flex items-center">
-                    <div class="flex flex-col">
-                        <div
-                            class="text-lg font-medium tracking-tight leading-6 truncate"
-                        >
-                            Indicadores ROL
-                        </div>
-                        <!-- <div class="text-green-600 font-medium text-sm">
-                            Paid on {{ data.previousStatement.date }}
-                        </div> -->
-                    </div>
-                    <!-- <div class="ml-auto -mt-2">
-                        <button
-                            mat-icon-button
-                            [matMenuTriggerFor]="previousStatementMenu"
-                        >
-                            <mat-icon
-                                class="icon-size-5"
-                                [svgIcon]="'heroicons_solid:dots-vertical'"
-                            ></mat-icon>
-                        </button>
-                        <mat-menu #previousStatementMenu="matMenu">
-                            <button mat-menu-item>
-                                <span class="flex items-center">
-                                    <mat-icon
-                                        class="icon-size-5 mr-3"
-                                        [svgIcon]="
-                                            'heroicons_solid:credit-card'
-                                        "
-                                    ></mat-icon>
-                                    <span>View statement</span>
-                                </span>
-                            </button>
-                            <button mat-menu-item>
-                                <span class="flex items-center">
-                                    <mat-icon
-                                        class="icon-size-5 mr-3"
-                                        [svgIcon]="'heroicons_solid:cash'"
-                                    ></mat-icon>
-                                    <span>Spending breakdown</span>
-                                </span>
-                            </button>
-                            <button mat-menu-item>
-                                <span class="flex items-center">
-                                    <mat-icon
-                                        class="icon-size-5 mr-3"
-                                        [svgIcon]="
-                                            'heroicons_solid:receipt-tax'
-                                        "
-                                    ></mat-icon>
-                                    <span>Tax breakdown</span>
-                                </span>
-                            </button>
-                            <mat-divider class="my-2"></mat-divider>
-                            <button mat-menu-item>
-                                <span class="flex items-center">
-                                    <mat-icon
-                                        class="icon-size-5 mr-3"
-                                        [svgIcon]="'heroicons_solid:printer'"
-                                    ></mat-icon>
-                                    <span>Print statement</span>
-                                </span>
-                            </button>
-                            <button mat-menu-item>
-                                <span class="flex items-center">
-                                    <mat-icon
-                                        class="icon-size-5 mr-3"
-                                        [svgIcon]="'heroicons_solid:mail'"
-                                    ></mat-icon>
-                                    <span>Email statement</span>
-                                </span>
-                            </button>
-                        </mat-menu>
-                    </div> -->
-                </div>
-                <div class="flex flex-row flex-wrap mt-4 -mx-6">
-                    <div class="flex flex-col mx-6 my-3">
-                        <div
-                            class="text-sm font-medium leading-none text-secondary"
-                        >
-                            MÁX
-                        </div>
-                        <div
-                            class="mt-2 font-medium text-3xl leading-none tooltip"
-                        >
-                            {{
-                                data.previousStatement.LIMITE | currency : "BRL"
-                            }}
-                            <span class="tooltiptext">{{
-                                maxRolSellerName + " - " + maxRolSellerBranch
-                            }}</span>
-                        </div>
-                    </div>
-                    <div class="flex flex-col mx-6 my-3">
-                        <div
-                            class="text-sm font-medium leading-none text-secondary"
-                        >
-                            MÍN
-                        </div>
-                        <div
-                            class="mt-2 font-medium text-3xl leading-none tooltip"
-                        >
-                            {{
-                                data.previousStatement.SPENT | currency : "BRL"
-                            }}
-                            <span class="tooltiptext">{{
-                                minRolSellerName + " - " + minRolSellerBranch
-                            }}</span>
-                        </div>
-                    </div>
-                    <div class="flex flex-col mx-6 my-3">
-                        <div
-                            class="text-sm font-medium leading-none text-secondary"
-                        >
-                            Média
-                        </div>
-                        <div class="mt-2 font-medium text-3xl leading-none">
-                            {{
-                                data.previousStatement.MINIMUM
-                                    | currency : "BRL"
-                            }}
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

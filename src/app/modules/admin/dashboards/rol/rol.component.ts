@@ -44,6 +44,7 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
     chartVisitorsVsPageViews: ApexOptions;
     chartNewVsReturning: ApexOptions;
     chartGender: ApexOptions;
+    chartTKM: ApexOptions;
     chartAge: ApexOptions;
     chartLanguage: ApexOptions;
     recentTransactionsDataSource: MatTableDataSource<any> =
@@ -162,7 +163,6 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
                         this.maxRolSellerName = innerArray['apelido'];
                         this.maxRolSellerBranch = innerArray['razaoabrev'];
                     }
-                    console.log(innerArray);
                 });
 
                 this.recentTransactionsDataSource.data.forEach((innerArray) => {
@@ -481,218 +481,6 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
      * @private
      */
     private _prepareChartData(): void {
-        // Visitors
-        // this.chartVisitors = {
-        //     chart: {
-        //         animations: {
-        //             speed: 400,
-        //             animateGradually: {
-        //                 enabled: false,
-        //             },
-        //         },
-        //         fontFamily: 'inherit',
-        //         foreColor: 'inherit',
-        //         width: '100%',
-        //         height: '100%',
-        //         type: 'area',
-        //         toolbar: {
-        //             show: false,
-        //         },
-        //         zoom: {
-        //             enabled: false,
-        //         },
-        //     },
-        //     colors: ['#818CF8'],
-        //     dataLabels: {
-        //         enabled: false,
-        //     },
-        //     fill: {
-        //         colors: ['#312E81'],
-        //     },
-        //     grid: {
-        //         show: true,
-        //         borderColor: '#334155',
-        //         padding: {
-        //             top: 10,
-        //             bottom: -40,
-        //             left: 0,
-        //             right: 0,
-        //         },
-        //         position: 'back',
-        //         xaxis: {
-        //             lines: {
-        //                 show: true,
-        //             },
-        //         },
-        //     },
-        //     series: this.data.visitors.series,
-        //     stroke: {
-        //         width: 2,
-        //     },
-        //     tooltip: {
-        //         followCursor: true,
-        //         theme: 'dark',
-        //         x: {
-        //             format: 'MMM dd, yyyy',
-        //         },
-        //         y: {
-        //             formatter: (value: number): string => `${value}`,
-        //         },
-        //     },
-        //     xaxis: {
-        //         axisBorder: {
-        //             show: false,
-        //         },
-        //         axisTicks: {
-        //             show: false,
-        //         },
-        //         crosshairs: {
-        //             stroke: {
-        //                 color: '#475569',
-        //                 dashArray: 0,
-        //                 width: 2,
-        //             },
-        //         },
-        //         labels: {
-        //             offsetY: -20,
-        //             style: {
-        //                 colors: '#CBD5E1',
-        //             },
-        //         },
-        //         tickAmount: 20,
-        //         tooltip: {
-        //             enabled: false,
-        //         },
-        //         type: 'datetime',
-        //     },
-        //     yaxis: {
-        //         axisTicks: {
-        //             show: false,
-        //         },
-        //         axisBorder: {
-        //             show: false,
-        //         },
-        //         min: (min): number => min - 750,
-        //         max: (max): number => max + 250,
-        //         tickAmount: 5,
-        //         show: false,
-        //     },
-        // };
-
-        // Conversions
-        // this.chartConversions = {
-        //     chart: {
-        //         animations: {
-        //             enabled: false,
-        //         },
-        //         fontFamily: 'inherit',
-        //         foreColor: 'inherit',
-        //         height: '100%',
-        //         type: 'area',
-        //         sparkline: {
-        //             enabled: true,
-        //         },
-        //     },
-        //     colors: ['#38BDF8'],
-        //     fill: {
-        //         colors: ['#38BDF8'],
-        //         opacity: 0.5,
-        //     },
-        //     series: this.data.conversions.series,
-        //     stroke: {
-        //         curve: 'smooth',
-        //     },
-        //     tooltip: {
-        //         followCursor: true,
-        //         theme: 'dark',
-        //     },
-        //     xaxis: {
-        //         type: 'category',
-        //         categories: this.data.conversions.labels,
-        //     },
-        //     yaxis: {
-        //         labels: {
-        //             formatter: (val): string => val.toString(),
-        //         },
-        //     },
-        // };
-
-        // Impressions
-        // this.chartImpressions = {
-        //     chart: {
-        //         animations: {
-        //             enabled: false,
-        //         },
-        //         fontFamily: 'inherit',
-        //         foreColor: 'inherit',
-        //         height: '100%',
-        //         type: 'area',
-        //         sparkline: {
-        //             enabled: true,
-        //         },
-        //     },
-        //     colors: ['#34D399'],
-        //     fill: {
-        //         colors: ['#34D399'],
-        //         opacity: 0.5,
-        //     },
-        //     series: this.data.impressions.series,
-        //     stroke: {
-        //         curve: 'smooth',
-        //     },
-        //     tooltip: {
-        //         followCursor: true,
-        //         theme: 'dark',
-        //     },
-        //     xaxis: {
-        //         type: 'category',
-        //         categories: this.data.impressions.labels,
-        //     },
-        //     yaxis: {
-        //         labels: {
-        //             formatter: (val): string => val.toString(),
-        //         },
-        //     },
-        // };
-
-        // Visits
-        // this.chartVisits = {
-        //     chart: {
-        //         animations: {
-        //             enabled: false,
-        //         },
-        //         fontFamily: 'inherit',
-        //         foreColor: 'inherit',
-        //         height: '100%',
-        //         type: 'area',
-        //         sparkline: {
-        //             enabled: true,
-        //         },
-        //     },
-        //     colors: ['#FB7185'],
-        //     fill: {
-        //         colors: ['#FB7185'],
-        //         opacity: 0.5,
-        //     },
-        //     series: this.data.visits.series,
-        //     stroke: {
-        //         curve: 'smooth',
-        //     },
-        //     tooltip: {
-        //         followCursor: true,
-        //         theme: 'dark',
-        //     },
-        //     xaxis: {
-        //         type: 'category',
-        //         categories: this.data.visits.labels,
-        //     },
-        //     yaxis: {
-        //         labels: {
-        //             formatter: (val): string => val.toString(),
-        //         },
-        //     },
-        // };
-
         // ROL vs ROL Realizada
         this.chartVisitorsVsPageViews = {
             chart: {
@@ -863,7 +651,7 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
                     enabled: true,
                 },
             },
-            colors: ['#FF8C00', '#F0E68C', '#FF4500'],
+            colors: ['#FF8C00', '#F0E68C', '#FF4500', '#94A3B8'],
             labels: this.data.newVsReturning.labels,
             plotOptions: {
                 pie: {
@@ -927,7 +715,7 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
                 fontFamily: 'inherit',
                 foreColor: 'inherit',
-                height: '90%',
+                height: '80%',
                 type: 'donut',
                 sparkline: {
                     enabled: true,
@@ -935,6 +723,76 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             colors: ['#008000', '#32CD32'],
             labels: this.data.gender.labels,
+            plotOptions: {
+                pie: {
+                    customScale: 0.9,
+                    expandOnClick: false,
+                    donut: {
+                        size: '70%',
+                    },
+                },
+            },
+            series: this.data.gender.series,
+            states: {
+                hover: {
+                    filter: {
+                        type: 'none',
+                    },
+                },
+                active: {
+                    filter: {
+                        type: 'none',
+                    },
+                },
+            },
+            tooltip: {
+                enabled: true,
+                fillSeriesColor: false,
+                theme: 'dark',
+                custom: ({
+                    seriesIndex,
+                    w,
+                }): string => `<div class="flex items-center h-8 min-h-8 max-h-8 px-3">
+                                                     <div class="w-3 h-3 rounded-full" style="background-color: ${
+                                                         w.config.colors[
+                                                             seriesIndex
+                                                         ]
+                                                     };"></div>
+                                                     <div class="ml-2 text-md leading-none">${
+                                                         w.config.labels[
+                                                             seriesIndex
+                                                         ]
+                                                     }:</div>
+                                                     <div class="ml-2 text-md font-bold leading-none">${(
+                                                         (w.config.series[
+                                                             seriesIndex
+                                                         ] *
+                                                             100) /
+                                                         w.config.series[0]
+                                                     ).toFixed(2)}%</div>
+                                                 </div>`,
+            },
+        };
+
+        // TKM
+        this.chartTKM = {
+            chart: {
+                animations: {
+                    speed: 400,
+                    animateGradually: {
+                        enabled: false,
+                    },
+                },
+                fontFamily: 'inherit',
+                foreColor: 'inherit',
+                height: '80%',
+                type: 'donut',
+                sparkline: {
+                    enabled: true,
+                },
+            },
+            colors: ['#FF8C00', '#94A3B8'],
+            labels: ['META', 'REAL'],
             plotOptions: {
                 pie: {
                     customScale: 0.9,
