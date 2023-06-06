@@ -237,7 +237,6 @@ export class RolService {
 
                 chartROLxMetas.series.push(50000000);
                 chartROLxMetas.labels.push('PROJEÇÃO');
-                console.log(chartROLxMetas);
 
                 //----------------------------------------------
 
