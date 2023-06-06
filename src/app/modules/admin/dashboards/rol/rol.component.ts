@@ -36,7 +36,6 @@ const moment = _rollupMoment || _moment;
 })
 export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild(MatSort) sort: MatSort;
-    @ViewChild('pickerToggle') pickerToggle: MatDatepickerToggle<Date>;
     chartVisitors: ApexOptions;
     chartConversions: ApexOptions;
     chartImpressions: ApexOptions;
@@ -105,6 +104,7 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
     today = new Date();
 
     isChecked: boolean;
+    isToggleOn: boolean;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -347,9 +347,12 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    handleDatePickerClick(event: Event) {
+    handleDatePickerClick(
+        event: Event,
+        pickerToggle: MatDatepickerToggle<Date>
+    ) {
         // Makes DatePicker open by clicking anywhere in the input
-        this.pickerToggle._open(event);
+        pickerToggle._open(event);
     }
 
     handleCompaniesFilterClick(dtIni, dtFin) {
@@ -645,7 +648,7 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
                 fontFamily: 'inherit',
                 foreColor: 'inherit',
-                height: '100%',
+                height: '70%',
                 type: 'donut',
                 sparkline: {
                     enabled: true,
@@ -715,7 +718,7 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
                 fontFamily: 'inherit',
                 foreColor: 'inherit',
-                height: '80%',
+                height: '50%',
                 type: 'donut',
                 sparkline: {
                     enabled: true,
@@ -785,7 +788,7 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
                 fontFamily: 'inherit',
                 foreColor: 'inherit',
-                height: '80%',
+                height: '50%',
                 type: 'donut',
                 sparkline: {
                     enabled: true,

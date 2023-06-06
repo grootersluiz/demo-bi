@@ -25,6 +25,7 @@ import localePt from '@angular/common/locales/pt';
 import { MatInputModule } from '@angular/material/input';
 import { FilterDialogComponent } from './filterdialog/filterdialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 registerLocaleData(localePt);
 
@@ -50,6 +51,7 @@ registerLocaleData(localePt);
         MatSelectModule,
         MatInputModule,
         MatDialogModule,
+        MatSlideToggleModule,
     ],
     providers: [
         { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
