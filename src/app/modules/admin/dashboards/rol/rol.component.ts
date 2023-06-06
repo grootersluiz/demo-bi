@@ -718,7 +718,7 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
                 fontFamily: 'inherit',
                 foreColor: 'inherit',
-                height: '50%',
+                height: '60%',
                 type: 'donut',
                 sparkline: {
                     enabled: true,
@@ -788,7 +788,7 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
                 fontFamily: 'inherit',
                 foreColor: 'inherit',
-                height: '50%',
+                height: '60%',
                 type: 'donut',
                 sparkline: {
                     enabled: true,
