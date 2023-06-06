@@ -488,7 +488,7 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
         this.chartVisitorsVsPageViews = {
             chart: {
                 animations: {
-                    enabled: false,
+                    enabled: true,
                 },
                 locales: [
                     {
