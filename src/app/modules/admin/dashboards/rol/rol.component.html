@@ -251,7 +251,7 @@
             </div>
         </div>
     </div>
-    <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-2 md:p-4">
+    <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-2 md:p-1">
         <!-- Rol vs Rol realizada -->
         <div
             class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden"
@@ -280,9 +280,74 @@
                 ></apx-chart>
             </div>
         </div>
+
+        <!-- ROL vs Meta -->
+        <div
+            class="flex flex-col w-64 ml-1 bg-card shadow rounded-2xl overflow-hidden p-6"
+        >
+            <div class="flex items-start justify-between">
+                <div
+                    class="text-lg font-medium tracking-tight leading-6 truncate"
+                >
+                    <p style="font-size: 14px">ROL vs. Meta Vendedores</p>
+                </div>
+            </div>
+            <div class="flex flex-col flex-auto mt-6">
+                <apx-chart
+                    class="flex flex-auto items-center justify-center w-full h-full"
+                    [chart]="chartNewVsReturning.chart"
+                    [colors]="chartNewVsReturning.colors"
+                    [labels]="chartNewVsReturning.labels"
+                    [plotOptions]="chartNewVsReturning.plotOptions"
+                    [series]="chartNewVsReturning.series"
+                    [states]="chartNewVsReturning.states"
+                    [tooltip]="chartNewVsReturning.tooltip"
+                ></apx-chart>
+            </div>
+            <div class="mt-8">
+                <div class="-my-3 divide-y">
+                    <ng-container
+                        *ngFor="
+                            let dataset of data.newVsReturning.series;
+                            let i = index
+                        "
+                    >
+                        <div class="grid grid-cols-2 py-2">
+                            <div class="flex items-center">
+                                <div
+                                    class="flex-0 w-2 h-2 rounded-full"
+                                    [style.backgroundColor]="
+                                        chartNewVsReturning.colors[i]
+                                    "
+                                ></div>
+                                <div
+                                    class="ml-3 truncate"
+                                    style="font-size: 12px"
+                                >
+                                    {{ data.newVsReturning.labels[i] }}
+                                </div>
+                            </div>
+                            <div
+                                class="font-medium text-right"
+                                style="font-size: 10px; text-align: start"
+                            >
+                                {{
+                                    dataset
+                                        ? dataset.toLocaleString("pt-BR", {
+                                              style: "currency",
+                                              currency: "BRL"
+                                          })
+                                        : dataset
+                                }}
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
         <!-- Indicadores ROL -->
         <div
-            class="relative flex flex-col w-64 p-6 pr-3 pb-3 ml-6 bg-card rounded-2xl shadow overflow-hidden"
+            class="relative flex flex-col w-64 p-6 pr-3 pb-3 ml-1 bg-card rounded-2xl shadow overflow-hidden"
         >
             <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
                 <mat-icon
@@ -339,85 +404,19 @@
             </div>
         </div>
 
-        <div
-            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 w-full mt-6 md:mt-8"
-        >
-            <!-- ROL vs Meta -->
+        <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-1 md:p-1">
+            <!-- Gráfico - Metas atingidas -->
             <div
-                class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden p-6"
+                class="flex flex-col w-44 bg-card shadow rounded-2xl overflow-hidden p-3"
             >
                 <div class="flex items-start justify-between">
                     <div
                         class="text-lg font-medium tracking-tight leading-6 truncate"
                     >
-                        <p style="font-size: 14px">ROL vs. Meta Vendedores</p>
+                        <p style="font-size: 12px">Metas de Vendas Atingidas</p>
                     </div>
                 </div>
                 <div class="flex flex-col flex-auto mt-6">
-                    <apx-chart
-                        class="flex flex-auto items-center justify-center w-full h-full"
-                        [chart]="chartNewVsReturning.chart"
-                        [colors]="chartNewVsReturning.colors"
-                        [labels]="chartNewVsReturning.labels"
-                        [plotOptions]="chartNewVsReturning.plotOptions"
-                        [series]="chartNewVsReturning.series"
-                        [states]="chartNewVsReturning.states"
-                        [tooltip]="chartNewVsReturning.tooltip"
-                    ></apx-chart>
-                </div>
-                <div class="mt-8">
-                    <div class="-my-3 divide-y">
-                        <ng-container
-                            *ngFor="
-                                let dataset of data.newVsReturning.series;
-                                let i = index
-                            "
-                        >
-                            <div class="grid grid-cols-2 py-2">
-                                <div class="flex items-center">
-                                    <div
-                                        class="flex-0 w-2 h-2 rounded-full"
-                                        [style.backgroundColor]="
-                                            chartNewVsReturning.colors[i]
-                                        "
-                                    ></div>
-                                    <div
-                                        class="ml-3 truncate"
-                                        style="font-size: 12px"
-                                    >
-                                        {{ data.newVsReturning.labels[i] }}
-                                    </div>
-                                </div>
-                                <div
-                                    class="font-medium text-right"
-                                    style="font-size: 10px; text-align: start"
-                                >
-                                    {{
-                                        dataset
-                                            ? dataset.toLocaleString("pt-BR", {
-                                                  style: "currency",
-                                                  currency: "BRL"
-                                              })
-                                            : dataset
-                                    }}
-                                </div>
-                            </div>
-                        </ng-container>
-                    </div>
-                </div>
-            </div>
-            <!-- Gráfico - Metas atingidas -->
-            <div
-                class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden p-6"
-            >
-                <div class="flex items-start justify-between">
-                    <div
-                        class="text-lg font-medium tracking-tight leading-6 truncate"
-                    >
-                        <p style="font-size: 14px">Metas de Vendas Atingidas</p>
-                    </div>
-                </div>
-                <div class="flex flex-col flex-auto mt-6 h-44">
                     <apx-chart
                         class="flex flex-auto items-center justify-center w-full h-full"
                         [chart]="chartGender.chart"
@@ -465,16 +464,16 @@
             </div>
             <!-- Gráfico - TKM -->
             <div
-                class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden p-6"
+                class="flex flex-col w-44 bg-card shadow rounded-2xl overflow-hidden p-3 ml-1"
             >
                 <div class="flex items-start justify-between">
                     <div
                         class="text-lg font-medium tracking-tight leading-6 truncate"
                     >
-                        <p style="font-size: 14px">TKM - Ticket Médio</p>
+                        <p style="font-size: 12px">TKM - Ticket Médio</p>
                     </div>
                 </div>
-                <div class="flex flex-col flex-auto mt-6 h-44">
+                <div class="flex flex-col flex-auto mt-6">
                     <apx-chart
                         class="flex flex-auto items-center justify-center w-full h-full"
                         [chart]="chartTKM.chart"
@@ -523,19 +522,20 @@
 
             <!-- Dias úteis -->
             <div
-                class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden p-6"
+                class="flex flex-col w-32 bg-card shadow rounded-2xl overflow-hidden p-3 ml-1"
             >
                 <div
                     class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5"
                 >
                     <div
                         class="text-3xl font-semibold leading-none tracking-tight"
+                        style="text-align: center"
                     >
                         Dias Úteis
                     </div>
                 </div>
 
-                <div class="flex flex-col flex-auto mt-6 h-44">
+                <div class="flex flex-col flex-auto mt-6">
                     <ng-container
                         *ngFor="let dataset of data.age.series; let i = index"
                     >
@@ -543,7 +543,7 @@
                             class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5"
                         >
                             <div
-                                class="text-5xl font-semibold leading-none tracking-tight"
+                                class="text-3xl font-semibold leading-none tracking-tight"
                             >
                                 {{ dataset ? dataset.toFixed(2) : 0 }}
                             </div>
@@ -555,13 +555,52 @@
                     </ng-container>
                 </div>
             </div>
+            <!--CC x Metas-->
+
+            <div
+                class="sm:col-span-2 md:col-span-4 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden ml-1"
+            >
+                <div
+                    class="flex flex-col sm:flex-row items-start justify-between"
+                >
+                    <div
+                        class="text-lg font-medium tracking-tight leading-6 truncate"
+                    >
+                        CC x Metas
+                    </div>
+                </div>
+                <div
+                    class="grid grid-cols-1 lg:grid-cols-1 grid-flow-row gap-6 w-full mt-8 sm:mt-4"
+                >
+                    <div class="flex flex-col flex-auto">
+                        <div class="flex flex-col flex-auto">
+                            <apx-chart
+                                class="flex-auto w-full"
+                                [chart]="chartGithubIssues.chart"
+                                [colors]="chartGithubIssues.colors"
+                                [dataLabels]="chartGithubIssues.dataLabels"
+                                [grid]="chartGithubIssues.grid"
+                                [labels]="chartGithubIssues.labels"
+                                [legend]="chartGithubIssues.legend"
+                                [plotOptions]="chartGithubIssues.plotOptions"
+                                [series]="chartGithubIssues.series['this-year']"
+                                [states]="chartGithubIssues.states"
+                                [stroke]="chartGithubIssues.stroke"
+                                [tooltip]="chartGithubIssues.tooltip"
+                                [xaxis]="chartGithubIssues.xaxis"
+                                [yaxis]="chartGithubIssues.yaxis"
+                            ></apx-chart>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="grid grid-cols-2 xl:grid-cols-2 gap-8 w-full mt-8">
+        <div class="grid grid-cols-2 xl:grid-cols-2 gap-1 w-full h-80 mt-1">
             <!-- Ranking - ROL -->
             <div
                 class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden"
             >
-                <div class="p-6">
+                <div class="p-3">
                     <div
                         class="mr-4 text-lg font-medium tracking-tight leading-6 truncate"
                     >
@@ -674,7 +713,7 @@
             <div
                 class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden"
             >
-                <div class="p-6">
+                <div class="p-3">
                     <div
                         class="mr-4 text-lg font-medium tracking-tight leading-6 truncate"
                     >
@@ -796,185 +835,6 @@
                             *matFooterRowDef="['recentOrdersTableFooter']"
                         ></tr>
                     </table>
-                </div>
-            </div>
-        </div>
-
-        <div class="grid grid-cols-2 xl:grid-cols-2 gap-8 w-full mt-8">
-            <!--CC x Metas-->
-
-            <div
-                class="sm:col-span-2 md:col-span-4 flex flex-col flex-auto p-6 bg-card shadow rounded-2xl overflow-hidden"
-            >
-                <div
-                    class="flex flex-col sm:flex-row items-start justify-between"
-                >
-                    <div
-                        class="text-lg font-medium tracking-tight leading-6 truncate"
-                    >
-                        CC x Metas
-                    </div>
-                    <!-- <div class="mt-3 sm:mt-0 sm:ml-2">
-                        <mat-button-toggle-group
-                            value="this-week"
-                            #githubIssuesWeekSelector="matButtonToggleGroup"
-                        >
-                            <mat-button-toggle value="last-week"
-                                >Ano Anterior</mat-button-toggle
-                            >
-                            <mat-button-toggle value="this-week"
-                                >Ano Atual</mat-button-toggle
-                            >
-                        </mat-button-toggle-group>
-                    </div> -->
-                </div>
-                <div
-                    class="grid grid-cols-1 lg:grid-cols-1 grid-flow-row gap-6 w-full mt-8 sm:mt-4"
-                >
-                    <!-- CC x Meta -->
-                    <div class="flex flex-col flex-auto">
-                        <!-- <div class="font-medium text-secondary">
-                            New vs. Closed
-                        </div> -->
-                        <div class="flex flex-col flex-auto">
-                            <apx-chart
-                                class="flex-auto w-full h-80"
-                                [chart]="chartGithubIssues.chart"
-                                [colors]="chartGithubIssues.colors"
-                                [dataLabels]="chartGithubIssues.dataLabels"
-                                [grid]="chartGithubIssues.grid"
-                                [labels]="chartGithubIssues.labels"
-                                [legend]="chartGithubIssues.legend"
-                                [plotOptions]="chartGithubIssues.plotOptions"
-                                [series]="chartGithubIssues.series['this-year']"
-                                [states]="chartGithubIssues.states"
-                                [stroke]="chartGithubIssues.stroke"
-                                [tooltip]="chartGithubIssues.tooltip"
-                                [xaxis]="chartGithubIssues.xaxis"
-                                [yaxis]="chartGithubIssues.yaxis"
-                            ></apx-chart>
-                        </div>
-                    </div>
-                    <!-- Overview -->
-                    <!-- <div class="flex flex-col">
-                        <div class="font-medium text-secondary">Overview</div>
-                        <div class="flex-auto grid grid-cols-4 gap-4 mt-6">
-                             New issues
-                            <div
-                                class="col-span-2 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-indigo-50 text-indigo-800 dark:bg-white dark:bg-opacity-5 dark:text-indigo-400"
-                            >
-                                <div
-                                    class="text-5xl sm:text-7xl font-semibold leading-none tracking-tight"
-                                >
-                                    {{
-                                        data.githubIssues.overview[
-                                            githubIssuesWeekSelector.value
-                                        ]["new-issues"]
-                                    }}
-                                </div>
-                                <div
-                                    class="mt-1 text-sm sm:text-lg font-medium"
-                                >
-                                    New Issues
-                                </div>
-                            </div>
-                             Closed
-                            <div
-                                class="col-span-2 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-green-50 text-green-800 dark:bg-white dark:bg-opacity-5 dark:text-green-500"
-                            >
-                                <div
-                                    class="text-5xl sm:text-7xl font-semibold leading-none tracking-tight"
-                                >
-                                    {{
-                                        data.githubIssues.overview[
-                                            githubIssuesWeekSelector.value
-                                        ]["closed-issues"]
-                                    }}
-                                </div>
-                                <div
-                                    class="mt-1 text-sm sm:text-lg font-medium"
-                                >
-                                    Closed
-                                </div>
-                            </div>
-                             Fixed
-                            <div
-                                class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5"
-                            >
-                                <div
-                                    class="text-5xl font-semibold leading-none tracking-tight"
-                                >
-                                    {{
-                                        data.githubIssues.overview[
-                                            githubIssuesWeekSelector.value
-                                        ]["fixed"]
-                                    }}
-                                </div>
-                                <div
-                                    class="mt-1 text-sm font-medium text-center"
-                                >
-                                    Fixed
-                                </div>
-                            </div>
-                             Won't fix 
-                            <div
-                                class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5"
-                            >
-                                <div
-                                    class="text-5xl font-semibold leading-none tracking-tight"
-                                >
-                                    {{
-                                        data.githubIssues.overview[
-                                            githubIssuesWeekSelector.value
-                                        ]["wont-fix"]
-                                    }}
-                                </div>
-                                <div
-                                    class="mt-1 text-sm font-medium text-center"
-                                >
-                                    Won't Fix
-                                </div>
-                            </div>
-                             Re-opened 
-                            <div
-                                class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5"
-                            >
-                                <div
-                                    class="text-5xl font-semibold leading-none tracking-tight"
-                                >
-                                    {{
-                                        data.githubIssues.overview[
-                                            githubIssuesWeekSelector.value
-                                        ]["re-opened"]
-                                    }}
-                                </div>
-                                <div
-                                    class="mt-1 text-sm font-medium text-center"
-                                >
-                                    Re-opened
-                                </div>
-                            </div>
-                             Needs triage
-                            <div
-                                class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5"
-                            >
-                                <div
-                                    class="text-5xl font-semibold leading-none tracking-tight"
-                                >
-                                    {{
-                                        data.githubIssues.overview[
-                                            githubIssuesWeekSelector.value
-                                        ]["needs-triage"]
-                                    }}
-                                </div>
-                                <div
-                                    class="mt-1 text-sm font-medium text-center"
-                                >
-                                    Needs Triage
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
                 </div>
             </div>
         </div>
