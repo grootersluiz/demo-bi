@@ -22,6 +22,7 @@ import {
 } from '@angular/material/datepicker';
 import { MatDialog } from '@angular/material/dialog';
 import { FilterDialogComponent } from './filterdialog/filterdialog.component';
+import { GoalsDialogComponent } from './goalsdialog/goalsdialog.component';
 import { default as _rollupMoment, Moment } from 'moment';
 import * as _moment from 'moment';
 
@@ -76,6 +77,8 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
 
     chartGithubIssues: ApexOptions = {};
     data: any;
+
+    selectedRow: number;
 
     // Filtros principais do dashboard
 
@@ -238,6 +241,11 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
+    getRowId(index: number) {
+        console.log('Clicked row index: ' + index);
+        this.selectedRow = index;
+    }
+
     setInitialMY(evMY: Moment, datepicker: MatDatepicker<Moment>) {
         this.dataInicio = { year: evMY.year(), month: evMY.month(), date: 1 };
         this.start.setValue(
@@ -314,6 +322,34 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.recentTransactionsDataSource.data =
                     this.filteredRnkRolTable;
             }
+        });
+
+        event.stopPropagation();
+    }
+
+    getMonthDifference(startDate, endDate): number {
+        const startYear = startDate.year;
+        const startMonth = startDate.month;
+        const endYear = endDate.year;
+        const endMonth = endDate.month;
+
+        return (endYear - startYear) * 12 + (endMonth - startMonth) + 1;
+    }
+
+    chartGoalsDialog(event: MouseEvent, sellerData, monthsDiff: number): void {
+        const percentGoals = (sellerData[3] * 100) / monthsDiff;
+
+        const dialogRef = this._dialog.open(GoalsDialogComponent, {
+            width: '350px',
+            data: {
+                sellerData,
+                monthsDiff,
+                percentGoals,
+            },
+        });
+
+        dialogRef.afterClosed().subscribe((result) => {
+            return result;
         });
 
         event.stopPropagation();

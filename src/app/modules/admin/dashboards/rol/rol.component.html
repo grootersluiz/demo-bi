@@ -753,6 +753,16 @@
                                 style="font-size: 12px"
                                 mat-cell
                                 *matCellDef="let transaction"
+                                (click)="
+                                    chartGoalsDialog(
+                                        $event,
+                                        transaction,
+                                        getMonthDifference(
+                                            dataInicio,
+                                            dataFinal
+                                        )
+                                    )
+                                "
                             >
                                 <span class="pr-6 whitespace-nowrap">
                                     {{ transaction[i] }}
