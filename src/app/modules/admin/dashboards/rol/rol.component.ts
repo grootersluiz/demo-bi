@@ -340,7 +340,7 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
         const percentGoals = (sellerData[3] * 100) / monthsDiff;
 
         const dialogRef = this._dialog.open(GoalsDialogComponent, {
-            width: '350px',
+            width: '250px',
             data: {
                 sellerData,
                 monthsDiff,
