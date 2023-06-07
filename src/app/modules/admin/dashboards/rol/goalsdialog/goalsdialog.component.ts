@@ -32,35 +32,39 @@ export class GoalsDialogComponent implements AfterViewInit {
                 height: 200,
                 type: 'radialBar',
             },
-
             series: [this.data.percentGoals],
-            colors: ['#FF8C00'],
-
+            colors: ['#94A3B8'],
             plotOptions: {
                 radialBar: {
-                    hollow: {
-                        margin: 15,
-                        size: '70%',
+                    startAngle: -90,
+                    endAngle: 90,
+                    track: {
+                        background: '#333',
+                        startAngle: -90,
+                        endAngle: 90,
                     },
-
                     dataLabels: {
                         name: {
-                            offsetY: -10,
-                            show: true,
-                            color: '#888',
-                            fontSize: '10px',
+                            show: false,
                         },
                         value: {
-                            color: '#111',
-                            fontSize: '25px',
+                            fontSize: '30px',
                             show: true,
                         },
                     },
                 },
             },
-
+            fill: {
+                type: 'gradient',
+                gradient: {
+                    shade: 'dark',
+                    type: 'horizontal',
+                    gradientToColors: ['#FF8C00'],
+                    stops: [0, 100],
+                },
+            },
             stroke: {
-                lineCap: 'round',
+                lineCap: 'butt',
             },
             labels: ['Aproveitamento'],
         };
