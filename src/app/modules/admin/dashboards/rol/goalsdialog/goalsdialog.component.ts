@@ -51,7 +51,7 @@ export class GoalsDialogComponent implements AfterViewInit {
                         },
                         value: {
                             fontSize: '20px',
-                            show: true,
+                            show: false,
                         },
                     },
                 },

@@ -1,7 +1,14 @@
-<h1 mat-dialog-title>{{ data.sellerData[2] }} - {{ data.sellerData[0] }}°</h1>
+<h1
+    style="font-size: 15px; text-align: center; font-style: inherit"
+    mat-dialog-title
+>
+    {{ data.sellerData[2] }} - {{ data.sellerData[0] }}°
+</h1>
 <div mat-dialog-content>
     <p>Metas atingidas: {{ data.sellerData[3] }}</p>
     <p>Período (Meses): {{ data.monthsDiff }}</p>
 </div>
 <div #chartContainer></div>
-<div mat-dialog-actions></div>
+<p style="font-size: 20px; text-align: center; transform: translateY(-35px)">
+    {{ roundedPercent }}%
+</p>

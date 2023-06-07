@@ -116,3 +116,11 @@ div.cabecalho-filtro {
     top: 0;
     z-index: 1;
 }
+
+.row-enhance .mat-mdc-cell {
+    cursor: pointer;
+}
+
+.row-enhance:hover .mat-mdc-cell {
+    background-color: lightgray;
+}
