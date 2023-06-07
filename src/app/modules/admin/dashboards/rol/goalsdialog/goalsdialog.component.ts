@@ -26,13 +26,15 @@ export class GoalsDialogComponent implements AfterViewInit {
         @Inject(MAT_DIALOG_DATA) public data: ChartData
     ) {}
 
+    roundedPercent: number = parseFloat(this.data.percentGoals.toFixed(2));
+
     ngAfterViewInit() {
         const goalsChart: ApexOptions = {
             chart: {
                 height: 200,
                 type: 'radialBar',
             },
-            series: [this.data.percentGoals],
+            series: [this.roundedPercent],
             colors: ['#94A3B8'],
             plotOptions: {
                 radialBar: {
@@ -48,7 +50,7 @@ export class GoalsDialogComponent implements AfterViewInit {
                             show: false,
                         },
                         value: {
-                            fontSize: '30px',
+                            fontSize: '20px',
                             show: true,
                         },
                     },
