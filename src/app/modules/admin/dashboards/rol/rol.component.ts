@@ -242,7 +242,6 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
 
     getRowId(index: number) {
-        console.log('Clicked row index: ' + index);
         this.selectedRow = index;
     }
 
@@ -316,7 +315,6 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
                 );
 
                 this.recentTransactionsDataSource.data = filteredItems;
-                console.log(this.recentTransactionsDataSource.data);
             }
             if (Array.isArray(result) && result.length == 0) {
                 this.recentTransactionsDataSource.data =
@@ -466,10 +464,6 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
         );
         this.filteredVendedoresStringList = filteredSellersString;
         this.filteredVendedoresObjects = filteredSellers;
-    }
-
-    onSellersSelectionChange(event) {
-        //console.log(this.vendedores.value);
     }
 
     /**
