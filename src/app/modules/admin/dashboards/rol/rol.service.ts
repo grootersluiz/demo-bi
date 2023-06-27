@@ -235,7 +235,7 @@ export class RolService {
                         response[this.REPORT_ROL_VS_META].series[META],
                 };
 
-                chartROLxMetas.series.push(50000000);
+                chartROLxMetas.series.push(0);
                 chartROLxMetas.labels.push('PROJEÇÃO');
 
                 //----------------------------------------------
