@@ -636,6 +636,9 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
                 y: {
                     formatter: function (value) {
+                        if (!value) {
+                            value = 0;
+                        }
                         return value.toLocaleString('pt-BR', {
                             style: 'currency',
                             currency: 'BRL',
