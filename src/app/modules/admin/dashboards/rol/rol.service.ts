@@ -273,8 +273,6 @@ export class RolService {
                     uniqueVisitors: response[this.REPORT_TKM].series['0'],
                 };
 
-                console.log(chartTKM);
-
                 //---------------------------------------------------
 
                 //Tratamento do Gráfico "Dias Úteis"
