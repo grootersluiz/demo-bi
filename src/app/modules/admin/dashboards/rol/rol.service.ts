@@ -260,7 +260,7 @@ export class RolService {
 
                 //----------------------------------------------
 
-                //Tratamento Gráfico "Metas Atingidas"
+                //Tratamento Gráfico "TKM"
 
                 response[this.REPORT_TKM].series.forEach((element, index) => {
                     if (element == null) {
