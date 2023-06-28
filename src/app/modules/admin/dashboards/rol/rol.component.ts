@@ -828,7 +828,7 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
                 },
             },
             colors: ['#FF8C00', '#94A3B8'],
-            labels: ['META', 'REAL'],
+            labels: this.data.tkm.labels,
             plotOptions: {
                 pie: {
                     customScale: 0.9,
@@ -838,7 +838,7 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
                     },
                 },
             },
-            series: this.data.gender.series,
+            series: this.data.tkm.series,
             states: {
                 hover: {
                     filter: {

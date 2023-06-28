@@ -482,7 +482,7 @@
                     <div class="-my-3 divide-y">
                         <ng-container
                             *ngFor="
-                                let dataset of data.gender.series;
+                                let dataset of data.tkm.series;
                                 let i = index
                             "
                         >
@@ -503,9 +503,16 @@
                                 </div>
                                 <div
                                     class="font-medium text-right"
-                                    style="font-size: 12px"
+                                    style="font-size: 10px"
                                 >
-                                    0
+                                    {{
+                                        dataset
+                                            ? dataset.toLocaleString("pt-BR", {
+                                                  style: "currency",
+                                                  currency: "BRL"
+                                              })
+                                            : dataset
+                                    }}
                                 </div>
                             </div>
                         </ng-container>

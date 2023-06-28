@@ -16,6 +16,7 @@ export class RolService {
     readonly REPORT_ROL_VS_ROL_REALIZADA = '41';
     readonly REPORT_INDICADORES_ROL = '42';
     readonly REPORT_METAS_ATINGIDAS = '81';
+    readonly REPORT_TKM = '261';
     readonly REPORT_DIAS_UTEIS = '82';
     readonly REPORT_RANKING_ROL = '83';
     readonly REPORT_RANKING_METAS = '84';
@@ -133,8 +134,8 @@ export class RolService {
         }&reportId=${this.REPORT_DIAS_UTEIS}&reportId=${
             this.REPORT_RANKING_ROL
         }&reportId=${this.REPORT_RANKING_METAS}&reportId=${
-            this.REPORT_FILTRO_FILIAIS
-        }&dtini=
+            this.REPORT_TKM
+        }&reportId=${this.REPORT_FILTRO_FILIAIS}&dtini=
         ${this.formatDate(dtIni)}
         &codvend=${sellersIds.join(',')}&codemp=${companiesIds.join(',')}&dtfin=
         ${this.formatDate(dtFin)}`;
@@ -235,9 +236,6 @@ export class RolService {
                         response[this.REPORT_ROL_VS_META].series[META],
                 };
 
-                chartROLxMetas.series.push(0);
-                chartROLxMetas.labels.push('PROJEÇÃO');
-
                 //----------------------------------------------
 
                 //Tratamento Gráfico "Metas Atingidas"
@@ -256,6 +254,25 @@ export class RolService {
                     ...response[this.REPORT_METAS_ATINGIDAS],
                     uniqueVisitors:
                         response[this.REPORT_METAS_ATINGIDAS].series['0'],
+                };
+
+                //---------------------------------------------------
+
+                //----------------------------------------------
+
+                //Tratamento Gráfico "Metas Atingidas"
+
+                response[this.REPORT_TKM].series.forEach((element, index) => {
+                    if (element == null) {
+                        response[this.REPORT_TKM].series[index] = 0;
+                    }
+                });
+
+                console.log(response[this.REPORT_TKM]);
+
+                const chartTKM = {
+                    ...response[this.REPORT_TKM],
+                    uniqueVisitors: response[this.REPORT_TKM].series['0'],
                 };
 
                 //---------------------------------------------------
@@ -305,6 +322,7 @@ export class RolService {
                     visitorsVsPageViews: rolVsRolRealizada,
                     previousStatement: indicadoresRol,
                     gender: chartMetasAtingidas,
+                    tkm: chartTKM,
                     age: chartDiasUteis,
                     recentTransactions: tableRankingRol,
                     recentTransactions2: tableRankingMetas,
