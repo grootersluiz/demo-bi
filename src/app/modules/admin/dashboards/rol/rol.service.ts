@@ -268,12 +268,12 @@ export class RolService {
                     }
                 });
 
-                console.log(response[this.REPORT_TKM]);
-
                 const chartTKM = {
                     ...response[this.REPORT_TKM],
                     uniqueVisitors: response[this.REPORT_TKM].series['0'],
                 };
+
+                console.log(chartTKM);
 
                 //---------------------------------------------------
 
