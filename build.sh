@@ -1,23 +1,23 @@
 #!/bin/bash
-#=================================================================#     
-#Arquivo: build.sh                                                #  
-#Autor: Ralfam Portela         Email: ralfam.portela@3db.cloud    #      
-#Contribuição Sebastião Santos Email: sebastiao.santos@3db.cloud  #      
-#Data: 21-10-2022                                                 # 
-#                                                                 # 
-#Esse arquivo é de build de imagens jsp-bi  Front                 #  
+#=================================================================#
+#Arquivo: build.sh                                                #
+#Autor: Ralfam Portela         Email: ralfam.portela@3db.cloud    #
+#Contribuição Sebastião Santos Email: sebastiao.santos@3db.cloud  #
+#Data: 21-10-2022                                                 #
+#                                                                 #
+#Esse arquivo é de build de imagens jsp-bi  Front                 #
 #                                                                 #
 #                                                                 #
-#                                                                 #  
-#=================================================================#     
+#                                                                 #
+#=================================================================#
 
 #Colocar o dados da cloud
-USER="grj7uyekqpbi/ludemeury@vedastech.com.br"
+USER="grj7uyekqpbi/rogeriosantos.ti@jspecas.com.br"
 
-TENANT="grj7uyekqpbi" 
+TENANT="grj7uyekqpbi"
 
 APP="jsp-bi-front"
-VERSION="1.0.24"
+VERSION="1.0.25"
 
 echo "Construindo a imagem ${VERSION}"
 #Faz um build baseado no Dockfile
