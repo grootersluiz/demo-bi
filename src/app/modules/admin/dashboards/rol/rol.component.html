@@ -595,10 +595,10 @@
                 </div>
             </div>
         </div>
-        <div class="grid grid-cols-2 xl:grid-cols-2 gap-1 w-full h-80 pb-1">
+        <div class="flex w-full max-w-screen-xl mx-auto">
             <!-- Ranking - ROL -->
             <div
-                class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden pb-1"
+                class="flex flex-col flex-auto h-80 bg-card shadow rounded-2xl overflow-hidden pb-1"
             >
                 <div class="p-3">
                     <div
@@ -608,7 +608,7 @@
                     </div>
                 </div>
                 <div
-                    class="overflow-x-auto mx-6"
+                    class="overflow-x-auto mx-2"
                     style="overflow-y: scroll; height: 400px"
                 >
                     <table
@@ -656,7 +656,7 @@
                                 mat-cell
                                 *matCellDef="let transaction"
                             >
-                                <span class="pr-6 whitespace-nowrap">
+                                <span class="pr-2 whitespace-nowrap">
                                     <!-- Conditional formatting for BRL currency -->
                                     {{
                                         (rankingRolHeaders[i] === "Meta" ||
@@ -715,7 +715,7 @@
             </div>
             <!-- Ranking - Metas atingidas -->
             <div
-                class="flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden pb-1"
+                class="flex flex-col w-120 h-80 bg-card shadow rounded-2xl overflow-hidden pb-1 ml-1"
             >
                 <div class="p-3">
                     <div
@@ -728,7 +728,7 @@
                     </div> -->
                 </div>
                 <div
-                    class="overflow-x-auto mx-6"
+                    class="overflow-x-auto mx-2"
                     style="overflow-y: scroll; height: 400px"
                 >
                     <table
@@ -770,7 +770,7 @@
                                     )
                                 "
                             >
-                                <span class="pr-6 whitespace-nowrap">
+                                <span class="pr-2 whitespace-nowrap">
                                     {{ transaction[i] }}
                                 </span>
                             </td>
