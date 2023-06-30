@@ -79,6 +79,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
                 if (this.user.role !== 'admin') {
                     myNavigation.default[1] = {} as FuseNavigationItem;
                     myNavigation.default[2] = {} as FuseNavigationItem;
+                    myNavigation.default[3] = {} as FuseNavigationItem;
                 }
             });
 
@@ -95,7 +96,6 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
 
                 let dashsMenuList =
                     myNavigation.default[0].children[0].children;
-
                 dashsMenuList.forEach((dashMenu, index) => {
                     if (!this.dashsIds.includes(parseInt(dashMenu.id))) {
                         dashsMenuList[index] = {};

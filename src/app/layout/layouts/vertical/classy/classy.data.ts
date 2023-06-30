@@ -31,6 +31,13 @@ export const navigationData: Navigation = {
                             icon: 'heroicons_outline:chart-bar',
                             link: '/dashboards/vendafilial',
                         },
+                        {
+                            id: '43',
+                            title: 'Links',
+                            type: 'basic',
+                            icon: 'material_outline:add_task',
+                            link: '/dashboards/links',
+                        },
                     ],
                 },
             ],

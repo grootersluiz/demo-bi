@@ -58,6 +58,13 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         icon: 'heroicons_outline:chart-bar',
                         link: '/dashboards/vendafilial',
                     },
+                    {
+                        id: 'dashboards.links',
+                        title: 'Links',
+                        type: 'basic',
+                        icon: 'material-outline:add_task',
+                        link: '/dashboards/links',
+                    },
                 ],
             },
             // {

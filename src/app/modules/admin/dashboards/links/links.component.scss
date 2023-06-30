@@ -1,0 +1,57 @@
+mat-grid-tile {
+    border-radius: 50rem;
+    border-color: black;
+}
+.a {
+    background-color: #484846;
+    border-radius: 200px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.7rem 1.2rem;
+    opacity: 1;
+    transition: 0.4s;
+    box-shadow: 0 15px 10px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+}
+.b {
+    background-color: #ec7010;
+    border-radius: 200px;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.7rem 1.2rem;
+    opacity: 1;
+    transition: 0.4s;
+    box-shadow: 0 15px 10px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+}
+.pa {
+    font-family: Helvetica;
+    font-size: 20px;
+    color: white;
+    text-align: center;
+}
+.pb {
+    font-family: Helvetica;
+    font-size: 20px;
+    color: white;
+    text-align: center;
+}
+
+.a:hover {
+    background-color: #2e2e2e;
+}
+.b:hover {
+    background-color: #ff6f00;
+}
+.linksbody {
+    background-size: cover;
+    align-items: center;
+    padding-top: 10%;
+}
+.grid-layout-custom {
+    width: 20vw;
+}

@@ -3,6 +3,7 @@ import { AuthGuard } from 'app/core/auth/guards/auth.guard';
 import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { DashRolGuard } from 'app/core/auth/guards/dashRol.guard';
 import { DashVendaFilialGuard } from 'app/core/auth/guards/dashVendaFilial.guard';
+import { DashLinksGuard } from 'app/core/auth/guards/dashLinks.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
 import { InitialDataResolver } from 'app/app.resolvers';
 import { AuthRedirectGuard } from 'app/core/auth/guards/auth.redirect.guard';
@@ -208,6 +209,14 @@ export const appRoutes: Route[] = [
                             import(
                                 'app/modules/admin/dashboards/vendafilial/vendafilial.module'
                             ).then((m) => m.VendafilialModule),
+                    },
+                    {
+                        path: 'links',
+                        canActivate: [DashLinksGuard],
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/dashboards/links/links.module'
+                            ).then((m) => m.LinksModule),
                     },
                 ],
             },
