@@ -4,16 +4,16 @@ import {
     Resolve,
     RouterStateSnapshot,
 } from '@angular/router';
-import { LinksService } from 'app/modules/admin/dashboards/links/links.service';
+import { LinksGeralService } from 'app/modules/admin/links/linksGeral/linksGeral.service';
 
 @Injectable({
     providedIn: 'root',
 })
-export class LinksResolver implements Resolve<any> {
+export class LinksGeralResolver implements Resolve<any> {
     /**
      * Constructor
      */
-    constructor(private _linksservice: LinksService) {}
+    constructor(private _linksgeralservice: LinksGeralService) {}
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
@@ -37,7 +37,7 @@ export class SellersResolver implements Resolve<any> {
     /**
      * Constructor
      */
-    constructor(private _linksservice: LinksService) {}
+    constructor(private _linksgeralservice: LinksGeralService) {}
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods

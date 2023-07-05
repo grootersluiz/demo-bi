@@ -58,15 +58,24 @@ export const defaultNavigation: FuseNavigationItem[] = [
                         icon: 'heroicons_outline:chart-bar',
                         link: '/dashboards/vendafilial',
                     },
-                    {
-                        id: 'dashboards.links',
-                        title: 'Links',
-                        type: 'basic',
-                        icon: 'material-outline:add_task',
-                        link: '/dashboards/links',
-                    },
                 ],
             },
+            {
+                id: 'links',
+                title: 'Links',
+                type: 'collapsable',
+                icon: 'heroicons_outline:home',
+                link: '/analiseindicadores/links',
+                children: [
+                    {
+                        id: 'links.linksGeral',
+                        title: 'Links - Geral',
+                        type: 'basic',
+                        icon: 'material-outline:add_task',
+                        link: '/links/linksGeral',
+                    },
+                ],
+            }
             // {
             //     id: 'admin.ecommerce',
             //     title: 'Relatórios',

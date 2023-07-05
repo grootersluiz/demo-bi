@@ -15,7 +15,7 @@ import { take } from 'rxjs';
 @Injectable({
     providedIn: 'root',
 })
-export class DashLinksGuard implements CanActivate {
+export class DashLinksTIGuard implements CanActivate {
     user: User;
     dash: Dash;
     dashList: Dash[];
@@ -41,12 +41,12 @@ export class DashLinksGuard implements CanActivate {
                 dashList.forEach((dash) => {
                     this.dashsIds.push(dash.id);
                 });
-                if (this.dashsIds.includes(43)) {
+                if (this.dashsIds.includes(44)) {
                     this.accessValidator = true;
                 }
             });
 
-        if (!this.dashsIds.includes(43)) {
+        if (!this.dashsIds.includes(44)) {
             // User type is not allowed to access the route
             // Redirect the user to a different route or show an error message
             this.accessValidator = false;

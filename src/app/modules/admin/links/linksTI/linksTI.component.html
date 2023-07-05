@@ -1,0 +1,30 @@
+<body class="linksbody w-90">
+    <div class="flex place-content-around">
+        <mat-grid-list cols="2" rowHeight="5:1" gutterSize="4rem" class="grid-layout-custom2 ml-10 mr-10">
+            <mat-grid-tile class="a w-35 h-14 mt-20 rounded-full border border-solid" (click)="onClickLicenca()">
+                <p class="pa text-ellipsis overflow-hidden">Licenças Embratel</p>
+            </mat-grid-tile>
+            <mat-grid-tile class="a w-35 h-14 mt-20 rounded-full border border-solid" (click)="onClickRepositorio()"
+                ><p class="pa text-ellipsis overflow-hidden">Repositório</p></mat-grid-tile
+            >
+            <br />
+            <br />
+            <br />
+            <mat-grid-tile class="b w-35 h-14 mt-36 rounded-full border border-solid" (click)="onClickGrafana()"
+                ><p class="pb text-ellipsis overflow-hidden">Grafana</p></mat-grid-tile
+            >
+            <mat-grid-tile class="b w-35 h-14 mt-36 rounded-full border border-solid" (click)="onClickZabbix()"
+                ><p class="pb text-ellipsis overflow-hidden">Zabbix</p></mat-grid-tile
+            >
+            <br />
+            <br />
+            <br />
+            <mat-grid-tile class="a w-35 h-14 mt-52 rounded-full border border-solid" (click)="onClickFortclient()"
+                ><p class="pa text-ellipsis overflow-hidden">Fortclient Endpoint</p></mat-grid-tile
+            >
+            <mat-grid-tile class="a w-35 h-14 mt-52 rounded-full border border-solid" (click)="onClickOracle()"
+                ><p class="pa text-ellipsis overflow-hidden">Oracle Cloud</p></mat-grid-tile
+            >
+        </mat-grid-list>
+    </div>
+</body>

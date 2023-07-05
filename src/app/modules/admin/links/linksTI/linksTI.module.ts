@@ -1,20 +1,20 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatChipsModule } from '@angular/material/chips';
-import { LinksComponent } from './links.component';
+import { LinksTIComponent } from './linksTI.component';
 import { RouterModule } from '@angular/router';
-import { linksRoutes } from './links.routing';
+import { linksTIRoutes } from './linksTI.routing';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
-    declarations: [LinksComponent],
+    declarations: [LinksTIComponent],
     imports: [
         MatChipsModule,
         MatGridListModule,
         MatCardModule,
         CommonModule,
-        RouterModule.forChild(linksRoutes),
+        RouterModule.forChild(linksTIRoutes),
     ],
 })
-export class LinksModule {}
+export class LinksTIModule {}

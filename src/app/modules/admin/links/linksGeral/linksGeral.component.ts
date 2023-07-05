@@ -1,3 +1,5 @@
+import { AuthService } from '../../../../core/auth/auth.service';
+import { Navigation } from 'app/core/navigation/navigation.types';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -5,13 +7,16 @@ import {
 } from '@angular/core';
 
 @Component({
-    selector: 'links',
-    templateUrl: './links.component.html',
+    selector: 'linksGeral',
+    templateUrl: './linksGeral.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    styleUrls: ['./links.component.scss'],
+    styleUrls: ['./linksGeral.component.scss'],
 })
-export class LinksComponent {
+export class LinksGeralComponent {
+    constructor(private _auth: AuthService){
+        console.log(_auth.userID);
+    }
     onClickGLPI() {
         window.open('http://10.1.12.183/glpi/');
     }
@@ -25,5 +30,11 @@ export class LinksComponent {
     }
     onClickGupy() {
         window.open('https://niduu.com/web/');
+    }
+    onClickRH() {
+        window.open('http://meurh.jspecas.com.br:8888/portalmeurh/#/login');
+    }
+    onClickEmail() {
+        window.open('https://outlook.office.com/mail/');
     }
 }

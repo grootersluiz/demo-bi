@@ -3,10 +3,11 @@ import { AuthGuard } from 'app/core/auth/guards/auth.guard';
 import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { DashRolGuard } from 'app/core/auth/guards/dashRol.guard';
 import { DashVendaFilialGuard } from 'app/core/auth/guards/dashVendaFilial.guard';
-import { DashLinksGuard } from 'app/core/auth/guards/dashLinks.guard';
+import { DashLinksGeralGuard } from 'app/core/auth/guards/dashLinksGeral.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
 import { InitialDataResolver } from 'app/app.resolvers';
 import { AuthRedirectGuard } from 'app/core/auth/guards/auth.redirect.guard';
+import { DashLinksTIGuard } from './core/auth/guards/dashLinksTI.guard';
 
 // @formatter:off
 /* eslint-disable max-len */
@@ -210,13 +211,26 @@ export const appRoutes: Route[] = [
                                 'app/modules/admin/dashboards/vendafilial/vendafilial.module'
                             ).then((m) => m.VendafilialModule),
                     },
+                ],
+            },
+            {
+                path: 'links',
+                children: [
                     {
-                        path: 'links',
-                        canActivate: [DashLinksGuard],
+                        path: 'linksGeral',
+                        canActivate: [DashLinksGeralGuard],
                         loadChildren: () =>
                             import(
-                                'app/modules/admin/dashboards/links/links.module'
-                            ).then((m) => m.LinksModule),
+                                'app/modules/admin/links/linksGeral/linksGeral.module'
+                            ).then((m) => m.LinksGeralModule),
+                    },
+                    {
+                        path: 'linksTI',
+                        canActivate: [DashLinksTIGuard],
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/links/linksTI/linksTI.module'
+                            ).then((m) => m.LinksTIModule),
                     },
                 ],
             },

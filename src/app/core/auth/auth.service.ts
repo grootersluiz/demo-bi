@@ -33,6 +33,14 @@ export class AuthService {
         return localStorage.getItem('accessToken') ?? '';
     }
 
+    set userID(id: string) {
+        localStorage.setItem('id', id);
+    }
+
+    get userID(): string {
+        return localStorage.getItem('id') ?? '';
+    }
+
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
@@ -78,11 +86,13 @@ export class AuthService {
                     const myResponse = {
                         accessToken: response.token,
                         tokenType: 'bearer',
+                        id: response.id,
                         user: {
                             ...response,
                             status: 'online',
                             avatar: '',
                         },
+
                     };
 
                     // Store the access token in the local storage
@@ -94,6 +104,7 @@ export class AuthService {
                     // Store the user on the user service
                     this._userService.user = myResponse.user;
 
+                    this.userID = myResponse.id;
                     // Retorna a lista de dashboards antes de retornar a resposta do signIn
 
                     return this._regdashsService.getDashs().pipe(
