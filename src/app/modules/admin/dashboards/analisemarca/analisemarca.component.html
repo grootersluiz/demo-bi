@@ -1,0 +1,74 @@
+<div class="box-content h-full w-full mt-0 mr-2 mb-0 ml-2 p-0" id="painelVendaFilialMes" >
+
+  <div class="flex flex-col w-full rounded-2xl mt-1 mr-0 mb-2 ml-0">
+    <mat-toolbar class="flex flex-row w-full rounded-2xl">
+
+      <button [hidden]="false" [matTooltip]="_tolltip_ShowFIlter" (click)="showFilter($event,containerFilter,containerForm,containerDash)">
+        <mat-icon aria-hidden="false" [fontIcon]="_iconShowFilter"></mat-icon>
+      </button>
+      &nbsp;&nbsp;&nbsp;
+      <button [hidden]="false" matTooltip="Consultar" (click)="consultavendafilial(dataref.value)">
+        <mat-icon aria-hidden="false" fontIcon="search"></mat-icon>
+      </button>
+
+      <div class="flex flex-row shrink-0 ml-10">
+          <img src="assets/images/logo/Logo-Rede-JS-Pecas_3-40x40.png" alt="" class="mr-2 logo-filter hidden lg:block" style="width: 3rem;height: 3rem;">
+          <div class="flex flex-col">
+            <div class="text-2xl font-semibold tracking-tight mb-0">
+               Análise Marca
+            </div>
+            <div class="font-medium tracking-tight text-sm mt-0">
+              {{_sysdate}}
+            </div>
+          </div>
+      </div>
+
+      <button matTooltip="Settings" class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2" style="visibility: visible !important;">
+        <mat-icon aria-hidden="false" fontIcon="settings" ></mat-icon>
+      </button>
+      
+      <!-- <button (click)="showDash(divChart)" matTooltip="Gráfico Dia" class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2" style="visibility: hidden !important;">
+        <mat-icon aria-hidden="false" fontIcon="fit_screen" ></mat-icon>
+      </button> -->
+
+    </mat-toolbar>
+
+  </div>
+  <!-------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+    <div class="flex flex-row w-full" style="height: 92% !important;">
+
+      <div id="containerFilter" #containerFilter [ngClass]="_classFilterInicial" [hidden]="false">
+        <div id="containerForm" #containerForm class="w-full h-full rounded-2xl bg-white mt-0 mr-0 mb-0 ml-0" [hidden]="false">
+          <mat-form-field appearance="fill" class="p-2 w-full" >
+            <mat-label> Referência </mat-label>
+            <!-- [formControl]="dtRef"  [value]="dtRef" -->
+            <input matInput [matDatepicker]="picker" id="dtref" #dataref (dateChange)="formatDataMesAno($event)" (blur)="formatDataMesAno2(dataref)">
+              <mat-hint>DD/MM/YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker ></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div id="containerDash" #containerDash [ngClass]="_classDashInicial" [hidden]="false">
+          <div id="divChart" #divChart class="w-full p-0 mt-0 mr-0 mb-0 ml-0" [hidden]="false" >
+            
+              <div id="chart" #chart [ngClass]="_classChart" style="height: 100% !important;">
+                <apx-chart [ngClass]="_classChart" style="background-color: white; height: 100% !important;"
+                  [series]="chartOptions.series"
+                  [chart]="chartOptions.chart"
+                  [yaxis]="chartOptions.yaxis"
+                  [xaxis]="chartOptions.xaxis"
+                  [dataLabels]="chartOptions.dataLabels"
+                  [grid]="chartOptions.grid"
+                  [stroke]="chartOptions.stroke"
+                  [title]="chartOptions.title"
+                  [responsive]="chartOptions.responsive"
+                ></apx-chart>
+              </div>
+          </div>
+
+      </div>
+    </div>
+</div>

@@ -31,6 +31,13 @@ export const navigationData: Navigation = {
                             icon: 'heroicons_outline:chart-bar',
                             link: '/dashboards/vendafilial',
                         },
+                        {
+                            id: '181',
+                            title: 'Análise Marca',
+                            type: 'basic',
+                            icon: 'heroicons_outline:chart-bar',
+                            link: '/dashboards/analisemarca',
+                        }
                     ],
                 },
                 {
