@@ -16,7 +16,6 @@ import {
 export class LinksGeralComponent {
     margin = 'content-center grid gap-x-15 gap-y-15 grid-col-1 md:grid-cols-2 lg:md:grid-cols-2 xl:md:grid-cols-2 xl2:md:grid-cols-2 grid-rows-3 mx-10 md:mx-36 lg:mx-36 xl:mx-36 xl2:mx-36 my-20';
     constructor(private _auth: AuthService){
-        console.log(_auth.userID);
     }
     onClickGLPI() {
         window.open('http://10.1.12.183/glpi/');
