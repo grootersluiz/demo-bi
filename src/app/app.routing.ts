@@ -8,6 +8,7 @@ import { LayoutComponent } from 'app/layout/layout.component';
 import { InitialDataResolver } from 'app/app.resolvers';
 import { AuthRedirectGuard } from 'app/core/auth/guards/auth.redirect.guard';
 import { DashLinksTIGuard } from './core/auth/guards/dashLinksTI.guard';
+import { DashAnalisemarcaGuard } from './core/auth/guards/dashAnalisemarca.guard';
 
 // @formatter:off
 /* eslint-disable max-len */
@@ -211,6 +212,14 @@ export const appRoutes: Route[] = [
                                 'app/modules/admin/dashboards/vendafilial/vendafilial.module'
                             ).then((m) => m.VendafilialModule),
                     },
+                    {
+                        path: 'analisemarca',
+                        canActivate: [DashAnalisemarcaGuard],
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/dashboards/analisemarca/analisemarca.module'
+                            ).then((m) => m.AnalisemarcaModule),
+                    }
                 ],
             },
             {
