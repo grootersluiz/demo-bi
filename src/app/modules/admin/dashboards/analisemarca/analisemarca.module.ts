@@ -1,4 +1,5 @@
-import { NgModule, forwardRef } from '@angular/core';
+import { NgModule, forwardRef, EventEmitter } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 // import { MAT_DATE_LOCALE} from '@angular/material/core';
@@ -18,17 +19,22 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import localePt from '@angular/common/locales/pt';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-// import {FormControl} from "@angular/forms";
+import {MatDialog, MAT_DIALOG_DATA, MatDialogRef, MatDialogModule} from '@angular/material/dialog';
+import {NgIf} from '@angular/common';
+import {MatButtonModule} from '@angular/material/button';
+import {FormsModule} from '@angular/forms';
+import {FormControl} from "@angular/forms";
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 import { NgApexchartsModule } from "ng-apexcharts";
 
-import { AnalisemarcaComponent } from 'app/modules/admin/dashboards/analisemarca/analisemarca.component';
+import { AnalisemarcaComponent, AnalisemarcaDialogComponent } from 'app/modules/admin/dashboards/analisemarca/analisemarca.component';
 import { analisemarcaRoutes } from 'app/modules/admin/dashboards/analisemarca/analisemarca.routing';
 
 registerLocaleData(localePt);
 
 @NgModule({
-    declarations: [AnalisemarcaComponent],
+    declarations: [AnalisemarcaComponent, AnalisemarcaDialogComponent],
     imports: [
         RouterModule.forChild(analisemarcaRoutes),
         CommonModule,
@@ -42,11 +48,19 @@ registerLocaleData(localePt);
         MatDatepickerModule,
         MatNativeDateModule,
         MatMomentDateModule,
+        FormsModule, MatButtonModule,
+        MatDialogModule, MatInputModule, FormsModule, MatButtonModule, NgIf, MatCheckboxModule,
         NgApexchartsModule
     ],
     providers: [
         { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
-        { provide: LOCALE_ID, useValue: 'pt-BR' }
-    ]
+        { provide: LOCALE_ID, useValue: 'pt-BR' },
+        { provide: MatDialogRef,useValue: [AnalisemarcaDialogComponent] },
+        { provide: MAT_DIALOG_DATA, useValue: [] }
+    ],
+    entryComponents: [
+        AnalisemarcaDialogComponent
+    ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
 export class AnalisemarcaModule {}

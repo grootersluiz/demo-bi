@@ -1,10 +1,13 @@
-import { Component, Injectable,  ViewChild} from '@angular/core';
+import { Component, Injectable,  ViewChild, Inject} from '@angular/core';
 import {ElementRef, Renderer2 } from '@angular/core';
+import {MatDialog, MAT_DIALOG_DATA, MatDialogRef, MatDialogModule, MatDialogContainer} from '@angular/material/dialog';
+import {Directive, OnInit, Output,Input, EventEmitter} from '@angular/core';
+
 import { HttpClient } from '@angular/common/http';
 import { AnalisemarcaService } from './analisemarca.service';
 
 import ApexCharts from "apexcharts"; //está usando
-import { ApexOptions } from 'ng-apexcharts';
+import { ApexOptions } from 'ng-apexcharts'; //está usando
 import {
   ChartComponent,
   ApexAxisChartSeries,
@@ -17,6 +20,7 @@ import {
   ApexResponsive,
   ApexYAxis
 } from "ng-apexcharts";
+import { values } from 'lodash';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -33,89 +37,86 @@ export type ChartOptions = {
 @Component({
   selector: 'app-analisemarca',
   templateUrl: './analisemarca.component.html',
-  styleUrls: ['./analisemarca.component.scss']
+  styleUrls: ['./analisemarca.component.scss'],
 })
 
 @Injectable()
 export class AnalisemarcaComponent {
+
   @ViewChild("chart") chart: ChartComponent;
   // @ViewChild("chart") _elChart: ElementRef;
 
   @ViewChild("containerFilter") _elFilter: ElementRef;
   @ViewChild("containerForm") _elForm: ElementRef;
   @ViewChild("containerDash") _elDash: ElementRef;
+  @ViewChild("idModal") _elidModal: ElementRef;
 
   public chartOptions: Partial<ChartOptions>;
 
-  _colors = {
-    palette1:  ['#008FFB','#00E396','#FEB019','#FF4560','#775DD0'],
-    palette2:  ['#3F51B5','#03A9F4','#4CAF50','#F9CE1D','#FF9800'],
-    palette3:  ['#33B2DF','#546E7A','#D4526E','#13D8AA','#A5978B'],
-    palette4:  ['#4ECDC4','#C7F464','#81D4FA','#546E7A','#FD6A6A'],
-    palette5:  ['#2B908F','#F9A3A4','#90EE7E','#FA4443','#69D2E7'],
-    palette6:  ['#449DD1','#F86624','#EA3546','#662E9B','#C5D86D'],
-    palette7:  ['#D7263D','#1B998B','#2E294E','#F46036','#E2C044'],
-    palette8:  ['#662E9B','#F86624','#F9C80E','#EA3546','#43BCCD'],
-    palette9:  ['#5C4742','#A5978B','#8D5B4C','#5A2A27','#C4BBAF'],
-    palette10: ['#A300D6','#7D02EB','#5653FE','#2983FF','#00B1F2']
-  };
+  viewSerie = new Array();
 
-  viewSerie = [
-    {
-      name: "META",
-      data: [],
-      yAxis:0
-    },
-    {
-      name: "ROL",
-      data: [],
-      yAxis:0
-    },
-    {
-      name: "MB",
-      data: [],
-      yAxis: 2
-    }
-  ];
+  animal: string;
+  name: string;
+
   posicionaValorXinCategoria(categorias,rows){
 
     var keyX = 2;
     var codemp  = this.param.filial;
     var descemp = this.param.descFilial;
 
-    var indexData =0;
-    for (let index = 0; index < rows.length; index++) {
+    var dataSerie= { name: '', data: [] };
 
-      if(rows[index][0] == codemp){
+    for (let iColumn = 1; iColumn < this.series.columns.length; iColumn++) {
+        const element = this.series.columns[iColumn];
 
-        var valorKey  = rows[index];
+        dataSerie = { name: element, data: [] };
 
-        while(valorKey[1].substr(0,2) != categorias[indexData]){
+        var iPeriodo = 0;
+        for (let iRow = 0; iRow < rows.length; iRow++) { // Array do periodo
 
-          this.viewSerie[0].data.push(0);
-          this.viewSerie[1].data.push(0);
-          this.viewSerie[2].data.push(0);
-          indexData++;
+            let valorKey  = rows[iRow];
+            let mesNumber = valorKey[0].substr(3,2);
+            let mesChar = this.analisemarcaService.meses[Number(mesNumber)];
 
-          if(indexData > 31){ break;}
+            while(mesChar != categorias[iPeriodo].substr(0,3)){ //Valida peíodo existe, se não set valor 0.
+
+                dataSerie.data.push(0);
+                iPeriodo++;
+
+                if(iPeriodo > 24){ break;}
+            }
+
+            var valor = !rows[iRow][iColumn] ? 0 : rows[iRow][iColumn];
+
+            if(mesChar === categorias[iPeriodo].substr(0,3)){
+                dataSerie.data.push(valor);
+            }
+
+            iPeriodo++;
+
         }
 
-        var valorMeta = !rows[index][3]?0:rows[index][3];
-        var valorRol  = !rows[index][4]?0:rows[index][4];
-        var valorMb   = !rows[index][10]?0:rows[index][10];
+        this.series.viewSerie.push(dataSerie);
 
-        if(valorKey[1].substr(0,2) === categorias[indexData]){
-          this.viewSerie[0].data.push(valorMeta);
-          this.viewSerie[1].data.push(valorRol);
-          this.viewSerie[2].data.push(valorMb);
+        this._serviceChart.series.viewSerie.push(dataSerie);
+
+        var arrayView =  this._serviceChart.exibirAxis;
+
+        for (let index = 0; index < arrayView.length; index++){
+
+            var obj = arrayView[index];
+
+            if(obj.exibir == true){
+
+                if(obj.name === dataSerie.name){
+                    this.viewSerie.push(dataSerie);
+                    this._serviceChart.viewSerie.push(dataSerie);
+                }
+            }
+
         }
-
-        indexData++;
-      }
 
     }
-
-    console.log(this.viewSerie);
 
     this.chartOptions.title.text =  " Dia ("+descemp+")";
     this.chartOptions.series = this.viewSerie;
@@ -174,7 +175,7 @@ export class AnalisemarcaComponent {
 
   }
 
-  series = {columns: [], rows: []};
+  series = {columns: [], rows: [], viewSerie: []};
   getSeries(){
 
     var dia = this.param.ultDia;
@@ -185,33 +186,26 @@ export class AnalisemarcaComponent {
                             .subscribe(dataresponse => {
                                  this.series.columns  = dataresponse.columns;
                                  this.series.rows     = dataresponse.rows;
-                                 this.posicionaValorXinCategoria(this.categorias,this.series.rows);
 
+                                //  this._serviceChart.series.columns  = dataresponse.columns;
+                                //  this._serviceChart.series.rows     = dataresponse.rows;
+
+                                //  console.log(this.series.rows);
+                                 this.posicionaValorXinCategoria(this.categorias,this.series.rows);
 
                             });
 
   }
 
   limpar(){
-    this.series = {columns: [], rows: []};
+    this.series = {columns: [], rows: [], viewSerie: []};
     this.categorias = new Array();
-    this.viewSerie = [
-      {
-        name: "ROL",
-        data: [],
-        yAxis:0
-      },
-      {
-        name: "MB",
-        data: [],
-        yAxis: 1
-      }
-    ];
+    this.viewSerie = new Array();
 
   }
 
   _sysdate:string;
-  _elementFilter: any;
+  _elementRef: any;
   _elementRenderer: any;
   _thishttpClient: any;
   _containerChart: any;
@@ -222,6 +216,7 @@ export class AnalisemarcaComponent {
   _classChart = 'grid rounded-2xl p-0 mt-0 mr-0 mb-0 ml-0';
   _classDashInicial: string[]   = ['flex','flex-row','p-0','w-10/12','sm:w-10/12','md:w-10/12','lg:w-10/12','xl:w-10/12','2xl:w-10/12','mt-0','mr-0','mb-0','ml-0'];
   _classFilterInicial: string[] = ['flex','flex-row','p-0','w-2/12','sm:w-12/12','md:w-12/12','lg:w-2/12','xl:w-2/12','2xl:w-2/12','mt-0','mr-2','mb-0','ml-0'];
+  _exibirAxis: any;
   showFilter(thisEvent,elFilter,elForm,elDash) {
 
     // this._chartWidth = '99%';
@@ -271,18 +266,7 @@ export class AnalisemarcaComponent {
 
     this.analisemarcaService.setParam(this.param.ultDia,this.param.mes, this.param.ano, this.param.filial, this.param.descFilial );
 
-    this.viewSerie = [
-      {
-        name: "ROL",
-        data: [],
-        yAxis:0
-      },
-      {
-        name: "MB",
-        data: [],
-        yAxis: 2
-      }
-    ];
+    this.viewSerie = new Array();
 
     this.validaParam();
     this.posicionaValorXinCategoria(this.categorias,this.series.rows);
@@ -319,16 +303,19 @@ export class AnalisemarcaComponent {
     }
 
   }
-
+  private dialogRef: any;
   /////////////////////////////////////// Construtor  ///////////////////////////////////////////////
-  constructor(private analisemarcaService: AnalisemarcaService
+  constructor(public analisemarcaService: AnalisemarcaService
               ,private _element: ElementRef
               ,private _renderer: Renderer2
-              ,private _httpClient : HttpClient){
+              ,private _httpClient : HttpClient
+              ,public dialog: MatDialog){
 
-    this._elementFilter     = _element;
+    this._elementRef        = _element;
     this._elementRenderer   = _renderer;
     this._thishttpClient    = _httpClient;
+    this._serviceChart      = analisemarcaService;
+    this._exibirAxis        = analisemarcaService.exibirAxis;
 
     const sysDate = new Date();
     var mes = ("00" + (sysDate.getMonth()+1)).slice(-2) ;
@@ -341,7 +328,7 @@ export class AnalisemarcaComponent {
     analisemarcaService.getXaxis();
     this.categorias = analisemarcaService.xAxis;
 
-    console.log(this.categorias);
+    // console.log(this.categorias);
 
     var iconFilial = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 96 960 960" width="24"><path d="M226 896q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19ZM226 642q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19ZM226 388q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Z"/></svg>`;
     var styleMenu = `<style>
@@ -426,7 +413,7 @@ export class AnalisemarcaComponent {
             customIcons: [{
               icon: iconFilial + styleMenu +
                     `<div class="charts-menu" id="menuFilial">
-                      <div class="charts-menu-item" value="99"> Indicadores </div>
+                      <div class="charts-menu-item" nodeValue="99"> Indicadores </div>
                     </div>`,
               index: 0,
               title: 'Filiais',
@@ -434,7 +421,6 @@ export class AnalisemarcaComponent {
               click: function (chart, options, e) {
 
                 var elemento = document.getElementById("menuFilial");
-
 
                 if(elemento.className == 'charts-menu'){
 
@@ -469,11 +455,11 @@ export class AnalisemarcaComponent {
       yaxis: [
         {
           show: true,
-          seriesName: 'META',
+          seriesName: 'ROL',
           title: {
-            text: 'META',
+            text: 'ROL',
             style: {
-              color: this._colors.palette1[0],
+              color: this._serviceChart._colors.palette1[0],
               fontSize: '12px',
               fontFamily: 'Helvetica, Arial, sans-serif',
               fontWeight: 600,
@@ -483,7 +469,7 @@ export class AnalisemarcaComponent {
           labels: {
             show: true,
             style: {
-              colors: this._colors.palette1[0],
+              colors: this._serviceChart._colors.palette1[0],
               cssClass: 'apexcharts-yaxis-label'
             },
             formatter: function(val, index) {
@@ -494,11 +480,11 @@ export class AnalisemarcaComponent {
         },
         {
           show: false,
-          seriesName: 'META',
+          seriesName: 'LB',
           title: {
-            text: 'ROL',
+            text: 'LB',
             style: {
-              color: this._colors.palette1[1],
+              color: this._serviceChart._colors.palette1[1],
               fontSize: '12px',
               fontFamily: 'Helvetica, Arial, sans-serif',
               fontWeight: 600,
@@ -508,7 +494,7 @@ export class AnalisemarcaComponent {
           labels: {
             show: false,
             style: {
-              colors: this._colors.palette1[1],
+              colors: this._serviceChart._colors.palette1[1],
               cssClass: 'apexcharts-yaxis-label'
             },
             formatter: function(val, index) {
@@ -523,7 +509,7 @@ export class AnalisemarcaComponent {
           title: {
             text: 'MB',
             style: {
-              color: this._colors.palette1[2],
+              color: this._serviceChart._colors.palette1[2],
               fontSize: '12px',
               fontFamily: 'Helvetica, Arial, sans-serif',
               fontWeight: 600,
@@ -533,11 +519,61 @@ export class AnalisemarcaComponent {
           labels: {
             show: true,
             style: {
-              colors: this._colors.palette1[2],
+              colors: this._serviceChart._colors.palette1[2],
               cssClass: 'apexcharts-yaxis-label'
             },
             formatter: function(val, index) {
               var valor = val? val.toFixed(2) : '';
+              return valor;
+            }
+          }
+        },
+        {
+          show: true,
+          seriesName: 'DIAS',
+          title: {
+            text: 'DIAS',
+            style: {
+              color: this._serviceChart._colors.palette1[3],
+              fontSize: '12px',
+              fontFamily: 'Helvetica, Arial, sans-serif',
+              fontWeight: 600,
+              cssClass: 'apexcharts-yaxis-title',
+            }
+          },
+          labels: {
+            show: true,
+            style: {
+              colors: this._serviceChart._colors.palette1[3],
+              cssClass: 'apexcharts-yaxis-label'
+            },
+            formatter: function(val, index) {
+              var valor = val? val.toFixed(2) : '';
+              return valor;
+            }
+          }
+        },
+        {
+          show: false,
+          seriesName: 'QTDE',
+          title: {
+            text: 'QTDE',
+            style: {
+              color: this._serviceChart._colors.palette1[4],
+              fontSize: '12px',
+              fontFamily: 'Helvetica, Arial, sans-serif',
+              fontWeight: 600,
+              cssClass: 'apexcharts-yaxis-title',
+            }
+          },
+          labels: {
+            show: false,
+            style: {
+              colors: this._serviceChart._colors.palette1[4],
+              cssClass: 'apexcharts-yaxis-label'
+            },
+            formatter: function(val, index) {
+              var valor = val? val.toFixed(0) : '';
               return valor;
             }
           }
@@ -570,6 +606,18 @@ export class AnalisemarcaComponent {
   eventUpdateSomenteUmaVez = true; // Cuidado parametro Critico para loop Eterno!
   ngAfterViewInit(): void {
 
+    // var elDialog = this.dialog.open(AnalisemarcaDialogComponent) ;
+
+    // console.log(elDialog);
+
+    // var elIdDialog = document.getElementById('dialogIndicadores');
+
+    // console.log(elIdDialog);
+
+    // this._elementRenderer.listen(elIdDialog,"click", event => {this.onChangeDialog(elIdDialog)});
+
+    this.dialog.closeAll();
+
     window['Apex'] = {
 
         chart: {
@@ -578,36 +626,84 @@ export class AnalisemarcaComponent {
 
                 switch (event.srcElement.className) {
                   case "charts-menu-item":
-                    this.menuFilialChart(event);
-                    chartContext.updateOptions({
-                        title: {
-                          text: " Dia ("+this.param.descFilial+")",
-                          align: "left"
-                        },
-                        series: this.viewSerie}) ;
-                    break;
-                  case "charts-menu-item2":
-                    this.menuFilialChart(event);
-                    chartContext.updateOptions({
-                      title: {
-                        text: " Dia ( "+this.param.descFilial+" )",
-                        align: "left"
-                      },
-                      series: this.viewSerie}) ;
+
+                    // var filterHidden = null;
+                    // var elModal = document.getElementById('idModal');
+                    // console.log(elModal);
+
+                    // console.log(this._elidModal.nativeElement);
+                    // filterHidden = elModal.style.visibility;
+
+                    // if(filterHidden == 'hidden'){
+                    //     filterHidden = 'visible';
+                    // }else{
+                    //     filterHidden = 'hidden';
+                    // }
+
+                    // this._elementRenderer.setStyle(
+                    //     elModal,
+                    //     'visibility',filterHidden
+                    // );
+
+                    // const dialogRef = this.dialog.open(this._elidModal.nativeElement);
+
+                    // dialogRef.afterClosed().subscribe(result => {
+                    // console.log(`Dialog result: ${result}`);
+                    // });
+
+
+                    const dialogRef = this.dialog.open(AnalisemarcaDialogComponent);
+
+                    console.log(dialogRef);
+                    var elIdDialog = document.getElementById('dialogIndicadores');
+
+                    var selIdDialog = document.querySelector("dialogIndicadores");
+
+                    console.log(selIdDialog);
+                    this._elementRenderer.listen(elIdDialog,"click", event => {this.onChangeDialog(selIdDialog)});
+
+
+                //    var _eventOutput = this.onChangeDialog(dialogRef.componentInstance);
+
+                //    console.log(_eventOutput);
+
+
+
+                    // var compDialog : AnalisemarcaDialogComponent;
+
+                    var elDialog = document.getElementById(dialogRef.id);
+
+                    console.log(elDialog);
+                    // dialogRef.afterClosed().subscribe((result) => {
+                    //     console.log(result);
+                    // });
+
+
+
+                    //-----------------------------------------------------------------------------------------
+                    // this.menuFilialChart(event);
+                    // chartContext.updateOptions({
+                    //     // title: {
+                    //     //   text: " Dia ("+this.param.descFilial+")",
+                    //     //   align: "left"
+                    //     // },
+                    //     series: this.viewSerie
+                    // }) ;
                     break;
                   default:
                     break;
                 }
               },
-              mouseMove:(event: any, chartContext?: any, config? :any): void => {
-                if(event.srcElement.className == "charts-menu-item"){
-                    this.mostraMenuFilial2Chart(event);
-                }
-              }
+            //   mouseMove:(event: any, chartContext?: any, config? :any): void => {
+            //     if(event.srcElement.className == "charts-menu-item"){
+            //         this.mostraMenuFilial2Chart(event);
+            //     }
+            //   }
             }
         }
     };
   }
+
 
   formatDataMesAno(dataPicker) {
 
@@ -680,6 +776,100 @@ export class AnalisemarcaComponent {
     this.getCategorias();
     this.getSeries();
 
+
   }
 
+//   @Input() changeDialog ;
+  onChangeDialog(evento){
+
+    console.log(evento);
+    console.log('Change Dialog');
+
+
+  }
+
+
+
 }
+
+export interface DialogData {
+    animal: string;
+    name: string;
+}
+
+@Component({
+    selector: 'app-analisemarcadialog',
+    templateUrl: './analisemarcadialog.component.html',
+  })
+
+  @Injectable()
+  export class AnalisemarcaDialogComponent implements OnInit {
+
+    constructor(
+        public dialogRef: MatDialogRef<AnalisemarcaDialogComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: DialogData,
+        private _myService : AnalisemarcaService
+      ) {
+
+        //   console.log(_myService);
+
+      }
+
+    ngOnInit() {
+    }
+
+    // @Input() changeDialog ;
+    @Output() responseChangeDialog = new EventEmitter();
+    onClickcheck(el) {
+
+        // console.log(this.dialogRef);
+        console.log('responseChangeDialog');
+
+        this.responseChangeDialog.emit(el);
+
+        // console.log(this.changeDialog.emit());
+
+
+        var valida = {
+            campo: null,
+            position: null
+        };
+
+        if(el.checked){
+            // se true
+            var arrayView =  this._myService.exibirAxis;
+            var dataSerie = '';
+
+            for (let index = 0; index < arrayView.length; index++){
+
+                var obj = arrayView[index];
+
+                if(obj.name === el.value){
+
+                    dataSerie = this._myService.series.viewSerie[index];
+
+                    this._myService.viewSerie.push(dataSerie);
+                }
+
+            }
+
+
+            // console.log(this._myService);
+
+            this._myService.series.rows = valida.position
+
+            // Ajuste realizar reflow no chart //////////////////////////////////////////
+            // var chart = new ApexCharts(this._myService.chart, this._myService.chartOptions);
+            /////////////////////////////////////////////////////////////////////////////
+
+        }
+
+    }
+
+
+      onNoClick(): void {
+        this.dialogRef.close();
+      }
+
+  }
+
