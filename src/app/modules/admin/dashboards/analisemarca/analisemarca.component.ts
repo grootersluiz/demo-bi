@@ -610,13 +610,13 @@ export class AnalisemarcaComponent {
 
     // console.log(elDialog);
 
-    // var elIdDialog = document.getElementById('dialogIndicadores');
+    // var elIdDialog = document.querySelector("#QTDE");
 
     // console.log(elIdDialog);
 
     // this._elementRenderer.listen(elIdDialog,"click", event => {this.onChangeDialog(elIdDialog)});
 
-    this.dialog.closeAll();
+    // this.dialog.closeAll();
 
     window['Apex'] = {
 
@@ -654,13 +654,14 @@ export class AnalisemarcaComponent {
 
                     const dialogRef = this.dialog.open(AnalisemarcaDialogComponent);
 
-                    console.log(dialogRef);
+                    // console.log(dialogRef);
                     var elIdDialog = document.getElementById('dialogIndicadores');
 
-                    var selIdDialog = document.querySelector("dialogIndicadores");
+                    var selIdDialog = document.querySelector("#dialogIndicadores");
 
-                    console.log(selIdDialog);
-                    this._elementRenderer.listen(elIdDialog,"click", event => {this.onChangeDialog(selIdDialog)});
+                    // console.log(selIdDialog);
+
+                    var teste =  this._elementRenderer.listen(elIdDialog,"click", event => {this.onChangeDialog(null)});
 
 
                 //    var _eventOutput = this.onChangeDialog(dialogRef.componentInstance);
@@ -782,8 +783,12 @@ export class AnalisemarcaComponent {
 //   @Input() changeDialog ;
   onChangeDialog(evento){
 
-    console.log(evento);
-    console.log('Change Dialog');
+    // console.log('Change Dialog');
+
+
+    var vSeries = this._serviceChart.viewSerie;
+
+    // console.log(vSeries);
 
 
   }
@@ -805,44 +810,49 @@ export interface DialogData {
   @Injectable()
   export class AnalisemarcaDialogComponent implements OnInit {
 
+    listaIndicadores = new Array();
+
     constructor(
         public dialogRef: MatDialogRef<AnalisemarcaDialogComponent>,
         @Inject(MAT_DIALOG_DATA) public data: DialogData,
         private _myService : AnalisemarcaService
       ) {
 
-        //   console.log(_myService);
+
+        this.listaIndicadores = _myService.exibirAxis;
+
+        // for (let index = 0; index < _myService.exibirAxis.length; index++) {
+        //     let element = _myService.exibirAxis[index];
+
+        //     this.listaIndicadores.push(element.name);
+
+        // }
 
       }
 
     ngOnInit() {
     }
 
-    // @Input() changeDialog ;
-    @Output() responseChangeDialog = new EventEmitter();
     onClickcheck(el) {
-
-        // console.log(this.dialogRef);
-        console.log('responseChangeDialog');
-
-        this.responseChangeDialog.emit(el);
-
-        // console.log(this.changeDialog.emit());
-
 
         var valida = {
             campo: null,
             position: null
         };
 
-        if(el.checked){
-            // se true
-            var arrayView =  this._myService.exibirAxis;
+        var arrayOrder = this._myService.showOrder ? this._myService.showOrder.split(',') : Array();
+
+        // console.log('listaIndicadores:');
+        // console.log(this.listaIndicadores);
+
+        if(el.checked){ // se true
+
+            var exibirAxisLength =  this._myService.exibirAxis.length;
             var dataSerie = '';
+            // this._myService.viewSerie = [];
+            for (let index = 0; index < exibirAxisLength; index++){
 
-            for (let index = 0; index < arrayView.length; index++){
-
-                var obj = arrayView[index];
+                let obj =  this._myService.exibirAxis[index];
 
                 if(obj.name === el.value){
 
@@ -853,23 +863,35 @@ export interface DialogData {
 
             }
 
+        }else{
 
-            // console.log(this._myService);
+            var arrayView =  this._myService.exibirAxis ;
+            var dataSerie = '';
+            var viewSerieOrig =  this._myService.viewSerie ;
+            // this._myService.viewSerie = [];
+            // console.log(viewSerieOrig);
 
-            this._myService.series.rows = valida.position
+            for (let index = 0; index < viewSerieOrig.length; index++){
 
-            // Ajuste realizar reflow no chart //////////////////////////////////////////
-            // var chart = new ApexCharts(this._myService.chart, this._myService.chartOptions);
-            /////////////////////////////////////////////////////////////////////////////
+                var obj = arrayView[index];
 
+                if(obj.name === el.value){
+                    if(el.checked){ // se true
+
+                        dataSerie = this._myService.series.viewSerie[index];
+
+                        this._myService.viewSerie.push(dataSerie);
+                    }
+                }
+
+            }
         }
 
     }
 
-
-      onNoClick(): void {
-        this.dialogRef.close();
-      }
+    onNoClick(): void {
+    this.dialogRef.close();
+    }
 
   }
 

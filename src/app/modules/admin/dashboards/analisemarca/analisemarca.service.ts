@@ -39,7 +39,7 @@ export class AnalisemarcaService {
         palette10: ['#A300D6','#7D02EB','#5653FE','#2983FF','#00B1F2']
       };
 
-
+    showOrder= 'ROL,LB,MB,DIAS';
     series = {columns: [], rows: [], viewSerie: []};
     viewSerie = new Array();
     exibirAxis = [
@@ -100,35 +100,35 @@ export class AnalisemarcaService {
             cor : this._colors.palette2[2]
         },
         {
-            name : "ROL_DIA",
+            name : "ROL DIA",
             exibir : false,
             showYAxis : true,
             yAxisSerie: 8,
             cor : this._colors.palette2[3]
         },
         {
-            name : "LB_DIA",
+            name : "LB DIA",
             exibir : false,
             showYAxis : false,
             yAxisSerie: 8,
             cor : this._colors.palette2[4]
         },
         {
-            name : "QTDE_DIA",
+            name : "QTDE DIA",
             exibir : false,
             showYAxis : true,
             yAxisSerie: 10,
             cor : this._colors.palette3[0]
         },
         {
-            name : "CMV_DIA",
+            name : "CMV DIA",
             exibir : false,
             showYAxis : true,
             yAxisSerie: 11,
             cor : this._colors.palette3[1]
         },
         {
-            name : "ROB_DIA",
+            name : "ROB DIA",
             exibir : false,
             showYAxis : false,
             yAxisSerie: 8,
