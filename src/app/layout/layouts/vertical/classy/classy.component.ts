@@ -95,7 +95,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
                 });
 
                 let dashsMenuList =
-                    myNavigation.default[0].children[0].children;
+                    myNavigation.default[1].children[0].children;   //alterado o default para 1 pois o vetor do mynavigation foi alterado para retirada do Links do Analise Indicadores.
                 dashsMenuList.forEach((dashMenu, index) => {
                     if (!this.dashsIds.includes(parseInt(dashMenu.id))) {
                         dashsMenuList[index] = {};
