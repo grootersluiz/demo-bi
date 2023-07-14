@@ -39,6 +39,7 @@ export class AnalisemarcaService {
         palette10: ['#A300D6','#7D02EB','#5653FE','#2983FF','#00B1F2']
       };
 
+    updateOrder= false;
     showOrder= 'ROL,LB,MB,DIAS';
     series = {columns: [], rows: [], viewSerie: []};
     viewSerie = new Array();
