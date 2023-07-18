@@ -1,0 +1,42 @@
+
+.a {
+    background-color: #484846;
+    border: none;
+    color: #c95700;
+    cursor: pointer;
+    font-size: 1rem;
+    opacity: 1;
+    transition: 0.4s;
+    box-shadow: 0 15px 10px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+}
+.b {
+    background-color: #ec7010;
+    border: none;
+    color: #2e2e2e;
+    cursor: pointer;
+    font-size: 1rem;
+    opacity: 1;
+    transition: 0.4s;
+    box-shadow: 0 15px 10px rgba(0, 0, 0, 0.2);
+    font-weight: bold;
+}
+.pa {
+    font-family: Helvetica;
+    font-size: 20px;
+    color: white;
+    text-align: center;
+}
+.pb {
+    font-family: Helvetica;
+    font-size: 20px;
+    color: black;
+    text-align: center;
+}
+
+.a:hover {
+    background-color: #2e2e2e;
+}
+.b:hover {
+    background-color: #c95700;
+}

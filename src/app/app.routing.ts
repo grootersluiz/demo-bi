@@ -3,9 +3,12 @@ import { AuthGuard } from 'app/core/auth/guards/auth.guard';
 import { NoAuthGuard } from 'app/core/auth/guards/noAuth.guard';
 import { DashRolGuard } from 'app/core/auth/guards/dashRol.guard';
 import { DashVendaFilialGuard } from 'app/core/auth/guards/dashVendaFilial.guard';
+import { DashLinksGeralGuard } from 'app/core/auth/guards/dashLinksGeral.guard';
 import { LayoutComponent } from 'app/layout/layout.component';
 import { InitialDataResolver } from 'app/app.resolvers';
 import { AuthRedirectGuard } from 'app/core/auth/guards/auth.redirect.guard';
+import { DashLinksTIGuard } from './core/auth/guards/dashLinksTI.guard';
+import { DashAnalisemarcaGuard } from './core/auth/guards/dashAnalisemarca.guard';
 
 // @formatter:off
 /* eslint-disable max-len */
@@ -208,6 +211,35 @@ export const appRoutes: Route[] = [
                             import(
                                 'app/modules/admin/dashboards/vendafilial/vendafilial.module'
                             ).then((m) => m.VendafilialModule),
+                    },
+                    {
+                        path: 'analisemarca',
+                        canActivate: [DashAnalisemarcaGuard],
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/dashboards/analisemarca/analisemarca.module'
+                            ).then((m) => m.AnalisemarcaModule),
+                    }
+                ],
+            },
+            {
+                path: 'links',
+                children: [
+                    {
+                        path: 'linksGeral',
+                        canActivate: [DashLinksGeralGuard],
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/links/linksGeral/linksGeral.module'
+                            ).then((m) => m.LinksGeralModule),
+                    },
+                    {
+                        path: 'linksTI',
+                        canActivate: [DashLinksTIGuard],
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/links/linksTI/linksTI.module'
+                            ).then((m) => m.LinksTIModule),
                     },
                 ],
             },

@@ -60,6 +60,22 @@ export const defaultNavigation: FuseNavigationItem[] = [
                     },
                 ],
             },
+            {
+                id: 'links',
+                title: 'Links',
+                type: 'collapsable',
+                icon: 'heroicons_outline:home',
+                link: '/analiseindicadores/links',
+                children: [
+                    {
+                        id: 'links.linksGeral',
+                        title: 'Links - Geral',
+                        type: 'basic',
+                        icon: 'material-outline:add_task',
+                        link: '/links/linksGeral',
+                    },
+                ],
+            }
             // {
             //     id: 'admin.ecommerce',
             //     title: 'Relatórios',

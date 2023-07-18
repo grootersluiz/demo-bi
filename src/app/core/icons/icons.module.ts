@@ -20,5 +20,6 @@ export class IconsModule
         this._matIconRegistry.addSvgIconSetInNamespace('feather', this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/feather.svg'));
         this._matIconRegistry.addSvgIconSetInNamespace('heroicons_outline', this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/heroicons-outline.svg'));
         this._matIconRegistry.addSvgIconSetInNamespace('heroicons_solid', this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/heroicons-solid.svg'));
+        this._matIconRegistry.addSvgIconSetInNamespace('material_outline',this._domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/material-outline.svg'));
     }
 }

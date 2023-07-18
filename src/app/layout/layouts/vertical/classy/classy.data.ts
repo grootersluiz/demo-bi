@@ -4,6 +4,29 @@ export const navigationData: Navigation = {
     compact: [{}],
     default: [
         {
+            id: 'links',
+            title: 'Links',
+            type: 'collapsable',
+            icon: 'material_outline:menu_open',
+            link: '/links',
+            children: [
+                {
+                    id: '43',
+                    title: 'Links - Geral',
+                    type: 'basic',
+                    icon: 'material_outline:double_arrow',
+                    link: '/links/linksGeral',
+                },
+                {
+                    id: '44',
+                    title: 'Links - T.I',
+                    type: 'basic',
+                    icon: 'material_outline:double_arrow',
+                    link: '/links/linksTI',
+                },
+            ],
+        },
+        {
             id: 'analiseindicadores',
             title: 'Análise de Indicadores',
             subtitle: 'Gestão de indicadores estratégicos',
@@ -31,8 +54,38 @@ export const navigationData: Navigation = {
                             icon: 'heroicons_outline:chart-bar',
                             link: '/dashboards/vendafilial',
                         },
+                        {
+                            id: '181',
+                            title: 'Análise Marca',
+                            type: 'basic',
+                            icon: 'heroicons_outline:chart-bar',
+                            link: '/dashboards/analisemarca',
+                        }
                     ],
                 },
+                // {
+                //     id: 'links',
+                //     title: 'Links',
+                //     type: 'collapsable',
+                //     icon: 'material_outline:menu_open',
+                //     link: '/analiseindicadores/links',
+                //     children: [
+                //         {
+                //             id: '43',
+                //             title: 'Links - Geral',
+                //             type: 'basic',
+                //             icon: 'material_outline:double_arrow',
+                //             link: '/links/linksGeral',
+                //         },
+                //         {
+                //             id: '44',
+                //             title: 'Links - T.I',
+                //             type: 'basic',
+                //             icon: 'material_outline:double_arrow',
+                //             link: '/links/linksTI',
+                //         },
+                //     ],
+                // },
             ],
         },
 

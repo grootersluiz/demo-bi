@@ -85,6 +85,9 @@ export class AuthSignInComponent implements OnInit {
 
                 // Navigate to the redirect url
                 this._router.navigateByUrl(redirectURL);
+
+                // Adicionado rota para abrir a tela de "links" como inicial
+                this._router.navigateByUrl('/links/linksGeral');
             },
             error: (response) => {
                 // Re-enable the form
