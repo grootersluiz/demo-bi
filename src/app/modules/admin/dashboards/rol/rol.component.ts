@@ -264,20 +264,52 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
             return lastDay;
         }
 
-        this.dataFinal = {
-            year: evMY.year(),
-            month: evMY.month(),
-            date: getLastDayOfMonth(evMY.year(), evMY.month()),
-        };
-        this.end.setValue(
-            new Date(
-                this.dataFinal.year,
-                this.dataFinal.month,
-                getLastDayOfMonth(evMY.year(), evMY.month())
-            )
-        );
+        // Get the current date
+        let currentDate = new Date();
 
-        datepicker.close();
+        // Extract the current year and month (0-based index)
+        let currentYear = currentDate.getFullYear();
+        let currentMonth = currentDate.getMonth();
+
+        // Extract the year and month from the given evMY
+        let evYear = evMY.year();
+        let evMonth = evMY.month();
+
+        if (evYear === currentYear && evMonth === currentMonth) {
+            // The given year and month match the current date
+            // Return the current day
+            this.dataFinal = {
+                year: evMY.year(),
+                month: evMY.month(),
+                date: currentDate.getDate(),
+            };
+            this.end.setValue(
+                new Date(
+                    this.dataFinal.year,
+                    this.dataFinal.month,
+                    currentDate.getDate()
+                )
+            );
+
+            datepicker.close();
+        } else {
+            // The given year and month do not match the current date
+            // Continue with the existing functionality to get the last day of the month
+            this.dataFinal = {
+                year: evMY.year(),
+                month: evMY.month(),
+                date: getLastDayOfMonth(evMY.year(), evMY.month()),
+            };
+            this.end.setValue(
+                new Date(
+                    this.dataFinal.year,
+                    this.dataFinal.month,
+                    getLastDayOfMonth(evMY.year(), evMY.month())
+                )
+            );
+
+            datepicker.close();
+        }
     }
 
     resetDateInputs(): void {
