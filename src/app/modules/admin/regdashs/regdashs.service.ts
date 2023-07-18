@@ -120,14 +120,23 @@ export class RegdashsService {
      */
     searchDashs(name: string): Observable<Dash[]> {
         return this._httpClient
-            .get<Dash[]>('http://10.2.1.108/v1/dashboards', {
-                params: { name },
-            })
+            .get<Dash[]>('http://10.2.1.108/v1/dashboards')
             .pipe(
+                map((dashs) => {
+                    // Convert the input name to lowercase
+                    const searchName = name.toLowerCase();
+                    // Filter dashs whose name contains the searchName (case-insensitive)
+                    const filteredDashs = dashs['data'].filter((dash) =>
+                        dash.name.toLowerCase().includes(searchName)
+                    );
+                    // Sort the filtered dashs by name (case-insensitive)
+                    const orderedDashs = filteredDashs.sort((a, b) =>
+                        a.name.localeCompare(b.name)
+                    );
+                    return orderedDashs;
+                }),
                 tap((dashs) => {
-                    let orderedDashs = [...dashs['data']];
-                    orderedDashs.sort((a, b) => a.name.localeCompare(b.name));
-                    this._contacts.next(orderedDashs);
+                    this._contacts.next(dashs);
                 })
             );
     }

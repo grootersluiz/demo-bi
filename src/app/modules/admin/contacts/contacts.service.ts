@@ -142,22 +142,27 @@ export class ContactsService {
     /**
      * Search contacts with given query
      *
-     * @param query
+     * @param name
      */
     searchContacts(name: string): Observable<User[]> {
-        return this._httpClient
-            .get<User[]>('http://10.2.1.108/v1/users', {
-                params: { name },
+        return this._httpClient.get<User[]>('http://10.2.1.108/v1/users').pipe(
+            map((contacts) => {
+                // Convert the input name to lowercase
+                const searchName = name.toLowerCase();
+                // Filter contacts whose name contains the searchName (case-insensitive)
+                const filteredContacts = contacts['data'].filter((contact) =>
+                    contact.name.toLowerCase().includes(searchName)
+                );
+                // Sort the filtered contacts by name (case-insensitive)
+                const orderedContacts = filteredContacts.sort((a, b) =>
+                    a.name.localeCompare(b.name)
+                );
+                return orderedContacts;
+            }),
+            tap((contacts) => {
+                this._contacts.next(contacts);
             })
-            .pipe(
-                tap((contacts) => {
-                    let orderedContacts = [...contacts['data']];
-                    orderedContacts.sort((a, b) =>
-                        a.name.localeCompare(b.name)
-                    );
-                    this._contacts.next(orderedContacts);
-                })
-            );
+        );
     }
 
     /**

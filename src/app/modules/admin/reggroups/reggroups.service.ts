@@ -102,14 +102,23 @@ export class ReggroupsService {
      */
     searchGroups(name: string): Observable<Group[]> {
         return this._httpClient
-            .get<Group[]>('http://10.2.1.108/v1/groups', {
-                params: { name },
-            })
+            .get<Group[]>('http://10.2.1.108/v1/groups')
             .pipe(
+                map((groups) => {
+                    // Convert the input name to lowercase
+                    const searchName = name.toLowerCase();
+                    // Filter groups whose name contains the searchName (case-insensitive)
+                    const filteredGroups = groups['data'].filter((group) =>
+                        group.name.toLowerCase().includes(searchName)
+                    );
+                    // Sort the filtered groups by name (case-insensitive)
+                    const orderedGroups = filteredGroups.sort((a, b) =>
+                        a.name.localeCompare(b.name)
+                    );
+                    return orderedGroups;
+                }),
                 tap((groups) => {
-                    let orderedGroups = [...groups['data']];
-                    orderedGroups.sort((a, b) => a.name.localeCompare(b.name));
-                    this._groups.next(orderedGroups);
+                    this._groups.next(groups);
                 })
             );
     }
