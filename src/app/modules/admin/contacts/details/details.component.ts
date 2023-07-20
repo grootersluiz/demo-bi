@@ -305,6 +305,7 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
         const password = this.contactForm.get('password').value;
         contact.groupIds = this.groups.value;
         contact.dashboardIds = this.dashs.value;
+        contact.reportIds = this.reports.value;
         // Go through the contact object and clear empty values
 
         // Update the contact on the server
