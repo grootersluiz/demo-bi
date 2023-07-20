@@ -152,6 +152,23 @@ export class ReggroupsService {
     }
 
     /**
+     * Get groups by report
+     */
+    getGroupsByReport(id: string): Observable<Group[]> {
+        return this._httpClient
+            .get<Group[]>(`http://10.2.1.108/v1/groups?reportId=${id}`)
+            .pipe(
+                tap((users) => {
+                    let orderedContacts = [...users['data']];
+                    orderedContacts.sort((a, b) =>
+                        a.name.localeCompare(b.name)
+                    );
+                    this._groups.next(orderedContacts);
+                })
+            );
+    }
+
+    /**
      * Create group
      */
     createGroup(group: Group): Observable<Group> {

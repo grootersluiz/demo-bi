@@ -100,9 +100,42 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
+
+                        <!-- Reports Filter -->
+                        <div class="flex-auto">
+                            <mat-form-field
+                                class="fuse-mat-dense fuse-mat-rounded w-full min-w-50 ml-2"
+                                [subscriptSizing]="'dynamic'"
+                            >
+                                <mat-select
+                                    [formControl]="reports"
+                                    [placeholder]="'Buscar por relatório'"
+                                >
+                                    <mat-option (click)="getGroupsByRep('')"
+                                        >Todos</mat-option
+                                    >
+
+                                    <mat-option
+                                        style="font-size: 12px"
+                                        *ngFor="
+                                            let report of reportStringList;
+                                            let i = index
+                                        "
+                                        [value]="reportObjects[i].id"
+                                        (click)="
+                                            getGroupsByRep(
+                                                reportObjects[i].id.toString()
+                                            )
+                                        "
+                                        >{{ report }}</mat-option
+                                    >
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
                         <!-- Add group button -->
                         <button
-                            class="ml-2"
+                            class="ml-3"
                             mat-flat-button
                             [color]="'primary'"
                             (click)="createGroup()"

@@ -131,9 +131,41 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
+
+                        <!-- Reports Filter -->
+                        <div class="flex-auto">
+                            <mat-form-field
+                                class="fuse-mat-dense fuse-mat-rounded w-full min-w-50 ml-3"
+                                [subscriptSizing]="'dynamic'"
+                            >
+                                <mat-select
+                                    [formControl]="reports"
+                                    [placeholder]="'Buscar por relatório'"
+                                >
+                                    <mat-option (click)="getUsersByRep('')"
+                                        >Todos</mat-option
+                                    >
+
+                                    <mat-option
+                                        style="font-size: 12px"
+                                        *ngFor="
+                                            let report of reportStringList;
+                                            let i = index
+                                        "
+                                        [value]="reportObjects[i].id"
+                                        (click)="
+                                            getUsersByRep(
+                                                reportObjects[i].id.toString()
+                                            )
+                                        "
+                                        >{{ report }}</mat-option
+                                    >
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
                         <!-- Add contact button -->
                         <button
-                            class="ml-3"
+                            class="ml-4"
                             mat-flat-button
                             [color]="'primary'"
                             (click)="createContact()"

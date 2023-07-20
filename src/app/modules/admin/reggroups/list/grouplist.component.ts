@@ -25,6 +25,8 @@ import { Group } from 'app/modules/admin/reggroups/reggroups.types';
 import { ReggroupsService } from 'app/modules/admin/reggroups/reggroups.service';
 import { RegdashsService } from 'app/modules/admin/regdashs/regdashs.service';
 import { Dash } from 'app/modules/admin/regdashs/regdashs.types';
+import { RegreportsService } from '../../regreports/regreports.service';
+import { Reports } from '../../regreports/regreports.types';
 
 @Component({
     selector: 'group-list',
@@ -37,6 +39,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
 
     groups$: Observable<Group[]>;
     dashs$: Observable<Dash[]>;
+    reports$: Observable<Reports[]>;
 
     groupsCount: number = 0;
     groupsTableColumns: string[] = ['name', 'email', 'phoneNumber', 'job'];
@@ -45,6 +48,9 @@ export class GroupListComponent implements OnInit, OnDestroy {
     dashs = new FormControl([]);
     dashsObjects: Dash[];
     dashsStringList: string[];
+    reports = new FormControl([]);
+    reportObjects: Reports[];
+    reportStringList: string[];
     selectedGroup: Group;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -56,6 +62,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
         private _changeDetectorRef: ChangeDetectorRef,
         private _groupsService: ReggroupsService,
         private _dashsService: RegdashsService,
+        private _reportsService: RegreportsService,
         @Inject(DOCUMENT) private _document: any,
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService
@@ -103,6 +110,22 @@ export class GroupListComponent implements OnInit, OnDestroy {
                 );
 
                 this.dashsObjects = dashs;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
+        //Get Reports for filter
+
+        this.reports$ = this._reportsService.reports$;
+        this._reportsService.reports$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((reports: Reports[]) => {
+                this.reportStringList = reports.map(
+                    (report) => report.id.toString() + ' - ' + report.name
+                );
+
+                this.reportObjects = reports;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -214,6 +237,16 @@ export class GroupListComponent implements OnInit, OnDestroy {
     getGroupsByDb(id: string) {
         this._groupsService.getGroupsByDash(id).subscribe();
         this.searchInputControl.setValue('');
+        this.reports.setValue([]);
+    }
+
+    /**
+     * Get group by dash
+     */
+    getGroupsByRep(id: string) {
+        this._groupsService.getGroupsByReport(id).subscribe();
+        this.searchInputControl.setValue('');
+        this.dashs.setValue([]);
     }
 
     /**
@@ -222,6 +255,7 @@ export class GroupListComponent implements OnInit, OnDestroy {
     getGroupsByName(name: string) {
         this._groupsService.searchGroups(name).subscribe();
         this.dashs.setValue([]);
+        this.reports.setValue([]);
     }
 
     /**

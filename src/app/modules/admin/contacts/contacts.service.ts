@@ -127,6 +127,23 @@ export class ContactsService {
     }
 
     /**
+     * Get users by report
+     */
+    getUsersByReport(id: string): Observable<User[]> {
+        return this._httpClient
+            .get<User[]>(`http://10.2.1.108/v1/users?reportId=${id}`)
+            .pipe(
+                tap((users) => {
+                    let orderedContacts = [...users['data']];
+                    orderedContacts.sort((a, b) =>
+                        a.name.localeCompare(b.name)
+                    );
+                    this._contacts.next(orderedContacts);
+                })
+            );
+    }
+
+    /**
      * Get user by ID
      */
     getUserById(id: number): Observable<User> {

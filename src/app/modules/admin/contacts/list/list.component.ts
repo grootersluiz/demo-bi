@@ -27,6 +27,8 @@ import { Group } from 'app/modules/admin/reggroups/reggroups.types';
 import { ReggroupsService } from 'app/modules/admin/reggroups/reggroups.service';
 import { RegdashsService } from 'app/modules/admin/regdashs/regdashs.service';
 import { Dash } from 'app/modules/admin/regdashs/regdashs.types';
+import { RegreportsService } from '../../regreports/regreports.service';
+import { Reports } from '../../regreports/regreports.types';
 
 @Component({
     selector: 'contacts-list',
@@ -40,6 +42,7 @@ export class ContactsListComponent implements OnInit, OnDestroy {
     contacts$: Observable<User[]>;
     groups$: Observable<Group[]>;
     dashs$: Observable<Dash[]>;
+    reports$: Observable<Reports[]>;
 
     contactsCount: number = 0;
     contactsTableColumns: string[] = ['name', 'email', 'phoneNumber', 'job'];
@@ -49,6 +52,9 @@ export class ContactsListComponent implements OnInit, OnDestroy {
     dashs = new FormControl([]);
     dashsObjects: Dash[];
     dashsStringList: string[];
+    reports = new FormControl([]);
+    reportObjects: Reports[];
+    reportStringList: string[];
     countries: Country[];
     drawerMode: 'side' | 'over';
     searchInputControl: UntypedFormControl = new UntypedFormControl();
@@ -64,6 +70,7 @@ export class ContactsListComponent implements OnInit, OnDestroy {
         private _contactsService: ContactsService,
         private _groupsService: ReggroupsService,
         private _dashsService: RegdashsService,
+        private _reportsService: RegreportsService,
         @Inject(DOCUMENT) private _document: any,
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService
@@ -116,7 +123,7 @@ export class ContactsListComponent implements OnInit, OnDestroy {
                 this._changeDetectorRef.markForCheck();
             });
 
-        //Get Dashs
+        //Get Dashs for filter
 
         this.dashs$ = this._dashsService.contacts$;
         this._dashsService.contacts$
@@ -127,6 +134,22 @@ export class ContactsListComponent implements OnInit, OnDestroy {
                 );
 
                 this.dashsObjects = dashs;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
+        //Get Reports for filter
+
+        this.reports$ = this._reportsService.reports$;
+        this._reportsService.reports$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((reports: Reports[]) => {
+                this.reportStringList = reports.map(
+                    (report) => report.id.toString() + ' - ' + report.name
+                );
+
+                this.reportObjects = reports;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -239,6 +262,17 @@ export class ContactsListComponent implements OnInit, OnDestroy {
         this._contactsService.getUsersByDash(id).subscribe();
         this.groups.setValue([]);
         this.searchInputControl.setValue('');
+        this.reports.setValue([]);
+    }
+
+    /**
+     * Get user by dash
+     */
+    getUsersByRep(id: string) {
+        this._contactsService.getUsersByReport(id).subscribe();
+        this.groups.setValue([]);
+        this.searchInputControl.setValue('');
+        this.dashs.setValue([]);
     }
 
     /**
@@ -248,6 +282,7 @@ export class ContactsListComponent implements OnInit, OnDestroy {
         this._contactsService.searchContacts(name).subscribe();
         this.groups.setValue([]);
         this.dashs.setValue([]);
+        this.reports.setValue([]);
     }
 
     /**
