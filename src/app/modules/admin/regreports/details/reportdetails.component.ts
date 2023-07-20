@@ -253,6 +253,7 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
         // Get the contact object
         const contact = this.contactForm.getRawValue();
         contact.groupIds = this.groups.value;
+        contact.userIds = this.users.value;
         // Update the contact on the server
         this._contactsService
             .updateReport(contact.id, contact)
