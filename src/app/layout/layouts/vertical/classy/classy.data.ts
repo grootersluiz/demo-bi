@@ -60,7 +60,7 @@ export const navigationData: Navigation = {
                             type: 'basic',
                             icon: 'heroicons_outline:chart-bar',
                             link: '/dashboards/analisemarca',
-                        }
+                        },
                     ],
                 },
                 // {
@@ -87,6 +87,13 @@ export const navigationData: Navigation = {
                 //     ],
                 // },
             ],
+        },
+        {
+            id: 'dashboardstest',
+            title: 'Dashboards',
+            type: 'basic',
+            icon: 'heroicons_outline:home',
+            link: '/dashboardstest',
         },
 
         {
