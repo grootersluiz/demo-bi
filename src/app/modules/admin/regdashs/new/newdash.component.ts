@@ -29,6 +29,8 @@ import { DashListComponent } from 'app/modules/admin/regdashs/list/dashlist.comp
 import { RegdashsService } from 'app/modules/admin/regdashs/regdashs.service';
 import { Group } from 'app/modules/admin/reggroups/reggroups.types';
 import { ReggroupsService } from 'app/modules/admin/reggroups/reggroups.service';
+import { RegreportsService } from '../../regreports/regreports.service';
+import { Reports } from '../../regreports/regreports.types';
 
 @Component({
     selector: 'new-dash',
@@ -42,6 +44,7 @@ export class NewDashComponent implements OnInit, OnDestroy {
     @ViewChild('tagsPanelOrigin') private _tagsPanelOrigin: ElementRef;
 
     groups$: Observable<Group[]>;
+    reports$: Observable<Reports[]>;
 
     editMode: boolean = false;
     tags: Tag[];
@@ -54,6 +57,9 @@ export class NewDashComponent implements OnInit, OnDestroy {
     groups = new FormControl([]);
     groupsObjects: Group[];
     groupsStringList: string[];
+    reports = new FormControl([]);
+    reportObjects: Reports[];
+    reportStringList: string[];
     private _tagsPanelOverlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -66,6 +72,7 @@ export class NewDashComponent implements OnInit, OnDestroy {
         private _contactsListComponent: DashListComponent,
         private _contactsService: RegdashsService,
         private _groupsService: ReggroupsService,
+        private _reportsService: RegreportsService,
         private _formBuilder: UntypedFormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
         private _renderer2: Renderer2,
@@ -93,6 +100,7 @@ export class NewDashComponent implements OnInit, OnDestroy {
             type: [''],
             groupIds: [''],
             userIds: [''],
+            reportIds: [''],
             emails: this._formBuilder.array([]),
             phoneNumbers: this._formBuilder.array([]),
             title: [''],
@@ -114,6 +122,22 @@ export class NewDashComponent implements OnInit, OnDestroy {
                 );
 
                 this.groupsObjects = groups;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
+        //Get Reports
+
+        this.reports$ = this._reportsService.reports$;
+        this._reportsService.reports$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((reports: Reports[]) => {
+                this.reportStringList = reports.map(
+                    (report) => report.id.toString() + ' - ' + report.name
+                );
+
+                this.reportObjects = reports;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -168,6 +192,7 @@ export class NewDashComponent implements OnInit, OnDestroy {
         // Get the contact object
         const contact = this.contactForm.getRawValue();
         contact.groupIds = this.groups.value;
+        contact.reportIds = this.reports.value;
 
         // Update the contact on the server
         this._contactsService.createDash(contact).subscribe(() => {

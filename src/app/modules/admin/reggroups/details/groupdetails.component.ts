@@ -131,7 +131,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
                 //Set the User Dashs
                 this.dashs.setValue(this.group.dashboardIds);
 
-                //Set the User Dashs
+                //Set the User Reports
                 this.reports.setValue(this.group.reportIds);
 
                 // Clear the emails and phoneNumbers form arrays

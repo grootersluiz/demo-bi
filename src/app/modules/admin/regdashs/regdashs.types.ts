@@ -4,6 +4,7 @@ export interface Dash {
     type: string;
     groupIds: number[];
     userIds: number[];
+    reportIds: number[];
 }
 
 export interface Country {

@@ -10,6 +10,7 @@ import { DashListComponent } from 'app/modules/admin/regdashs/list/dashlist.comp
 import { DashDetailsComponent } from 'app/modules/admin/regdashs/details/dashdetails.component';
 import { GroupsResolver } from '../reggroups/reggroups.resolvers';
 import { NewDashComponent } from './new/newdash.component';
+import { ReportsResolver } from '../regreports/regreports.resolvers';
 
 export const regdashsRoutes: Route[] = [
     {
@@ -23,6 +24,7 @@ export const regdashsRoutes: Route[] = [
                 resolve: {
                     contacts: DashsResolver,
                     groups: GroupsResolver,
+                    reports: ReportsResolver,
                 },
                 children: [
                     {
@@ -32,6 +34,7 @@ export const regdashsRoutes: Route[] = [
                             contact: DashsDashResolver,
                             groups: GroupsResolver,
                             dashsId: DbByIdResolver,
+                            reports: ReportsResolver,
                         },
                         canDeactivate: [CanDeactivateContactsDetails],
                     },
@@ -41,6 +44,7 @@ export const regdashsRoutes: Route[] = [
                         resolve: {
                             groups: GroupsResolver,
                             dashs: DashsResolver,
+                            reports: ReportsResolver,
                         },
                         canDeactivate: [CanDeactivateContactsDetails],
                     },

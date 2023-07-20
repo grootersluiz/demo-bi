@@ -181,6 +181,7 @@ export class RegdashsService {
                         name: dash.name,
                         type: dash.type,
                         groupIds: dash.groupIds,
+                        reportIds: dash.reportIds,
                     })
                     .pipe(
                         map((newContact) => {
@@ -210,6 +211,7 @@ export class RegdashsService {
                         name: contact.name,
                         type: contact.type,
                         groupIds: contact.groupIds,
+                        reportIds: contact.reportIds,
                     })
                     .pipe(
                         map((updatedContact) => {
