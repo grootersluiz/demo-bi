@@ -92,6 +92,7 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
             tags: [[]],
             viewId: [null],
             type: [null],
+            data: [null],
         });
 
         // Get the contacts

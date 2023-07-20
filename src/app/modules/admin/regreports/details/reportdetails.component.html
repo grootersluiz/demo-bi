@@ -642,6 +642,26 @@
                         </mat-form-field>
                     </div>
 
+                    <!-- Link -->
+                    <div class="mt-8">
+                        <mat-form-field
+                            class="w-full"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Link</mat-label>
+                            <!-- <mat-icon
+                                matPrefix
+                                class="hidden sm:flex icon-size-5"
+                                [svgIcon]="'heroicons_solid:briefcase'"
+                            ></mat-icon> -->
+                            <input
+                                matInput
+                                [formControlName]="'data'"
+                                [placeholder]="'Link'"
+                            />
+                        </mat-form-field>
+                    </div>
+
                     <!-- Company -->
                     <div class="mt-8">
                         <mat-form-field

@@ -97,20 +97,29 @@ export class RegreportsService {
      */
     searchReports(name: string): Observable<Reports[]> {
         return this._httpClient
-            .get<Reports[]>('http://10.2.1.108/v1/reports', {
-                params: { name },
-            })
+            .get<Reports[]>('http://10.2.1.108/v1/reports')
             .pipe(
-                tap((reports) => {
-                    let orderedReports = [...reports['data']];
-                    orderedReports.sort((a, b) => a.name.localeCompare(b.name));
+                map((reports) => {
+                    // Convert the input name to lowercase
+                    const searchName = name.toLowerCase();
+                    // Filter reports whose name contains the searchName (case-insensitive)
+                    const filteredReports = reports['data'].filter((report) =>
+                        report.name.toLowerCase().includes(searchName)
+                    );
+                    // Sort the filtered reports by name (case-insensitive)
+                    const orderedReports = filteredReports.sort((a, b) =>
+                        a.name.localeCompare(b.name)
+                    );
+                    return orderedReports;
+                }),
+                tap((orderedReports) => {
                     this._reports.next(orderedReports);
                 })
             );
     }
 
     /**
-     * Get contact by id
+     * Get report by id
      */
     getReportById(id: number): Observable<Reports> {
         return this._reports.pipe(
@@ -149,6 +158,7 @@ export class RegreportsService {
                         name: report.name,
                         viewId: report.viewId,
                         type: report.type,
+                        data: report.data,
                     })
                     .pipe(
                         map((newContact) => {
@@ -180,6 +190,7 @@ export class RegreportsService {
                             name: report.name,
                             viewId: report.viewId,
                             type: report.type,
+                            data: report.data,
                         }
                     )
                     .pipe(
@@ -194,9 +205,8 @@ export class RegreportsService {
                                 name: updatedReport.name,
                                 viewId: report.viewId,
                                 type: updatedReport.type,
+                                data: updatedReport.data,
                             };
-
-                            console.log(report.viewId);
 
                             // Update the contact
                             reports[index] = myUpdatedReport;

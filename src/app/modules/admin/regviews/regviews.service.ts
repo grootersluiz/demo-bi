@@ -85,17 +85,24 @@ export class RegviewsService {
      *
      */
     searchViews(name: string): Observable<View[]> {
-        return this._httpClient
-            .get<View[]>('http://10.2.1.108/v1/views', {
-                params: { name },
+        return this._httpClient.get<View[]>('http://10.2.1.108/v1/views').pipe(
+            map((views) => {
+                // Convert the input name to lowercase
+                const searchName = name.toLowerCase();
+                // Filter views whose name contains the searchName (case-insensitive)
+                const filteredViews = views['data'].filter((view) =>
+                    view.name.toLowerCase().includes(searchName)
+                );
+                // Sort the filtered views by name (case-insensitive)
+                const orderedViews = filteredViews.sort((a, b) =>
+                    a.name.localeCompare(b.name)
+                );
+                return orderedViews;
+            }),
+            tap((orderedViews) => {
+                this._views.next(orderedViews);
             })
-            .pipe(
-                tap((views) => {
-                    let orderedViews = [...views['data']];
-                    orderedViews.sort((a, b) => a.name.localeCompare(b.name));
-                    this._views.next(orderedViews);
-                })
-            );
+        );
     }
 
     /**

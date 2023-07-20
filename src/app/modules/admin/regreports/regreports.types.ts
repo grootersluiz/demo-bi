@@ -3,6 +3,7 @@ export interface Reports {
     name: string;
     viewId: number;
     type: string;
+    data: string;
 }
 
 export interface Country {
