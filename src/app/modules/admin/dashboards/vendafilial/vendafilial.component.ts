@@ -6,14 +6,18 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { formatNumber } from '@angular/common';
 import { LocalizedString, parseTemplate } from '@angular/compiler';
-
+import {
+    MatDatepicker,
+    MatDatepickerToggle,
+    MatDatepickerInputEvent,
+} from '@angular/material/datepicker';
 import { Directive, HostListener, ElementRef, Renderer2 } from '@angular/core';
 import { ArrayDataSource } from '@angular/cdk/collections';
 import { HttpClient } from '@angular/common/http';
 import { template, toPlainObject } from 'lodash';
 // import { VendafilialchartComponent } from './vendafilialchart/vendafilialchart.component';
 // import { VendafilialchartService } from './vendafilialchart/vendafilialchart.service';
-
+import { FormControl } from '@angular/forms';
 import ApexCharts from "apexcharts"; //está usando
 import { ApexOptions } from 'ng-apexcharts';
 import {
@@ -28,6 +32,13 @@ import {
   ApexResponsive,
   ApexYAxis
 } from "ng-apexcharts";
+
+import { default as _rollupMoment, Moment } from 'moment';
+
+import * as _moment from 'moment';
+
+const moment = _rollupMoment || _moment;
+
 
 export interface TipoColumaElement {
   NOMEFANTASIA: string;
@@ -65,7 +76,7 @@ let ELEMENT_DATA_VENDA: TipoColumaElement[];
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
-  yaxis: ApexYAxis[]; 
+  yaxis: ApexYAxis[];
   xaxis: ApexXAxis;
   dataLabels: ApexDataLabels;
   grid: ApexGrid;
@@ -85,6 +96,8 @@ export type ChartOptions = {
 export class VendafilialComponent {
   @ViewChild("chart") chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
+
+  end = new FormControl<any | null>(null);
 
   _colors = {
     palette1:  ['#008FFB','#00E396','#FEB019','#FF4560','#775DD0'],
@@ -124,11 +137,11 @@ export class VendafilialComponent {
 
     var indexData =0;
     for (let index = 0; index < rows.length; index++) {
-      
+
       if(rows[index][0] == codemp){
 
         var valorKey  = rows[index];
-        
+
         while(valorKey[1].substr(0,2) != categorias[indexData]){
 
           this.viewSerie[0].data.push(0);
@@ -138,11 +151,11 @@ export class VendafilialComponent {
 
           if(indexData > 31){ break;}
         }
-  
+
         var valorMeta = !rows[index][3]?0:rows[index][3];
         var valorRol  = !rows[index][4]?0:rows[index][4];
         var valorMb   = !rows[index][10]?0:rows[index][10];
-        
+
         if(valorKey[1].substr(0,2) === categorias[indexData]){
           this.viewSerie[0].data.push(valorMeta);
           this.viewSerie[1].data.push(valorRol);
@@ -151,7 +164,7 @@ export class VendafilialComponent {
 
         indexData++;
       }
-      
+
     }
 
     this.chartOptions.title.text =  " Dia ("+descemp+")";
@@ -190,13 +203,13 @@ export class VendafilialComponent {
     }
   }
 
-  // setParam(ultDia,mes, ano, filial){
+//    setParam(ultDia,mes, ano){
 
-  //   this.param.ultDia = ultDia;
-  //   this.param.mes    = mes;
-  //   this.param.ano    = ano;
-  //   this.param.filial = filial;
-  // }
+//      this.param.ultDia = 1;
+//      this.param.mes    = mes;
+//      this.param.ano    = ano;
+//      this.param.ultDia = ultDia;
+//    }
 
   categorias = ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '30','31'];
   getCategorias(){
@@ -206,10 +219,10 @@ export class VendafilialComponent {
     // this.categorias = [];
     var contDia: string;
     for (let index = 1 ; index <= dia; index++) {
-      
+
       contDia = ("00" + index).slice(-2) ;
       this.categorias.push(contDia);
-      
+
     }
 
   }
@@ -287,6 +300,7 @@ export class VendafilialComponent {
   dataSource = ELEMENT_DATA_VENDA;
   _sysdate:string;
 
+
   _elementFilter: any;
   _elementRenderer: any;
   _thishttpClient: any;
@@ -351,11 +365,13 @@ export class VendafilialComponent {
 
   }
 
-  
+  isToggleOn: boolean;
   _iconShowFilter: string       = 'filter_list';
   _tolltip_ShowFIlter: string   = 'On filtro';
-  _classDashInicial: string[]   = ['flex','flex-col','p-0','w-4/5','sm:w-full','md:w-full','lg:w-4/5','xl:w-4/5','2xl:w-4/5'];
-  _classFilterInicial: string[] = ['flex','flex-col','p-0','w-1/5','sm:w-full','md:w-full','lg:w-1/5','xl:w-1/5','2xl:w-1/5'];
+  _classDashInicial: string[]   = ['flex','flex-col','p-0','w-full','sm:w-full','md:w-full','lg:w-full','xl:w-full','2xl:w-full'];
+  _classFilterInicial: string[] = ['flex','flex-col','p-0','w-full','sm:h-full','md:h-full','lg:w-full','xl:w-full','2xl:w-full'];
+
+
   showFilter(thisEvent) {
 
     this._iconShowFilter      = this._iconShowFilter== 'filter_list'? 'filter_list_off' : 'filter_list';
@@ -408,13 +424,12 @@ export class VendafilialComponent {
 
       this._elementRenderer.addClass(this._elementFilter.nativeElement.firstElementChild.lastElementChild.lastElementChild,iDash);
       this._elementRenderer.addClass(this._elementFilter.nativeElement.firstElementChild.lastElementChild.firstElementChild,iFilter);
-      
+
     }
 
     return true;
 
   }
-
   showDash(thisEvent) {
 
     if(thisEvent.hidden){
@@ -456,6 +471,50 @@ export class VendafilialComponent {
 
   }
 
+
+
+  setFinalMY(evMY: Moment, datepicker: MatDatepicker<Moment>, dataref: any) {
+    function getLastDayOfMonth(year, month) {
+        // Create a new date object with the given year and month (0-based index)
+        let date = new Date(year, month + 1, 0);
+
+        // Get the last day of the month
+        let lastDay = date.getDate();
+
+        return lastDay;
+    }
+
+    // Get the current date
+    let currentDate = new Date();
+
+    // Extract the current year and month (0-based index)
+    let currentYear = currentDate.getFullYear();
+    let currentMonth = currentDate.getMonth();
+
+    // Extract the year and month from the given evMY
+    let evYear = evMY.year();
+    let evMonth = evMY.month();
+    let evMonthF = ("00" + (evMY.month())).slice(-2);
+    let evUltDay = ("00" + (getLastDayOfMonth(evMY.year(),evMY.month()))).slice(-2);
+
+        // this.vendafilialService.setParam(
+        //     evUltDay,evMonthF,evYear,99,'REDE'
+        // )
+        this.end.setValue(
+            new Date(
+                evMY.year(),
+                evMY.month(),
+                1
+            )
+        );
+        this.formatDataMesAno2(dataref);
+        datepicker.close();
+
+}
+
+
+
+
   // codEx = [100,200,300,400,500,600,700];
   codEx = ['E1','E2','E3','E4','E5','E6','E7'];
   public mostraMenuFilial2Chart(el): void {
@@ -465,7 +524,7 @@ export class VendafilialComponent {
     for (let index = 0; index < this.codEx.length; index++) {
 
       var elMenuFiliais = document.getElementById('item'+this.codEx[index]);
-      
+
       if(this.codEx[index] == el.srcElement.innerText ){
 
         if(elMenuFiliais.className == 'charts-menu2'){
@@ -473,7 +532,7 @@ export class VendafilialComponent {
           var classe ="charts-menu2 charts-menu-open";
           var classes = elMenuFiliais.className.split(' ');
           var getIndex = classes.indexOf(classe);
-        
+
           if (getIndex === -1) {
             classes.push(classe);
             elMenuFiliais.className = classes.join(' ');
@@ -483,7 +542,7 @@ export class VendafilialComponent {
       } else{
         elMenuFiliais.className = "charts-menu2";
       }
-      
+
     }
 
   }
@@ -498,6 +557,7 @@ export class VendafilialComponent {
     this._elementRenderer   = _renderer;
     this._thishttpClient    = _httpClient;
 
+
     const sysDate = new Date();
     var mes = ("00" + (sysDate.getMonth()+1)).slice(-2) ;
     this._sysdate  = '('+mes+'/'+sysDate.getFullYear() +')';
@@ -508,7 +568,7 @@ export class VendafilialComponent {
 
     this.dataSource = arrayDataSource;
 
-    //Ajuste para renderizar class 
+    //Ajuste para renderizar class
     setTimeout(() => {
       this._elementRenderer.setStyle(
         this._elementFilter.nativeElement.firstElementChild.lastElementChild.firstElementChild,
@@ -536,13 +596,13 @@ export class VendafilialComponent {
                         transition: .15s ease all;
                         pointer-events: none;
                       }
-                      
+
                       .charts-menu-open {
                           opacity: 1 !important;
                           pointer-events: all !important;
                           transition: .15s ease all;
                       }
-                      
+
                       .charts-menu-item {
                           padding: 6px 7px;
                           font-size: 12px;
@@ -575,6 +635,43 @@ export class VendafilialComponent {
                         box-shadow: inset -30px -30px 30px 30px #efefef;
                       }
 
+                        div.cabecalho-filtro {
+                            background: rgb(75, 75, 75);
+                            background: linear-gradient(
+                                0deg,
+                                rgba(75, 75, 75, 1) 0%,
+                                rgba(82, 82, 82, 1) 12%,
+                                rgba(82, 82, 82, 1) 86%,
+                                rgba(75, 75, 75, 1) 100%
+                            );
+                            filter: drop-shadow(0 0.4rem 0.7rem #00000065);
+                            border-radius: 15px;
+                            height: 120px;
+                            padding-bottom: 1rem;
+                        }
+
+                        .cabecalho-filtro div.mat-mdc-form-field-flex {
+                            background-color: rgb(179, 179, 179);
+                            filter: drop-shadow(0 0.4rem 0.7rem #00000065);
+                        }
+
+                        .cabecalho-filtro svg.mat-datepicker-toggle-default-icon {
+                            color: #525252;
+                        }
+
+                        .cabecalho-filtro .logo-filter {
+                            width: 4rem;
+                            height: 4rem;
+                        }
+
+                        .cabecalho-filtro .apply-button {
+                            filter: drop-shadow(0 0.4rem 0.7rem #00000065);
+                            transition: filter 150ms;
+                        }
+
+                        .cabecalho-filtro .apply-button:hover {
+                            filter: drop-shadow(0 0 0.2rem #d8790c59);
+                        }
                     </style>`;
 
     this.chartOptions = {
@@ -659,7 +756,7 @@ export class VendafilialComponent {
                   var classe ="charts-menu charts-menu-open";
                   var classes = elemento.className.split(' ');
                   var getIndex = classes.indexOf(classe);
-                
+
                   if (getIndex === -1) {
                     classes.push(classe);
                     elemento.className = classes.join(' ');
@@ -672,7 +769,7 @@ export class VendafilialComponent {
             }]
           }
         }
-        
+
       },
       dataLabels: {
         enabled: false
@@ -788,9 +885,9 @@ export class VendafilialComponent {
   eventUpdateSomenteUmaVez = true; // Cuidado parametro Critico para loop Eterno!
   // ngOnInit(): void {
   ngAfterViewInit(): void {
-    
+
     window['Apex'] = {
-        
+
         chart: {
             events: {
               updated: (chartContext?: any, config? :any): void => {
@@ -806,7 +903,7 @@ export class VendafilialComponent {
 
                   this.eventUpdateSomenteUmaVez = false;  // Cuidado parametro Critico para loop Eterno!
                 }
-                
+
               },
               click: (event: any, chartContext?: any, config? :any): void => {
 
@@ -878,7 +975,7 @@ export class VendafilialComponent {
 
         dataPicker.value = '01/'+mes+'/'+ano;
       }
-      
+
     }
     return true;
 
@@ -917,7 +1014,7 @@ export class VendafilialComponent {
                                       var arrayDataSource = this.formataDataSource(dataresponse.rows);
                                       this.dataSource = arrayDataSource;
                                 });
-            
+
     // Não foi utilizado getDataAplica devido asyncronidade na atualização do dataSource
     // var dataGet = this.vendafilialService.getDataAplica(arrayParam);
         // setTimeout(() => {
@@ -926,7 +1023,7 @@ export class VendafilialComponent {
         // this.dataSource = arrayDataSource;
         // console.log(this.dataSource);
       // }, 600);
-      
+
       this.vendafilialService.setParam(dia,mes,ano,99,'REDE');
       this.limpar(); // viewSerie, categorias, series
       this.validaParam();
