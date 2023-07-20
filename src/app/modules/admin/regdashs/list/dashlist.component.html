@@ -100,9 +100,42 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
+
+                        <!-- Users Filter -->
+                        <div class="flex-auto">
+                            <mat-form-field
+                                class="fuse-mat-dense fuse-mat-rounded w-full min-w-50 ml-2"
+                                [subscriptSizing]="'dynamic'"
+                            >
+                                <mat-select
+                                    [formControl]="users"
+                                    [placeholder]="'Buscar por usuário'"
+                                >
+                                    <mat-option (click)="getDashsByUsr('')"
+                                        >Todos</mat-option
+                                    >
+
+                                    <mat-option
+                                        style="font-size: 12px"
+                                        *ngFor="
+                                            let user of usersStringList;
+                                            let i = index
+                                        "
+                                        [value]="usersObjects[i].id"
+                                        (click)="
+                                            getDashsByUsr(
+                                                usersObjects[i].id.toString()
+                                            )
+                                        "
+                                        >{{ user }}</mat-option
+                                    >
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
                         <!-- Add contact button -->
                         <button
-                            class="ml-2"
+                            class="ml-3"
                             mat-flat-button
                             [color]="'primary'"
                             (click)="createDash()"
