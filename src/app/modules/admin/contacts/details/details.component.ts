@@ -108,6 +108,7 @@ export class ContactsDetailsComponent implements OnInit, OnDestroy {
             role: [''],
             groupIds: [''],
             dashboardIds: [''],
+            reportIds: [''],
             password: [''],
             birthday: [null],
             address: [null],

@@ -719,6 +719,29 @@
                                 >
                             </mat-select>
                         </mat-form-field>
+
+                        <mat-form-field
+                            class="w-full ml-1"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Relatórios</mat-label>
+                            <mat-select
+                                class="my-custom-class"
+                                style="font-size: 12px"
+                                [formControl]="reports"
+                                multiple
+                            >
+                                <mat-option
+                                    style="font-size: 12px"
+                                    *ngFor="
+                                        let report of reportStringList;
+                                        let i = index
+                                    "
+                                    [value]="reportObjects[i].id"
+                                    >{{ report }}</mat-option
+                                >
+                            </mat-select>
+                        </mat-form-field>
                     </div>
 
                     <!-- Company

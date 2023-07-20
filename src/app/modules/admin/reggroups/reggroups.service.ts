@@ -163,6 +163,7 @@ export class ReggroupsService {
                         name: group.name,
                         description: group.description,
                         dashboardIds: group.dashboardIds,
+                        reportIds: group.reportIds,
                     })
                     .pipe(
                         map((newGroup) => {
@@ -192,6 +193,7 @@ export class ReggroupsService {
                         name: group.name,
                         description: group.description,
                         dashboardIds: group.dashboardIds,
+                        reportIds: group.reportIds,
                     })
                     .pipe(
                         map((updatedGroups) => {

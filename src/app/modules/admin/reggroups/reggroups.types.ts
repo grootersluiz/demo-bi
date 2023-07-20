@@ -4,4 +4,5 @@ export interface Group {
     description: string;
     userIds: number[];
     dashboardIds: number[];
+    reportIds: number[];
 }

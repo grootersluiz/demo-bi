@@ -10,6 +10,7 @@ import { GroupListComponent } from 'app/modules/admin/reggroups/list/grouplist.c
 import { GroupDetailsComponent } from 'app/modules/admin/reggroups/details/groupdetails.component';
 import { NewGroupComponent } from './new/newgroup.component';
 import { DashsResolver } from '../regdashs/regdashs.resolvers';
+import { ReportsResolver } from '../regreports/regreports.resolvers';
 
 export const reggroupsRoutes: Route[] = [
     {
@@ -23,6 +24,7 @@ export const reggroupsRoutes: Route[] = [
                 resolve: {
                     contacts: GroupsResolver,
                     dashs: DashsResolver,
+                    reports: ReportsResolver,
                 },
                 children: [
                     {
@@ -32,6 +34,7 @@ export const reggroupsRoutes: Route[] = [
                             contact: GroupsGroupResolver,
                             dashs: DashsResolver,
                             groups: GpByIdResolver,
+                            reports: ReportsResolver,
                         },
                         canDeactivate: [CanDeactivateContactsDetails],
                     },
@@ -41,6 +44,7 @@ export const reggroupsRoutes: Route[] = [
                         resolve: {
                             groups: GroupsResolver,
                             dashs: DashsResolver,
+                            reports: ReportsResolver,
                         },
                         canDeactivate: [CanDeactivateContactsDetails],
                     },

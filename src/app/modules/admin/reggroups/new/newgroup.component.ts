@@ -29,6 +29,8 @@ import { GroupListComponent } from 'app/modules/admin/reggroups/list/grouplist.c
 import { ReggroupsService } from 'app/modules/admin/reggroups/reggroups.service';
 import { RegdashsService } from 'app/modules/admin/regdashs/regdashs.service';
 import { Dash } from 'app/modules/admin/regdashs/regdashs.types';
+import { RegreportsService } from '../../regreports/regreports.service';
+import { Reports } from '../../regreports/regreports.types';
 
 @Component({
     selector: 'new-group',
@@ -42,6 +44,7 @@ export class NewGroupComponent implements OnInit, OnDestroy {
     @ViewChild('tagsPanelOrigin') private _tagsPanelOrigin: ElementRef;
 
     dashs$: Observable<Dash[]>;
+    reports$: Observable<Reports[]>;
 
     editMode: boolean = false;
     tagsEditMode: boolean = false;
@@ -51,6 +54,9 @@ export class NewGroupComponent implements OnInit, OnDestroy {
     dashs = new FormControl([]);
     dashsObjects: Dash[];
     dashsStringList: string[];
+    reports = new FormControl([]);
+    reportObjects: Reports[];
+    reportStringList: string[];
     private _tagsPanelOverlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -63,6 +69,7 @@ export class NewGroupComponent implements OnInit, OnDestroy {
         private _contactsListComponent: GroupListComponent,
         private _contactsService: ReggroupsService,
         private _dashsService: RegdashsService,
+        private _reportsService: RegreportsService,
         private _formBuilder: UntypedFormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
         private _renderer2: Renderer2,
@@ -90,6 +97,7 @@ export class NewGroupComponent implements OnInit, OnDestroy {
             description: [''],
             userIds: [],
             dashboardIds: [],
+            reportIds: [],
             emails: this._formBuilder.array([]),
             phoneNumbers: this._formBuilder.array([]),
             title: [''],
@@ -111,6 +119,22 @@ export class NewGroupComponent implements OnInit, OnDestroy {
                 );
 
                 this.dashsObjects = dashs;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
+        //Get Reports
+
+        this.reports$ = this._reportsService.reports$;
+        this._reportsService.reports$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((reports: Reports[]) => {
+                this.reportStringList = reports.map(
+                    (report) => report.id.toString() + ' - ' + report.name
+                );
+
+                this.reportObjects = reports;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -165,6 +189,7 @@ export class NewGroupComponent implements OnInit, OnDestroy {
         // Get the contact object
         const contact = this.contactForm.getRawValue();
         contact.dashboardIds = this.dashs.value;
+        contact.reportIds = this.reports.value;
 
         // Update the contact on the server
         this._contactsService.createGroup(contact).subscribe(() => {
