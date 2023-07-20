@@ -17,16 +17,21 @@ import {
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
+    FormControl,
 } from '@angular/forms';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
-import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { debounceTime, Observable, Subject, takeUntil } from 'rxjs';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { Country, Tag } from 'app/modules/admin/regreports/regreports.types';
 import { ReportListComponent } from 'app/modules/admin/regreports/list/reportlist.component';
 import { RegreportsService } from 'app/modules/admin/regreports/regreports.service';
 import { Reports } from '../regreports.types';
+import { ContactsService } from '../../contacts/contacts.service';
+import { User } from 'app/modules/admin/contacts/contacts.types';
+import { ReggroupsService } from '../../reggroups/reggroups.service';
+import { Group } from '../../reggroups/reggroups.types';
 
 @Component({
     selector: 'reports-details',
@@ -39,11 +44,20 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
     @ViewChild('tagsPanel') private _tagsPanel: TemplateRef<any>;
     @ViewChild('tagsPanelOrigin') private _tagsPanelOrigin: ElementRef;
 
+    contacts$: Observable<User[]>;
+    groups$: Observable<Group[]>;
+
     editMode: boolean = false;
     tags: Tag[];
     tagsEditMode: boolean = false;
     filteredTags: Tag[];
     report: Reports;
+    groups = new FormControl([]);
+    groupsObjects: Group[];
+    groupsStringList: string[];
+    users = new FormControl([]);
+    usersObjects: User[];
+    usersStringList: string[];
     contactForm: UntypedFormGroup;
     contacts: Reports[];
     countries: Country[];
@@ -58,6 +72,8 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
         private _changeDetectorRef: ChangeDetectorRef,
         private _contactsListComponent: ReportListComponent,
         private _contactsService: RegreportsService,
+        private _groupsService: ReggroupsService,
+        private _usersService: ContactsService,
         private _formBuilder: UntypedFormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
         private _renderer2: Renderer2,
@@ -105,7 +121,7 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
                 this._changeDetectorRef.markForCheck();
             });
 
-        // Get the contact
+        // Get the report
         this._contactsService.contact$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((contact: Reports) => {
@@ -114,6 +130,9 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
 
                 // Get the contact
                 this.report = contact;
+
+                //Set the User Groups
+                this.groups.setValue(this.report.groupIds);
 
                 // Clear the emails and phoneNumbers form arrays
                 (this.contactForm.get('emails') as UntypedFormArray).clear();
@@ -124,72 +143,39 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
                 // Patch values to the form
                 this.contactForm.patchValue(contact);
 
-                // Setup the emails form array
-                // const emailFormGroups = [];
-
-                // if (contact.emails.length > 0) {
-                //     // Iterate through them
-                //     contact.emails.forEach((email) => {
-                //         // Create an email form group
-                //         emailFormGroups.push(
-                //             this._formBuilder.group({
-                //                 email: [email.email],
-                //                 label: [email.label],
-                //             })
-                //         );
-                //     });
-                // } else {
-                //     // Create an email form group
-                //     emailFormGroups.push(
-                //         this._formBuilder.group({
-                //             email: [''],
-                //             label: [''],
-                //         })
-                //     );
-                // }
-
-                // Add the email form groups to the emails form array
-                // emailFormGroups.forEach((emailFormGroup) => {
-                //     (this.contactForm.get('emails') as UntypedFormArray).push(
-                //         emailFormGroup
-                //     );
-                // });
-
-                // Setup the phone numbers form array
-                // const phoneNumbersFormGroups = [];
-
-                // if (contact.phoneNumbers.length > 0) {
-                //     // Iterate through them
-                //     contact.phoneNumbers.forEach((phoneNumber) => {
-                //         // Create an email form group
-                //         phoneNumbersFormGroups.push(
-                //             this._formBuilder.group({
-                //                 country: [phoneNumber.country],
-                //                 phoneNumber: [phoneNumber.phoneNumber],
-                //                 label: [phoneNumber.label],
-                //             })
-                //         );
-                //     });
-                // } else {
-                //     // Create a phone number form group
-                //     phoneNumbersFormGroups.push(
-                //         this._formBuilder.group({
-                //             country: ['us'],
-                //             phoneNumber: [''],
-                //             label: [''],
-                //         })
-                //     );
-                // }
-
-                // Add the phone numbers form groups to the phone numbers form array
-                // phoneNumbersFormGroups.forEach((phoneNumbersFormGroup) => {
-                //     (
-                //         this.contactForm.get('phoneNumbers') as UntypedFormArray
-                //     ).push(phoneNumbersFormGroup);
-                // });
-
                 // Toggle the edit mode off
                 this.toggleEditMode(false);
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
+        //Get Groups
+
+        this.groups$ = this._groupsService.groups$;
+        this._groupsService.groups$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((groups: Group[]) => {
+                this.groupsStringList = groups.map(
+                    (group) => group.id.toString() + ' - ' + group.name
+                );
+
+                this.groupsObjects = groups;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
+        // Get the contacts
+        this.contacts$ = this._usersService.contacts$;
+        this._usersService.contacts$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((contacts: User[]) => {
+                this.usersStringList = contacts.map(
+                    (user) => user.id.toString() + ' - ' + user.name
+                );
+
+                this.usersObjects = contacts;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -264,7 +250,7 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
     updateContact(): void {
         // Get the contact object
         const contact = this.contactForm.getRawValue();
-
+        contact.groupIds = this.groups.value;
         // Update the contact on the server
         this._contactsService
             .updateReport(contact.id, contact)

@@ -4,6 +4,8 @@ export interface Reports {
     viewId: number;
     type: string;
     data: string;
+    groupIds: number[];
+    userIds: number[];
 }
 
 export interface Country {

@@ -8,6 +8,8 @@ import { RegreportsComponent } from 'app/modules/admin/regreports/regreports.com
 import { ReportListComponent } from 'app/modules/admin/regreports/list/reportlist.component';
 import { ReportDetailsComponent } from 'app/modules/admin/regreports/details/reportdetails.component';
 import { NewReportComponent } from './new/newreport.component';
+import { GroupsResolver } from '../reggroups/reggroups.resolvers';
+import { ContactsResolver } from '../contacts/contacts.resolvers';
 
 export const regreportsRoutes: Route[] = [
     {
@@ -20,6 +22,8 @@ export const regreportsRoutes: Route[] = [
                 component: ReportListComponent,
                 resolve: {
                     contacts: ReportsResolver,
+                    groups: GroupsResolver,
+                    users: ContactsResolver,
                 },
                 children: [
                     {
@@ -27,13 +31,18 @@ export const regreportsRoutes: Route[] = [
                         component: ReportDetailsComponent,
                         resolve: {
                             contact: ContactsContactResolver,
+                            groups: GroupsResolver,
+                            users: ContactsResolver,
                         },
                         canDeactivate: [CanDeactivateContactsDetails],
                     },
                     {
                         path: 'new',
                         component: NewReportComponent,
-                        resolve: {},
+                        resolve: {
+                            groups: GroupsResolver,
+                            users: ContactsResolver,
+                        },
                         canDeactivate: [CanDeactivateContactsDetails],
                     },
                 ],

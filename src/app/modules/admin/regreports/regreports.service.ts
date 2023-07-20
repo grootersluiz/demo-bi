@@ -159,6 +159,8 @@ export class RegreportsService {
                         viewId: report.viewId,
                         type: report.type,
                         data: report.data,
+                        groupIds: report.groupIds,
+                        userIds: report.userIds,
                     })
                     .pipe(
                         map((newContact) => {
@@ -191,6 +193,8 @@ export class RegreportsService {
                             viewId: report.viewId,
                             type: report.type,
                             data: report.data,
+                            groupIds: report.groupIds,
+                            userIds: report.userIds,
                         }
                     )
                     .pipe(
@@ -206,6 +210,8 @@ export class RegreportsService {
                                 viewId: report.viewId,
                                 type: updatedReport.type,
                                 data: updatedReport.data,
+                                groupIds: updatedReport.groupIds,
+                                userIds: updatedReport.userIds,
                             };
 
                             // Update the contact
