@@ -146,6 +146,29 @@
                                 >
                             </mat-select>
                         </mat-form-field>
+
+                        <mat-form-field
+                            class="w-full ml-1"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Relatórios</mat-label>
+                            <mat-select
+                                class="my-custom-class"
+                                style="font-size: 12px"
+                                [formControl]="reports"
+                                multiple
+                            >
+                                <mat-option
+                                    style="font-size: 12px"
+                                    *ngFor="
+                                        let report of reportStringList;
+                                        let i = index
+                                    "
+                                    [value]="reportObjects[i].id"
+                                    >{{ report }}</mat-option
+                                >
+                            </mat-select>
+                        </mat-form-field>
                     </div>
 
                     <!-- Current password -->
@@ -271,7 +294,6 @@
                     <div
                         class="flex items-center mt-10 -mx-6 sm:-mx-12 py-4 pr-4 pl-1 sm:pr-12 sm:pl-7 border-t bg-gray-50 dark:bg-transparent"
                     >
-
                         <!-- Cancel -->
                         <button
                             class="ml-auto"

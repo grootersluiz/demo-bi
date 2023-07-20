@@ -31,6 +31,8 @@ import { Group } from 'app/modules/admin/reggroups/reggroups.types';
 import { ReggroupsService } from 'app/modules/admin/reggroups/reggroups.service';
 import { RegdashsService } from 'app/modules/admin/regdashs/regdashs.service';
 import { Dash } from 'app/modules/admin/regdashs/regdashs.types';
+import { RegreportsService } from '../../regreports/regreports.service';
+import { Reports } from '../../regreports/regreports.types';
 
 @Component({
     selector: 'contacts-details',
@@ -45,6 +47,7 @@ export class NewContactComponent implements OnInit, OnDestroy {
 
     groups$: Observable<Group[]>;
     dashs$: Observable<Dash[]>;
+    reports$: Observable<Reports[]>;
 
     editMode: boolean = false;
     tags: Tag[];
@@ -60,6 +63,9 @@ export class NewContactComponent implements OnInit, OnDestroy {
     dashs = new FormControl([]);
     dashsObjects: Dash[];
     dashsStringList: string[];
+    reports = new FormControl([]);
+    reportObjects: Reports[];
+    reportStringList: string[];
     private _tagsPanelOverlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -73,6 +79,7 @@ export class NewContactComponent implements OnInit, OnDestroy {
         private _contactsService: ContactsService,
         private _groupsService: ReggroupsService,
         private _dashsService: RegdashsService,
+        private _reportsService: RegreportsService,
         private _formBuilder: UntypedFormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
         private _renderer2: Renderer2,
@@ -97,17 +104,17 @@ export class NewContactComponent implements OnInit, OnDestroy {
             id: [''],
             avatar: [null],
             name: ['', [Validators.required]],
-            email: ['',[Validators.required]],
+            email: ['', [Validators.required]],
             role: [''],
             groupIds: [''],
             dashboardIds: [''],
-            password: ['',[Validators.required]],
+            reportIds: [''],
+            password: ['', [Validators.required]],
             birthday: [null],
             address: [null],
             notes: [null],
             tags: [[]],
         });
-
 
         //Get Groups
 
@@ -141,6 +148,21 @@ export class NewContactComponent implements OnInit, OnDestroy {
                 this._changeDetectorRef.markForCheck();
             });
 
+        //Get Reports
+
+        this.reports$ = this._reportsService.reports$;
+        this._reportsService.reports$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((reports: Reports[]) => {
+                this.reportStringList = reports.map(
+                    (report) => report.id.toString() + ' - ' + report.name
+                );
+
+                this.reportObjects = reports;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
     }
 
     /**
@@ -193,22 +215,19 @@ export class NewContactComponent implements OnInit, OnDestroy {
         const password = this.contactForm.get('password').value;
         contact.groupIds = this.groups.value;
         contact.dashboardIds = this.dashs.value;
+        contact.reportIds = this.reports.value;
         // Go through the contact object and clear empty values
 
         // Update the contact on the server
-        this._contactsService
-            .createContact(contact)
-            .subscribe(() => {
-                // Toggle the edit mode off
-                this.closeDrawer()
-                this._router.navigate(['../'], {
-                    relativeTo: this._activatedRoute,
-                });
-                this._changeDetectorRef.markForCheck();
-
+        this._contactsService.createContact(contact).subscribe(() => {
+            // Toggle the edit mode off
+            this.closeDrawer();
+            this._router.navigate(['../'], {
+                relativeTo: this._activatedRoute,
             });
+            this._changeDetectorRef.markForCheck();
+        });
     }
-
 
     /**
      * Upload avatar
