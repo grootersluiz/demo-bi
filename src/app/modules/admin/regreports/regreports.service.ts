@@ -164,6 +164,23 @@ export class RegreportsService {
     }
 
     /**
+     * Get dash by group
+     */
+    getReportsByUser(id: string): Observable<Reports[]> {
+        return this._httpClient
+            .get<Reports[]>(`http://10.2.1.108/v1/reports?userId=${id}`)
+            .pipe(
+                tap((users) => {
+                    let orderedContacts = [...users['data']];
+                    orderedContacts.sort((a, b) =>
+                        a.name.localeCompare(b.name)
+                    );
+                    this._reports.next(orderedContacts);
+                })
+            );
+    }
+
+    /**
      * Create contact
      */
     createReport(report: Reports): Observable<Reports> {

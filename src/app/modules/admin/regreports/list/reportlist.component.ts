@@ -29,6 +29,8 @@ import {
 import { RegreportsService } from 'app/modules/admin/regreports/regreports.service';
 import { Group } from 'app/modules/admin/reggroups/reggroups.types';
 import { ReggroupsService } from 'app/modules/admin/reggroups/reggroups.service';
+import { User } from 'app/core/user/user.types';
+import { ContactsService } from '../../contacts/contacts.service';
 
 @Component({
     selector: 'reports-list',
@@ -41,6 +43,7 @@ export class ReportListComponent implements OnInit, OnDestroy {
 
     contacts$: Observable<Reports[]>;
     groups$: Observable<Group[]>;
+    users$: Observable<User[]>;
 
     contactsCount: number = 0;
     contactsTableColumns: string[] = ['name', 'email', 'phoneNumber', 'job'];
@@ -50,6 +53,9 @@ export class ReportListComponent implements OnInit, OnDestroy {
     groups = new FormControl([]);
     groupsObjects: Group[];
     groupsStringList: string[];
+    users = new FormControl([]);
+    usersObjects: User[];
+    usersStringList: string[];
     selectedContact: Reports;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -61,6 +67,7 @@ export class ReportListComponent implements OnInit, OnDestroy {
         private _changeDetectorRef: ChangeDetectorRef,
         private _contactsService: RegreportsService,
         private _groupsService: ReggroupsService,
+        private _usersService: ContactsService,
         @Inject(DOCUMENT) private _document: any,
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService
@@ -108,6 +115,22 @@ export class ReportListComponent implements OnInit, OnDestroy {
                 );
 
                 this.groupsObjects = groups;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
+        // Get Users for filter
+
+        this.users$ = this._usersService.contacts$;
+        this._usersService.contacts$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((contacts: User[]) => {
+                this.usersStringList = contacts.map(
+                    (user) => user.id.toString() + ' - ' + user.name
+                );
+
+                this.usersObjects = contacts;
 
                 // Mark for check
                 this._changeDetectorRef.markForCheck();
@@ -227,6 +250,16 @@ export class ReportListComponent implements OnInit, OnDestroy {
     getReportsByGp(id: string) {
         this._contactsService.getReportsByGroup(id).subscribe();
         this.searchInputControl.setValue('');
+        this.users.setValue([]);
+    }
+
+    /**
+     * Get report by group
+     */
+    getReportsByUsr(id: string) {
+        this._contactsService.getReportsByUser(id).subscribe();
+        this.searchInputControl.setValue('');
+        this.groups.setValue([]);
     }
 
     /**
@@ -235,6 +268,7 @@ export class ReportListComponent implements OnInit, OnDestroy {
     getReportsByName(name: string) {
         this._contactsService.searchReports(name).subscribe();
         this.groups.setValue([]);
+        this.users.setValue([]);
     }
 
     /**
