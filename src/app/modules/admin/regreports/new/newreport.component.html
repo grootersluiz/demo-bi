@@ -107,6 +107,53 @@
                         </mat-form-field>
                     </div>
 
+                    <div class="flex mt-8">
+                        <mat-form-field
+                            class="w-full mr-1"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Grupos de usuários</mat-label>
+                            <mat-select
+                                class="my-custom-class"
+                                style="font-size: 12px"
+                                [formControl]="groups"
+                                multiple
+                            >
+                                <mat-option
+                                    style="font-size: 12px"
+                                    *ngFor="
+                                        let group of groupsStringList;
+                                        let i = index
+                                    "
+                                    [value]="groupsObjects[i].id"
+                                    >{{ group }}</mat-option
+                                >
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field
+                            class="w-full mr-1"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Usuários</mat-label>
+                            <mat-select
+                                class="my-custom-class"
+                                style="font-size: 12px"
+                                [formControl]="users"
+                                multiple
+                            >
+                                <mat-option
+                                    style="font-size: 12px"
+                                    *ngFor="
+                                        let user of usersStringList;
+                                        let i = index
+                                    "
+                                    [value]="usersObjects[i].id"
+                                    >{{ user }}</mat-option
+                                >
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
                     <div class="mt-8">
                         <mat-form-field
                             class="w-full"

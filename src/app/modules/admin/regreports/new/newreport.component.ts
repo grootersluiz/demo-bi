@@ -17,16 +17,21 @@ import {
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
+    FormControl,
 } from '@angular/forms';
 import { TemplatePortal } from '@angular/cdk/portal';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
-import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { debounceTime, Observable, Subject, takeUntil } from 'rxjs';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { Country, Tag } from 'app/modules/admin/regreports/regreports.types';
 import { ReportListComponent } from 'app/modules/admin/regreports/list/reportlist.component';
 import { RegreportsService } from 'app/modules/admin/regreports/regreports.service';
 import { Reports } from '../regreports.types';
+import { ContactsService } from '../../contacts/contacts.service';
+import { User } from 'app/modules/admin/contacts/contacts.types';
+import { ReggroupsService } from '../../reggroups/reggroups.service';
+import { Group } from '../../reggroups/reggroups.types';
 
 @Component({
     selector: 'new-report',
@@ -39,11 +44,20 @@ export class NewReportComponent implements OnInit, OnDestroy {
     @ViewChild('tagsPanel') private _tagsPanel: TemplateRef<any>;
     @ViewChild('tagsPanelOrigin') private _tagsPanelOrigin: ElementRef;
 
+    contacts$: Observable<User[]>;
+    groups$: Observable<Group[]>;
+
     editMode: boolean = false;
     tags: Tag[];
     tagsEditMode: boolean = false;
     filteredTags: Tag[];
     report: Reports;
+    groups = new FormControl([]);
+    groupsObjects: Group[];
+    groupsStringList: string[];
+    users = new FormControl([]);
+    usersObjects: User[];
+    usersStringList: string[];
     contactForm: UntypedFormGroup;
     contacts: Reports[];
     countries: Country[];
@@ -58,6 +72,8 @@ export class NewReportComponent implements OnInit, OnDestroy {
         private _changeDetectorRef: ChangeDetectorRef,
         private _contactsListComponent: ReportListComponent,
         private _contactsService: RegreportsService,
+        private _groupsService: ReggroupsService,
+        private _usersService: ContactsService,
         private _formBuilder: UntypedFormBuilder,
         private _fuseConfirmationService: FuseConfirmationService,
         private _renderer2: Renderer2,
@@ -93,7 +109,40 @@ export class NewReportComponent implements OnInit, OnDestroy {
             viewId: [null],
             type: [null],
             data: [null],
+            groupIds: [''],
+            userIds: [''],
         });
+
+        //Get Groups
+
+        this.groups$ = this._groupsService.groups$;
+        this._groupsService.groups$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((groups: Group[]) => {
+                this.groupsStringList = groups.map(
+                    (group) => group.id.toString() + ' - ' + group.name
+                );
+
+                this.groupsObjects = groups;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
+        // Get the contacts
+        this.contacts$ = this._usersService.contacts$;
+        this._usersService.contacts$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((contacts: User[]) => {
+                this.usersStringList = contacts.map(
+                    (user) => user.id.toString() + ' - ' + user.name
+                );
+
+                this.usersObjects = contacts;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
     }
 
     /**
@@ -143,6 +192,8 @@ export class NewReportComponent implements OnInit, OnDestroy {
     createContact(): void {
         // Get the contact object
         const contact = this.contactForm.getRawValue();
+        contact.groupIds = this.groups.value;
+        contact.userIds = this.users.value;
 
         // Update the contact on the server
         this._contactsService.createReport(contact).subscribe(() => {
