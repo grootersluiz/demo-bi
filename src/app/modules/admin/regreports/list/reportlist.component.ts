@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UntypedFormControl } from '@angular/forms';
+import { UntypedFormControl, FormControl } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';
 import {
     filter,
@@ -20,12 +20,15 @@ import {
     switchMap,
     takeUntil,
 } from 'rxjs';
+
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import {
     Reports,
     Country,
 } from 'app/modules/admin/regreports/regreports.types';
 import { RegreportsService } from 'app/modules/admin/regreports/regreports.service';
+import { Group } from 'app/modules/admin/reggroups/reggroups.types';
+import { ReggroupsService } from 'app/modules/admin/reggroups/reggroups.service';
 
 @Component({
     selector: 'reports-list',
@@ -37,12 +40,16 @@ export class ReportListComponent implements OnInit, OnDestroy {
     @ViewChild('matDrawer', { static: true }) matDrawer: MatDrawer;
 
     contacts$: Observable<Reports[]>;
+    groups$: Observable<Group[]>;
 
     contactsCount: number = 0;
     contactsTableColumns: string[] = ['name', 'email', 'phoneNumber', 'job'];
     countries: Country[];
     drawerMode: 'side' | 'over';
     searchInputControl: UntypedFormControl = new UntypedFormControl();
+    groups = new FormControl([]);
+    groupsObjects: Group[];
+    groupsStringList: string[];
     selectedContact: Reports;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -53,6 +60,7 @@ export class ReportListComponent implements OnInit, OnDestroy {
         private _activatedRoute: ActivatedRoute,
         private _changeDetectorRef: ChangeDetectorRef,
         private _contactsService: RegreportsService,
+        private _groupsService: ReggroupsService,
         @Inject(DOCUMENT) private _document: any,
         private _router: Router,
         private _fuseMediaWatcherService: FuseMediaWatcherService
@@ -89,6 +97,22 @@ export class ReportListComponent implements OnInit, OnDestroy {
                 this._changeDetectorRef.markForCheck();
             });
 
+        //Get Groups for filter
+
+        this.groups$ = this._groupsService.groups$;
+        this._groupsService.groups$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((groups: Group[]) => {
+                this.groupsStringList = groups.map(
+                    (group) => group.id.toString() + ' - ' + group.name
+                );
+
+                this.groupsObjects = groups;
+
+                // Mark for check
+                this._changeDetectorRef.markForCheck();
+            });
+
         // Get the countries
         this._contactsService.countries$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -101,15 +125,15 @@ export class ReportListComponent implements OnInit, OnDestroy {
             });
 
         // Subscribe to search input field value changes
-        this.searchInputControl.valueChanges
-            .pipe(
-                takeUntil(this._unsubscribeAll),
-                switchMap((query) =>
-                    // Search
-                    this._contactsService.searchReports(query)
-                )
-            )
-            .subscribe();
+        // this.searchInputControl.valueChanges
+        //     .pipe(
+        //         takeUntil(this._unsubscribeAll),
+        //         switchMap((query) =>
+        //             // Search
+        //             this._contactsService.searchReports(query)
+        //         )
+        //     )
+        //     .subscribe();
 
         // Subscribe to MatDrawer opened change
         this.matDrawer.openedChange.subscribe((opened) => {
@@ -195,6 +219,22 @@ export class ReportListComponent implements OnInit, OnDestroy {
         //     // Mark for check
         //     this._changeDetectorRef.markForCheck();
         // });
+    }
+
+    /**
+     * Get report by group
+     */
+    getReportsByGp(id: string) {
+        this._contactsService.getReportsByGroup(id).subscribe();
+        this.searchInputControl.setValue('');
+    }
+
+    /**
+     * Get report by name
+     */
+    getReportsByName(name: string) {
+        this._contactsService.searchReports(name).subscribe();
+        this.groups.setValue([]);
     }
 
     /**

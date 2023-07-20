@@ -231,7 +231,7 @@ export class GroupDetailsComponent implements OnInit, OnDestroy {
         // Get the contact object
         const contact = this.contactForm.getRawValue();
         contact.dashboardIds = this.dashs.value;
-        contact.reportsIds = this.reports.value;
+        contact.reportIds = this.reports.value;
 
         // Go through the contact object and clear empty values
         contact.emails = contact.emails.filter((email) => email.email);
