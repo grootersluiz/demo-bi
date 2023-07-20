@@ -7,6 +7,7 @@ export interface User {
     isAd: boolean;
     groupIds: number[];
     dashboardIds: number[];
+    reportIds: number[];
 }
 
 export interface Country {

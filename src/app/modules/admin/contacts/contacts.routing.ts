@@ -13,6 +13,7 @@ import { ContactsDetailsComponent } from 'app/modules/admin/contacts/details/det
 import { NewContactComponent } from 'app/modules/admin/contacts/new/new.component';
 import { GroupsResolver } from '../reggroups/reggroups.resolvers';
 import { DashsResolver } from '../regdashs/regdashs.resolvers';
+import { ReportsResolver } from '../regreports/regreports.resolvers';
 
 export const contactsRoutes: Route[] = [
     {
@@ -30,6 +31,7 @@ export const contactsRoutes: Route[] = [
                     countries: ContactsCountriesResolver,
                     groups: GroupsResolver,
                     dashs: DashsResolver,
+                    reports: ReportsResolver,
                 },
                 children: [
                     {
@@ -40,6 +42,7 @@ export const contactsRoutes: Route[] = [
                             countries: ContactsCountriesResolver,
                             groups: GroupsResolver,
                             dashs: DashsResolver,
+                            reports: ReportsResolver,
                             userId: ContactByIdResolver,
                         },
                         canDeactivate: [CanDeactivateContactsDetails],
@@ -50,6 +53,7 @@ export const contactsRoutes: Route[] = [
                         resolve: {
                             groups: GroupsResolver,
                             dashs: DashsResolver,
+                            reports: ReportsResolver,
                         },
                         canDeactivate: [CanDeactivateContactsDetails],
                     },

@@ -207,6 +207,7 @@ export class ContactsService {
                         role: contact.role,
                         groupIds: contact.groupIds,
                         dashboardIds: contact.dashboardIds,
+                        reportIds: contact.reportIds,
                     })
                     .pipe(
                         map((newContact) => {
@@ -250,6 +251,7 @@ export class ContactsService {
                                 : undefined,
                         groupIds: contact.groupIds,
                         dashboardIds: contact.dashboardIds,
+                        reportIds: contact.reportIds,
                     })
                     .pipe(
                         map((updatedContact) => {

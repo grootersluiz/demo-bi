@@ -16,7 +16,7 @@ import {
 @Injectable({
     providedIn: 'root',
 })
-export class ContactsResolver implements Resolve<any> {
+export class ReportsResolver implements Resolve<any> {
     /**
      * Constructor
      */

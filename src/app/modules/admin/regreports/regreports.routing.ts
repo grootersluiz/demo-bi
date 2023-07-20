@@ -2,7 +2,7 @@ import { Route } from '@angular/router';
 import { CanDeactivateContactsDetails } from 'app/modules/admin/regreports/regreports.guards';
 import {
     ContactsContactResolver,
-    ContactsResolver,
+    ReportsResolver,
 } from 'app/modules/admin/regreports/regreports.resolvers';
 import { RegreportsComponent } from 'app/modules/admin/regreports/regreports.component';
 import { ReportListComponent } from 'app/modules/admin/regreports/list/reportlist.component';
@@ -19,7 +19,7 @@ export const regreportsRoutes: Route[] = [
                 path: '',
                 component: ReportListComponent,
                 resolve: {
-                    contacts: ContactsResolver,
+                    contacts: ReportsResolver,
                 },
                 children: [
                     {
