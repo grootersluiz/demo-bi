@@ -11,19 +11,19 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
-
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import localePt from '@angular/common/locales/pt';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-// import {FormControl} from "@angular/forms";
-
+ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgApexchartsModule } from "ng-apexcharts";
-
 import { VendafilialComponent } from 'app/modules/admin/dashboards/vendafilial/vendafilial.component';
 import { vendafilialRoutes } from 'app/modules/admin/dashboards/vendafilial/vendafilial.routing';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 // registerLocaleData(ptBr);
 registerLocaleData(localePt);
@@ -35,6 +35,8 @@ registerLocaleData(localePt);
         // VendafilialchartModule,
         RouterModule.forChild(vendafilialRoutes),
         CommonModule,
+        MatButtonModule,
+        MatButtonToggleModule,
         MatToolbarModule,
         MatTooltipModule,
         MatIconModule,
@@ -42,10 +44,13 @@ registerLocaleData(localePt);
         MatCardModule,
         MatFormFieldModule,
         MatInputModule,
+        FormsModule,
         MatDatepickerModule,
         MatNativeDateModule,
         MatMomentDateModule,
-        NgApexchartsModule
+        NgApexchartsModule,
+        MatSlideToggleModule,
+        ReactiveFormsModule
     ],
     // exports: [VendafilialchartComponent],
     providers: [
