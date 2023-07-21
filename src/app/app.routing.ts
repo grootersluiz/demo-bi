@@ -37,7 +37,7 @@ export const appRoutes: Route[] = [
     {
         path: 'signed-in-redirect',
         pathMatch: 'full',
-        redirectTo: 'settings/profile',
+        redirectTo: 'links/linksGeral',
     },
 
     // Auth routes for guests

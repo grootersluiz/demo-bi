@@ -204,7 +204,7 @@ export class AnalisemarcaComponent {
   _iconShowFilter: string       = 'toggle_off';
   _tolltip_ShowFIlter: string   = 'Off filtro';
   _classChart = 'grid rounded-2xl p-0 mt-0 mr-0 mb-0 ml-0';
-  _classDashInicial: string[]   = ['flex','flex-row','h-full','w-full','p-0','sm:w-full','md:w-full','lg:w-full','xl:w-full','2xl:w-full','mt-0','mr-0','mb-0','ml-0'];
+  _classDashInicial: string[]   = ['flex','flex-row','h-full','w-full','p-0','sm:w-full','md:w-full','lg:w-full','xl:w-full','2xl:w-full','mt-0','mr-0','mb-0','ml-0','relative'];
   _classFilterInicial: string[] = ['flex','flex-row','h-0'   ,'w-0'   ,'p-0' ,'sm:h-0'    ,'md:h-0'    ,'lg:w-0'    ,'xl:w-0'    ,'2xl:w-0'    ,'mt-0','mr-0','mb-0','ml-0','corfiltro'];
 
 //   _classContainerCenter: string[] = ['flex','flex-auto','w-full'];
@@ -215,7 +215,7 @@ export class AnalisemarcaComponent {
     this._iconShowFilter      = this._iconShowFilter== 'toggle_on'? 'toggle_off' : 'toggle_on';
     this._tolltip_ShowFIlter  = this._tolltip_ShowFIlter== 'On filtro'? 'Off filtro' : 'On filtro';
 
-    var pClassDash  = ['flex','flex-row','h-5/6','p-0','w-12/12','sm:w-12/12','md:w-12/12','lg:w-12/12','xl:w-12/12','2xl:w-12/12','mt-2','mr-0','mb-0','ml-0'];
+    var pClassDash  = ['flex','flex-row','h-5/6','p-0','w-12/12','sm:w-12/12','md:w-12/12','lg:w-12/12','xl:w-12/12','2xl:w-12/12','mt-2','mr-0','mb-0','ml-0','relative'];
     var pClassFilter= ['flex','flex-auto','h-1/6','p-0','w-12/12','sm:w-12/12','md:w-12/12','lg:w-12/12','xl:w-12/12','2xl:w-12/12','mt-0','mr-2','mb-0','ml-0','corfiltro'];
     // this._classContainerCenter = ['flex','flex-auto','w-full'];
 
@@ -223,7 +223,7 @@ export class AnalisemarcaComponent {
       elFilter.hidden = true;
       elForm.hidden   = true;
       // this._chartWidth = '99%';
-      pClassDash  = ['flex','flex-row','h-full','w-full','p-0','w-12/12','sm:w-12/12','md:w-12/12','lg:w-12/12','xl:w-12/12','2xl:w-12/12','mt-0','mr-0','mb-0','ml-0'];
+      pClassDash  = ['flex','flex-row','h-full','w-full','p-0','w-12/12','sm:w-12/12','md:w-12/12','lg:w-12/12','xl:w-12/12','2xl:w-12/12','mt-0','mr-0','mb-0','ml-0','relative'];
       pClassFilter= ['flex','flex-row','h-0'   ,'w-full','p-0','w-0'    ,'sm:h-0'    ,'md:h-0'    ,'lg:w-0'    ,'xl:w-0'    ,'2xl:w-0'    ,'mt-0','mr-0','mb-0','ml-0','corfiltro'];
     //   this._classContainerCenter = ['flex','flex-auto','w-full'];
 
