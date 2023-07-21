@@ -203,9 +203,9 @@ export class RegdashsService {
                         name: dash.name,
                         type: dash.type,
                         groupIds: dash.groupIds,
-                        reports: dash.reports.map((reportId) => ({
-                            reportId,
-                        })),
+                        // reports: dash.reports.map((reportId) => ({
+                        //     reportId,
+                        // })),
                     })
                     .pipe(
                         map((newContact) => {
