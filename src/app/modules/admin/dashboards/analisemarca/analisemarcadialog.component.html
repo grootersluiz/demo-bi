@@ -1,8 +1,10 @@
-<div id="dialogIndicadores" class="container w-96 m-0 p-0">
-    <p class="normal-case mt-0 pt-0">Habilitar/Desabilitar Indicadores  </p>
+<div id="dialogIndicadores" class="flex flex-col w-96 h-full m-0 p-0 sm:h-full md:h-full lg:h-full xl:h-full 2xl:h-full">
 
-    <div mat-dialog-content >
+    <!-- <h1 mat-dialog-title> -->
+        <p class="normal-case mt-0 pt-0">Habilitar/Desabilitar Indicadores  </p>
+    <!-- </h1> -->
 
+    <div mat-dialog-content class="flex flex-col w-96 h-full m-0 p-0 sm:h-full md:h-full lg:h-full xl:h-full 2xl:h-full">
         <div *ngFor="let parametro of listaIndicadores">
             <input type="checkbox" [checked]="parametro.exibir" value="{{parametro.name}}" id="{{parametro.name}}" (click)="onClickcheck($event)"/>
                 {{ parametro.name }}

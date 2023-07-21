@@ -1,105 +1,92 @@
-<div class="box-content h-full w-full mt-0 mr-2 mb-0 ml-2 p-0" id="painelVendaFilialMes">
+<div class="box-content h-full w-full mt-0 mr-2 mb-0 ml-2 p-0" id="painelAnaliseMarca" >
 
-  <div class="flex flex-col w-full rounded-2xl mt-1 mr-0 mb-2 ml-0">
-    <mat-toolbar class="flex flex-row w-full rounded-2xl">
+    <div class="flex flex-row w-full rounded-2xl mt-1 mr-0 mb-2 ml-0">
 
-      <button [hidden]="false" [matTooltip]="_tolltip_ShowFIlter" (click)="showFilter($event,containerFilter,containerForm,containerDash)">
-        <mat-icon aria-hidden="false" [fontIcon]="_iconShowFilter"></mat-icon>
-      </button>
-      &nbsp;&nbsp;&nbsp;
-      <button [hidden]="false" matTooltip="Consultar" (click)="consultavendafilial(dataref.value)">
-        <mat-icon aria-hidden="false" fontIcon="search"></mat-icon>
-      </button>
+        <button matTooltip="Indicadores Adicionais" class="flex items-center pl-2 ml-auto " style="visibility: visible !important;" >
+            <mat-icon aria-hidden="false" fontIcon="settings" ></mat-icon>
+        </button>
 
-      <div class="flex flex-row shrink-0 ml-10">
-          <img src="assets/images/logo/Logo-Rede-JS-Pecas_3-40x40.png" alt="" class="mr-2 logo-filter hidden lg:block" style="width: 3rem;height: 3rem;">
-          <div class="flex flex-col">
-            <div class="text-2xl font-semibold tracking-tight mb-0">
-               Análise Marca
-            </div>
-            <div class="font-medium tracking-tight text-sm mt-0">
-              {{_sysdate}}
-            </div>
-          </div>
-
-      </div>
-
-      <button matTooltip="Settings" class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2" style="visibility: visible !important;">
-        <mat-icon aria-hidden="false" fontIcon="settings" ></mat-icon>
-      </button>
-
-      <!-- <button (click)="showDash(divChart)" matTooltip="Gráfico Dia" class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2" style="visibility: hidden !important;">
-        <mat-icon aria-hidden="false" fontIcon="fit_screen" ></mat-icon>
-      </button> -->
-
-    </mat-toolbar>
-
-  </div>
-  <!-------------------------------------------------------------------------------------------------------------------------------------------------------------->
-
-    <div class="flex flex-row w-full" style="height: 92% !important;">
-
-      <div id="containerFilter" #containerFilter [ngClass]="_classFilterInicial" [hidden]="false">
-        <div id="containerForm" #containerForm class="w-full h-full rounded-2xl bg-white mt-0 mr-0 mb-0 ml-0" [hidden]="false">
-          <mat-form-field appearance="fill" class="p-2 w-full" >
-            <mat-label> Referência </mat-label>
-            <!-- [formControl]="dtRef"  [value]="dtRef" -->
-            <input matInput [matDatepicker]="picker" id="dtref" #dataref (dateChange)="formatDataMesAno($event)" (blur)="formatDataMesAno2(dataref)">
-              <mat-hint>DD/MM/YYYY</mat-hint>
-              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker ></mat-datepicker>
-          </mat-form-field>
+        <div class="flex items-center flex-grow justify-end">
+            <mat-slide-toggle [(ngModel)]="isToggleOn" (click)="showFilter($event,containerFilter,containerForm,containerDash)">
+                {{ isToggleOn ? "Ocultar filtros" : "Mostrar filtros" }}
+            </mat-slide-toggle>
         </div>
-      </div>
 
-      <div id="containerDash" #containerDash [ngClass]="_classDashInicial" [hidden]="false">
-          <div id="divChart" #divChart class="w-full p-0 mt-0 mr-0 mb-0 ml-0" [hidden]="false" >
+    </div>
+  <!---------------------------_classContainerCenter----------------------------------------------------------------------------------------------------------------------------------->
 
-              <div id="chart" #chart [ngClass]="_classChart" style="height: 100% !important;" >
-                <apx-chart [ngClass]="_classChart" style="background-color: white; height: 100% !important;"
-                  [series]="chartOptions.series"
-                  [chart]="chartOptions.chart"
-                  [yaxis]="chartOptions.yaxis"
-                  [xaxis]="chartOptions.xaxis"
-                  [dataLabels]="chartOptions.dataLabels"
-                  [grid]="chartOptions.grid"
-                  [stroke]="chartOptions.stroke"
-                  [title]="chartOptions.title"
-                  [responsive]="chartOptions.responsive"
-                ></apx-chart>
-              </div>
-          </div>
+    <div class="w-full h-full sm:h-full md:h-full lg:h-full xl:h-full 2xl:h-full"  id="containerCenter">
 
-      </div>
-      <!-- <div [hidden]="true">
-        <app-analisemarcadialog  (responseChangeDialog)="onChangeDialog($event)"></app-analisemarcadialog>
-      </div> -->
+        <div id="containerFilter" #containerFilter [ngClass]="_classFilterInicial" [hidden]="true">
 
-      <!-- <div id="idModal" #idModal >
-        <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true" >
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+            <div id="containerForm" #containerForm class="object-fill rounded-2xl w-full mt-0 mr-0 mb-0 ml-0" [hidden]="true">
 
-            <div class="fixed inset-0 z-10 overflow-y-auto">
-              <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                  <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                      <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                        <h3 class="text-base font-semibold leading-6 text-gray-900" id="modal-title">Deactivate account</h3>
-                        <div class="mt-2">
-                          <p class="text-sm text-gray-500">Are you sure you want to deactivate your account? All of your data will be permanently removed. This action cannot be undone.</p>
+                <div class="flex flex-row items-center pt-2 pl-2 pr-2 mb-2 w-full">
+
+                    <div class="flex flex-auto">
+                        <img
+                            class="mr-3 logo-filter hidden lg:block w-12 h-12"
+                            src="assets/images/logo/Logo-Rede-JS-Pecas_7.png"
+                            alt=""
+                        />
+                        <div class="flex flex-col">
+                            <div
+                                class="text-3xl font-semibold tracking-tight leading-8 text-white"
+                            >
+                                Análise Marca
+                            </div>
+
+                            <div class="font-medium tracking-tight text-white" >
+                                {{_sysdate}}
+                            </div>
                         </div>
-                      </div>
                     </div>
-                  </div>
-                  <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                    <button type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto">Deactivate</button>
-                    <button type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto">Cancel</button>
-                  </div>
+
+                    <div class="flex items-start ml-15">
+
+                        <mat-form-field appearance="fill" class="hidden sm:inline-flex ml-3 p-2" >
+                            <mat-label> <p class="text-white"> Referência </p></mat-label>
+                            <input matInput [matDatepicker]="picker" id="dtref" #dataref (dateChange)="formatDataMesAno($event)" (blur)="formatDataMesAno2(dataref)">
+                            <!-- <mat-hint>DD/MM/YYYY</mat-hint> -->
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker [startView]="true ? 'year' : 'month'"></mat-datepicker>
+                        </mat-form-field>
+
+                        <div class="pt-7">
+                            <button
+                                class="hidden sm:inline-flex ml-5 apply-button"
+                                style="width: 120px"
+                                mat-flat-button
+                                [color]="'primary'"
+                                (click)="consultavendafilial(dataref.value)"
+                            >
+                                <span style="font-size: 12px">Aplicar</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-              </div>
+
             </div>
-          </div>
-      </div> -->
+        </div>
+
+        <div id="containerDash" #containerDash [ngClass]="_classDashInicial" [hidden]="false"  style="height: 100% !important;">
+            <div id="divChart" #divChart class="w-full p-0 mt-0 mr-0 mb-0 ml-0" [hidden]="false">
+                <div id="chart" #chart [ngClass]="_classChart" style="height: 100% !important;" >
+                <apx-chart [ngClass]="_classChart" style="background-color: white; height: 100% !important;"
+                    [series]="chartOptions.series"
+                    [chart]="chartOptions.chart"
+                    [yaxis]="chartOptions.yaxis"
+                    [xaxis]="chartOptions.xaxis"
+                    [dataLabels]="chartOptions.dataLabels"
+                    [grid]="chartOptions.grid"
+                    [stroke]="chartOptions.stroke"
+                    [title]="chartOptions.title"
+                    [responsive]="chartOptions.responsive"
+                    [tooltip]="chartOptions.tooltip"
+                ></apx-chart>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
