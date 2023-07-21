@@ -63,29 +63,6 @@ export const navigationData: Navigation = {
                         },
                     ],
                 },
-                // {
-                //     id: 'links',
-                //     title: 'Links',
-                //     type: 'collapsable',
-                //     icon: 'material_outline:menu_open',
-                //     link: '/analiseindicadores/links',
-                //     children: [
-                //         {
-                //             id: '43',
-                //             title: 'Links - Geral',
-                //             type: 'basic',
-                //             icon: 'material_outline:double_arrow',
-                //             link: '/links/linksGeral',
-                //         },
-                //         {
-                //             id: '44',
-                //             title: 'Links - T.I',
-                //             type: 'basic',
-                //             icon: 'material_outline:double_arrow',
-                //             link: '/links/linksTI',
-                //         },
-                //     ],
-                // },
             ],
         },
         {

@@ -17,7 +17,7 @@ export class GlobalDashsComponent {
     /**
      * Constructor
      */
-    constructor(private _dashService: RegdashsService) { }
+    constructor(private _dashService: RegdashsService) {}
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -29,7 +29,6 @@ export class GlobalDashsComponent {
     ngOnInit(): void {
         this._dashService.getDashs().subscribe((dashs) => {
             this.dashsData = (dashs as any).data;
-            console.log(this.dashsData)
         });
     }
 }
