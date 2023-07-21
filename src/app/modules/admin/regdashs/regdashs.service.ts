@@ -11,7 +11,12 @@ import {
     tap,
     throwError,
 } from 'rxjs';
-import { Dash, Country, Tag } from 'app/modules/admin/regdashs/regdashs.types';
+import {
+    Dash,
+    Country,
+    Tag,
+    DashReport,
+} from 'app/modules/admin/regdashs/regdashs.types';
 
 @Injectable({
     providedIn: 'root',
@@ -198,7 +203,9 @@ export class RegdashsService {
                         name: dash.name,
                         type: dash.type,
                         groupIds: dash.groupIds,
-                        reportIds: dash.reportIds,
+                        reports: dash.reports.map((reportId) => ({
+                            reportId,
+                        })),
                     })
                     .pipe(
                         map((newContact) => {
@@ -228,7 +235,9 @@ export class RegdashsService {
                         name: contact.name,
                         type: contact.type,
                         groupIds: contact.groupIds,
-                        reportIds: contact.reportIds,
+                        reports: contact.reports.map((reportId) => ({
+                            reportId,
+                        })),
                     })
                     .pipe(
                         map((updatedContact) => {

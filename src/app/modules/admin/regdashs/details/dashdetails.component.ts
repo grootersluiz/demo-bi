@@ -24,7 +24,12 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
 import { debounceTime, Subject, Observable, takeUntil } from 'rxjs';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { Dash, Country, Tag } from 'app/modules/admin/regdashs/regdashs.types';
+import {
+    Dash,
+    Country,
+    Tag,
+    DashReport,
+} from 'app/modules/admin/regdashs/regdashs.types';
 import { DashListComponent } from 'app/modules/admin/regdashs/list/dashlist.component';
 import { RegdashsService } from 'app/modules/admin/regdashs/regdashs.service';
 import { Group } from 'app/modules/admin/reggroups/reggroups.types';
@@ -135,7 +140,7 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
                 this.groups.setValue(this.contact.groupIds);
 
                 //Set the Dash Reports
-                this.reports.setValue(this.contact.reportIds);
+                this.reports.setValue(this.contact['reportIds']);
 
                 // Clear the emails and phoneNumbers form arrays
                 (this.contactForm.get('emails') as UntypedFormArray).clear();
@@ -234,8 +239,7 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
         // Get the contact object
         const contact = this.contactForm.getRawValue();
         contact.groupIds = this.groups.value;
-        contact.reportIds = this.reports.value;
-
+        contact.reports = this.reports.value;
         // Go through the contact object and clear empty values
         contact.emails = contact.emails.filter((email) => email.email);
 

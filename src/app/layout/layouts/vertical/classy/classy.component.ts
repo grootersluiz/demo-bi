@@ -77,8 +77,9 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
                 // Controle de acesso do menu
 
                 if (this.user.role !== 'admin') {
-                    myNavigation.default[2] = {} as FuseNavigationItem;
+                    // myNavigation.default[2] = {} as FuseNavigationItem;
                     myNavigation.default[3] = {} as FuseNavigationItem;
+                    myNavigation.default[4] = {} as FuseNavigationItem;
                     // myNavigation.default[4] = {} as FuseNavigationItem;
                 }
             });
@@ -102,7 +103,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
                     }
                 });
 
-                let linksMenuList = myNavigation.default[0].children; //alterado o default para 1 pois o vetor do mynavigation foi alterado para retirada do Links do Analise Indicadores.
+                let linksMenuList = myNavigation.default[0].children;
                 linksMenuList.forEach((linkMenu, index) => {
                     if (!this.dashsIds.includes(parseInt(linkMenu.id))) {
                         linksMenuList[index] = {};

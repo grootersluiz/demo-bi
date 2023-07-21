@@ -4,7 +4,13 @@ export interface Dash {
     type: string;
     groupIds: number[];
     userIds: number[];
-    reportIds: number[];
+    reports: DashReport[];
+}
+
+export interface DashReport {
+    reportId: number;
+    sequence: number;
+    style: string;
 }
 
 export interface Country {
