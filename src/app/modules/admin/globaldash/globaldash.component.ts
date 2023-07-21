@@ -5,6 +5,8 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { RegdashsService } from '../regdashs/regdashs.service';
+import { RegreportsService } from '../regreports/regreports.service';
+import { Dash } from '../regdashs/regdashs.types';
 
 @Component({
     selector: 'globaldash',
@@ -13,12 +15,16 @@ import { RegdashsService } from '../regdashs/regdashs.service';
 })
 export class GlobalDashsComponent {
     dashsData: any[] = [];
+    reportsData: any[] = [];
+    dashById: Dash;
 
     /**
      * Constructor
      */
     constructor(
         private _dashService: RegdashsService,
+        private _dashIdService: RegdashsService,
+        private _reportService: RegreportsService,
         private _router: Router
     ) {}
 
@@ -32,6 +38,15 @@ export class GlobalDashsComponent {
     ngOnInit(): void {
         this._dashService.getDashs().subscribe((dashs) => {
             this.dashsData = (dashs as any).data;
+        });
+
+        this._reportService.getReports().subscribe((reports) => {
+            this.reportsData = (reports as any).data;
+            console.log(this.reportsData);
+        });
+
+        this._dashIdService.getDashById(241).subscribe((links) => {
+            console.log(links);
         });
     }
 
