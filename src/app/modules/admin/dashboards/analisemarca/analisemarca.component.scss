@@ -44,3 +44,17 @@ tr.mat-mdc-row {
     height: 30px;
 }
 
+.corfiltro {
+    background: rgb(75, 75, 75);
+    background: linear-gradient(
+        0deg,
+        rgba(75, 75, 75, 1) 0%,
+        rgba(82, 82, 82, 1) 12%,
+        rgba(82, 82, 82, 1) 86%,
+        rgba(75, 75, 75, 1) 100%
+    );
+    filter: drop-shadow(0 0.4rem 0.7rem #00000065);
+    border-radius: 15px;
+    // height: 120px;
+    padding-bottom: 1rem;
+}

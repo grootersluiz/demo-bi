@@ -48,95 +48,605 @@ export class AnalisemarcaService {
             name : "ROL",
             exibir : true,
             showYAxis : true,
-            yAxisSerie: 0,
+            seriesName: "ROL",
             cor : this._colors.palette1[0]
         },
         {
             name : "LB",
             exibir : true,
             showYAxis : false,
-            yAxisSerie: 0,
+            seriesName: "LB",
             cor : this._colors.palette1[1]
         },
         {
             name : "MB",
             exibir : true,
             showYAxis : true,
-            yAxisSerie: 2,
+            seriesName: "MB",
             cor : this._colors.palette1[2]
         },
         {
             name : "DIAS",
             exibir : true,
             showYAxis : true,
-            yAxisSerie: 3,
+            seriesName: "DIAS",
             cor : this._colors.palette1[3]
         },
         {
             name : "QTDE",
             exibir : false,
             showYAxis : true,
-            yAxisSerie: 4,
+            seriesName: "QTDE",
             cor : this._colors.palette1[4]
         },
         {
             name : "CMV",
             exibir : false,
             showYAxis : true,
-            yAxisSerie: 5,
+            seriesName: "ROL",
             cor : this._colors.palette2[0]
         },
         {
             name : "ROB",
             exibir : false,
             showYAxis : false,
-            yAxisSerie: 0,
+            seriesName: "ROL",
             cor : this._colors.palette2[1]
         },
         {
             name : "IMPOSTOS",
             exibir : false,
             showYAxis : true,
-            yAxisSerie: 7,
+            seriesName: "IMPOSTOS",
             cor : this._colors.palette2[2]
         },
         {
             name : "ROL DIA",
             exibir : false,
             showYAxis : true,
-            yAxisSerie: 8,
+            seriesName: "ROL DIA",
             cor : this._colors.palette2[3]
         },
         {
             name : "LB DIA",
             exibir : false,
             showYAxis : false,
-            yAxisSerie: 8,
+            seriesName:  "LB DIA",
             cor : this._colors.palette2[4]
         },
         {
             name : "QTDE DIA",
             exibir : false,
             showYAxis : true,
-            yAxisSerie: 10,
+            seriesName: "QTDE DIA",
             cor : this._colors.palette3[0]
         },
         {
             name : "CMV DIA",
             exibir : false,
             showYAxis : true,
-            yAxisSerie: 11,
+            seriesName: "CMV DIA",
             cor : this._colors.palette3[1]
         },
         {
             name : "ROB DIA",
             exibir : false,
             showYAxis : false,
-            yAxisSerie: 8,
+            seriesName: "ROL DIA",
             cor : this._colors.palette3[2]
         }
     ];
 
+
+    viewYAxis = [{
+        show: true,
+        seriesName:  this.exibirAxis[0].showYAxis, // 'ROL',
+      //   title: {
+      //     text: 'ROL',
+      //     style: {
+      //       color: this._serviceChart._colors.palette1[0],
+      //       fontSize: '12px',
+      //       fontFamily: 'Helvetica, Arial, sans-serif',
+      //       fontWeight: 40,
+      //       cssClass: 'apexcharts-yaxis-title',
+      //     }
+      //   },
+        labels: {
+          show: true,
+          minWidth: 0,
+          // maxWidth: 12,
+          style: {
+            colors: this._colors.palette1[0],
+            cssClass: 'apexcharts-yaxis-label'
+          },
+          formatter: function(val, index) {
+              var numero = val? val.toFixed(0) : '0';
+
+              var valor = numero;
+              if (String(numero).length < 4) {
+                  valor = numero;
+              }else{
+                  if (String(numero).length < 7) {
+                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
+                  } else {
+                      if (String(numero).length < 11) {
+                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
+                      }else{
+                          if (String(numero).length < 17) {
+                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
+                          }
+                      }
+                  }
+              }
+
+              return valor;
+          }
+        },
+        tooltip: {
+          enabled: false
+        }
+      },
+      {
+        show: true,
+        seriesName:  this.exibirAxis[1].showYAxis, //'LB',
+      //   title: {
+      //     text: 'LB',
+      //     style: {
+      //       color: this._serviceChart._colors.palette1[1],
+      //       fontSize: '12px',
+      //       fontFamily: 'Helvetica, Arial, sans-serif',
+      //       fontWeight: 40,
+      //       cssClass: '',
+      //     }
+      //   },
+        labels: {
+          show: true,
+          minWidth: 0,
+          maxWidth: 600,
+          style: {
+            colors: this._colors.palette1[1],
+            cssClass: 'apexcharts-yaxis-label'
+          },
+          formatter: function(val, index) {
+              var numero = val? val.toFixed(0) : '0';
+
+              var valor = numero;
+              if (String(numero).length < 4) {
+                  valor = numero;
+              }else{
+                  if (String(numero).length < 7) {
+                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
+                  } else {
+                      if (String(numero).length < 11) {
+                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
+                      }else{
+                          if (String(numero).length < 17) {
+                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
+                          }
+                      }
+                  }
+              }
+
+              return valor;
+          }
+        }
+      },
+      {
+        show: true,
+        seriesName:  this.exibirAxis[2].showYAxis, //'MB',
+      //   title: {
+      //     text: 'MB',
+      //     style: {
+      //       color: this._serviceChart._colors.palette1[2],
+      //       fontSize: '12px',
+      //       fontFamily: 'Helvetica, Arial, sans-serif',
+      //       fontWeight: 40,
+      //       cssClass: 'apexcharts-yaxis-title',
+      //     }
+      //   },
+        labels: {
+          show: true,
+          minWidth: 0,
+          maxWidth: 600,
+          style: {
+            colors: this._colors.palette1[2],
+            cssClass: 'apexcharts-yaxis-label'
+          },
+          formatter: function(val, index) {
+              var numero = val? val.toFixed(0) : '0';
+
+              var valor = numero;
+              if (String(numero).length < 4) {
+                  valor = numero;
+              }else{
+                  if (String(numero).length < 7) {
+                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
+                  } else {
+                      if (String(numero).length < 11) {
+                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
+                      }else{
+                          if (String(numero).length < 17) {
+                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
+                          }
+                      }
+                  }
+              }
+
+              return valor;
+          }
+        }
+      },
+      {
+        show: true,
+        seriesName:  this.exibirAxis[3].showYAxis, //'DIAS',
+      //   title: {
+      //     text: 'DIAS',
+      //     style: {
+      //       color: this._serviceChart._colors.palette1[3],
+      //       fontSize: '12px',
+      //       fontFamily: 'Helvetica, Arial, sans-serif',
+      //       fontWeight: 40,
+      //       cssClass: 'apexcharts-yaxis-title',
+      //     }
+      //   },
+        labels: {
+          show: true,
+          minWidth: 0,
+          maxWidth: 600,
+          style: {
+            colors: this._colors.palette1[3],
+            cssClass: 'apexcharts-yaxis-label'
+          },
+          formatter: function(val, index) {
+              var numero = val? val.toFixed(0) : '0';
+
+              var valor = numero;
+              if (String(numero).length < 4) {
+                  valor = numero;
+              }else{
+                  if (String(numero).length < 7) {
+                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
+                  } else {
+                      if (String(numero).length < 11) {
+                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
+                      }else{
+                          if (String(numero).length < 17) {
+                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
+                          }
+                      }
+                  }
+              }
+
+              return valor;
+          }
+        }
+      },
+      {
+        show: false,
+        seriesName:  this.exibirAxis[4].showYAxis, //'QTDE',
+      //   title: {
+      //     text: 'QTDE',
+      //     style: {
+      //       color: this._serviceChart._colors.palette1[4],
+      //       fontSize: '12px',
+      //       fontFamily: 'Helvetica, Arial, sans-serif',
+      //       fontWeight: 40,
+      //       cssClass: 'apexcharts-yaxis-title',
+      //     }
+      //   },
+        labels: {
+          show: false,
+          minWidth: 0,
+          maxWidth: 600,
+          style: {
+            colors: this._colors.palette1[4],
+            cssClass: 'apexcharts-yaxis-label'
+          },
+          formatter: function(val, index) {
+              var numero = val? val.toFixed(0) : '0';
+
+              var valor = numero;
+              if (String(numero).length < 4) {
+                  valor = numero;
+              }else{
+                  if (String(numero).length < 7) {
+                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
+                  } else {
+                      if (String(numero).length < 11) {
+                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
+                      }else{
+                          if (String(numero).length < 17) {
+                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
+                          }
+                      }
+                  }
+              }
+
+              return valor;
+          }
+        }
+      },
+      {
+        show: false,
+        seriesName: this.exibirAxis[5].showYAxis, //'CMV',
+        labels: {
+          show: false,
+          minWidth: 0,
+          maxWidth: 600,
+          style: {
+            colors: this._colors.palette2[0],
+            cssClass: 'apexcharts-yaxis-label'
+          },
+          formatter: function(val, index) {
+              var numero = val? val.toFixed(0) : '0';
+
+              var valor = numero;
+              if (String(numero).length < 4) {
+                  valor = numero;
+              }else{
+                  if (String(numero).length < 7) {
+                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
+                  } else {
+                      if (String(numero).length < 11) {
+                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
+                      }else{
+                          if (String(numero).length < 17) {
+                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
+                          }
+                      }
+                  }
+              }
+
+              return valor;
+          }
+        }
+      },
+      {
+        show: false,
+        seriesName: this.exibirAxis[6].showYAxis, //'ROB',
+        labels: {
+          show: false,
+          minWidth: 0,
+          maxWidth: 600,
+          style: {
+            colors: this._colors.palette2[1],
+            cssClass: 'apexcharts-yaxis-label'
+          },
+          formatter: function(val, index) {
+              var numero = val? val.toFixed(0) : '0';
+
+              var valor = numero;
+              if (String(numero).length < 4) {
+                  valor = numero;
+              }else{
+                  if (String(numero).length < 7) {
+                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
+                  } else {
+                      if (String(numero).length < 11) {
+                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
+                      }else{
+                          if (String(numero).length < 17) {
+                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
+                          }
+                      }
+                  }
+              }
+
+              return valor;
+          }
+        }
+      },
+      {
+        show: false,
+        seriesName: this.exibirAxis[7].showYAxis, //'IMPOSTOS',
+        labels: {
+          show: false,
+          minWidth: 0,
+          maxWidth: 600,
+          style: {
+            colors: this._colors.palette2[2],
+            cssClass: 'apexcharts-yaxis-label'
+          },
+          formatter: function(val, index) {
+              var numero = val? val.toFixed(0) : '0';
+
+              var valor = numero;
+              if (String(numero).length < 4) {
+                  valor = numero;
+              }else{
+                  if (String(numero).length < 7) {
+                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
+                  } else {
+                      if (String(numero).length < 11) {
+                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
+                      }else{
+                          if (String(numero).length < 17) {
+                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
+                          }
+                      }
+                  }
+              }
+
+              return valor;
+          }
+        }
+      },
+      {
+        show: false,
+        seriesName: this.exibirAxis[8].showYAxis, //'ROL_DIA',
+        labels: {
+          show: false,
+          minWidth: 0,
+          maxWidth: 600,
+          style: {
+            colors: this._colors.palette2[3],
+            cssClass: 'apexcharts-yaxis-label'
+          },
+          formatter: function(val, index) {
+              var numero = val? val.toFixed(0) : '0';
+
+              var valor = numero;
+              if (String(numero).length < 4) {
+                  valor = numero;
+              }else{
+                  if (String(numero).length < 7) {
+                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
+                  } else {
+                      if (String(numero).length < 11) {
+                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
+                      }else{
+                          if (String(numero).length < 17) {
+                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
+                          }
+                      }
+                  }
+              }
+
+              return valor;
+          }
+        }
+      },
+      {
+        show: false,
+        seriesName: this.exibirAxis[9].showYAxis, //'LB_DIA',
+        labels: {
+          show: false,
+          minWidth: 0,
+          maxWidth: 600,
+          style: {
+            colors: this._colors.palette2[4],
+            cssClass: 'apexcharts-yaxis-label'
+          },
+          formatter: function(val, index) {
+              var numero = val? val.toFixed(0) : '0';
+
+              var valor = numero;
+              if (String(numero).length < 4) {
+                  valor = numero;
+              }else{
+                  if (String(numero).length < 7) {
+                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
+                  } else {
+                      if (String(numero).length < 11) {
+                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
+                      }else{
+                          if (String(numero).length < 17) {
+                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
+                          }
+                      }
+                  }
+              }
+
+              return valor;
+          }
+        }
+      },
+      {
+        show: false,
+        seriesName: this.exibirAxis[10].showYAxis, //'QTDE_DIA',
+        labels: {
+          show: false,
+          minWidth: 0,
+          maxWidth: 600,
+          style: {
+            colors: this._colors.palette3[0],
+            cssClass: 'apexcharts-yaxis-label'
+          },
+          formatter: function(val, index) {
+              var numero = val? val.toFixed(0) : '0';
+
+              var valor = numero;
+              if (String(numero).length < 4) {
+                  valor = numero;
+              }else{
+                  if (String(numero).length < 7) {
+                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
+                  } else {
+                      if (String(numero).length < 11) {
+                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
+                      }else{
+                          if (String(numero).length < 17) {
+                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
+                          }
+                      }
+                  }
+              }
+
+              return valor;
+          }
+        }
+      },
+      {
+        show: false,
+        seriesName: this.exibirAxis[11].showYAxis, //'CMV_DIA',
+        labels: {
+          show: false,
+          minWidth: 0,
+          maxWidth: 600,
+          style: {
+            colors: this._colors.palette3[1],
+            cssClass: 'apexcharts-yaxis-label'
+          },
+          formatter: function(val, index) {
+              var numero = val? val.toFixed(0) : '0';
+
+              var valor = numero;
+              if (String(numero).length < 4) {
+                  valor = numero;
+              }else{
+                  if (String(numero).length < 7) {
+                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
+                  } else {
+                      if (String(numero).length < 11) {
+                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
+                      }else{
+                          if (String(numero).length < 17) {
+                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
+                          }
+                      }
+                  }
+              }
+
+              return valor;
+          }
+        }
+      },
+      {
+        show: false,
+        seriesName: this.exibirAxis[12].showYAxis, //'ROB_DIA',
+        labels: {
+          show: false,
+          minWidth: 0,
+          maxWidth: 600,
+          style: {
+            colors: this._colors.palette3[2],
+            cssClass: 'apexcharts-yaxis-label'
+          },
+          formatter: function(val, index) {
+              var numero = val? val.toFixed(0) : '0';
+
+              var valor = numero;
+              if (String(numero).length < 4) {
+                  valor = numero;
+              }else{
+                  if (String(numero).length < 7) {
+                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
+                  } else {
+                      if (String(numero).length < 11) {
+                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
+                      }else{
+                          if (String(numero).length < 17) {
+                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
+                          }
+                      }
+                  }
+              }
+
+              return valor;
+          }
+        }
+      }
+    ];
 
     xAxis = new Array();
     getXaxis(){

@@ -3,8 +3,11 @@ import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 // import { MAT_DATE_LOCALE} from '@angular/material/core';
-import { DEFAULT_CURRENCY_CODE, LOCALE_ID } from '@angular/core';
-import ptBr from '@angular/common/locales/pt';
+// import { DEFAULT_CURRENCY_CODE, LOCALE_ID } from '@angular/core';
+// import ptBr from '@angular/common/locales/pt';
+import { LOCALE_ID } from '@angular/core';
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
+import localePt from '@angular/common/locales/pt';
 import { registerLocaleData } from '@angular/common';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -13,11 +16,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
 
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
-import localePt from '@angular/common/locales/pt';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import {MatDialog, MAT_DIALOG_DATA, MatDialogRef, MatDialogModule} from '@angular/material/dialog';
 import {NgIf} from '@angular/common';
@@ -48,6 +51,7 @@ registerLocaleData(localePt);
         MatDatepickerModule,
         MatNativeDateModule,
         MatMomentDateModule,
+        MatSlideToggleModule,
         FormsModule, MatButtonModule,
         MatDialogModule, MatInputModule, FormsModule, MatButtonModule, NgIf, MatCheckboxModule,
         NgApexchartsModule
@@ -59,7 +63,7 @@ registerLocaleData(localePt);
         { provide: MAT_DIALOG_DATA, useValue: [] }
     ],
     entryComponents: [
-        AnalisemarcaDialogComponent
+        AnalisemarcaDialogComponent,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA]
 })
