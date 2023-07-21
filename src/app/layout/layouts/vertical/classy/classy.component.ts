@@ -77,9 +77,9 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
                 // Controle de acesso do menu
 
                 if (this.user.role !== 'admin') {
-                    myNavigation.default[1] = {} as FuseNavigationItem;
                     myNavigation.default[2] = {} as FuseNavigationItem;
                     myNavigation.default[3] = {} as FuseNavigationItem;
+                    // myNavigation.default[4] = {} as FuseNavigationItem;
                 }
             });
 
@@ -95,13 +95,21 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
                 });
 
                 let dashsMenuList =
-                    myNavigation.default[1].children[0].children;   //alterado o default para 1 pois o vetor do mynavigation foi alterado para retirada do Links do Analise Indicadores.
+                    myNavigation.default[1].children[0].children; //alterado o default para 1 pois o vetor do mynavigation foi alterado para retirada do Links do Analise Indicadores.
                 dashsMenuList.forEach((dashMenu, index) => {
                     if (!this.dashsIds.includes(parseInt(dashMenu.id))) {
                         dashsMenuList[index] = {};
                     }
                 });
+
+                let linksMenuList = myNavigation.default[0].children; //alterado o default para 1 pois o vetor do mynavigation foi alterado para retirada do Links do Analise Indicadores.
+                linksMenuList.forEach((linkMenu, index) => {
+                    if (!this.dashsIds.includes(parseInt(linkMenu.id))) {
+                        linksMenuList[index] = {};
+                    }
+                });
             });
+
         this.navigation = myNavigation;
 
         // Subscribe to media changes
