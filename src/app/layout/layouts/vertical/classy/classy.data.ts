@@ -65,14 +65,13 @@ export const navigationData: Navigation = {
                 },
             ],
         },
-        // {
-        //     id: 'dashboardstest',
-        //     title: 'Dashboards',
-        //     type: 'basic',
-        //     icon: 'heroicons_outline:home',
-        //     link: '/dashboardstest',
-        // },
-
+        {
+            id: 'linkteste',
+            title: 'Links (Teste)',
+            type: 'basic',
+            icon: 'heroicons_outline:home',
+            link: '/linkstest',
+        },
         {
             id: 'cadastros',
             title: 'Cadastros',

@@ -235,7 +235,6 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
         const contact = this.contactForm.getRawValue();
         contact.groupIds = this.groups.value;
         contact.reportIds = this.reports.value;
-
         // Go through the contact object and clear empty values
         contact.emails = contact.emails.filter((email) => email.email);
 
