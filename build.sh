@@ -17,7 +17,7 @@ USER="grj7uyekqpbi/rogeriosantos.ti@jspecas.com.br"
 TENANT="grj7uyekqpbi"
 
 APP="jsp-bi-front"
-VERSION="1.0.29"
+VERSION="1.0.30"
 
 echo "Construindo a imagem ${VERSION}"
 #Faz um build baseado no Dockfile
