@@ -50,20 +50,23 @@
                     <!-- Title -->
                     <div class="mt-8">
                         <mat-form-field
-                            class="w-full"
+                            class="w-full mr-1"
                             [subscriptSizing]="'dynamic'"
                         >
                             <mat-label>Tipo</mat-label>
-                            <!-- <mat-icon
-                                matPrefix
-                                class="hidden sm:flex icon-size-5"
-                                [svgIcon]="'heroicons_solid:briefcase'"
-                            ></mat-icon> -->
-                            <input
-                                matInput
+                            <mat-select
+                                class="my-custom-class"
+                                style="font-size: 12px"
                                 [formControlName]="'type'"
                                 [placeholder]="'Tipo'"
-                            />
+                            >
+                                <mat-option
+                                    style="font-size: 12px"
+                                    *ngFor="let type of types; let i = index"
+                                    [value]="types[i]"
+                                    >{{ type }}</mat-option
+                                >
+                            </mat-select>
                         </mat-form-field>
                     </div>
 

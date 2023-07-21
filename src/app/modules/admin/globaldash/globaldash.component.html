@@ -1,0 +1,13 @@
+<div class="flex-container">
+    <ng-container *ngFor="let data of dashsData">
+        <button
+            class="m-5"
+            style="width: 200px"
+            mat-flat-button
+            [color]="'primary'"
+            (click)="redirectDash(data?.id)"
+        >
+            <span style="font-size: 12px">{{ data.name }}</span>
+        </button>
+    </ng-container>
+</div>

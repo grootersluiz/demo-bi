@@ -624,21 +624,40 @@
 
                     <!-- Title -->
                     <div class="mt-8">
-                        <mat-form-field
+                        <!-- <mat-form-field
                             class="w-full"
                             [subscriptSizing]="'dynamic'"
                         >
                             <mat-label>Tipo</mat-label>
-                            <!-- <mat-icon
+                             <mat-icon
                                 matPrefix
                                 class="hidden sm:flex icon-size-5"
                                 [svgIcon]="'heroicons_solid:briefcase'"
-                            ></mat-icon> -->
+                            ></mat-icon> 
                             <input
                                 matInput
                                 [formControlName]="'type'"
                                 [placeholder]="'Tipo'"
                             />
+                        </mat-form-field> -->
+                        <mat-form-field
+                            class="w-full mr-1"
+                            [subscriptSizing]="'dynamic'"
+                        >
+                            <mat-label>Tipo</mat-label>
+                            <mat-select
+                                class="my-custom-class"
+                                style="font-size: 12px"
+                                [formControlName]="'type'"
+                                [placeholder]="'Tipo'"
+                            >
+                                <mat-option
+                                    style="font-size: 12px"
+                                    *ngFor="let type of types; let i = index"
+                                    [value]="types[i]"
+                                    >{{ type }}</mat-option
+                                >
+                            </mat-select>
                         </mat-form-field>
                     </div>
 
