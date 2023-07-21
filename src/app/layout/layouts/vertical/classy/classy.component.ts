@@ -77,8 +77,8 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
                 // Controle de acesso do menu
 
                 if (this.user.role !== 'admin') {
-                    myNavigation.default[2] = {} as FuseNavigationItem;
                     myNavigation.default[3] = {} as FuseNavigationItem;
+                    myNavigation.default[4] = {} as FuseNavigationItem;
                 }
             });
 
