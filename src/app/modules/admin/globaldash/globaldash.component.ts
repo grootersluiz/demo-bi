@@ -10,13 +10,14 @@ import { RegdashsService } from '../regdashs/regdashs.service';
     selector: 'globaldash',
     templateUrl: './globaldash.component.html',
     encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class GlobalDashsComponent {
+    dashsData: any[] = [];
+
     /**
      * Constructor
      */
-    constructor(private _dashService: RegdashsService) {}
+    constructor(private _dashService: RegdashsService) { }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Lifecycle hooks
@@ -27,7 +28,8 @@ export class GlobalDashsComponent {
      */
     ngOnInit(): void {
         this._dashService.getDashs().subscribe((dashs) => {
-            console.log(dashs['data']);
+            this.dashsData = (dashs as any).data;
+            console.log(this.dashsData)
         });
     }
 }
