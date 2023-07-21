@@ -65,13 +65,13 @@ export const navigationData: Navigation = {
                 },
             ],
         },
-        // {
-        //     id: 'linkteste',
-        //     title: 'Links (Teste)',
-        //     type: 'basic',
-        //     icon: 'heroicons_outline:home',
-        //     link: '/linkstest',
-        // },
+        {
+            id: 'linkteste',
+            title: 'Links (Teste)',
+            type: 'basic',
+            icon: 'heroicons_outline:home',
+            link: '/linkstest',
+        },
         {
             id: 'cadastros',
             title: 'Cadastros',
