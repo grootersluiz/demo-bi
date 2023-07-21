@@ -52,6 +52,16 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
     tagsEditMode: boolean = false;
     filteredTags: Tag[];
     report: Reports;
+    types = [
+        'link',
+        'table',
+        'pie_chart',
+        'line_chart',
+        'bar_chart',
+        'area_chart',
+        'indicator',
+        'column_line_chart',
+    ];
     groups = new FormControl([]);
     groupsObjects: Group[];
     groupsStringList: string[];
