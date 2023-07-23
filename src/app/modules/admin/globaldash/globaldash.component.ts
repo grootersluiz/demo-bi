@@ -1,12 +1,8 @@
-import {
-    ChangeDetectionStrategy,
-    Component,
-    ViewEncapsulation,
-} from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { RegdashsService } from '../regdashs/regdashs.service';
-import { RegreportsService } from '../regreports/regreports.service';
 import { Dash } from '../regdashs/regdashs.types';
+import { GlobalDashService } from './globaldash.service';
 
 @Component({
     selector: 'globaldash',
@@ -15,8 +11,11 @@ import { Dash } from '../regdashs/regdashs.types';
 })
 export class GlobalDashsComponent {
     dashsData: any[] = [];
-    reportsData: any[] = [];
-    dashById: Dash;
+    dashReps: any[];
+    reportObj: {
+        id: number;
+        link: string;
+    }[] = [];
 
     /**
      * Constructor
@@ -24,7 +23,7 @@ export class GlobalDashsComponent {
     constructor(
         private _dashService: RegdashsService,
         private _dashIdService: RegdashsService,
-        private _reportService: RegreportsService,
+        private _globalDashService: GlobalDashService,
         private _router: Router
     ) {}
 
@@ -40,19 +39,27 @@ export class GlobalDashsComponent {
             this.dashsData = (dashs as any).data;
         });
 
-        this._reportService.getReports().subscribe((reports) => {
-            this.reportsData = (reports as any).data;
-            console.log(this.reportsData);
-        });
+        this._dashIdService.getDbById(241).subscribe((links) => {
+            this.dashReps = links['reportIds'];
 
-        this._dashIdService.getDashById(241).subscribe((links) => {
-            console.log(links);
+            this.dashReps.forEach((id) =>
+                this._globalDashService.getReportsData(id).subscribe((data) => {
+                    this.reportObj.push({
+                        id,
+                        link: data['link'],
+                    });
+                })
+            );
         });
     }
 
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
+
+    redirectLink(link: string) {
+        window.open(link);
+    }
 
     redirectDash(id: number): void {
         if (id === 41) {
@@ -65,6 +72,8 @@ export class GlobalDashsComponent {
             this._router.navigate(['/links/linksGeral']);
         } else if (id === 44) {
             this._router.navigate(['/links/linksTI']);
+        } else if (id === 241) {
+            this._router.navigate(['linkstest']);
         } else this._router.navigate(['/settings/profile']);
     }
 }

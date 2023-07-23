@@ -7,4 +7,5 @@ export interface User {
     role: string;
     groupIds: number[];
     dashboardIds: number[];
+    reportIds: number[];
 }

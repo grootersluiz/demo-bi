@@ -67,7 +67,7 @@ export const navigationData: Navigation = {
         },
         {
             id: '241',
-            title: 'Links (Teste)',
+            title: 'Links',
             type: 'basic',
             icon: 'heroicons_outline:home',
             link: '/linkstest',
