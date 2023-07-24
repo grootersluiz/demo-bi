@@ -93,7 +93,7 @@ export class RegreportsService {
     /**
      * Get report by ID
      */
-    getRpById(id: number): Observable<Reports> {
+    getReportsById(id: number): Observable<Reports> {
         return this._httpClient
             .get<Reports>(`http://10.2.1.108/v1/reports/${id}`)
             .pipe(

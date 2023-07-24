@@ -91,7 +91,7 @@ export class RegdashsService {
     /**
      * Get user by ID
      */
-    getDbById(id: number): Observable<Dash> {
+    getDashboardById(id: number): Observable<Dash> {
         return this._httpClient
             .get<Dash>(`http://10.2.1.108/v1/dashboards/${id}`)
             .pipe(

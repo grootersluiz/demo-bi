@@ -20,7 +20,7 @@ export class GlobalDashService {
     /**
      * Get Reports Data
      */
-    getReportsData(id: string): Observable<Reports[]> {
+    getReportData(id: string): Observable<Reports[]> {
         return this._httpClient
             .get<Reports[]>(`http://10.2.1.108/v1/reports/${id}/data`)
             .pipe(
