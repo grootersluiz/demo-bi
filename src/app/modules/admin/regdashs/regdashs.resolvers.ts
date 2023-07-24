@@ -113,7 +113,7 @@ export class DbByIdResolver implements Resolve<any> {
         state: RouterStateSnapshot
     ): Observable<Dash> {
         return this._contactsService
-            .getDbById(parseInt(route.paramMap.get('id')))
+            .getDashboardById(parseInt(route.paramMap.get('id')))
             .pipe(
                 // Error here means the requested contact is not available
                 catchError((error) => {

@@ -220,16 +220,16 @@ export const appRoutes: Route[] = [
                                 'app/modules/admin/dashboards/analisemarca/analisemarca.module'
                             ).then((m) => m.AnalisemarcaModule),
                     },
+                    {
+                        path: 'links',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/globaldash/globaldash.module'
+                            ).then((m) => m.GlobalDashsModule),
+                    },
                 ],
             },
 
-            {
-                path: 'linkstest',
-                loadChildren: () =>
-                    import(
-                        'app/modules/admin/globaldash/globaldash.module'
-                    ).then((m) => m.GlobalDashsModule),
-            },
             {
                 path: 'links',
                 children: [

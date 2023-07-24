@@ -91,6 +91,19 @@ export class RegreportsService {
     }
 
     /**
+     * Get report by ID
+     */
+    getReportsById(id: number): Observable<Reports> {
+        return this._httpClient
+            .get<Reports>(`http://10.2.1.108/v1/reports/${id}`)
+            .pipe(
+                tap((dash) => {
+                    this._report.next(dash);
+                })
+            );
+    }
+
+    /**
      * Search contacts with given name
      *
      * @param name
@@ -147,7 +160,7 @@ export class RegreportsService {
     }
 
     /**
-     * Get dash by group
+     * Get report by group
      */
     getReportsByGroup(id: string): Observable<Reports[]> {
         return this._httpClient
@@ -164,7 +177,7 @@ export class RegreportsService {
     }
 
     /**
-     * Get dash by group
+     * Get reports by user
      */
     getReportsByUser(id: string): Observable<Reports[]> {
         return this._httpClient
