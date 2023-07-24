@@ -83,6 +83,7 @@ export type ChartOptions = {
   stroke: ApexStroke;
   title: ApexTitleSubtitle;
   responsive: ApexResponsive[];
+  tooltip: ApexTooltip;
 };
 
 @Component({
@@ -134,36 +135,36 @@ export class VendafilialComponent {
     var keyX = 2;
     var codemp  = this.param.filial;
     var descemp = this.param.descFilial;
+    const dataAtual = new Date();
+    dataAtual.setMonth(this.param.mes);
+    dataAtual.setFullYear(this.param.ano);
 
-    var indexData =0;
+    var indexData = 0;
     for (let index = 0; index < rows.length; index++) {
 
-      if(rows[index][0] == codemp){
+        if(rows[index][0] == codemp){
 
-        var valorKey  = rows[index];
+            var valorKey  = rows[index];
+            dataAtual.setDate(valorKey[1].substr(0,2));
 
-        while(valorKey[1].substr(0,2) != categorias[indexData]){
-
-          this.viewSerie[0].data.push(0);
-          this.viewSerie[1].data.push(0);
-          this.viewSerie[2].data.push(0);
-          indexData++;
-
-          if(indexData > 31){ break;}
+            var valorMeta = !rows[index][3]?0:rows[index][3];
+            var valorRol  = !rows[index][4]?0:rows[index][4];
+            var valorMb   = !rows[index][10]?0:rows[index][10];
+//console.log(valorKey[1].substr(0,2) , categorias[indexData]);
+                if(valorKey[1].substr(0,2) === categorias[indexData]){
+                //  console.log('entrou',valorKey);
+                    this.viewSerie[0].data.push(valorMeta);
+                    this.viewSerie[1].data.push(valorRol);
+                    this.viewSerie[2].data.push(valorMb);
+                }
+            else{
+                if(valorKey[1].substr(0,2) < categorias[indexData]){
+                    indexData--;
+                }
+            }
+            indexData++;
         }
 
-        var valorMeta = !rows[index][3]?0:rows[index][3];
-        var valorRol  = !rows[index][4]?0:rows[index][4];
-        var valorMb   = !rows[index][10]?0:rows[index][10];
-
-        if(valorKey[1].substr(0,2) === categorias[indexData]){
-          this.viewSerie[0].data.push(valorMeta);
-          this.viewSerie[1].data.push(valorRol);
-          this.viewSerie[2].data.push(valorMb);
-        }
-
-        indexData++;
-      }
 
     }
 
@@ -215,16 +216,27 @@ export class VendafilialComponent {
   getCategorias(){
 
     var dia = parseInt(this.param.ultDia);
+    var mes = parseInt(this.param.mes);
+    var ano = parseInt(this.param.ano);
+    const dataAtual = new Date();
+    dataAtual.setMonth(this.param.mes-1);
+    dataAtual.setFullYear(this.param.ano);
+
+
 
     // this.categorias = [];
-    var contDia: string;
-    for (let index = 1 ; index <= dia; index++) {
+        this.categorias = [];
+        var contDia: string;
+        for (let index = 1 ; index <= dia; index++) {
+         dataAtual.setDate(index);
+         if(dataAtual.getDay() != 0){
 
-      contDia = ("00" + index).slice(-2) ;
-      this.categorias.push(contDia);
+            contDia = ("00" + index).slice(-2) ;
 
-    }
+            this.categorias.push(contDia);}
+         }
 
+         var chartService = new ApexCharts(this.chart, this.chartOptions) ;
   }
 
   series = {columns: [], rows: []};
@@ -238,8 +250,8 @@ export class VendafilialComponent {
                             .subscribe(dataresponse => {
                                  this.series.columns  = dataresponse.columns;
                                  this.series.rows     = dataresponse.rows;
+                                 this.getCategorias();
                                  this.posicionaValorXinCategoria(this.categorias,this.series.rows);
-
                             });
 
   }
@@ -561,7 +573,6 @@ export class VendafilialComponent {
     const sysDate = new Date();
     var mes = ("00" + (sysDate.getMonth()+1)).slice(-2) ;
     this._sysdate  = '('+mes+'/'+sysDate.getFullYear() +')';
-
     var lista = this.vendafilialService.data$[1];
 
     var arrayDataSource =  this.formataDataSource(lista);
@@ -774,8 +785,33 @@ export class VendafilialComponent {
       dataLabels: {
         enabled: false
       },
+      tooltip: {
+        enabled: true,
+        y: {
+            formatter: function (val) {
+                var valor = val? Number(val).toFixed(2) : '0.00';
+
+                valor = valor.replace('.',',');
+
+                // if(valor.indexOf(",00") == -1)
+                if(Number((valor.length)) > 6 && Number(valor.length) < 10){
+                    var leng = valor.length;
+                    valor = valor.substring(0,leng-6)+'.'+valor.substring(leng-6,leng);
+
+                }else{
+
+                    if(Number((valor.length)) > 9 && Number(valor.length) < 13){
+                        var leng = valor.length;
+                        valor = valor.substring(0,leng-9)+'.'+valor.substring(leng-9,leng-6)+'.'+ valor.substring(leng-6,leng);
+                    }
+                }
+
+                return String(valor);
+            }
+        }
+      },
       stroke: {
-        curve: "straight"
+        curve: "smooth"
       },
       title: {
         text: " Dia ("+this.param.descFilial+")",
@@ -802,8 +838,26 @@ export class VendafilialComponent {
               cssClass: 'apexcharts-yaxis-label'
             },
             formatter: function(val, index) {
-              var valor = val? val.toFixed(0) : '';
-              return valor;
+                var numero = val? val.toFixed(0) : '0';
+
+                var valor = numero;
+                if (String(numero).length < 4) {
+                    valor = numero;
+                }else{
+                    if (String(numero).length < 7) {
+                        valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
+                    } else {
+                        if (String(numero).length < 11) {
+                            valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
+                        }else{
+                            if (String(numero).length < 17) {
+                                valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
+                            }
+                        }
+                    }
+                }
+
+                return valor;
             }
           }
         },
@@ -827,8 +881,26 @@ export class VendafilialComponent {
               cssClass: 'apexcharts-yaxis-label'
             },
             formatter: function(val, index) {
-              var valor = val? val.toFixed(0) : '';
-              return valor;
+                var numero = val? val.toFixed(0) : '0';
+
+                var valor = numero;
+                if (String(numero).length < 4) {
+                    valor = numero;
+                }else{
+                    if (String(numero).length < 7) {
+                        valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
+                    } else {
+                        if (String(numero).length < 11) {
+                            valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
+                        }else{
+                            if (String(numero).length < 17) {
+                                valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
+                            }
+                        }
+                    }
+                }
+
+                return valor;
             }
           }
         },
@@ -852,8 +924,26 @@ export class VendafilialComponent {
               cssClass: 'apexcharts-yaxis-label'
             },
             formatter: function(val, index) {
-              var valor = val? val.toFixed(2) : '';
-              return valor;
+                var numero = val? val.toFixed(0) : '0';
+
+                var valor = numero;
+                if (String(numero).length < 4) {
+                    valor = numero;
+                }else{
+                    if (String(numero).length < 7) {
+                        valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
+                    } else {
+                        if (String(numero).length < 11) {
+                            valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
+                        }else{
+                            if (String(numero).length < 17) {
+                                valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
+                            }
+                        }
+                    }
+                }
+
+                return valor;
             }
           }
         }
