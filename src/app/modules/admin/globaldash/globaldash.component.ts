@@ -38,7 +38,7 @@ export class GlobalDashsComponent {
      * On init
      */
     ngOnInit(): void {
-        const dashId = this._route.snapshot.data.dashID;
+        const dashId = this._sharedData.getDashID();
         console.log(dashId);
         if (dashId) {
             this._dashIdService.getDashboardById(dashId).subscribe((links) => {

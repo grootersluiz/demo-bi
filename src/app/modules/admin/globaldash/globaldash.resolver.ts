@@ -38,6 +38,6 @@ export class GetDashResolver implements Resolve<number> {
     constructor(private _sharedData: SharedDataService) {}
 
     resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): number {
-        return this._sharedData.dashID;
+        return this._sharedData.getDashID();
     }
 }

@@ -139,7 +139,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
         const id = event.view.location.pathname;
         const parts = id.split('/dashboards/');
         const dashID = parseInt(parts[1]);
-        this._sharedData.dashID = dashID;
+        this._sharedData.setDashID(dashID);
     }
 
     /**
