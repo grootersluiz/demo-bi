@@ -98,9 +98,9 @@ export class NewDashComponent implements OnInit, OnDestroy {
             avatar: [null],
             name: ['', [Validators.required]],
             type: [''],
-            groupIds: [''],
-            userIds: [''],
-            reportIds: [''],
+            groupIds: [],
+            userIds: [],
+            reportIds: [],
             emails: this._formBuilder.array([]),
             phoneNumbers: this._formBuilder.array([]),
             title: [''],
@@ -192,7 +192,9 @@ export class NewDashComponent implements OnInit, OnDestroy {
         // Get the contact object
         const contact = this.contactForm.getRawValue();
         contact.groupIds = this.groups.value;
-        contact.reportIds = this.reports.value;
+        contact.reports = this.reports.value;
+
+        console.log(this.contactForm.getRawValue());
 
         // Update the contact on the server
         this._contactsService.createDash(contact).subscribe(() => {
