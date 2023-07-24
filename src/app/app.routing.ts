@@ -197,7 +197,7 @@ export const appRoutes: Route[] = [
                     //         ).then((m) => m.CryptoModule),
                     // },
                     {
-                        path: 'rol',
+                        path: '41',
                         canActivate: [DashRolGuard],
                         loadChildren: () =>
                             import(
@@ -205,7 +205,7 @@ export const appRoutes: Route[] = [
                             ).then((m) => m.RolModule),
                     },
                     {
-                        path: 'vendafilial',
+                        path: '42',
                         canActivate: [DashVendaFilialGuard],
                         loadChildren: () =>
                             import(
@@ -213,7 +213,7 @@ export const appRoutes: Route[] = [
                             ).then((m) => m.VendafilialModule),
                     },
                     {
-                        path: 'analisemarca',
+                        path: '181',
                         canActivate: [DashAnalisemarcaGuard],
                         loadChildren: () =>
                             import(
@@ -221,7 +221,7 @@ export const appRoutes: Route[] = [
                             ).then((m) => m.AnalisemarcaModule),
                     },
                     {
-                        path: 'links',
+                        path: '241',
                         loadChildren: () =>
                             import(
                                 'app/modules/admin/globaldash/globaldash.module'
