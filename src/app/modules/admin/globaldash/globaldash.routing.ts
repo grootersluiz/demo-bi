@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
 import { GlobalDashsComponent } from './globaldash.component';
-import { GlobalDashResolver } from './globaldash.resolver';
+import { GlobalDashResolver, GetDashResolver } from './globaldash.resolver';
 
 export const globalDashRoutes: Route[] = [
     {
@@ -8,6 +8,7 @@ export const globalDashRoutes: Route[] = [
         component: GlobalDashsComponent,
         resolve: {
             globalDash: GlobalDashResolver,
+            dashID: GetDashResolver,
         },
     },
 ];
