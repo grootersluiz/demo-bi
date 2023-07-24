@@ -70,7 +70,7 @@ export const navigationData: Navigation = {
             title: 'Links',
             type: 'basic',
             icon: 'material_outline:double_arrow',
-            link: '/linkstest',
+            link: '/dashboards/241',
         },
         {
             id: 'cadastros',

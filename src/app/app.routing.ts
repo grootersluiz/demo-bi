@@ -224,7 +224,7 @@ export const appRoutes: Route[] = [
             },
 
             {
-                path: 'linkstest',
+                path: 'dashboards/241',
                 loadChildren: () =>
                     import(
                         'app/modules/admin/globaldash/globaldash.module'
