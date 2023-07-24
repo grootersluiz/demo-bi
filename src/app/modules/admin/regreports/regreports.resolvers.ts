@@ -67,7 +67,7 @@ export class ContactsContactResolver implements Resolve<any> {
         state: RouterStateSnapshot
     ): Observable<Reports> {
         return this._contactsService
-            .getReportById(parseInt(route.paramMap.get('id')))
+            .getRpById(parseInt(route.paramMap.get('id')))
             .pipe(
                 // Error here means the requested contact is not available
                 catchError((error) => {

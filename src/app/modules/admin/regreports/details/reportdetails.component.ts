@@ -142,6 +142,7 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
 
                 // Get the contact
                 this.report = contact;
+                console.log(contact);
 
                 //Set the Report Groups
                 this.groups.setValue(this.report.groupIds);

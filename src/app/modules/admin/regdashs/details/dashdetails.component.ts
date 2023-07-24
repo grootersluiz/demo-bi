@@ -135,6 +135,7 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
 
                 // Get the contact
                 this.contact = contact;
+                console.log(contact);
 
                 //Set the User Groups
                 this.groups.setValue(this.contact.groupIds);
