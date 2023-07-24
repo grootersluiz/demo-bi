@@ -143,8 +143,11 @@ export class ReportDetailsComponent implements OnInit, OnDestroy {
                 // Get the contact
                 this.report = contact;
 
-                //Set the User Groups
+                //Set the Report Groups
                 this.groups.setValue(this.report.groupIds);
+
+                //Set the Report Users
+                this.users.setValue(this.report.userIds);
 
                 // Clear the emails and phoneNumbers form arrays
                 (this.contactForm.get('emails') as UntypedFormArray).clear();
