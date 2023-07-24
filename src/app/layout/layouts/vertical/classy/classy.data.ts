@@ -61,17 +61,18 @@ export const navigationData: Navigation = {
                             icon: 'heroicons_outline:chart-bar',
                             link: '/dashboards/analisemarca',
                         },
+                        {
+                            id: '241',
+                            title: 'Links',
+                            type: 'basic',
+                            icon: 'material_outline:double_arrow',
+                            link: '/dashboards/links',
+                        },
                     ],
                 },
             ],
         },
-        {
-            id: '241',
-            title: 'Links',
-            type: 'basic',
-            icon: 'material_outline:double_arrow',
-            link: '/dashboards/241',
-        },
+
         {
             id: 'cadastros',
             title: 'Cadastros',
