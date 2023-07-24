@@ -1,13 +1,14 @@
-<div class="flex-container">
-    <ng-container *ngFor="let data of reportObj">
-        <button
-            class="m-5"
-            style="width: 200px"
-            mat-flat-button
-            [color]="'primary'"
-            (click)="redirectLink(data?.link)"
-        >
-            <span style="font-size: 12px">{{ data?.id }}</span>
-        </button>
-    </ng-container>
+<div class="w-full">
+    <div class="{{ margin }}">
+        <ng-container *ngFor="let data of reportObj">
+            <span
+                class="a w-full h-14 rounded-full border border-solid"
+                (click)="redirectLink(data?.data)"
+            >
+                <p class="pa mt-3 text-ellipsis overflow-hidden">
+                    {{ data?.name }}
+                </p>
+            </span>
+        </ng-container>
+    </div>
 </div>

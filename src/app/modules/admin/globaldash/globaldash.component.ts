@@ -1,20 +1,23 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { RegdashsService } from '../regdashs/regdashs.service';
-import { Dash } from '../regdashs/regdashs.types';
 import { GlobalDashService } from './globaldash.service';
 
 @Component({
     selector: 'globaldash',
     templateUrl: './globaldash.component.html',
     encapsulation: ViewEncapsulation.None,
+    styleUrls: ['./globaldash.component.scss'],
 })
 export class GlobalDashsComponent {
+    margin =
+        'content-center grid gap-x-15 gap-y-15 grid-col-1 md:grid-cols-2 lg:md:grid-cols-2 xl:md:grid-cols-2 xl2:md:grid-cols-2 grid-rows-3 mx-10 md:mx-36 lg:mx-36 xl:mx-36 xl2:mx-36 my-20';
     dashsData: any[] = [];
     dashReps: any[];
     reportObj: {
         id: number;
-        link: string;
+        name: string;
+        data: string;
     }[] = [];
 
     /**
@@ -45,8 +48,9 @@ export class GlobalDashsComponent {
             this.dashReps.forEach((id) =>
                 this._globalDashService.getReportsData(id).subscribe((data) => {
                     this.reportObj.push({
-                        id,
-                        link: data['link'],
+                        id: data['report']['id'],
+                        name: data['report']['name'],
+                        data: data['data'],
                     });
                 })
             );
@@ -59,21 +63,5 @@ export class GlobalDashsComponent {
 
     redirectLink(link: string) {
         window.open(link);
-    }
-
-    redirectDash(id: number): void {
-        if (id === 41) {
-            this._router.navigate(['/dashboards/rol']);
-        } else if (id === 42) {
-            this._router.navigate(['/dashboards/vendafilial']);
-        } else if (id === 181) {
-            this._router.navigate(['/dashboards/analisemarca']);
-        } else if (id === 43) {
-            this._router.navigate(['/links/linksGeral']);
-        } else if (id === 44) {
-            this._router.navigate(['/links/linksTI']);
-        } else if (id === 241) {
-            this._router.navigate(['linkstest']);
-        } else this._router.navigate(['/settings/profile']);
     }
 }

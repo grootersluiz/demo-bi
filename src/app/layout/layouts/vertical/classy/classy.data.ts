@@ -69,7 +69,7 @@ export const navigationData: Navigation = {
             id: '241',
             title: 'Links',
             type: 'basic',
-            icon: 'heroicons_outline:home',
+            icon: 'material_outline:double_arrow',
             link: '/linkstest',
         },
         {
