@@ -694,6 +694,13 @@ export class VendafilialComponent {
         stacked: false,
         redrawOnWindowResize: true,
         redrawOnParentResize: true,
+        animations:{
+            enabled: true,
+            speed: 400,
+            animateGradually:{
+                enabled: false
+            }
+        },
         toolbar:{
           show: true,
           offsetX: 0,
@@ -1117,7 +1124,7 @@ export class VendafilialComponent {
       this.vendafilialService.setParam(dia,mes,ano,99,'REDE');
       this.limpar(); // viewSerie, categorias, series
       this.validaParam();
-      this.getCategorias();
+
       this.getSeries();
 
       // setTimeout(() => {
