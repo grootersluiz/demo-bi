@@ -2,6 +2,7 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { RegdashsService } from '../regdashs/regdashs.service';
 import { GlobalDashService } from './globaldash.service';
 import { ReportObject } from './globaldash.types';
+import { ClassyLayoutComponent } from 'app/layout/layouts/vertical/classy/classy.component';
 
 @Component({
     selector: 'globaldash',
@@ -15,6 +16,7 @@ export class GlobalDashsComponent {
     dashsData: any[] = [];
     dashReps: any[];
     reportObj: ReportObject[] = [];
+    classy: ClassyLayoutComponent;
 
     /**
      * Constructor

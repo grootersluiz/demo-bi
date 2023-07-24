@@ -27,6 +27,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
     dashList: Dash[];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     dashsIds: number[] = [];
+    dashID: number;
 
     /**
      * Constructor
@@ -77,8 +78,8 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
                 // Controle de acesso do menu
 
                 if (this.user.role !== 'admin') {
+                    myNavigation.default[2] = {} as FuseNavigationItem;
                     myNavigation.default[3] = {} as FuseNavigationItem;
-                    myNavigation.default[4] = {} as FuseNavigationItem;
                 }
             });
 
@@ -132,6 +133,13 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
+
+    onMenuItemClick(event: any) {
+        const id = event.view.location.pathname;
+        const parts = id.split('/dashboards/');
+        this.dashID = parseInt(parts[1]);
+        console.log(this.dashID);
+    }
 
     /**
      * Toggle navigation
