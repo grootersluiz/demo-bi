@@ -14,6 +14,7 @@ import { UserService } from 'app/core/user/user.service';
 import { Dash } from 'app/modules/admin/regdashs/regdashs.types';
 import { RegdashsService } from 'app/modules/admin/regdashs/regdashs.service';
 import { navigationData } from 'app/layout/layouts/vertical/classy/classy.data';
+import { SharedDataService } from 'app/modules/admin/dashboards/shareddata.service';
 
 @Component({
     selector: 'classy-layout',
@@ -27,7 +28,6 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
     dashList: Dash[];
     private _unsubscribeAll: Subject<any> = new Subject<any>();
     dashsIds: number[] = [];
-    dashID: number;
 
     /**
      * Constructor
@@ -38,6 +38,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
         private _navigationService: NavigationService,
         private _userService: UserService,
         private _regdashsService: RegdashsService,
+        private _sharedData: SharedDataService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _fuseNavigationService: FuseNavigationService
     ) {}
@@ -137,8 +138,8 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
     onMenuItemClick(event: any) {
         const id = event.view.location.pathname;
         const parts = id.split('/dashboards/');
-        this.dashID = parseInt(parts[1]);
-        console.log(this.dashID);
+        const dashID = parseInt(parts[1]);
+        this._sharedData.setDashID(dashID);
     }
 
     /**

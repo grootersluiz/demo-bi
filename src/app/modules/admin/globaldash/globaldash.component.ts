@@ -3,6 +3,7 @@ import { RegdashsService } from '../regdashs/regdashs.service';
 import { GlobalDashService } from './globaldash.service';
 import { ReportObject } from './globaldash.types';
 import { ClassyLayoutComponent } from 'app/layout/layouts/vertical/classy/classy.component';
+import { SharedDataService } from '../dashboards/shareddata.service';
 
 @Component({
     selector: 'globaldash',
@@ -23,7 +24,8 @@ export class GlobalDashsComponent {
      */
     constructor(
         private _dashIdService: RegdashsService,
-        private _globalDashService: GlobalDashService
+        private _globalDashService: GlobalDashService,
+        private _sharedData: SharedDataService
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -34,6 +36,8 @@ export class GlobalDashsComponent {
      * On init
      */
     ngOnInit(): void {
+        // const dashId = this._sharedData.getDashID();
+        // if (dashId) {
         this._dashIdService.getDashboardById(241).subscribe((links) => {
             this.dashReps = links['reportIds'];
 
@@ -47,6 +51,7 @@ export class GlobalDashsComponent {
                 })
             );
         });
+        // }
     }
 
     // -----------------------------------------------------------------------------------------------------
