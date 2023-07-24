@@ -15,6 +15,7 @@ import { Dash } from 'app/modules/admin/regdashs/regdashs.types';
 import { RegdashsService } from 'app/modules/admin/regdashs/regdashs.service';
 import { navigationData } from 'app/layout/layouts/vertical/classy/classy.data';
 import { SharedDataService } from 'app/modules/admin/dashboards/shareddata.service';
+import { GlobalDashService } from 'app/modules/admin/globaldash/globaldash.service';
 
 @Component({
     selector: 'classy-layout',
@@ -38,6 +39,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
         private _navigationService: NavigationService,
         private _userService: UserService,
         private _regdashsService: RegdashsService,
+        private _globalDashService: GlobalDashService,
         private _sharedData: SharedDataService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _fuseNavigationService: FuseNavigationService
@@ -139,7 +141,7 @@ export class ClassyLayoutComponent implements OnInit, OnDestroy {
         const id = event.view.location.pathname;
         const parts = id.split('/dashboards/');
         const dashID = parseInt(parts[1]);
-        this._sharedData.setDashID(dashID);
+        console.log(id, dashID);
     }
 
     /**

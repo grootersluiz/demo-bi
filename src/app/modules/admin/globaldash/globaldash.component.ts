@@ -19,6 +19,7 @@ export class GlobalDashsComponent {
     dashReps: any[];
     reportObj: ReportObject[] = [];
     classy: ClassyLayoutComponent;
+    dashId: any;
 
     /**
      * Constructor
@@ -38,25 +39,21 @@ export class GlobalDashsComponent {
      * On init
      */
     ngOnInit(): void {
-        const dashId = this._sharedData.getDashID();
-        console.log(dashId);
-        if (dashId) {
-            this._dashIdService.getDashboardById(dashId).subscribe((links) => {
-                this.dashReps = links['reportIds'];
+        // if (this.dashId) {
+        this._dashIdService.getDashboardById(241).subscribe((links) => {
+            this.dashReps = links['reportIds'];
 
-                this.dashReps.forEach((id) =>
-                    this._globalDashService
-                        .getReportData(id)
-                        .subscribe((data) => {
-                            this.reportObj.push({
-                                id: data['report']['id'],
-                                name: data['report']['name'],
-                                data: data['data'],
-                            });
-                        })
-                );
-            });
-        }
+            this.dashReps.forEach((id) =>
+                this._globalDashService.getReportData(id).subscribe((data) => {
+                    this.reportObj.push({
+                        id: data['report']['id'],
+                        name: data['report']['name'],
+                        data: data['data'],
+                    });
+                })
+            );
+        });
+        // }
     }
 
     // -----------------------------------------------------------------------------------------------------
