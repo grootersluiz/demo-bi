@@ -96,8 +96,8 @@ export type ChartOptions = {
 export class VendafilialComponent {
   @ViewChild("chart") chart: ChartComponent;
   public chartOptions: Partial<ChartOptions>;
-
   end = new FormControl<any | null>(null);
+  dataHoje: Date;
 
   _colors = {
     palette1:  ['#008FFB','#00E396','#FEB019','#FF4560','#775DD0'],
@@ -556,7 +556,7 @@ export class VendafilialComponent {
     this._elementFilter     = _element;
     this._elementRenderer   = _renderer;
     this._thishttpClient    = _httpClient;
-
+    this.dataHoje = new Date();
 
     const sysDate = new Date();
     var mes = ("00" + (sysDate.getMonth()+1)).slice(-2) ;

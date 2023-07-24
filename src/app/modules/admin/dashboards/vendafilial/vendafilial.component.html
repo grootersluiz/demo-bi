@@ -47,6 +47,7 @@
                   [matDatepicker]="pickerFinal"
                   #dataref (dateChange)="formatDataMesAno($event)"
                   (blur)="formatDataMesAno2(dataref)"
+                  [max]="dataHoje"
                   />
                   <mat-hint>DD/MM/YYYY</mat-hint>
                   <mat-datepicker-toggle
@@ -82,7 +83,7 @@
 
         <div id="containerDash" class="flex flex-row p-0 w-full sm:w-full md:w-full lg:w-4/5 xl:w-4/5 2xl:w-4/5">
 
-            <div id="divChart" #divChart class="relative h-60 w-full" [hidden]="false">
+            <div id="divChart" #divChart class=" relative h-60 w-full" [hidden]="false">
                 <!-- <app-vendafilialchart></app-vendafilialchart> -->
                 <div id="chart" class="h-60 w-full pt-1" >
                   <apx-chart class="grid h-60 w-12/12 rounded-2xl bg-card shadow" style="background-color: white;"
