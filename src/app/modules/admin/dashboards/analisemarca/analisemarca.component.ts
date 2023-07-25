@@ -44,7 +44,7 @@ export type ChartOptions = {
 @Component({
   selector: 'app-analisemarca',
   templateUrl: './analisemarca.component.html',
-  styleUrls: ['./analisemarca.component.scss'],
+  styleUrls: ['./analisemarca.component.scss','../../util/css/css.component.scss'],
 })
 
 @Injectable()
@@ -62,6 +62,7 @@ export class AnalisemarcaComponent {
 
   viewSerie = new Array();
   viewYAxis = new Array();
+
 
   animal: string;
   name: string;
@@ -197,7 +198,8 @@ export class AnalisemarcaComponent {
     this.viewSerie = new Array();
 
   }
-
+  titulo: string = "Análise Marca";
+  subTitulo: string;
   isToggleOn: boolean;
   _sysdate:string;
   _elementRef: any;
@@ -364,6 +366,7 @@ export class AnalisemarcaComponent {
     const sysDate = new Date();
     var mes = ("00" + (sysDate.getMonth()+1)).slice(-2) ;
     this._sysdate  = '('+mes+'/'+sysDate.getFullYear() +')';
+    this.subTitulo = this._sysdate;
 
     this.validaParam();
 

@@ -3,16 +3,16 @@
     subTitulo: string = "";
     isToggleOn: boolean;
  -->
-<div class=" flex-col w-full pl-1 pr-1">
+<div class=" flex-col w-full pl-1 pr-1 ">
     <div class="flex flex-grow w-full justify-end" >
         <mat-slide-toggle class="pt-1" [(ngModel)]="isToggleOn">
             {{ isToggleOn ? "Ocultar filtros" : "Mostrar filtros" }}
         </mat-slide-toggle>
     </div>
-    <div class="w-full  ">
-    <div class="flex flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro"
+    <div class="w-full">
+    <div class="flex flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
     *ngIf="isToggleOn">
-        <div class="flex flex-auto">
+        <div class="flex flex-auto ">
             <img
                 class="mr-3 logo-filter hidden lg:block"
                 src="assets/images/logo/Logo-Rede-JS-Pecas_7.png"
@@ -31,11 +31,11 @@
                 </div>
             </div>
         </div>
-
+        <div class="flex flex-wrap justify-end">
 <!-- FILTROS VVVVV -->
-
+            <app-selectfilial></app-selectfilial>
 <!-- FILTROS ^^^^^ -->
-
+        </div>
 <!-- Botão de confirmar filtro, adicionar evento de (click) -->
             <button
                 class="hidden sm:inline-flex ml-5 apply-button"

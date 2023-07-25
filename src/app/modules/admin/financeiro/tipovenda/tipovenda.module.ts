@@ -25,7 +25,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
  import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgApexchartsModule } from "ng-apexcharts";
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-
+import { SelectfilialModule } from '../../util/selectfilial/selectfilial.module';
 @NgModule({
     declarations: [tipovendaComponent],
     imports: [
@@ -47,6 +47,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
         NgApexchartsModule,
         MatSlideToggleModule,
         ReactiveFormsModule,
+        SelectfilialModule
     ],
 })
 export class tipovendaModule {}

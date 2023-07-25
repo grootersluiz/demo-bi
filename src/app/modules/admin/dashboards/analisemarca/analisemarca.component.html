@@ -1,87 +1,86 @@
-<div class="box-content h-full w-full mt-0 mr-2 mb-0 ml-2 p-0" id="painelAnaliseMarca" >
 
-    <div class="flex flex-row w-full rounded-2xl mt-1 mr-0 mb-2 ml-0">
 
-        <button matTooltip="Indicadores Adicionais" class="flex items-center pl-2 ml-auto " style="visibility: visible !important;" disabled>
-            <mat-icon aria-hidden="false" fontIcon="settings" ></mat-icon>
+
+<!--  -->
+<!-- Div Geral, é necessário criar estas variáveis no export component:
+    titulo: string = "";
+    subTitulo: string = "";
+    isToggleOn: boolean;
+ -->
+ <div class=" flex-col w-full pl-1 pr-1 ">
+    <div class="flex flex-grow w-full justify-end" >
+        <button matTooltip="Indicadores Adicionais" class="mr-4" style="visibility: visible !important;" disabled>
+            <mat-icon class="pt-2" aria-hidden="false" fontIcon="settings" ></mat-icon>
         </button>
-
-        <div class="flex items-center flex-grow justify-end">
-            <mat-slide-toggle [(ngModel)]="isToggleOn" (click)="showFilter($event,containerFilter,containerForm,containerDash)">
-                {{ isToggleOn ? "Ocultar filtros" : "Mostrar filtros" }}
-            </mat-slide-toggle>
-        </div>
-
+        <mat-slide-toggle class="pt-1" [(ngModel)]="isToggleOn">
+            {{ isToggleOn ? "Ocultar filtros" : "Mostrar filtros" }}
+        </mat-slide-toggle>
     </div>
-  <!---------------------------_classContainerCenter----------------------------------------------------------------------------------------------------------------------------------->
-
-    <div class="w-full h-full sm:h-full md:h-full lg:h-full xl:h-full 2xl:h-full"  id="containerCenter">
-
-        <div id="containerFilter" #containerFilter [ngClass]="_classFilterInicial" [hidden]="true">
-
-            <div id="containerForm" #containerForm class="object-fill rounded-2xl w-full mt-0 mr-0 mb-0 ml-0" [hidden]="true">
-
-                <div class="flex flex-row items-center pt-2 pl-2 pr-2 mb-2 w-full">
-
-                    <div class="flex flex-auto">
-                        <img
-                            class="mr-3 logo-filter hidden lg:block w-12 h-12"
-                            src="assets/images/logo/Logo-Rede-JS-Pecas_7.png"
-                            alt=""
-                        />
-                        <div class="flex flex-col">
-                            <div
-                                class="text-3xl font-semibold tracking-tight leading-8 text-white"
-                            >
-                                Análise Marca
-                            </div>
-
-                            <div class="font-medium tracking-tight text-white" >
-                                {{_sysdate}}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="flex items-start ml-15">
-
-                        <app-selectfilial></app-selectfilial>
-
-                        <mat-form-field appearance="fill" class="hidden sm:inline-flex ml-3 p-2" >
-                            <mat-label> <p class="text-white"> Referência </p></mat-label>
-                            <input matInput
-                                [matDatepicker]="picker" id="dtref" #dataref [formControl]="end"
-                                [max]="dataHoje"
-                                (dateChange)="formatDataMesAno($event)" (blur)="formatDataMesAno2(dataref)">
-                            <mat-hint>DD/MM/YYYY</mat-hint>
-                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker #picker
-                                [startView]="true ? 'year' : 'month'"
-                                (monthSelected)="true ? setFinalMY($event, picker, dataref) : undefined">
-
-                            </mat-datepicker>
-                        </mat-form-field>
-
-                        <div class="pt-7">
-                            <button
-                                class="hidden sm:inline-flex ml-5 apply-button"
-                                style="width: 120px"
-                                mat-flat-button
-                                [color]="'primary'"
-                                (click)="consultavendafilial(dataref.value)"
-                            >
-                                <span style="font-size: 12px">Aplicar</span>
-                            </button>
-                        </div>
-                    </div>
+    <div class="w-full">
+    <div class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
+    *ngIf="isToggleOn">
+        <div class="flex flex-auto ">
+            <img
+                class="mr-3 logo-filter lg:block"
+                src="assets/images/logo/Logo-Rede-JS-Pecas_7.png"
+                alt=""
+            />
+            <div class="flex flex-col">
+                <div
+                    class="text-3xl font-semibold tracking-tight leading-8"
+                    style="color: #fff"
+                >
+                    {{titulo}}
                 </div>
 
+                <div class="font-medium tracking-tight" style="color: #fff">
+                    {{subTitulo}}
+                </div>
             </div>
         </div>
+        <div class="flex flex-wrap justify-end">
+<!-- FILTROS VVVVV -->
+            <mat-form-field appearance="fill" class=" sm:inline-flex ml-3 p-2" >
+                <mat-label><p class="text-white"> Referência </p></mat-label>
+                <input matInput
+                    [matDatepicker]="picker" id="dtref" #dataref [formControl]="end"
+                    [max]="dataHoje"
+                    (dateChange)="formatDataMesAno($event)" (blur)="formatDataMesAno2(dataref)"
+                    >
+                <mat-hint>DD/MM/YYYY</mat-hint>
+                <mat-datepicker-toggle
+                    matIconSuffix
+                    [for]="picker">
+                </mat-datepicker-toggle>
+                <mat-datepicker
+                    #picker
+                    [startView]="true ? 'year' : 'month'"
+                    (monthSelected)="true ? setFinalMY($event, picker, dataref) : undefined"
+                >
+                </mat-datepicker>
+            </mat-form-field>
+            <app-selectfilial></app-selectfilial>
 
-        <div id="containerDash" #containerDash [ngClass]="_classDashInicial" [hidden]="false"  style="height: 100% !important;">
-            <div id="divChart" #divChart class="w-full p-0 mt-0 mr-0 mb-0 ml-0" [hidden]="false">
-                <div id="chart" #chart [ngClass]="_classChart" style="height: 100% !important;" >
-                <apx-chart [ngClass]="_classChart" style="background-color: white; height: 100% !important;"
+<!-- FILTROS ^^^^^ -->
+        </div>
+<!-- Botão de confirmar filtro, adicionar evento de (click) -->
+            <button
+                class=" sm:inline-flex ml-5 apply-button"
+                style="width: 120px"
+                mat-flat-button
+                [color]="'primary'"
+                (click)="consultavendafilial(dataref.value)">
+                <span style="font-size: 12px">Aplicar</span>
+            </button>
+        </div>
+    </div>
+    <div class="relative w-full h-full flex flex-col sm:flex-col md:flex-col lg:flex-col xl:flex-col 2xl:flex-col mt-1">
+    <!-- COMPONENTES ABAIXO -->
+        <!-- Colocar class="grid px-2 py-2 w-12/12 rounded-2xl bg-card shadow mb-1" em todos componentes-->
+        <div id="containerDash" [hidden]="false" style="height: 100% ">
+            <div id="divChart" #divChart class="w-full h-full p-0 mt-0 mr-0 mb-0 ml-0" [hidden]="false">
+                <div id="chart" #chart [ngClass]="_classChart" style="height: 100% " >
+                <apx-chart [ngClass]="_classChart" style="background-color: white; "
                     [series]="chartOptions.series"
                     [chart]="chartOptions.chart"
                     [yaxis]="chartOptions.yaxis"
@@ -95,7 +94,14 @@
                 ></apx-chart>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
+
+
+<!--  -->
+
+
+
+
+

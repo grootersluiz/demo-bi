@@ -7,13 +7,6 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import {
-    MatDatepicker,
-    MatDatepickerToggle,
-    MatDatepickerInputEvent,
-} from '@angular/material/datepicker';
-import { FormControl } from '@angular/forms';
-import { HtmlParser } from '@angular/compiler';
-import {
     ApexAxisChartSeries,
     ApexChart,
     ChartComponent,
