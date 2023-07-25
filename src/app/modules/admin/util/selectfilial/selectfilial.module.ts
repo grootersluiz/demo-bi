@@ -27,6 +27,7 @@ registerLocaleData(localePt);
   providers: [
       { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
       { provide: LOCALE_ID, useValue: 'pt-BR' },
-  ]
+  ],
+  exports: [SelectfilialComponent]
 })
 export class SelectfilialModule { }

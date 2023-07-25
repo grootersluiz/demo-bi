@@ -32,6 +32,10 @@ import { NgApexchartsModule } from "ng-apexcharts";
 
 import { AnalisemarcaComponent, AnalisemarcaDialogComponent } from 'app/modules/admin/dashboards/analisemarca/analisemarca.component';
 import { analisemarcaRoutes } from 'app/modules/admin/dashboards/analisemarca/analisemarca.routing';
+import { SelectfilialModule } from '../../util/selectfilial/selectfilial.module';
+
+import {NgFor} from '@angular/common';
+import {MatSelectModule} from '@angular/material/select';
 
 registerLocaleData(localePt);
 
@@ -55,11 +59,13 @@ registerLocaleData(localePt);
         MatDialogModule, MatInputModule, MatButtonModule, NgIf, MatCheckboxModule,
         ReactiveFormsModule,
         NgApexchartsModule
+        ,NgFor,MatSelectModule
+        ,SelectfilialModule
     ],
     providers: [
         { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },
         { provide: LOCALE_ID, useValue: 'pt-BR' },
-        { provide: MatDialogRef,useValue: [AnalisemarcaDialogComponent] },
+        // { provide: MatDialogRef,useValue: [AnalisemarcaDialogComponent] },
         { provide: MAT_DIALOG_DATA, useValue: [] }
     ],
     entryComponents: [
