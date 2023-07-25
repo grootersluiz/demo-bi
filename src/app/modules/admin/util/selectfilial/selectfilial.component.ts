@@ -1,20 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { SelectfilialService } from './selectfilial.service';
 import { Subject, takeUntil } from 'rxjs';
+import { SelectfilialModule } from './selectfilial.module';
+
+import { Injectable } from '@angular/core';
 
 @Component({
   selector: 'app-selectfilial',
   templateUrl: './selectfilial.component.html',
-  styleUrls: ['./selectfilial.component.scss']
+  styleUrls: ['./selectfilial.component.scss','../css/css.component.scss']
 })
+
+@Injectable()
 export class SelectfilialComponent {
 
     constructor(
         private _selectfilialService: SelectfilialService,
         private _cdr: ChangeDetectorRef,
-    ) {}
+    ) {
+
+    }
 
     data: any;
     filiais = new FormControl(this._selectfilialService.INITIAL_COMPANIES_IDS);
@@ -37,13 +44,29 @@ export class SelectfilialComponent {
         }
     }
 
+    handleCompanyFilterSelect(filialId: number) {
+        //this.vendedoresStringList = ['Carregando...'];
+        if (this.filiais.value.length > 0) {
+            this.allCompaniesSelected = true;
+        }
+        if (this.filiais.value.length == 0) {
+            this.filiais.setValue(this._selectfilialService.INITIAL_COMPANIES_IDS);
+            this.allCompaniesSelected = false;
+        }
+    }
+
     ngOnInit(): void {
+    // ngAfterViewInit(): void {
+
+        console.log(this._selectfilialService.data$);
         // Get the data
         this._selectfilialService.data$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((data) => {
                 // Store the data
                 this.data = data;
+
+                console.log(this.data);
 
                 this.filiaisObjects = this.data.filiaisLista;
                 this.filiaisStringList = this.filiaisObjects.map(

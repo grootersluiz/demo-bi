@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap , map, pipe} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class SelectfilialService {
     return this._data.asObservable();
   }
 
-  getData(dtIni, dtFin, companiesIds, sellersIds): Observable<any> {
+  getData(): Observable<any> {
     let url = `http://10.2.1.108/v1/dashboards/data?reportId=${this.REPORT_FILTRO_FILIAIS}`;
 
     return this._httpClient.get(url).pipe(
@@ -40,8 +40,9 @@ export class SelectfilialService {
             });
 
             const dashData = {
-                filiaisLista: companyFilter,
+                filiaisLista: companyFilter
             };
+
             this._data.next(dashData);
         })
     );
