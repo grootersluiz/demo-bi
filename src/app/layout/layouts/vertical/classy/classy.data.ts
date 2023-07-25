@@ -3,29 +3,29 @@ import { Navigation } from 'app/core/navigation/navigation.types';
 export const navigationData: Navigation = {
     compact: [{}],
     default: [
-        {
-            id: 'links',
-            title: 'Links',
-            type: 'collapsable',
-            icon: 'material_outline:menu_open',
-            link: '/links',
-            children: [
-                {
-                    id: '43',
-                    title: 'Links - Geral',
-                    type: 'basic',
-                    icon: 'material_outline:double_arrow',
-                    link: '/links/linksGeral',
-                },
-                {
-                    id: '44',
-                    title: 'Links - T.I',
-                    type: 'basic',
-                    icon: 'material_outline:double_arrow',
-                    link: '/links/linksTI',
-                },
-            ],
-        },
+        // {
+        //     id: 'links',
+        //     title: 'Links',
+        //     type: 'collapsable',
+        //     icon: 'material_outline:menu_open',
+        //     link: '/links',
+        //     children: [
+        //         {
+        //             id: '43',
+        //             title: 'Links - Geral',
+        //             type: 'basic',
+        //             icon: 'material_outline:double_arrow',
+        //             link: '/links/linksGeral',
+        //         },
+        //         {
+        //             id: '44',
+        //             title: 'Links - T.I',
+        //             type: 'basic',
+        //             icon: 'material_outline:double_arrow',
+        //             link: '/links/linksTI',
+        //         },
+        //     ],
+        // },
         {
             id: 'analiseindicadores',
             title: 'Análise de Indicadores',
