@@ -68,14 +68,14 @@ export class AnalisemarcaService {
         {
             name : "DIAS",
             exibir : true,
-            showYAxis : true,
+            showYAxis : false,
             seriesName: "DIAS",
             cor : this._colors.palette1[3]
         },
         {
             name : "QTDE",
             exibir : false,
-            showYAxis : true,
+            showYAxis : false,
             seriesName: "QTDE",
             cor : this._colors.palette1[4]
         },
@@ -96,7 +96,7 @@ export class AnalisemarcaService {
         {
             name : "IMPOSTOS",
             exibir : false,
-            showYAxis : true,
+            showYAxis : false,
             seriesName: "IMPOSTOS",
             cor : this._colors.palette2[2]
         },
@@ -117,14 +117,14 @@ export class AnalisemarcaService {
         {
             name : "QTDE DIA",
             exibir : false,
-            showYAxis : true,
+            showYAxis : false,
             seriesName: "QTDE DIA",
             cor : this._colors.palette3[0]
         },
         {
             name : "CMV DIA",
             exibir : false,
-            showYAxis : true,
+            showYAxis : false,
             seriesName: "CMV DIA",
             cor : this._colors.palette3[1]
         },
@@ -154,7 +154,7 @@ export class AnalisemarcaService {
         labels: {
           show: true,
           minWidth: 0,
-          // maxWidth: 12,
+          maxWidth: 40,
           style: {
             colors: this._colors.palette1[0],
             cssClass: 'apexcharts-yaxis-label'
@@ -187,7 +187,7 @@ export class AnalisemarcaService {
         }
       },
       {
-        show: true,
+        show: false,
         seriesName:  this.exibirAxis[1].showYAxis, //'LB',
       //   title: {
       //     text: 'LB',
@@ -200,9 +200,9 @@ export class AnalisemarcaService {
       //     }
       //   },
         labels: {
-          show: true,
+          show: false,
           minWidth: 0,
-          maxWidth: 600,
+          maxWidth: 30,
           style: {
             colors: this._colors.palette1[1],
             cssClass: 'apexcharts-yaxis-label'
@@ -277,7 +277,7 @@ export class AnalisemarcaService {
         }
       },
       {
-        show: true,
+        show: false,
         seriesName:  this.exibirAxis[3].showYAxis, //'DIAS',
       //   title: {
       //     text: 'DIAS',
@@ -290,7 +290,7 @@ export class AnalisemarcaService {
       //     }
       //   },
         labels: {
-          show: true,
+          show: false,
           minWidth: 0,
           maxWidth: 600,
           style: {

@@ -2,7 +2,7 @@
 
     <div class="flex flex-row w-full rounded-2xl mt-1 mr-0 mb-2 ml-0">
 
-        <button matTooltip="Indicadores Adicionais" class="flex items-center pl-2 ml-auto " style="visibility: visible !important;" >
+        <button matTooltip="Indicadores Adicionais" class="flex items-center pl-2 ml-auto " style="visibility: visible !important;" disabled>
             <mat-icon aria-hidden="false" fontIcon="settings" ></mat-icon>
         </button>
 
@@ -46,10 +46,17 @@
 
                         <mat-form-field appearance="fill" class="hidden sm:inline-flex ml-3 p-2" >
                             <mat-label> <p class="text-white"> Referência </p></mat-label>
-                            <input matInput [matDatepicker]="picker" id="dtref" #dataref (dateChange)="formatDataMesAno($event)" (blur)="formatDataMesAno2(dataref)">
-                            <!-- <mat-hint>DD/MM/YYYY</mat-hint> -->
+                            <input matInput
+                                [matDatepicker]="picker" id="dtref" #dataref [formControl]="end"
+                                [max]="dataHoje"
+                                (dateChange)="formatDataMesAno($event)" (blur)="formatDataMesAno2(dataref)">
+                            <mat-hint>DD/MM/YYYY</mat-hint>
                             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker #picker [startView]="true ? 'year' : 'month'"></mat-datepicker>
+                            <mat-datepicker #picker
+                                [startView]="true ? 'year' : 'month'"
+                                (monthSelected)="true ? setFinalMY($event, picker, dataref) : undefined">
+
+                            </mat-datepicker>
                         </mat-form-field>
 
                         <div class="pt-7">

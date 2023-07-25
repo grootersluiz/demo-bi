@@ -3,6 +3,11 @@ import {ElementRef, Renderer2, LOCALE_ID } from '@angular/core';
 import {MatDialog, MAT_DIALOG_DATA, MatDialogRef, MatDialogModule, MatDialogContainer} from '@angular/material/dialog';
 import {Directive, OnInit, Output,Input, EventEmitter} from '@angular/core';
 // import { formatNumber } from '@angular/common';
+import { FormControl } from '@angular/forms';
+import { default as _rollupMoment, Moment } from 'moment';
+import { MatDatepicker, MatDatepickerToggle, MatDatepickerInputEvent} from '@angular/material/datepicker';
+import * as _moment from 'moment';
+const moment = _rollupMoment || _moment;
 
 import { HttpClient } from '@angular/common/http';
 import { AnalisemarcaService } from './analisemarca.service';
@@ -251,6 +256,47 @@ export class AnalisemarcaComponent {
     }
   }
 
+  end = new FormControl<any | null>(null);
+  dataHoje: Date = new Date;
+  setFinalMY(evMY: Moment, datepicker: MatDatepicker<Moment>, dataref: any) {
+        function getLastDayOfMonth(year, month) {
+            // Create a new date object with the given year and month (0-based index)
+            let date = new Date(year, month + 1, 0);
+
+            // Get the last day of the month
+            let lastDay = date.getDate();
+
+            return lastDay;
+        }
+
+        // Get the current date
+        let currentDate = new Date();
+
+        // Extract the current year and month (0-based index)
+        let currentYear = currentDate.getFullYear();
+        let currentMonth = currentDate.getMonth();
+
+        // Extract the year and month from the given evMY
+        let evYear = evMY.year();
+        let evMonth = evMY.month();
+        let evMonthF = ("00" + (evMY.month())).slice(-2);
+        let evUltDay = ("00" + (getLastDayOfMonth(evMY.year(),evMY.month()))).slice(-2);
+
+            // this.vendafilialService.setParam(
+            //     evUltDay,evMonthF,evYear,99,'REDE'
+            // )
+            this.end.setValue(
+                new Date(
+                    evMY.year(),
+                    evMY.month(),
+                    1
+                )
+            );
+            this.formatDataMesAno2(dataref);
+            datepicker.close();
+
+    }
+
   public menuFilialChart(el): void {
 
     this.analisemarcaService.param.filial = el.srcElement.attributes[1].value ;
@@ -441,7 +487,46 @@ export class AnalisemarcaComponent {
 
       },
       dataLabels: {
-        enabled: false
+        distributed: true,
+        formatter: function (val, opts) {
+            var valor = val? Number(val).toFixed(2) : '0.00';
+
+            valor = valor.replace('.',',');
+
+            // if(valor.indexOf(",00") == -1)
+            if(Number((valor.length)) > 6 && Number(valor.length) < 10){
+                var leng = valor.length;
+                valor = valor.substring(0,leng-6)+'.'+valor.substring(leng-6,leng);
+
+            }else{
+
+                if(Number((valor.length)) > 9 && Number(valor.length) < 13){
+                    var leng = valor.length;
+                    valor = valor.substring(0,leng-9)+'.'+valor.substring(leng-9,leng-6)+'.'+ valor.substring(leng-6,leng);
+                }
+            }
+
+            return String(valor);
+        },
+        enabled: true,
+        style: {
+            fontSize: '10px',
+            fontFamily: 'Helvetica, Arial, sans-serif',
+            fontWeight: 'bold',
+            colors: ['#ffffff']
+        },
+        background: {
+            enabled: true,
+            foreColor: '#000000',
+        },
+        dropShadow: {
+            enabled: false,
+            top: 5,
+            left: 1,
+            blur: 1,
+            color: '#000',
+            opacity: 0.45
+        }
       },
       tooltip: {
         enabled: true,
@@ -469,7 +554,8 @@ export class AnalisemarcaComponent {
         }
       },
       stroke: {
-        curve: "straight"
+        curve: "smooth",
+        width: 2
       },
     //   title: {
     //     text: " Dia ("+this.param.descFilial+")",
@@ -685,8 +771,8 @@ export interface DialogData {
 
                     this._myService.exibirAxis[index].exibir = el.srcElement.checked;
 
-                    this._myService.viewYAxis[index].show        = el.srcElement.checked;
-                    this._myService.viewYAxis[index].labels.show = el.srcElement.checked;
+                    // this._myService.viewYAxis[index].show        = el.srcElement.checked;
+                    // this._myService.viewYAxis[index].labels.show = el.srcElement.checked;
                 }
 
             }
@@ -709,8 +795,8 @@ export interface DialogData {
                         removido = value;
                         if(objExibir.name === value){
                             this._myService.exibirAxis[index].exibir = el.srcElement.checked;
-                            this._myService.viewYAxis[index].show        = el.srcElement.checked;
-                            this._myService.viewYAxis[index].labels.show = el.srcElement.checked;
+                            // this._myService.viewYAxis[index].show        = el.srcElement.checked;
+                            // this._myService.viewYAxis[index].labels.show = el.srcElement.checked;
                         }
 
                     }else{
@@ -725,8 +811,8 @@ export interface DialogData {
                             this._myService.viewSerie.push(dataSerie);
 
                             this._myService.exibirAxis[index].exibir     = true;
-                            this._myService.viewYAxis[index].show        = true;
-                            this._myService.viewYAxis[index].labels.show = true;
+                            // this._myService.viewYAxis[index].show        = true;
+                            // this._myService.viewYAxis[index].labels.show = true;
                         }
 
                     }
