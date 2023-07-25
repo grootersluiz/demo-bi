@@ -8,9 +8,9 @@
     isToggleOn: boolean;
  -->
  <div class=" flex-col w-full pl-1 pr-1 ">
-    <div class="flex flex-grow w-full justify-end" >
+    <div class="flex flex-grow w-full justify-between" >
         <button matTooltip="Indicadores Adicionais" class="mr-4" style="visibility: visible !important;" disabled>
-            <mat-icon class="pt-2" aria-hidden="false" fontIcon="settings" ></mat-icon>
+            <mat-icon class="pt-2 pb-1" aria-hidden="false" fontIcon="settings" ></mat-icon>
         </button>
         <mat-slide-toggle class="pt-1" [(ngModel)]="isToggleOn">
             {{ isToggleOn ? "Ocultar filtros" : "Mostrar filtros" }}

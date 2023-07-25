@@ -8,11 +8,11 @@
         </mat-slide-toggle>
     </div>
     <div class="w-full pl-1 pr-1">
-      <div class="flex flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro"
+      <div class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
       *ngIf="isToggleOn">
           <div class="flex flex-auto">
               <img
-                  class="mr-3 logo-filter hidden lg:block"
+                  class="mr-3 logo-filter lg:block"
                   src="assets/images/logo/Logo-Rede-JS-Pecas_7.png"
                   alt=""
               />
@@ -32,7 +32,7 @@
 
           <div class="flex items-start ml-15">
                   <mat-form-field
-                  class="hidden sm:inline-flex ml-3"
+                  class="sm:inline-flex ml-3"
                   style="width: 150px"
               >
                   <mat-label style="font-size: 12px; color: #fff"
@@ -66,7 +66,7 @@
 
               <div class="pt-7">
                   <button
-                      class="hidden sm:inline-flex ml-5 apply-button"
+                      class="sm:inline-flex ml-5 apply-button"
                       style="width: 120px"
                       mat-flat-button
                       [color]="'primary'"
