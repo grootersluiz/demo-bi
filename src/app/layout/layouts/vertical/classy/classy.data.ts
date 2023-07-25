@@ -69,7 +69,24 @@ export const navigationData: Navigation = {
                             link: '/dashboards/241',
                         },
                     ],
+
                 },
+                {
+                    id: 'financeiro',
+                    title: 'Financeiro',
+                    type: 'collapsable',
+                    icon: 'heroicons_outline:home',
+                    link: '/analiseindicadores/financeiro',
+                    children: [
+                        {
+                            id: '250',
+                            title: 'Tipo de Vendas',
+                            type: 'basic',
+                            icon: 'heroicons_outline:chart-bar',
+                            link: '/financeiro/tipovenda',
+                        }
+                    ]
+                }
             ],
         },
 
