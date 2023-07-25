@@ -3,29 +3,36 @@ import { Navigation } from 'app/core/navigation/navigation.types';
 export const navigationData: Navigation = {
     compact: [{}],
     default: [
-        // {
-        //     id: 'links',
-        //     title: 'Links',
-        //     type: 'collapsable',
-        //     icon: 'material_outline:menu_open',
-        //     link: '/links',
-        //     children: [
-        //         {
-        //             id: '43',
-        //             title: 'Links - Geral',
-        //             type: 'basic',
-        //             icon: 'material_outline:double_arrow',
-        //             link: '/links/linksGeral',
-        //         },
-        //         {
-        //             id: '44',
-        //             title: 'Links - T.I',
-        //             type: 'basic',
-        //             icon: 'material_outline:double_arrow',
-        //             link: '/links/linksTI',
-        //         },
-        //     ],
-        // },
+        {
+            // id: 'links',
+            // title: 'Links',
+            // type: 'collapsable',
+            // icon: 'material_outline:menu_open',
+            // link: '/links',
+            // children: [
+
+            id: '241',
+            title: 'Links',
+            type: 'basic',
+            icon: 'material_outline:double_arrow',
+            link: '/dashboards/241',
+
+            // {
+            //     id: '43',
+            //     title: 'Links - Geral',
+            //     type: 'basic',
+            //     icon: 'material_outline:double_arrow',
+            //     link: '/links/linksGeral',
+            // },
+            // {
+            //     id: '44',
+            //     title: 'Links - T.I',
+            //     type: 'basic',
+            //     icon: 'material_outline:double_arrow',
+            //     link: '/links/linksTI',
+            // },
+            // ],
+        },
         {
             id: 'analiseindicadores',
             title: 'Análise de Indicadores',
@@ -35,7 +42,7 @@ export const navigationData: Navigation = {
             children: [
                 {
                     id: 'dashboards',
-                    title: 'Dashboards',
+                    title: 'Comercial',
                     type: 'collapsable',
                     icon: 'heroicons_outline:home',
                     link: '/analiseindicadores/dashboards',
@@ -61,15 +68,7 @@ export const navigationData: Navigation = {
                             icon: 'heroicons_outline:chart-bar',
                             link: '/dashboards/181',
                         },
-                        {
-                            id: '241',
-                            title: 'Links',
-                            type: 'basic',
-                            icon: 'material_outline:double_arrow',
-                            link: '/dashboards/241',
-                        },
                     ],
-
                 },
                 {
                     id: 'financeiro',
@@ -84,9 +83,9 @@ export const navigationData: Navigation = {
                             type: 'basic',
                             icon: 'heroicons_outline:chart-bar',
                             link: '/financeiro/tipovenda',
-                        }
-                    ]
-                }
+                        },
+                    ],
+                },
             ],
         },
 
