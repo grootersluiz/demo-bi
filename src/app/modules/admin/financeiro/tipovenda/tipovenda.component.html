@@ -1,0 +1,54 @@
+<!-- Div Geral, é necessário criar estas variáveis no export component:
+    titulo: string = "";
+    subTitulo: string = "";
+    isToggleOn: boolean;
+ -->
+<div class=" flex-col w-full pl-1 pr-1">
+    <div class="flex flex-grow w-full justify-end" >
+        <mat-slide-toggle class="pt-1" [(ngModel)]="isToggleOn">
+            {{ isToggleOn ? "Ocultar filtros" : "Mostrar filtros" }}
+        </mat-slide-toggle>
+    </div>
+    <div class="w-full  ">
+    <div class="flex flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro"
+    *ngIf="isToggleOn">
+        <div class="flex flex-auto">
+            <img
+                class="mr-3 logo-filter hidden lg:block"
+                src="assets/images/logo/Logo-Rede-JS-Pecas_7.png"
+                alt=""
+            />
+            <div class="flex flex-col">
+                <div
+                    class="text-3xl font-semibold tracking-tight leading-8"
+                    style="color: #fff"
+                >
+                    {{titulo}}
+                </div>
+
+                <div class="font-medium tracking-tight" style="color: #fff">
+                    {{subTitulo}}
+                </div>
+            </div>
+        </div>
+
+<!-- FILTROS VVVVV -->
+
+<!-- FILTROS ^^^^^ -->
+
+<!-- Botão de confirmar filtro, adicionar evento de (click) -->
+            <button
+                class="hidden sm:inline-flex ml-5 apply-button"
+                style="width: 120px"
+                mat-flat-button
+                [color]="'primary'"
+                >
+                <span style="font-size: 12px">Aplicar</span>
+            </button>
+        </div>
+    </div>
+    <div class="relative w-full flex flex-col sm:flex-col md:flex-col lg:flex-col xl:flex-col 2xl:flex-col mt-1">
+    <!-- COMPONENTES ABAIXO -->
+        <!-- Colocar class="grid px-2 py-2 w-12/12 rounded-2xl bg-card shadow mb-1" em todos componentes-->
+    </div>
+</div>

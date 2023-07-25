@@ -1,0 +1,198 @@
+.mat-column-NOMEFANTASIA {
+    min-width: 200px;
+}
+
+.mat-column-ATINGMETAROL {
+    min-width: 100px ;
+}
+
+.mat-column-GAPMETAROL {
+    min-width: 110px ;
+}
+
+.mat-column-METAMB {
+    min-width: 96px ;
+}
+
+.mat-column-REALMB {
+    min-width: 96px ;
+}
+
+.mat-column-DIFMB {
+    min-width: 96px ;
+}
+
+.mat-column-ATINGMETALB {
+    min-width: 100px ;
+}
+
+th {
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+td {
+    font-size: 12px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+tr.mat-mdc-header-row {
+    height: 30px;
+}
+
+tr.mat-mdc-row {
+    height: 30px;
+}
+
+
+.charts-menu {
+    background: white;
+    position: absolute;
+    top: 100%;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 3px;
+    right: 10px;
+    opacity: 0;
+    min-width: 110px;
+    transition: .15s ease all;
+    pointer-events: none;
+}
+
+.charts-menu-open {
+    opacity: 1;
+    pointer-events: all;
+    transition: .15s ease all;
+}
+
+.charts-menu-item {
+    padding: 6px 7px;
+    font-size: 12px;
+    cursor: pointer;
+}
+div.cabecalho-filtro {
+    background: rgb(75, 75, 75);
+    background: linear-gradient(
+        0deg,
+        rgba(75, 75, 75, 1) 0%,
+        rgba(82, 82, 82, 1) 12%,
+        rgba(82, 82, 82, 1) 86%,
+        rgba(75, 75, 75, 1) 100%
+    );
+    filter: drop-shadow(0 0.4rem 0.7rem #00000065);
+    border-radius: 15px;
+    height: 120px;
+    padding-bottom: 1rem;
+}
+
+.cabecalho-filtro div.mat-mdc-form-field-flex {
+    /* Cor dos campos do filtros   */
+    background-color: rgb(179, 179, 179);
+    filter: drop-shadow(0 0.4rem 0.7rem #00000065);
+    cursor: pointer;
+}
+
+.cabecalho-filtro svg.mat-datepicker-toggle-default-icon {
+    color: #525252;
+}
+
+.cabecalho-filtro .logo-filter {
+    width: 4rem;
+    height: 4rem;
+}
+
+.cabecalho-filtro .apply-button {
+    filter: drop-shadow(0 0.4rem 0.7rem #00000065);
+    transition: filter 150ms;
+}
+
+.cabecalho-filtro .apply-button:hover {
+    filter: drop-shadow(0 0 0.2rem #d8790c59);
+}
+
+.select-all-companies .mat-pseudo-checkbox {
+    display: none;
+}
+
+#mat-select-0-panel .select-all-companies,
+#mat-select-2-panel .select-all-companies {
+    min-height: 25px;
+    border-bottom: 1px solid #e2e2e2;
+    padding-bottom: 5px;
+}
+
+.sellers-search-container {
+    width: 100%;
+    height: 2rem;
+    margin-bottom: 0.5rem;
+}
+.sellers-search-input {
+    border: 1px solid #ccc;
+    height: 1.8rem;
+    border-radius: 4px;
+    width: 90%;
+    padding: 0 0.5rem 0 0.5rem;
+    margin-bottom: 0.5rem;
+}
+.sellers-search-input:focus {
+    border: 1px solid #d97706;
+}
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    display: inline-block;
+    white-space: nowrap;
+    /* width: 120px; */
+    opacity: 0.5;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    font-size: 12px;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -45px;
+}
+
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 0.5;
+}
+
+.form-field-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px; /*Optional: Add some vertical spacing between form fields */
+}
+
+.sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.row-enhance .mat-mdc-cell {
+    cursor: pointer;
+}
+
+.row-enhance:hover .mat-mdc-cell {
+    background-color: lightgray;
+}

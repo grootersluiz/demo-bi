@@ -25,8 +25,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import {MatDialog, MAT_DIALOG_DATA, MatDialogRef, MatDialogModule} from '@angular/material/dialog';
 import {NgIf} from '@angular/common';
 import {MatButtonModule} from '@angular/material/button';
-import {FormsModule} from '@angular/forms';
-import {FormControl} from "@angular/forms";
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 
 import { NgApexchartsModule } from "ng-apexcharts";
@@ -53,7 +52,8 @@ registerLocaleData(localePt);
         MatMomentDateModule,
         MatSlideToggleModule,
         FormsModule, MatButtonModule,
-        MatDialogModule, MatInputModule, FormsModule, MatButtonModule, NgIf, MatCheckboxModule,
+        MatDialogModule, MatInputModule, MatButtonModule, NgIf, MatCheckboxModule,
+        ReactiveFormsModule,
         NgApexchartsModule
     ],
     providers: [

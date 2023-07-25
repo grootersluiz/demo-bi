@@ -9,6 +9,7 @@ import { InitialDataResolver } from 'app/app.resolvers';
 import { AuthRedirectGuard } from 'app/core/auth/guards/auth.redirect.guard';
 import { DashLinksTIGuard } from './core/auth/guards/dashLinksTI.guard';
 import { DashAnalisemarcaGuard } from './core/auth/guards/dashAnalisemarca.guard';
+import { tipovendaGuard } from './core/auth/guards/tipovenda.guard';
 
 // @formatter:off
 /* eslint-disable max-len */
@@ -248,6 +249,19 @@ export const appRoutes: Route[] = [
                             import(
                                 'app/modules/admin/links/linksTI/linksTI.module'
                             ).then((m) => m.LinksTIModule),
+                    },
+                ],
+            },
+            {
+                path: 'financeiro',
+                children: [
+                    {
+                        path: 'tipovenda',
+                        canActivate: [tipovendaGuard],
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/financeiro/tipovenda/tipovenda.module'
+                            ).then((m) => m.tipovendaModule),
                     },
                 ],
             },
