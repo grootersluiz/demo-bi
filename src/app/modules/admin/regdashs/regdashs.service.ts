@@ -230,7 +230,7 @@ export class RegdashsService {
                         name: contact.name,
                         type: contact.type,
                         groupIds: contact.groupIds,
-                        reportIds: contact.reports.map((reportId) => ({
+                        reports: contact.reportIds.map((reportId) => ({
                             reportId,
                         })),
                     })
