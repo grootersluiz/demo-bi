@@ -18,7 +18,6 @@ import { ShortcutsModule } from 'app/layout/common/shortcuts/shortcuts.module';
 import { UserModule } from 'app/layout/common/user/user.module';
 import { SharedModule } from 'app/shared/shared.module';
 import { ClassyLayoutComponent } from 'app/layout/layouts/vertical/classy/classy.component';
-import { SharedDataService } from 'app/modules/admin/dashboards/shareddata.service';
 
 @NgModule({
     declarations: [ClassyLayoutComponent],
@@ -42,7 +41,6 @@ import { SharedDataService } from 'app/modules/admin/dashboards/shareddata.servi
         UserModule,
         SharedModule,
     ],
-    providers: [SharedDataService],
     exports: [ClassyLayoutComponent],
 })
 export class ClassyLayoutModule {}

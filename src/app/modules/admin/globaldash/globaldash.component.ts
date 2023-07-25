@@ -2,8 +2,6 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { RegdashsService } from '../regdashs/regdashs.service';
 import { GlobalDashService } from './globaldash.service';
 import { ReportObject } from './globaldash.types';
-import { ClassyLayoutComponent } from 'app/layout/layouts/vertical/classy/classy.component';
-import { SharedDataService } from '../dashboards/shareddata.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -18,7 +16,6 @@ export class GlobalDashsComponent {
     dashsData: any[] = [];
     dashReps: any[];
     reportObj: ReportObject[] = [];
-    classy: ClassyLayoutComponent;
     dashId: any;
 
     /**
@@ -27,7 +24,6 @@ export class GlobalDashsComponent {
     constructor(
         private _dashIdService: RegdashsService,
         private _globalDashService: GlobalDashService,
-        private _sharedData: SharedDataService,
         private _route: ActivatedRoute
     ) {}
 
@@ -39,21 +35,26 @@ export class GlobalDashsComponent {
      * On init
      */
     ngOnInit(): void {
-        // if (this.dashId) {
-        this._dashIdService.getDashboardById(241).subscribe((links) => {
-            this.dashReps = links['reportIds'];
+        const urlSegments = (this._route as any)._routerState.snapshot.url;
+        const parts = urlSegments.split('/dashboards/');
+        const dashID = parseInt(parts[1]);
+        if (dashID) {
+            this._dashIdService.getDashboardById(dashID).subscribe((links) => {
+                this.dashReps = links['reportIds'];
 
-            this.dashReps.forEach((id) =>
-                this._globalDashService.getReportData(id).subscribe((data) => {
-                    this.reportObj.push({
-                        id: data['report']['id'],
-                        name: data['report']['name'],
-                        data: data['data'],
-                    });
-                })
-            );
-        });
-        // }
+                this.dashReps.forEach((id) =>
+                    this._globalDashService
+                        .getReportData(id)
+                        .subscribe((data) => {
+                            this.reportObj.push({
+                                id: data['report']['id'],
+                                name: data['report']['name'],
+                                data: data['data'],
+                            });
+                        })
+                );
+            });
+        }
     }
 
     // -----------------------------------------------------------------------------------------------------

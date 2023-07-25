@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { GlobalDashsComponent } from './globaldash.component';
 import { globalDashRoutes } from './globaldash.routing';
 import { MatButtonModule } from '@angular/material/button';
-import { SharedDataService } from '../dashboards/shareddata.service';
 
 @NgModule({
     declarations: [GlobalDashsComponent],
@@ -13,6 +12,5 @@ import { SharedDataService } from '../dashboards/shareddata.service';
         RouterModule.forChild(globalDashRoutes),
         MatButtonModule,
     ],
-    providers: [SharedDataService],
 })
 export class GlobalDashsModule {}
