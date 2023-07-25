@@ -818,7 +818,8 @@ export class VendafilialComponent {
         }
       },
       stroke: {
-        curve: "smooth"
+        curve: "smooth",
+        width: 2
       },
       title: {
         text: " Dia ("+this.param.descFilial+")",
