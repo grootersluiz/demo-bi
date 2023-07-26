@@ -38,7 +38,7 @@ export const appRoutes: Route[] = [
     {
         path: 'signed-in-redirect',
         pathMatch: 'full',
-        redirectTo: 'dashboards/241',
+        redirectTo: 'links/linksGeral',
     },
 
     // Auth routes for guests
@@ -221,37 +221,37 @@ export const appRoutes: Route[] = [
                                 'app/modules/admin/dashboards/analisemarca/analisemarca.module'
                             ).then((m) => m.AnalisemarcaModule),
                     },
-                    {
-                        path: '241',
-                        loadChildren: () =>
-                            import(
-                                'app/modules/admin/globaldash/globaldash.module'
-                            ).then((m) => m.GlobalDashsModule),
-                    },
+                    // {
+                    //     path: '241',
+                    //     loadChildren: () =>
+                    //         import(
+                    //             'app/modules/admin/globaldash/globaldash.module'
+                    //         ).then((m) => m.GlobalDashsModule),
+                    // },
                 ],
             },
 
-            // {
-            //     path: 'links',
-            //     children: [
-            //         {
-            //             path: 'linksGeral',
-            //             canActivate: [DashLinksGeralGuard],
-            //             loadChildren: () =>
-            //                 import(
-            //                     'app/modules/admin/links/linksGeral/linksGeral.module'
-            //                 ).then((m) => m.LinksGeralModule),
-            //         },
-            //         {
-            //             path: 'linksTI',
-            //             canActivate: [DashLinksTIGuard],
-            //             loadChildren: () =>
-            //                 import(
-            //                     'app/modules/admin/links/linksTI/linksTI.module'
-            //                 ).then((m) => m.LinksTIModule),
-            //         },
-            //     ],
-            // },
+            {
+                path: 'links',
+                children: [
+                    {
+                        path: 'linksGeral',
+                        canActivate: [DashLinksGeralGuard],
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/links/linksGeral/linksGeral.module'
+                            ).then((m) => m.LinksGeralModule),
+                    },
+                    {
+                        path: 'linksTI',
+                        canActivate: [DashLinksTIGuard],
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/links/linksTI/linksTI.module'
+                            ).then((m) => m.LinksTIModule),
+                    },
+                ],
+            },
             {
                 path: 'financeiro',
                 children: [

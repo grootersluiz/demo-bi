@@ -31,6 +31,7 @@ import { values } from 'lodash';
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
+  fill: ApexFill;
   yaxis: ApexYAxis[];
   xaxis: ApexXAxis;
   dataLabels: ApexDataLabels;

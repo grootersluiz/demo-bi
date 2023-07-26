@@ -4,12 +4,15 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { SelectfilialService } from './selectfilial.service';
 import { Subject, takeUntil } from 'rxjs';
 import { SelectfilialModule } from './selectfilial.module';
-
 import { Injectable } from '@angular/core';
+import { ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'app-selectfilial',
   templateUrl: './selectfilial.component.html',
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styleUrls: ['./selectfilial.component.scss','../css/css.component.scss']
 })
 

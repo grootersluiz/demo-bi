@@ -7,6 +7,7 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 import {
+    ApexNonAxisChartSeries,
     ApexAxisChartSeries,
     ApexChart,
     ChartComponent,
@@ -20,14 +21,10 @@ import {
 
 
   export type ChartOptions = {
-    series: ApexAxisChartSeries;
+    series: ApexNonAxisChartSeries;
     chart: ApexChart;
-    dataLabels: ApexDataLabels;
-    plotOptions: ApexPlotOptions;
     responsive: ApexResponsive[];
-    xaxis: ApexXAxis;
-    legend: ApexLegend;
-    fill: ApexFill;
+    labels: any;
   };
 
 @Component({
@@ -39,77 +36,33 @@ import {
 
 })
 export class tipovendaComponent {
-  @ViewChild("chart") chart: ChartComponent;
-  public chartOptions: Partial<ChartOptions>;
+    @ViewChild("chart") chart: ChartComponent;
+    public chartOptions: Partial<ChartOptions>;
     titulo: string = "Financeiro";
     subTitulo: string = '';
     isToggleOn: boolean;
     constructor() {
         this.chartOptions = {
-          series: [
-            {
-              name: "PRODUCT A",
-              data: [44, 55, 41, 67, 22, 43]
-            },
-            {
-              name: "PRODUCT B",
-              data: [13, 23, 20, 8, 13, 27]
-            },
-            {
-              name: "PRODUCT C",
-              data: [11, 17, 15, 15, 21, 14]
-            },
-            {
-              name: "PRODUCT D",
-              data: [21, 7, 25, 13, 22, 8]
-            }
-          ],
+          series: [44, 55, 13, 43, 22],
           chart: {
-            type: "bar",
-            height: 350,
-            stacked: true,
-            toolbar: {
-              show: true
-            },
-            zoom: {
-              enabled: true
-            }
+            width: 380,
+            height: "100%",
+            type: "pie"
           },
+          labels: ["Team A", "Team B", "Team C", "Team D", "Team E"],
           responsive: [
             {
               breakpoint: 480,
               options: {
+                chart: {
+                  width: 200
+                },
                 legend: {
-                  position: "bottom",
-                  offsetX: -10,
-                  offsetY: 0
+                  position: "bottom"
                 }
               }
             }
-          ],
-          plotOptions: {
-            bar: {
-              horizontal: false
-            }
-          },
-          xaxis: {
-            type: "category",
-            categories: [
-              "01/2011",
-              "02/2011",
-              "03/2011",
-              "04/2011",
-              "05/2011",
-              "06/2011"
-            ]
-          },
-          legend: {
-            position: "right",
-            offsetY: 40
-          },
-          fill: {
-            opacity: 1
-          }
+          ]
         };
       }
 }

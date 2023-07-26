@@ -32,6 +32,8 @@ import {
   ApexResponsive,
   ApexYAxis
 } from "ng-apexcharts";
+import { ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy } from '@angular/core';
 
 import { default as _rollupMoment, Moment } from 'moment';
 
@@ -76,6 +78,7 @@ let ELEMENT_DATA_VENDA: TipoColumaElement[];
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
+  fill: ApexFill;
   yaxis: ApexYAxis[];
   xaxis: ApexXAxis;
   dataLabels: ApexDataLabels;
@@ -89,7 +92,9 @@ export type ChartOptions = {
 @Component({
   selector: 'app-vendafilial',
   templateUrl: './vendafilial.component.html',
-  styleUrls: ['./vendafilial.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.Default,
+  styleUrls: ['./vendafilial.component.scss','../../util/css/css.component.scss'],
   // providers: [VendafilialchartComponent]
 })
 
@@ -376,7 +381,8 @@ export class VendafilialComponent {
     return arrayTeste;
 
   }
-
+  titulo: string = "Vendas Filiais";
+  subTitulo: string = "Mensal";
   isToggleOn: boolean;
   _iconShowFilter: string       = 'filter_list';
   _tolltip_ShowFIlter: string   = 'On filtro';
@@ -788,6 +794,16 @@ export class VendafilialComponent {
           }
         }
 
+      },
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shade: 'light',
+          type: "vertical",
+          opacityFrom: 0.3,
+          opacityTo: 0.5,
+          stops: [0, 100, 100, 100]
+        }
       },
       dataLabels: {
         enabled: false

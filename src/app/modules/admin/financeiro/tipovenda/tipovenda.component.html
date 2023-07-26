@@ -47,8 +47,21 @@
             </button>
         </div>
     </div>
-    <div class="relative w-full flex flex-col sm:flex-col md:flex-col lg:flex-col xl:flex-col 2xl:flex-col mt-1">
+    <div class="relative flex flex-wrap w-full max-w-screen-xl mx-auto p-1 md:p-1">
     <!-- COMPONENTES ABAIXO -->
         <!-- Colocar class="grid px-2 py-2 w-12/12 rounded-2xl bg-card shadow mb-1" em todos componentes-->
+        <div class="grid px-2 py-2 max-w-120 rounded-2xl bg-card shadow mb-1 overflow-hidden">
+            <div
+                    class="text-lg font-medium tracking-tight leading-6 truncate"
+                >
+                    Tipos de Vendas
+                </div>
+            <apx-chart
+            [series]="chartOptions.series"
+            [chart]="chartOptions.chart"
+            [labels]="chartOptions.labels"
+            [responsive]="chartOptions.responsive"
+        ></apx-chart>
+        </div>
     </div>
 </div>

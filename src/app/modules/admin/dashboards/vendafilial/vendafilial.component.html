@@ -1,5 +1,10 @@
-<div class="container max-w-full max-h-32 sm:h-32 md:h-32 lg:h-32 xl:h-32 2xl:h-32 m-0 p-0" id="painelVendaFilialMes">
-    <div class="flex flex-grow w-full justify-end pr-1" >
+<!-- Div Geral, é necessário criar estas variáveis no export component:
+    titulo: string = "";
+    subTitulo: string = "";
+    isToggleOn: boolean;
+ -->
+ <div class=" flex-col w-full pl-1 pr-1 ">
+    <div class="flex flex-grow w-full justify-between" >
         <button [hidden]="false" (click)="showDash(divChart)" matTooltip="Gráfico Dia" class="mr-4"  style="visibility: visible !important;">
             <mat-icon class="pt-2" aria-hidden="false" fontIcon="fit_screen" ></mat-icon>
           </button>
@@ -7,31 +12,32 @@
             {{ isToggleOn ? "Ocultar filtros" : "Mostrar filtros" }}
         </mat-slide-toggle>
     </div>
-    <div class="w-full pl-1 pr-1">
-      <div class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
-      *ngIf="isToggleOn">
-          <div class="flex flex-auto">
-              <img
-                  class="mr-3 logo-filter lg:block"
-                  src="assets/images/logo/Logo-Rede-JS-Pecas_7.png"
-                  alt=""
-              />
-              <div class="flex flex-col">
-                  <div
-                      class="text-3xl font-semibold tracking-tight leading-8"
-                      style="color: #fff"
-                  >
-                      Vendas Filiais
-                  </div>
+    <div class="w-full">
+    <div class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
+    *ngIf="isToggleOn">
+        <div class="flex flex-auto ">
+            <img
+                class="mr-3 logo-filter lg:block"
+                src="assets/images/logo/Logo-Rede-JS-Pecas_7.png"
+                alt=""
+            />
+            <div class="flex flex-col">
+                <div
+                    class="text-3xl font-semibold tracking-tight leading-8"
+                    style="color: #fff"
+                >
+                    {{titulo}}
+                </div>
 
-                  <div class="font-medium tracking-tight" style="color: #fff">
-                      Mês
-                  </div>
-              </div>
-          </div>
+                <div class="font-medium tracking-tight" style="color: #fff">
+                    {{subTitulo}}
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-wrap justify-end">
+<!-- FILTROS VVVVV -->
 
-          <div class="flex items-start ml-15">
-                  <mat-form-field
+            <mat-form-field
                   class="sm:inline-flex ml-3"
                   style="width: 150px"
               >
@@ -63,24 +69,22 @@
                   ></mat-datepicker>
                   </mat-form-field>
 
-
-              <div class="pt-7">
-                  <button
-                      class="sm:inline-flex ml-5 apply-button"
-                      style="width: 120px"
-                      mat-flat-button
-                      [color]="'primary'"
-                      (click)="consultavendafilial(dataref.value)"
-                  >
-                      <span style="font-size: 12px">Aplicar</span>
-                  </button>
-              </div>
-          </div>
-  </div>
-</div>
-
-      <div class="w-full flex flex-col sm:flex-col md:flex-col lg:flex-col xl:flex-col 2xl:flex-col pl-1 pr-1">
-
+<!-- FILTROS ^^^^^ -->
+        </div>
+<!-- Botão de confirmar filtro, adicionar evento de (click) -->
+            <button
+                class=" sm:inline-flex ml-5 apply-button"
+                style="width: 120px"
+                mat-flat-button
+                [color]="'primary'"
+                (click)="consultavendafilial(dataref.value)">
+                <span style="font-size: 12px">Aplicar</span>
+            </button>
+        </div>
+    </div>
+    <div class="relative w-full h-full flex flex-col sm:flex-col md:flex-col lg:flex-col xl:flex-col 2xl:flex-col mt-1">
+    <!-- COMPONENTES ABAIXO -->
+        <!-- Colocar class="grid px-2 py-2 w-12/12 rounded-2xl bg-card shadow mb-1" em todos componentes-->
         <div id="containerDash" class="flex flex-row p-0 w-full sm:w-full md:w-full lg:w-4/5 xl:w-4/5 2xl:w-4/5">
 
             <div id="divChart" #divChart class=" relative h-60 w-full" [hidden]="false">
@@ -89,6 +93,7 @@
                   <apx-chart class="grid h-60 w-12/12 rounded-2xl bg-card shadow" style="background-color: white;"
                     [series]="chartOptions.series"
                     [chart]="chartOptions.chart"
+                    [fill]="chartOptions.fill"
                     [yaxis]="chartOptions.yaxis"
                     [xaxis]="chartOptions.xaxis"
                     [dataLabels]="chartOptions.dataLabels"
@@ -312,5 +317,13 @@
               </div>
           </div>
         </div>
-      </div>
-  </div>
+    </div>
+</div>
+
+
+<!--  -->
+
+
+
+
+
