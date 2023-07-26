@@ -24,9 +24,7 @@ export class SelectfilialResolver implements Resolve<boolean> {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Observable<any> {
-        return this._selectfilialService.getData(
-            this._selectfilialService.INITIAL_COMPANIES_IDS
-        );
+        return this._selectfilialService.getData();
     }
 
 

@@ -57,8 +57,20 @@ export class SelectfilialComponent {
 
     ngOnInit(): void {
     // ngAfterViewInit(): void {
+        this._selectfilialService.getData();
 
-        console.log(this._selectfilialService.data$);
+        // this.data = this._selectfilialService.data$.source.v;
+
+        // console.log(this.data);
+
+        // this.filiaisObjects = this.data.filiaisLista;
+        // this.filiaisStringList = this.filiaisObjects.map(
+        //     (item) => item.string
+        // );
+
+        // // Trigger the change detection mechanism so that it updates the chart when filtering
+        // this._cdr.markForCheck();
+
         // Get the data
         this._selectfilialService.data$
             .pipe(takeUntil(this._unsubscribeAll))
@@ -66,16 +78,20 @@ export class SelectfilialComponent {
                 // Store the data
                 this.data = data;
 
-                console.log(this.data);
+                if(this.data){
 
-                this.filiaisObjects = this.data.filiaisLista;
-                this.filiaisStringList = this.filiaisObjects.map(
-                    (item) => item.string
-                );
+                    this.filiaisObjects = this.data.filiaisLista;
+                    this.filiaisStringList = this.filiaisObjects.map(
+                        (item) => item.string
+                    );
 
-                // Trigger the change detection mechanism so that it updates the chart when filtering
-                this._cdr.markForCheck();
+                    // Trigger the change detection mechanism so that it updates the chart when filtering
+                    this._cdr.markForCheck();
+
+                }
+
             });
+
         }
 
 }

@@ -1,34 +1,32 @@
 
-<mat-form-field appearance="fill" class="hidden sm:inline-flex ml-3 p-2" >
-<mat-label style="font-size: 12px; color: #fff"
->Filial</mat-label
->
-<mat-select
-class="my-custom-class"
-style="font-size: 12px"
-[formControl]="filiais"
-multiple
->
-<mat-option
-    class="select-all-companies"
+<mat-form-field class="sm:inline-flex ml-3" style="width: 150px">
+    <mat-label style="font-size: 12px; color: #fff">Filial</mat-label>
+    <mat-select
+    class="my-custom-class"
     style="font-size: 12px"
-    [value]="'-1'"
+    [formControl]="filiais"
+    multiple >
+        <mat-option
+            class="select-all-companies"
+            style="font-size: 12px"
+            [value]="'-1'"
+            (click)="selectAllCompanies()" >
+            {{
+                allCompaniesSelected
+                    ? "Desmarcar Todos"
+                    : "Marcar Todos"
+            }}
+        </mat-option>
 
-    >{{
-        allCompaniesSelected
-            ? "Desmarcar Todos"
-            : "Marcar Todos"
-    }}</mat-option
->
-
-<mat-option
-    style="font-size: 12px"
-    *ngFor="
-        let filial of filiaisStringList;
-        let i = index
-    "
-    [value]="filiaisObjects[i].id.toString()"
-    >{{ filial }}</mat-option
->
-</mat-select>
+        <mat-option
+            style="font-size: 12px"
+            *ngFor="
+                let filial of filiaisStringList;
+                let i = index
+            "
+            [value]="filiaisObjects[i].id.toString()"
+            (click)=" handleCompanyFilterSelect(filiaisObjects[i].id)"
+            >{{ filial }}
+        </mat-option>
+    </mat-select>
 </mat-form-field>
