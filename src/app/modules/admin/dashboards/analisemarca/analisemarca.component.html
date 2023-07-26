@@ -36,6 +36,8 @@
         </div>
         <div class="flex flex-wrap justify-end">
 <!-- FILTROS VVVVV -->
+
+            <app-selectfilial #filial ></app-selectfilial>
             <mat-form-field
                   class="sm:inline-flex ml-3"
                   style="width: 150px">
@@ -62,7 +64,6 @@
                 >
                 </mat-datepicker>
             </mat-form-field>
-            <app-selectfilial></app-selectfilial>
 
 <!-- FILTROS ^^^^^ -->
         </div>
@@ -72,7 +73,7 @@
                 style="width: 120px"
                 mat-flat-button
                 [color]="'primary'"
-                (click)="consultavendafilial(dataref.value)">
+                (click)="consultavendafilial(dataref.value,filial.filiais.value)">
                 <span style="font-size: 12px">Aplicar</span>
             </button>
         </div>

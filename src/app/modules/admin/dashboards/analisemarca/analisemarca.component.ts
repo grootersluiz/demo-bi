@@ -163,8 +163,8 @@ export class AnalisemarcaComponent {
       this.param.ultDia = ("00" + (sysDate.getDate()-1)).slice(-2); // dia atual -1
       this.param.mes    = ("00" + (sysDate.getMonth()+1)).slice(-2);
       this.param.ano    = sysDate.getFullYear();
-      this.param.filial = 99;
-      this.param.descFilial = 'REDE';
+    //   this.param.filial = 99;
+    //   this.param.descFilial = 'REDE';
 
     }
   }
@@ -174,11 +174,15 @@ export class AnalisemarcaComponent {
   series = {columns: [], rows: [], viewSerie: []};
   getSeries(){
 
-    var dia = this.param.ultDia;
-    var mes = this.param.mes;
-    var ano = this.param.ano;
+    var dia     = this.param.ultDia;
+    var mes     = this.param.mes;
+    var ano     = this.param.ano;
+    var filiais = this.param.filial;
 
-    this._httpClient.get<{columns: [], rows: []}>('http://api.portal.jspecas.com.br/v1/views/429/data?ano='+ano+'&mes='+mes+'&dtref1=01'+mes+ano+'&dtref2='+dia+mes+ano)
+    this._httpClient.get<{columns: [], rows: []}>('http://api.portal.jspecas.com.br/v1/views/429/data?ano='+ano+'&mes='+mes
+                                                    +'&dtref1=01'+mes+ano+'&dtref2='+dia+mes+ano
+                                                    +'&filiais='+filiais
+                                                 )
                             .subscribe(dataresponse => {
                                  this.series.columns  = dataresponse.columns;
                                  this.series.rows     = dataresponse.rows;
@@ -186,7 +190,6 @@ export class AnalisemarcaComponent {
                                 //  this._serviceChart.series.columns  = dataresponse.columns;
                                 //  this._serviceChart.series.rows     = dataresponse.rows;
 
-                                //  console.log(this.series.columns);
                                  this.posicionaValorXinCategoria(this.categorias,this.series.rows);
 
                             });
@@ -654,11 +657,17 @@ export class AnalisemarcaComponent {
 
   }
 
-  consultavendafilial(param ){
+  consultavendafilial(_dtref,filial ){
 
-    // console.log(param);
+    if(filial.length == 1){
+        if (filial[0]=='null'){
+            filial = 99;
+        }
+    }
+
     this._chartWidth = '83%';
-    var dtRef = param;
+
+    var dtRef = _dtref;
     var arrayParam = new Array();
 
     arrayParam.push(dtRef);
@@ -681,11 +690,14 @@ export class AnalisemarcaComponent {
     mes = dataSplit[1];
     dia = lastDayDate.substring(0,2); // ultimo dia do mês
 
-    this.analisemarcaService.setParam(dia,mes,ano,99,'REDE');
+    if(_dtref){
+        this.analisemarcaService.dt_ref = dataref;
+    }
+
+    this.analisemarcaService.setParam(dia,mes,ano,filial,'REDE');
     this.limpar(); // viewSerie, categorias, series
     this.validaParam();
 
-    this.analisemarcaService.dt_ref = dataref;
     this.analisemarcaService.getXaxis();
     this.categorias = this.analisemarcaService.xAxis;
     this.viewYAxis  = this.analisemarcaService.viewYAxis;
