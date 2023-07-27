@@ -38,6 +38,7 @@
 <!-- FILTROS VVVVV -->
 
             <app-selectfilial #filial ></app-selectfilial>
+            <app-listamarca #marca ></app-listamarca>
             <mat-form-field
                   class="sm:inline-flex ml-3"
                   style="width: 150px">
@@ -73,7 +74,7 @@
                 style="width: 120px"
                 mat-flat-button
                 [color]="'primary'"
-                (click)="consultavendafilial(dataref.value,filial.filiais.value)">
+                (click)="consultavendafilial(dataref.value,filial.filiais.value,marca.marcas.value)">
                 <span style="font-size: 12px">Aplicar</span>
             </button>
         </div>
@@ -81,9 +82,9 @@
     <div class="relative w-full h-full flex flex-col sm:flex-col md:flex-col lg:flex-col xl:flex-col 2xl:flex-col mt-1">
     <!-- COMPONENTES ABAIXO -->
         <!-- Colocar class="grid px-2 py-2 w-12/12 rounded-2xl bg-card shadow mb-1" em todos componentes-->
-        <div id="containerDash" [hidden]="false" style="height: 100% ">
+        <div id="containerDash" [hidden]="false" style="height: 98% ">
             <div id="divChart" #divChart class="w-full h-full p-0 mt-0 mr-0 mb-0 ml-0" [hidden]="false">
-                <div id="chart" #chart [ngClass]="_classChart" style="height: 100% " >
+                <div id="chart" #chart [ngClass]="_classChart" style="height: 98% " >
                 <apx-chart [ngClass]="_classChart" style="background-color: white; "
                     [series]="chartOptions.series"
                     [chart]="chartOptions.chart"
