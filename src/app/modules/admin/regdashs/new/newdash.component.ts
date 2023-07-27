@@ -24,7 +24,12 @@ import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { MatDrawerToggleResult } from '@angular/material/sidenav';
 import { debounceTime, Subject, Observable, takeUntil } from 'rxjs';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
-import { Dash, Country, Tag } from 'app/modules/admin/regdashs/regdashs.types';
+import {
+    Dash,
+    DashReport,
+    Country,
+    Tag,
+} from 'app/modules/admin/regdashs/regdashs.types';
 import { DashListComponent } from 'app/modules/admin/regdashs/list/dashlist.component';
 import { RegdashsService } from 'app/modules/admin/regdashs/regdashs.service';
 import { Group } from 'app/modules/admin/reggroups/reggroups.types';
@@ -59,7 +64,8 @@ export class NewDashComponent implements OnInit, OnDestroy {
     groupsObjects: Group[];
     groupsStringList: string[];
     reports = new FormControl([]);
-    sequence = new FormControl([]);
+    sequence: number[] = [];
+    dashReportObjects: DashReport[] = [];
     reportObjects: Reports[];
     reportStringList: string[];
     setReportsSeq: boolean = false;
@@ -167,6 +173,13 @@ export class NewDashComponent implements OnInit, OnDestroy {
 
     showReportsList(): void {
         this.setReportsSeq = !this.setReportsSeq;
+        for (
+            let i = 1;
+            i <= this.contactForm.get('reportIds').value?.length;
+            i++
+        ) {
+            this.sequence.push(i);
+        }
     }
 
     getReportInfo(reportId: number): string {
@@ -176,6 +189,10 @@ export class NewDashComponent implements OnInit, OnDestroy {
         if (foundReport) {
             return `${foundReport.id} - ${foundReport.name}`;
         }
+    }
+
+    storeReportSequence(event: any, index: number): void {
+        this.sequence[index] = event.value;
     }
 
     /**
@@ -205,15 +222,20 @@ export class NewDashComponent implements OnInit, OnDestroy {
      * Create Dash
      */
     createContact(): void {
+        const dashReports = (this.dashReportObjects = this.contactForm
+            .get('reportIds')
+            ?.value.map((reportId, index) => ({
+                reportId: reportId,
+                sequence: this.sequence[index],
+            })));
+
         // Get the contact object
         const contact = this.contactForm.getRawValue();
         contact.groupIds = this.groups.value;
         contact.reports = this.reports.value;
 
-        console.log(this.contactForm.getRawValue());
-
         // Update the contact on the server
-        this._contactsService.createDash(contact).subscribe(() => {
+        this._contactsService.createDash(contact, dashReports).subscribe(() => {
             // Toggle the edit mode off
             this.closeDrawer();
             this._router.navigate(['../'], {

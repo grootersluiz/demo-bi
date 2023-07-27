@@ -148,7 +148,8 @@
                         <ng-container
                             *ngFor="
                                 let report of contactForm.get('reportIds')
-                                    ?.value
+                                    ?.value;
+                                let i = index
                             "
                         >
                             <mat-form-field
@@ -167,9 +168,12 @@
                                 [subscriptSizing]="'dynamic'"
                             >
                                 <mat-select
+                                    [(value)]="sequence[i]"
                                     class="my-custom-class"
                                     style="font-size: 12px"
-                                    [formControl]="sequence"
+                                    (selectionChange)="
+                                        storeReportSequence($event, i)
+                                    "
                                 >
                                     <mat-option
                                         style="font-size: 12px"
@@ -177,10 +181,10 @@
                                             let sequence of contactForm.get(
                                                 'reportIds'
                                             )?.value;
-                                            let i = index
+                                            let j = index
                                         "
-                                        [value]="i + 1"
-                                        >{{ i + 1 }}°</mat-option
+                                        [value]="j + 1"
+                                        >{{ j + 1 }}°</mat-option
                                     >
                                 </mat-select>
                             </mat-form-field>
