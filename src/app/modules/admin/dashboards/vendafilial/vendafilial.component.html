@@ -46,14 +46,19 @@
                       </mat-label
                   >
                   <input
+                  class="cursor-pointer"
                   style="font-size: 15px"
                   id="dtref"
                   matInput
                   [formControl]="end"
                   [matDatepicker]="pickerFinal"
+                  (click)="
+                     handleDatePickerClick($event, pickerToggleFinal)
+                  "
                   #dataref (dateChange)="formatDataMesAno($event)"
                   (blur)="formatDataMesAno2(dataref)"
                   [max]="dataHoje"
+                  readonly
                   />
                   <mat-hint>DD/MM/YYYY</mat-hint>
                   <mat-datepicker-toggle

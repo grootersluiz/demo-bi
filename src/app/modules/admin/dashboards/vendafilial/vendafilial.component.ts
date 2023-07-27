@@ -186,7 +186,13 @@ export class VendafilialComponent {
             filial:null,
             descFilial: null
           };
-
+    handleDatePickerClick(
+        event: Event,
+        pickerToggle: MatDatepickerToggle<Date>
+    ) {
+    // Makes DatePicker open by clicking anywhere in the input
+        pickerToggle._open(event);
+    }
   validaParam(){
 
     // var chartService = new VendafilialchartService() ;

@@ -50,26 +50,25 @@
     <div class="relative flex flex-wrap max-w-full max-w-screen-xl mx-auto p-1 md:p-1 ">
     <!-- COMPONENTES ABAIXO -->
         <!-- Colocar class="grid px-2 py-2 w-12/12 rounded-2xl bg-card shadow mb-1" em todos componentes-->
-        <div class="flex w-full">
-            <div class="grid px-2 py-2 w-2/5 rounded-2xl bg-card shadow mb-1 overflow-hidden mr-1">
-                <div
-                        class="text-lg font-medium tracking-tight leading-6 truncate"
+        <div
+                        class="pl-2 text-lg font-medium tracking-tight leading-6 truncate"
                     >
                         Tipos de Vendas
                     </div>
+        <div class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row w-full">
+            <div class="grid px-2 py-2 w-full md:w-2/5 lg:w-2/5 xl:w-2/5 2xl:w-2/5 justify-center center rounded-l-2xl bg-card shadow mb-1 overflow-hidden ">
+
+                    <div>Totais - Ano</div>
                 <apx-chart
                 [series]="chartOptions.series"
                 [chart]="chartOptions.chart"
+                [yaxis]="chartOptions.yaxis"
                 [labels]="chartOptions.labels"
                 [responsive]="chartOptions.responsive"
                 ></apx-chart>
             </div>
-            <div class="grid px-2 py-2 w-3/5 rounded-2xl bg-card shadow mb-1 overflow-hidden">
-                <div
-                        class="text-lg font-medium tracking-tight leading-6 truncate"
-                    >
-                        Tipos de Vendas - Ano
-                    </div>
+            <div class="grid px-2 py-2 w-full md:w-3/5 lg:w-3/5 xl:w-3/5 2xl:w-3/5 center rounded-r-2xl bg-card shadow mb-1 overflow-hidden">
+                <div>Totais - Meses</div>
                 <apx-chart
                     [series]="chartOptions1.series"
                     [chart]="chartOptions1.chart"
@@ -77,30 +76,13 @@
                     [plotOptions]="chartOptions1.plotOptions"
                     [responsive]="chartOptions1.responsive"
                     [xaxis]="chartOptions1.xaxis"
+                    [yaxis]="chartOptions1.yaxis"
                     [legend]="chartOptions1.legend"
                     [fill]="chartOptions1.fill"
                 ></apx-chart>
 
             </div>
          </div>
-    <div class="grid px-2 py-2 w-3/5 rounded-2xl bg-card shadow mb-1 overflow-hidden">
-        <div
-                class="text-lg font-medium tracking-tight leading-6 truncate"
-            >
-                Tipos de Vendas - Ano
-            </div>
-        <apx-chart
-            [series]="chartOptions1.series"
-            [chart]="chartOptions1.chart"
-            [dataLabels]="chartOptions1.dataLabels"
-            [plotOptions]="chartOptions1.plotOptions"
-            [responsive]="chartOptions1.responsive"
-            [xaxis]="chartOptions1.xaxis"
-            [legend]="chartOptions1.legend"
-            [fill]="chartOptions1.fill"
-        ></apx-chart>
-
-    </div>
 
     </div>
 
