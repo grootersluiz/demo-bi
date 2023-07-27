@@ -3,75 +3,82 @@
     subTitulo: string = "";
     isToggleOn: boolean;
  -->
-<div class=" flex-col w-full pl-1 pr-1 ">
-    <div class="flex flex-grow w-full justify-end" >
+<div class="flex-col w-full pl-1 pr-1">
+    <div class="flex flex-grow w-full justify-end">
         <mat-slide-toggle class="pt-1" [(ngModel)]="isToggleOn">
             {{ isToggleOn ? "Ocultar filtros" : "Mostrar filtros" }}
         </mat-slide-toggle>
     </div>
     <div class="w-full">
-    <div class="flex flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
-    *ngIf="isToggleOn">
-        <div class="flex flex-auto ">
-            <img
-                class="mr-3 logo-filter lg:block"
-                src="assets/images/logo/Logo-Rede-JS-Pecas_7.png"
-                alt=""
-            />
-            <div class="flex flex-col">
-                <div
-                    class="text-3xl font-semibold tracking-tight leading-8"
-                    style="color: #fff"
-                >
-                    {{titulo}}
-                </div>
+        <div
+            class="flex flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
+            *ngIf="isToggleOn"
+        >
+            <div class="flex flex-auto">
+                <img
+                    class="mr-3 logo-filter lg:block"
+                    src="assets/images/logo/Logo-Rede-JS-Pecas_7.png"
+                    alt=""
+                />
+                <div class="flex flex-col">
+                    <div
+                        class="text-3xl font-semibold tracking-tight leading-8"
+                        style="color: #fff"
+                    >
+                        {{ titulo }}
+                    </div>
 
-                <div class="font-medium tracking-tight" style="color: #fff">
-                    {{subTitulo}}
+                    <div class="font-medium tracking-tight" style="color: #fff">
+                        {{ subTitulo }}
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="flex flex-wrap justify-end">
-<!-- FILTROS VVVVV -->
-            <app-selectfilial></app-selectfilial>
-<!-- FILTROS ^^^^^ -->
-        </div>
-<!-- Botão de confirmar filtro, adicionar evento de (click) -->
+            <div class="flex flex-wrap justify-end">
+                <!-- FILTROS VVVVV -->
+                <app-selectfilial></app-selectfilial>
+                <!-- FILTROS ^^^^^ -->
+            </div>
+            <!-- Botão de confirmar filtro, adicionar evento de (click) -->
             <button
                 class="sm:inline-flex ml-5 apply-button"
                 style="width: 120px"
                 mat-flat-button
                 [color]="'primary'"
-                >
+            >
                 <span style="font-size: 12px">Aplicar</span>
             </button>
         </div>
     </div>
-    <div class="relative flex flex-wrap max-w-full max-w-screen-xl mx-auto p-1 md:p-1 ">
-    <!-- COMPONENTES ABAIXO -->
+    <div
+        class="relative flex flex-wrap max-w-full max-w-screen-xl mx-auto p-1 md:p-1"
+    >
+        <!-- COMPONENTES ABAIXO -->
         <!-- Colocar class="grid px-2 py-2 w-12/12 rounded-2xl bg-card shadow mb-1" em todos componentes-->
-        <div
-                        class="pl-2 text-lg font-medium tracking-tight leading-6 truncate"
-                    >
-                        Tipos de Vendas
-                    </div>
-        <div class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row w-full">
-            <div class="grid px-2 py-2 w-full md:w-2/5 lg:w-2/5 xl:w-2/5 2xl:w-2/5 justify-center center rounded-l-2xl bg-card shadow mb-1 overflow-hidden ">
 
-                    <div>Totais - Ano</div>
+        <div
+            class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row w-full"
+        >
+            <div
+                class="grid px-2 py-2 w-full md:w-2/5 lg:w-2/5 xl:w-2/5 2xl:w-2/5 justify-center center rounded-l-2xl bg-card shadow mb-1 overflow-hidden"
+            >
+                <div>Totais - Ano</div>
                 <apx-chart
-                [series]="chartOptions.series"
-                [chart]="chartOptions.chart"
-                [yaxis]="chartOptions.yaxis"
-                [labels]="chartOptions.labels"
-                [responsive]="chartOptions.responsive"
+                    [series]="chartOptionsPie.series"
+                    [chart]="chartOptionsPie.chart"
+                    [yaxis]="chartOptionsPie.yaxis"
+                    [labels]="chartOptionsPie.labels"
+                    [responsive]="chartOptionsPie.responsive"
                 ></apx-chart>
             </div>
-            <div class="grid px-2 py-2 w-full md:w-3/5 lg:w-3/5 xl:w-3/5 2xl:w-3/5 center rounded-r-2xl bg-card shadow mb-1 overflow-hidden">
+            <div
+                class="grid px-2 py-2 w-full md:w-3/5 lg:w-3/5 xl:w-3/5 2xl:w-3/5 center rounded-r-2xl bg-card shadow mb-1 overflow-hidden"
+            >
                 <div>Totais - Meses</div>
                 <apx-chart
                     [series]="chartOptions1.series"
                     [chart]="chartOptions1.chart"
+                    [stroke]="chartOptions1.stroke"
+                    [tooltip]="chartOptions1.tooltip"
                     [dataLabels]="chartOptions1.dataLabels"
                     [plotOptions]="chartOptions1.plotOptions"
                     [responsive]="chartOptions1.responsive"
@@ -80,10 +87,106 @@
                     [legend]="chartOptions1.legend"
                     [fill]="chartOptions1.fill"
                 ></apx-chart>
-
             </div>
-         </div>
+        </div>
+        <div class="grid px-2 py-2 w-full rounded-2xl bg-card shadow mb-1">
+            <table mat-table [dataSource]="datasource">
+                <!-- Position Column -->
+                <ng-container matColumnDef="qtde">
+                    <th
+                        mat-header-cell
+                        *matHeaderCellDef
+                        style="font-size: 12px; font-weight: bold"
+                    >
+                        Qtde.
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let element"
+                        style="font-size: 12px"
+                    >
+                        {{ element.qtde }}
+                    </td>
+                </ng-container>
 
+                <!-- Name Column -->
+                <ng-container matColumnDef="mai">
+                    <th
+                        mat-header-cell
+                        *matHeaderCellDef
+                        style="font-size: 12px; font-weight: bold"
+                    >
+                        Maio
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let element"
+                        style="font-size: 12px"
+                    >
+                        {{ element.mai }}
+                    </td>
+                </ng-container>
+
+                <!-- Weight Column -->
+                <ng-container matColumnDef="jun">
+                    <th
+                        mat-header-cell
+                        *matHeaderCellDef
+                        style="font-size: 12px; font-weight: bold"
+                    >
+                        Junho
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let element"
+                        style="font-size: 12px"
+                    >
+                        {{ element.jun }}
+                    </td>
+                </ng-container>
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="jul">
+                    <th
+                        mat-header-cell
+                        *matHeaderCellDef
+                        style="font-size: 12px; font-weight: bold"
+                    >
+                        Julho
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let element"
+                        style="font-size: 12px; font-weight: normal"
+                    >
+                        {{ element.jul }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="totalGeral">
+                    <th
+                        mat-header-cell
+                        *matHeaderCellDef
+                        style="font-size: 12px; font-weight: bold"
+                    >
+                        Total Geral
+                    </th>
+                    <td
+                        mat-cell
+                        *matCellDef="let element"
+                        style="font-size: 12px; font-weight: normal"
+                    >
+                        {{ element.totalGeral }}
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr
+                    mat-row
+                    *matRowDef="let row; columns: displayedColumns"
+                    style="font-size: 12px"
+                ></tr>
+            </table>
+        </div>
     </div>
-
 </div>

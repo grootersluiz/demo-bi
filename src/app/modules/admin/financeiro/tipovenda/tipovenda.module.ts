@@ -33,6 +33,7 @@ import { SelectfilialModule } from '../../util/selectfilial/selectfilial.module'
         CommonModule,
         MatButtonModule,
         MatButtonToggleModule,
+        MatTableModule,
         MatToolbarModule,
         MatTooltipModule,
         MatIconModule,

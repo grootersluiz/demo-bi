@@ -1,5 +1,6 @@
 import { AuthService } from '../../../../core/auth/auth.service';
 import { Navigation } from 'app/core/navigation/navigation.types';
+import { tipovendaService } from './tipovenda.service';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -20,7 +21,7 @@ import {
   } from "ng-apexcharts";
 
 
-  export type ChartOptions = {
+  export type ChartOptionsPie = {
     series: ApexNonAxisChartSeries;
     chart: ApexChart;
     yaxis: ApexYAxis;
@@ -31,6 +32,8 @@ import {
   export type ChartOptions1 = {
     series: ApexAxisChartSeries;
     chart: ApexChart;
+    stroke: ApexStroke;
+    tooltip: ApexTooltip;
     dataLabels: ApexDataLabels;
     plotOptions: ApexPlotOptions;
     responsive: ApexResponsive[];
@@ -39,6 +42,12 @@ import {
     legend: ApexLegend;
     fill: ApexFill;
   };
+  export interface tabela {
+    name: string;
+    position: number;
+    weight: number;
+    symbol: string;
+  }
 
 @Component({
     selector: 'tipovenda',
@@ -50,13 +59,17 @@ import {
 })
 export class tipovendaComponent {
     @ViewChild("chart") chart: ChartComponent;
-    public chartOptions: Partial<ChartOptions>;
+    public chartOptionsPie: Partial<ChartOptionsPie>;
     public chartOptions1: Partial<ChartOptions1>;
+    displayedColumns: string[] = ['qtde', 'mai', 'jun', 'jul', 'totalGeral'];
+    datasource = this._tipovendaService.ELEMENT_DATA;
     titulo: string = "Financeiro";
     subTitulo: string = '';
     isToggleOn: boolean;
-    constructor() {
-        this.chartOptions = {
+    serie
+
+    constructor(private _tipovendaService: tipovendaService) {
+        this.chartOptionsPie = {
           series: [ 28753623 ,  67023721 ,  30584983 ,  7394712  ,  103890089   ],
           chart: {
             width: 380,
@@ -83,64 +96,58 @@ export class tipovendaComponent {
             showAlways: true,
             labels: {
                 show: true,
-                formatter: function (val, opts) {
-                    var valor = val? Number(val).toFixed(2) : '0.00';
-
-                    valor = valor.replace('.',',');
-
-                    // if(valor.indexOf(",00") == -1)
-                    if(Number((valor.length)) > 6 && Number(valor.length) < 10){
-                        var leng = valor.length;
-                        valor = valor.substring(0,leng-6)+'.'+valor.substring(leng-6,leng);
-
-                    }else{
-
-                        if(Number((valor.length)) > 9 && Number(valor.length) < 13){
-                            var leng = valor.length;
-                            valor = valor.substring(0,leng-9)+'.'+valor.substring(leng-9,leng-6)+'.'+ valor.substring(leng-6,leng) + ' R$';
-                        }
-                    }
-
-                    return String(valor);
-                },
+                formatter: (val) => {return(this.formatadorPts(val))},
             }
         },
         };
         this.chartOptions1 = {
             series: [
-              {
-                name: "Acima de 90 dias",
-                data: [ 16924685 ,	 15003348 ,	 11554669,16924685 ,	 15003348 ,	 11554669,16924685 ,	 ]
+                {
+                  name: "A Vista",
+                  data: [4469171	,	 4240401 ,	 3432654,],
+                  type: "area",
                 },{
                 name: "1 até 30 dias",
-                data: [ 10431883 ,	 10227032 ,	 7637004, 10431883 ,	 10227032 ,	 7637004, 10431883 ,]
+                data: [10431883 , 10227032 ,	 7637004, ],
+                type: "area",
                 },
               {
-                name: "A Vista",
-                data: [ 4469171 ,	 4240401 ,	 3432654,4469171 ,	 4240401 ,	 3432654,4469171 ,	]
-              },
-
-              {
                 name: "31 até 60 dias",
-                data: [ 4833369 	, 4330621 ,	 3711817,4833369 	, 4330621 ,	 3711817,4833369 	,]
+                data: [ 4833369 	, 4330621 ,	 3711817,],
+                type: "area",
               },
               {
                 name: "61 até 90 dias",
-                data: [ 1182992 ,	 1071140 	, 851728,1182992 ,	 1071140 	, 851728 ,1182992 ,	  ]
+                data: [1182992 , 1071140 	, 851728 ,	  ],
+                type: "area",
               },
-
+              {
+                name: "Acima de 90 dias",
+                data: [16924685, 15003348 ,	 11554669	 ],
+                type: "area",
+                },
+                {
+                name: "Total",
+                color: "black",
+                data: [37842099 ,	 34872542,27187870],
+                type: "line",
+                },
             ],
             chart: {
-              type: "bar",
+              type: "area",
               height: 220,
-              stacked: true,
-              stackType: "normal",
+              width: "100%",
+              stacked: false,
               toolbar: {
                 show: true
               },
               zoom: {
                 enabled: true
               }
+            },
+            stroke: {
+              curve: "smooth",
+              width: 2
             },
             responsive: [
               {
@@ -162,10 +169,6 @@ export class tipovendaComponent {
             xaxis: {
               type: "category",
               categories: [
-                'Jan',
-                'Fev',
-                'Mar',
-                'Abr',
                 'Mai',
                 'Jun',
                 'Jul',
@@ -173,10 +176,9 @@ export class tipovendaComponent {
             },
             dataLabels: {
                 distributed: true,
-                formatter: (val) => {return(this.formatadorUnidade(val))},
-                enabled: true,
+                enabled: false,
                 style: {
-                    fontSize: '10px',
+                    fontSize: '12px',
                     fontFamily: 'Helvetica, Arial, sans-serif',
                     fontWeight: 'bold',
                     colors: ['black']
@@ -191,19 +193,21 @@ export class tipovendaComponent {
                 }
               },
                 yaxis: {
-                show: false,
-                showAlways: true,
-                labels: {
-                    show: true,
-                    formatter: (val) => {return(this.formatadorPts(val))},
+                show: true,
+                showAlways: false,
+                labels:{
+                    formatter: (val) => {return(this.formatadorUnidade(val))}
+                },
+            },
+            tooltip: {
+                enabled: true,
+                y: {
+                    formatter: (val) => {return (this.formatadorPts(val))}
                 }
-            },
+              },
             legend: {
-              position: "bottom"
+              position: "bottom",
             },
-            fill: {
-              opacity: 1
-            }
           };
       }
       formatadorUnidade(val){
@@ -246,12 +250,22 @@ export class tipovendaComponent {
             valor = valor.substring(0,leng-6)+'.'+valor.substring(leng-6,leng);
 
         }else{
-
             if(Number((valor.length)) > 9 && Number(valor.length) < 13){
                 var leng = valor.length;
                 valor = valor.substring(0,leng-9)+'.'+valor.substring(leng-9,leng-6)+'.'+ valor.substring(leng-6,leng)+ ' R$';
+            }else{
+                if(Number((valor.length)) < 6){
+                    var leng = valor.length;
+                    valor = valor.substring(0,2)+ '%';
+                }else{
+                    if(Number(valor === '100,00')){
+                        var leng = valor.length;
+                        valor = valor.substring(0,3)+ '%';
+                    }
+                }
             }
         }
         return String(valor);
     }
+
 }
