@@ -155,7 +155,10 @@
                                 class="mt-8 w-full"
                                 [subscriptSizing]="'dynamic'"
                             >
-                                <input matInput [value]="report" />
+                                <input
+                                    matInput
+                                    [value]="getReportInfo(report)"
+                                />
                             </mat-form-field>
                         </ng-container>
                     </div>

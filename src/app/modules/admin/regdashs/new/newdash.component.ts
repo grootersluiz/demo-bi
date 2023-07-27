@@ -168,6 +168,15 @@ export class NewDashComponent implements OnInit, OnDestroy {
         this.setReportsSeq = !this.setReportsSeq;
     }
 
+    getReportInfo(reportId: number): string {
+        const foundReport = this.reportObjects.find(
+            (report) => report.id === reportId
+        );
+        if (foundReport) {
+            return `${foundReport.id} - ${foundReport.name}`;
+        }
+    }
+
     /**
      * Close the drawer
      */
