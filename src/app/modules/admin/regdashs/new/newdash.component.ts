@@ -65,6 +65,7 @@ export class NewDashComponent implements OnInit, OnDestroy {
     groupsStringList: string[];
     reports = new FormControl([]);
     sequence: number[] = [];
+    sequenceList: number[] = [];
     dashReportObjects: DashReport[] = [];
     reportObjects: Reports[];
     reportStringList: string[];
@@ -179,6 +180,7 @@ export class NewDashComponent implements OnInit, OnDestroy {
             i++
         ) {
             this.sequence.push(i);
+            this.sequenceList.push(i);
         }
     }
 
@@ -193,6 +195,15 @@ export class NewDashComponent implements OnInit, OnDestroy {
 
     storeReportSequence(event: any, index: number): void {
         this.sequence[index] = event.value;
+        this.sequence.forEach((sequence, index2) => {
+            if (sequence == event.value && index2 != index) {
+                this.sequenceList.forEach((seq) => {
+                    if (!this.sequence.includes(seq)) {
+                        this.sequence[index2] = seq;
+                    }
+                });
+            }
+        });
     }
 
     /**
