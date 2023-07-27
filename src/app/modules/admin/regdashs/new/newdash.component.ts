@@ -59,6 +59,7 @@ export class NewDashComponent implements OnInit, OnDestroy {
     groupsObjects: Group[];
     groupsStringList: string[];
     reports = new FormControl([]);
+    sequence = new FormControl([]);
     reportObjects: Reports[];
     reportStringList: string[];
     setReportsSeq: boolean = false;
