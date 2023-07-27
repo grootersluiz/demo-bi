@@ -110,6 +110,7 @@
                                 style="font-size: 12px"
                                 [formControlName]="'reportIds'"
                                 multiple
+                                (selectionChange)="refreshReportsList()"
                             >
                                 <mat-option
                                     style="font-size: 12px"
