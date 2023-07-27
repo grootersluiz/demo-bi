@@ -129,10 +129,35 @@
                         *ngIf="contactForm.get('reportIds')?.value?.length > 1"
                     >
                         <div>
-                            <button class="custom-button">
+                            <button
+                                class="custom-button"
+                                (click)="showReportsList()"
+                            >
                                 Definir sequência dos relatórios
                             </button>
                         </div>
+                    </div>
+
+                    <div
+                        class="mt-8"
+                        *ngIf="
+                            setReportsSeq &&
+                            contactForm.get('reportIds')?.value?.length > 1
+                        "
+                    >
+                        <ng-container
+                            *ngFor="
+                                let report of contactForm.get('reportIds')
+                                    ?.value
+                            "
+                        >
+                            <mat-form-field
+                                class="mt-8 w-full"
+                                [subscriptSizing]="'dynamic'"
+                            >
+                                <input matInput [value]="report" />
+                            </mat-form-field>
+                        </ng-container>
                     </div>
 
                     <!-- Actions -->

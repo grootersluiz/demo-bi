@@ -61,6 +61,7 @@ export class NewDashComponent implements OnInit, OnDestroy {
     reports = new FormControl([]);
     reportObjects: Reports[];
     reportStringList: string[];
+    setReportsSeq: boolean = false;
     private _tagsPanelOverlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -162,6 +163,10 @@ export class NewDashComponent implements OnInit, OnDestroy {
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
+
+    showReportsList(): void {
+        this.setReportsSeq = !this.setReportsSeq;
+    }
 
     /**
      * Close the drawer
