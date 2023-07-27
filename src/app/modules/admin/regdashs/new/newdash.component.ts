@@ -35,6 +35,7 @@ import { Reports } from '../../regreports/regreports.types';
 @Component({
     selector: 'new-dash',
     templateUrl: './newdash.component.html',
+    styleUrls: ['./newdash.component.css'],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
