@@ -4,6 +4,7 @@ import {
     Resolve,
     RouterStateSnapshot,
 } from '@angular/router';
+import { Observable } from 'rxjs';
 import { VendasDashService } from './vendas.service';
 
 @Injectable({
@@ -25,7 +26,15 @@ export class VendasDashResolver implements Resolve<any> {
      * @param route
      * @param state
      */
-    resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        return;
+    resolve(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot
+    ): Observable<any> {
+        return this._vendasdashService.getData(
+            this._vendasdashService.INITIAL_INITIAL_DATE,
+            this._vendasdashService.INITIAL_FINAL_DATE,
+            this._vendasdashService.INITIAL_COMPANIES_IDS,
+            this._vendasdashService.INITIAL_SELLERS_IDS
+        );
     }
 }

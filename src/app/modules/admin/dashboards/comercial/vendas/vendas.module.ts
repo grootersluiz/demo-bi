@@ -7,6 +7,7 @@ import { VendasDashComponent } from './vendas.component';
 import { vendasDashRoutes } from './vendas.routing';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
     declarations: [VendasDashComponent],
@@ -16,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
         MatSlideToggleModule,
         MatIconModule,
         FormsModule,
+        NgApexchartsModule,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
