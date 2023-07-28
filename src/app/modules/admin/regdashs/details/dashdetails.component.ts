@@ -289,12 +289,15 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
      * Update the contact
      */
     updateContact(): void {
-        const dashReports = (this.dashReportObjects = this.contactForm
-            .get('reportIds')
-            ?.value.map((reportId, index) => ({
-                reportId: reportId,
-                sequence: this.sequence[index],
-            })));
+        let dashReports: DashReport[] = [];
+        if (this.contactForm.get('reportIds')?.value) {
+            dashReports = this.dashReportObjects = this.contactForm
+                .get('reportIds')
+                ?.value.map((reportId, index) => ({
+                    reportId: reportId,
+                    sequence: this.sequence[index],
+                }));
+        }
 
         // Get the contact object
         const contact = this.contactForm.getRawValue();
