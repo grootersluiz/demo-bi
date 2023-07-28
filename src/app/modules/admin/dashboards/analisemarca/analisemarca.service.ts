@@ -690,16 +690,18 @@ export class AnalisemarcaService {
         ano: null,
         ultDia:null,
         filial: 99,
-        descFilial: 'REDE'
+        descFilial: 'REDE',
+        marca: 'null'
       };
 
-    setParam(ultDia,mes, ano, filial,descFilial){
+    setParam(ultDia,mes, ano, filial,descFilial,marca){
 
         this.param.ultDia       = ultDia;
         this.param.mes          = mes;
         this.param.ano          = ano;
         this.param.filial       = filial;
         this.param.descFilial   = descFilial;
+        this.param.marca        = marca;
 
     }
     /**

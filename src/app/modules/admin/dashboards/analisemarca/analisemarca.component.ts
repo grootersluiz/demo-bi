@@ -146,7 +146,8 @@ export class AnalisemarcaComponent {
             ano: null,
             ultDia:null,
             filial:null,
-            descFilial: null
+            descFilial: null,
+            marca: null
           };
 
   validaParam(){
@@ -156,6 +157,7 @@ export class AnalisemarcaComponent {
     this.param.ano        = this.analisemarcaService.param.ano;
     this.param.filial     = this.analisemarcaService.param.filial;
     this.param.descFilial = this.analisemarcaService.param.descFilial;
+    this.param.marca      = this.analisemarcaService.param.marca;
 
     if(!this.param.ano){
 
@@ -178,10 +180,12 @@ export class AnalisemarcaComponent {
     var mes     = this.param.mes;
     var ano     = this.param.ano;
     var filiais = this.param.filial;
+    var marcas  = this.param.marca;
 
     this._httpClient.get<{columns: [], rows: []}>('http://api.portal.jspecas.com.br/v1/views/429/data?ano='+ano+'&mes='+mes
                                                     +'&dtref1=01'+mes+ano+'&dtref2='+dia+mes+ano
                                                     +'&filiais='+filiais
+                                                    +'&marca='+marcas
                                                  )
                             .subscribe(dataresponse => {
                                  this.series.columns  = dataresponse.columns;
@@ -310,7 +314,7 @@ export class AnalisemarcaComponent {
     this.param.filial     = el.srcElement.attributes[1].value ;
     this.param.descFilial = el.srcElement.innerText ;
 
-    this.analisemarcaService.setParam(this.param.ultDia,this.param.mes, this.param.ano, this.param.filial, this.param.descFilial );
+    this.analisemarcaService.setParam(this.param.ultDia,this.param.mes, this.param.ano, this.param.filial, this.param.descFilial,this.param.marca );
 
     this.viewSerie = new Array();
 
@@ -379,7 +383,6 @@ export class AnalisemarcaComponent {
     this.viewYAxis  = analisemarcaService.viewYAxis;
 
     this.getSeries();
-
 
     var iconFilial = `<svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 96 960 960" width="24"><path d="M226 896q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19ZM226 642q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19ZM226 388q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Zm254 0q-28 0-47-19t-19-47q0-28 19-47t47-19q28 0 47 19t19 47q0 28-19 47t-47 19Z"/></svg>`;
     var styleMenu = `<style>
@@ -657,7 +660,11 @@ export class AnalisemarcaComponent {
 
   }
 
-  consultavendafilial(_dtref,filial ){
+  consultavendafilial(_dtref,filial,marca ){
+
+    if(!marca){
+        marca = 'null';
+    }
 
     if(filial.length == 1){
         if (filial[0]=='null'){
@@ -694,7 +701,7 @@ export class AnalisemarcaComponent {
         this.analisemarcaService.dt_ref = dataref;
     }
 
-    this.analisemarcaService.setParam(dia,mes,ano,filial,'REDE');
+    this.analisemarcaService.setParam(dia,mes,ano,filial,'REDE',marca);
     this.limpar(); // viewSerie, categorias, series
     this.validaParam();
 
