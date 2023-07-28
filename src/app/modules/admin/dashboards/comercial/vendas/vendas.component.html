@@ -1,1 +1,33 @@
-<h1>Dash Vendas</h1>
+<div class="flex-col w-full pl-1 pr-1">
+    <div class="flex flex-grow w-full justify-end">
+        <mat-slide-toggle class="pt-1" [(ngModel)]="isToggleOn">
+            {{ isToggleOn ? "Ocultar filtros" : "Mostrar filtros" }}
+        </mat-slide-toggle>
+    </div>
+    <div class="w-full">
+        <div
+            class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
+            *ngIf="isToggleOn"
+        >
+            <div class="flex flex-auto">
+                <img
+                    class="mr-3 logo-filter lg:block"
+                    src="assets/images/logo/Logo-Rede-JS-Pecas_7.png"
+                    alt=""
+                />
+                <div class="flex flex-col">
+                    <div
+                        class="text-3xl font-semibold tracking-tight leading-8"
+                        style="color: #fff"
+                    >
+                        {{ titulo }}
+                    </div>
+
+                    <div class="font-medium tracking-tight" style="color: #fff">
+                        {{ subTitulo }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
