@@ -221,13 +221,13 @@ export const appRoutes: Route[] = [
                                 'app/modules/admin/dashboards/analisemarca/analisemarca.module'
                             ).then((m) => m.AnalisemarcaModule),
                     },
-                    // {
-                    //     path: '241',
-                    //     loadChildren: () =>
-                    //         import(
-                    //             'app/modules/admin/globaldash/globaldash.module'
-                    //         ).then((m) => m.GlobalDashsModule),
-                    // },
+                    {
+                        path: '258',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/dashboards/comercial/vendas/vendas.module'
+                            ).then((m) => m.VendasDashModule),
+                    },
                 ],
             },
 
