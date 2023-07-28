@@ -26,9 +26,9 @@ import { debounceTime, Subject, Observable, takeUntil } from 'rxjs';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import {
     Dash,
+    DashReport,
     Country,
     Tag,
-    DashReport,
 } from 'app/modules/admin/regdashs/regdashs.types';
 import { DashListComponent } from 'app/modules/admin/regdashs/list/dashlist.component';
 import { RegdashsService } from 'app/modules/admin/regdashs/regdashs.service';
@@ -40,6 +40,7 @@ import { Reports } from '../../regreports/regreports.types';
 @Component({
     selector: 'dash-details',
     templateUrl: './dashdetails.component.html',
+    styleUrls: ['../new/newdash.component.css'],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -63,8 +64,13 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
     groupsObjects: Group[];
     groupsStringList: string[];
     reports = new FormControl([]);
+    sequence: number[] = [];
+    sequenceList: number[] = [];
+    dashReportObjects: DashReport[] = [];
+    dashReportList: DashReport[] = [];
     reportObjects: Reports[];
     reportStringList: string[];
+    setReportsSeq: boolean = false;
     private _tagsPanelOverlayRef: OverlayRef;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -142,6 +148,19 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
                 //Set the Dash Reports
                 this.reports.setValue(this.contact['reportIds']);
 
+                if (contact.reports && this.reports.value) {
+                    this.sequence = [];
+                    this.reports.value.forEach((report, index) => {
+                        contact.reports.forEach((object) => {
+                            if (object.reportId == report) {
+                                this.sequence.push(object.sequence);
+                            }
+                        });
+                        this.sequenceList.push(index + 1);
+                    });
+                    console.log(this.sequence);
+                }
+
                 // Clear the emails and phoneNumbers form arrays
                 (this.contactForm.get('emails') as UntypedFormArray).clear();
                 (
@@ -209,6 +228,41 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
+    showReportsList(): void {
+        this.setReportsSeq = !this.setReportsSeq;
+    }
+
+    refreshReportsList(): void {
+        this.sequence = [];
+        this.sequenceList = [];
+        this.contactForm.get('reportIds').value?.forEach((sequence, i) => {
+            this.sequence.push(i + 1);
+            this.sequenceList.push(i + 1);
+        });
+    }
+
+    getReportInfo(reportId: number): string {
+        const foundReport = this.reportObjects.find(
+            (report) => report.id === reportId
+        );
+        if (foundReport) {
+            return `${foundReport.id} - ${foundReport.name}`;
+        }
+    }
+
+    storeReportSequence(event: any, index: number): void {
+        this.sequence[index] = event.value;
+        this.sequence.forEach((sequence, index2) => {
+            if (sequence == event.value && index2 != index) {
+                this.sequenceList.forEach((seq) => {
+                    if (!this.sequence.includes(seq)) {
+                        this.sequence[index2] = seq;
+                    }
+                });
+            }
+        });
+    }
+
     /**
      * Close the drawer
      */
@@ -236,6 +290,13 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
      * Update the contact
      */
     updateContact(): void {
+        const dashReports = (this.dashReportObjects = this.contactForm
+            .get('reportIds')
+            ?.value.map((reportId, index) => ({
+                reportId: reportId,
+                sequence: this.sequence[index],
+            })));
+
         // Get the contact object
         const contact = this.contactForm.getRawValue();
         contact.groupIds = this.groups.value;
@@ -248,10 +309,12 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
         );
 
         // Update the contact on the server
-        this._contactsService.updateDash(contact.id, contact).subscribe(() => {
-            // Toggle the edit mode off
-            this.toggleEditMode(false);
-        });
+        this._contactsService
+            .updateDash(contact.id, contact, dashReports)
+            .subscribe(() => {
+                // Toggle the edit mode off
+                this.toggleEditMode(false);
+            });
     }
 
     /**

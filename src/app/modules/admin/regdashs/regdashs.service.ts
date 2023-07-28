@@ -224,7 +224,11 @@ export class RegdashsService {
      * @param id
      * @param contact
      */
-    updateDash(id: number, contact: Dash): Observable<Dash> {
+    updateDash(
+        id: number,
+        contact: Dash,
+        reports: DashReport[]
+    ): Observable<Dash> {
         return this.contacts$.pipe(
             take(1),
             switchMap((contacts) =>
@@ -233,9 +237,7 @@ export class RegdashsService {
                         name: contact.name,
                         type: contact.type,
                         groupIds: contact.groupIds,
-                        reports: contact.reportIds.map((reportId) => ({
-                            reportId,
-                        })),
+                        reports: reports,
                     })
                     .pipe(
                         map((updatedContact) => {

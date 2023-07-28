@@ -183,9 +183,6 @@ export class NewDashComponent implements OnInit, OnDestroy {
             this.sequence.push(i + 1);
             this.sequenceList.push(i + 1);
         });
-        console.log(this.contactForm.get('reportIds').value);
-        console.log(this.sequence);
-        console.log(this.sequenceList);
     }
 
     getReportInfo(reportId: number): string {
