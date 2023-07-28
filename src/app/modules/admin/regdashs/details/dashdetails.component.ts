@@ -158,7 +158,6 @@ export class DashDetailsComponent implements OnInit, OnDestroy {
                         });
                         this.sequenceList.push(index + 1);
                     });
-                    console.log(this.sequence);
                 }
 
                 // Clear the emails and phoneNumbers form arrays
