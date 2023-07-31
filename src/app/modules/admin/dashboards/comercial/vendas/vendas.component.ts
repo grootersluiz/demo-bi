@@ -1,5 +1,6 @@
 import {
     Component,
+    OnInit,
     ViewEncapsulation,
     ChangeDetectionStrategy,
 } from '@angular/core';
@@ -16,9 +17,11 @@ import { Router } from '@angular/router';
     changeDetection: ChangeDetectionStrategy.OnPush,
     styleUrls: ['../../../util/css/css.component.scss'],
 })
-export class VendasDashComponent {
+export class VendasDashComponent implements OnInit {
     chartTKM: ApexOptions;
     chartCC: ApexOptions = {};
+    chartVendasDia: ApexOptions;
+    chartMetaMes: ApexOptions;
     data: any;
 
     // Filtros principais do dashboard
@@ -300,6 +303,270 @@ export class VendasDashComponent {
                         colors: 'var(--fuse-text-secondary)',
                     },
                 },
+            },
+        };
+
+        // Vendas diárias
+
+        this.chartVendasDia = {
+            series: [
+                {
+                    name: 'Vendas',
+                    data: [
+                        8107.85, 8128.0, 8122.9, 8165.5, 8340.7, 8423.7, 8423.5,
+                        8514.3, 8481.85, 8487.7, 8506.9, 8626.2, 8668.95,
+                        8602.3, 8607.55, 8512.9, 8496.25, 8600.65, 8881.1,
+                        9340.85,
+                    ],
+                },
+            ],
+            chart: {
+                fontFamily: 'inherit',
+                type: 'area',
+                height: 220,
+                zoom: {
+                    enabled: false,
+                },
+                locales: [
+                    {
+                        name: 'pt-br',
+                        options: {
+                            months: [
+                                'Janeiro',
+                                'Fevereiro',
+                                'Março',
+                                'Abril',
+                                'Maio',
+                                'Junho',
+                                'Julho',
+                                'Agosto',
+                                'Setembro',
+                                'Outubro',
+                                'Novembro',
+                                'Dezembro',
+                            ],
+                            shortMonths: [
+                                'Jan',
+                                'Fev',
+                                'Mar',
+                                'Abr',
+                                'Mai',
+                                'Jun',
+                                'Jul',
+                                'Ago',
+                                'Set',
+                                'Out',
+                                'Nov',
+                                'Dez',
+                            ],
+                            days: [
+                                'Domingo',
+                                'Segunda',
+                                'Terça',
+                                'Quarta',
+                                'Quinta',
+                                'Sexta',
+                                'Sábado',
+                            ],
+                            shortDays: [
+                                'Dom',
+                                'Seg',
+                                'Ter',
+                                'Qua',
+                                'Qui',
+                                'Sex',
+                                'Sab',
+                            ],
+                            toolbar: {
+                                exportToSVG: 'Baixar SVG',
+                                exportToPNG: 'Baixar PNG',
+                                exportToCSV: 'Baixar CSV',
+                                menu: 'Menu',
+                                selection: 'Selecionar',
+                                selectionZoom: 'Selecionar Zoom',
+                                zoomIn: 'Aumentar',
+                                zoomOut: 'Diminuir',
+                                pan: 'Navegação',
+                                reset: 'Reiniciar Zoom',
+                            },
+                        },
+                    },
+                ],
+                defaultLocale: 'pt-br',
+            },
+            colors: ['#FF8C00'],
+            dataLabels: {
+                enabled: false,
+            },
+            stroke: {
+                curve: 'straight',
+                width: 1,
+            },
+
+            title: {
+                text: 'Análise de Vendas',
+                align: 'left',
+            },
+            subtitle: {
+                text: 'Vendas diárias',
+                align: 'left',
+            },
+            labels: [
+                '13 Nov 2017',
+                '14 Nov 2017',
+                '15 Nov 2017',
+                '16 Nov 2017',
+                '17 Nov 2017',
+                '20 Nov 2017',
+                '21 Nov 2017',
+                '22 Nov 2017',
+                '23 Nov 2017',
+                '24 Nov 2017',
+                '27 Nov 2017',
+                '28 Nov 2017',
+                '29 Nov 2017',
+                '30 Nov 2017',
+                '01 Dec 2017',
+                '04 Dec 2017',
+                '05 Dec 2017',
+                '06 Dec 2017',
+                '07 Dec 2017',
+                '08 Dec 2017',
+            ],
+            xaxis: {
+                type: 'datetime',
+            },
+            yaxis: {
+                opposite: true,
+            },
+            legend: {
+                horizontalAlign: 'left',
+            },
+        };
+
+        this.chartMetaMes = {
+            series: [
+                {
+                    name: 'Metas',
+                    data: [
+                        8107.85, 8128.0, 8122.9, 8165.5, 8340.7, 8423.7, 8423.5,
+                        8514.3, 8481.85, 8487.7, 8506.9, 8626.2,
+                    ],
+                },
+            ],
+            chart: {
+                fontFamily: 'inherit',
+                type: 'area',
+                height: 220,
+                zoom: {
+                    enabled: false,
+                },
+                locales: [
+                    {
+                        name: 'pt-br',
+                        options: {
+                            months: [
+                                'Janeiro',
+                                'Fevereiro',
+                                'Março',
+                                'Abril',
+                                'Maio',
+                                'Junho',
+                                'Julho',
+                                'Agosto',
+                                'Setembro',
+                                'Outubro',
+                                'Novembro',
+                                'Dezembro',
+                            ],
+                            shortMonths: [
+                                'Jan',
+                                'Fev',
+                                'Mar',
+                                'Abr',
+                                'Mai',
+                                'Jun',
+                                'Jul',
+                                'Ago',
+                                'Set',
+                                'Out',
+                                'Nov',
+                                'Dez',
+                            ],
+                            days: [
+                                'Domingo',
+                                'Segunda',
+                                'Terça',
+                                'Quarta',
+                                'Quinta',
+                                'Sexta',
+                                'Sábado',
+                            ],
+                            shortDays: [
+                                'Dom',
+                                'Seg',
+                                'Ter',
+                                'Qua',
+                                'Qui',
+                                'Sex',
+                                'Sab',
+                            ],
+                            toolbar: {
+                                exportToSVG: 'Baixar SVG',
+                                exportToPNG: 'Baixar PNG',
+                                exportToCSV: 'Baixar CSV',
+                                menu: 'Menu',
+                                selection: 'Selecionar',
+                                selectionZoom: 'Selecionar Zoom',
+                                zoomIn: 'Aumentar',
+                                zoomOut: 'Diminuir',
+                                pan: 'Navegação',
+                                reset: 'Reiniciar Zoom',
+                            },
+                        },
+                    },
+                ],
+                defaultLocale: 'pt-br',
+            },
+            colors: ['#94A3B8'],
+            dataLabels: {
+                enabled: false,
+            },
+            stroke: {
+                curve: 'straight',
+                width: 1,
+            },
+
+            title: {
+                text: 'Análise de Metas',
+                align: 'left',
+            },
+            subtitle: {
+                text: 'Metas Mensais',
+                align: 'left',
+            },
+            labels: [
+                'Jan',
+                'Fev',
+                'Mar',
+                'Abr',
+                'Mai',
+                'Jun',
+                'Jul',
+                'Ago',
+                'Set',
+                'Out',
+                'Nov',
+                'Dez',
+            ],
+            xaxis: {
+                type: 'category',
+            },
+            yaxis: {
+                opposite: true,
+            },
+            legend: {
+                horizontalAlign: 'left',
             },
         };
     }
