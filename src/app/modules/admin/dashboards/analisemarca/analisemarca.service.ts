@@ -159,28 +159,7 @@ export class AnalisemarcaService {
             colors: this._colors.palette1[0],
             cssClass: 'apexcharts-yaxis-label'
           },
-          formatter: function(val, index) {
-              var numero = val? val.toFixed(0) : '0';
-
-              var valor = numero;
-              if (String(numero).length < 4) {
-                  valor = numero;
-              }else{
-                  if (String(numero).length < 7) {
-                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
-                  } else {
-                      if (String(numero).length < 11) {
-                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
-                      }else{
-                          if (String(numero).length < 17) {
-                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
-                          }
-                      }
-                  }
-              }
-
-              return valor;
-          }
+          formatter: (val) => {return(this.formatadorUnidade(val))}
         },
         tooltip: {
           enabled: false
@@ -207,28 +186,7 @@ export class AnalisemarcaService {
             colors: this._colors.palette1[1],
             cssClass: 'apexcharts-yaxis-label'
           },
-          formatter: function(val, index) {
-              var numero = val? val.toFixed(0) : '0';
-
-              var valor = numero;
-              if (String(numero).length < 4) {
-                  valor = numero;
-              }else{
-                  if (String(numero).length < 7) {
-                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
-                  } else {
-                      if (String(numero).length < 11) {
-                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
-                      }else{
-                          if (String(numero).length < 17) {
-                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
-                          }
-                      }
-                  }
-              }
-
-              return valor;
-          }
+          formatter: (val) => {return(this.formatadorUnidade(val))}
         }
       },
       {
@@ -252,28 +210,7 @@ export class AnalisemarcaService {
             colors: this._colors.palette1[2],
             cssClass: 'apexcharts-yaxis-label'
           },
-          formatter: function(val, index) {
-              var numero = val? val.toFixed(0) : '0';
-
-              var valor = numero;
-              if (String(numero).length < 4) {
-                  valor = numero;
-              }else{
-                  if (String(numero).length < 7) {
-                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
-                  } else {
-                      if (String(numero).length < 11) {
-                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
-                      }else{
-                          if (String(numero).length < 17) {
-                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
-                          }
-                      }
-                  }
-              }
-
-              return valor;
-          }
+          formatter: (val) => {return(this.formatadorUnidade(val))}
         }
       },
       {
@@ -297,28 +234,7 @@ export class AnalisemarcaService {
             colors: this._colors.palette1[3],
             cssClass: 'apexcharts-yaxis-label'
           },
-          formatter: function(val, index) {
-              var numero = val? val.toFixed(0) : '0';
-
-              var valor = numero;
-              if (String(numero).length < 4) {
-                  valor = numero;
-              }else{
-                  if (String(numero).length < 7) {
-                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
-                  } else {
-                      if (String(numero).length < 11) {
-                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
-                      }else{
-                          if (String(numero).length < 17) {
-                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
-                          }
-                      }
-                  }
-              }
-
-              return valor;
-          }
+          formatter: (val) => {return(this.formatadorUnidade(val))}
         }
       },
       {
@@ -342,28 +258,7 @@ export class AnalisemarcaService {
             colors: this._colors.palette1[4],
             cssClass: 'apexcharts-yaxis-label'
           },
-          formatter: function(val, index) {
-              var numero = val? val.toFixed(0) : '0';
-
-              var valor = numero;
-              if (String(numero).length < 4) {
-                  valor = numero;
-              }else{
-                  if (String(numero).length < 7) {
-                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
-                  } else {
-                      if (String(numero).length < 11) {
-                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
-                      }else{
-                          if (String(numero).length < 17) {
-                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
-                          }
-                      }
-                  }
-              }
-
-              return valor;
-          }
+          formatter: (val) => {return(this.formatadorUnidade(val))}
         }
       },
       {
@@ -377,28 +272,7 @@ export class AnalisemarcaService {
             colors: this._colors.palette2[0],
             cssClass: 'apexcharts-yaxis-label'
           },
-          formatter: function(val, index) {
-              var numero = val? val.toFixed(0) : '0';
-
-              var valor = numero;
-              if (String(numero).length < 4) {
-                  valor = numero;
-              }else{
-                  if (String(numero).length < 7) {
-                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
-                  } else {
-                      if (String(numero).length < 11) {
-                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
-                      }else{
-                          if (String(numero).length < 17) {
-                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
-                          }
-                      }
-                  }
-              }
-
-              return valor;
-          }
+          formatter: (val) => {return(this.formatadorUnidade(val))}
         }
       },
       {
@@ -412,28 +286,7 @@ export class AnalisemarcaService {
             colors: this._colors.palette2[1],
             cssClass: 'apexcharts-yaxis-label'
           },
-          formatter: function(val, index) {
-              var numero = val? val.toFixed(0) : '0';
-
-              var valor = numero;
-              if (String(numero).length < 4) {
-                  valor = numero;
-              }else{
-                  if (String(numero).length < 7) {
-                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
-                  } else {
-                      if (String(numero).length < 11) {
-                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
-                      }else{
-                          if (String(numero).length < 17) {
-                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
-                          }
-                      }
-                  }
-              }
-
-              return valor;
-          }
+          formatter: (val) => {return(this.formatadorUnidade(val))}
         }
       },
       {
@@ -447,28 +300,7 @@ export class AnalisemarcaService {
             colors: this._colors.palette2[2],
             cssClass: 'apexcharts-yaxis-label'
           },
-          formatter: function(val, index) {
-              var numero = val? val.toFixed(0) : '0';
-
-              var valor = numero;
-              if (String(numero).length < 4) {
-                  valor = numero;
-              }else{
-                  if (String(numero).length < 7) {
-                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
-                  } else {
-                      if (String(numero).length < 11) {
-                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
-                      }else{
-                          if (String(numero).length < 17) {
-                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
-                          }
-                      }
-                  }
-              }
-
-              return valor;
-          }
+          formatter: (val) => {return(this.formatadorUnidade(val))}
         }
       },
       {
@@ -482,28 +314,7 @@ export class AnalisemarcaService {
             colors: this._colors.palette2[3],
             cssClass: 'apexcharts-yaxis-label'
           },
-          formatter: function(val, index) {
-              var numero = val? val.toFixed(0) : '0';
-
-              var valor = numero;
-              if (String(numero).length < 4) {
-                  valor = numero;
-              }else{
-                  if (String(numero).length < 7) {
-                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
-                  } else {
-                      if (String(numero).length < 11) {
-                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
-                      }else{
-                          if (String(numero).length < 17) {
-                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
-                          }
-                      }
-                  }
-              }
-
-              return valor;
-          }
+          formatter: (val) => {return(this.formatadorUnidade(val))}
         }
       },
       {
@@ -517,28 +328,7 @@ export class AnalisemarcaService {
             colors: this._colors.palette2[4],
             cssClass: 'apexcharts-yaxis-label'
           },
-          formatter: function(val, index) {
-              var numero = val? val.toFixed(0) : '0';
-
-              var valor = numero;
-              if (String(numero).length < 4) {
-                  valor = numero;
-              }else{
-                  if (String(numero).length < 7) {
-                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
-                  } else {
-                      if (String(numero).length < 11) {
-                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
-                      }else{
-                          if (String(numero).length < 17) {
-                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
-                          }
-                      }
-                  }
-              }
-
-              return valor;
-          }
+          formatter: (val) => {return(this.formatadorUnidade(val))}
         }
       },
       {
@@ -552,28 +342,7 @@ export class AnalisemarcaService {
             colors: this._colors.palette3[0],
             cssClass: 'apexcharts-yaxis-label'
           },
-          formatter: function(val, index) {
-              var numero = val? val.toFixed(0) : '0';
-
-              var valor = numero;
-              if (String(numero).length < 4) {
-                  valor = numero;
-              }else{
-                  if (String(numero).length < 7) {
-                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
-                  } else {
-                      if (String(numero).length < 11) {
-                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
-                      }else{
-                          if (String(numero).length < 17) {
-                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
-                          }
-                      }
-                  }
-              }
-
-              return valor;
-          }
+          formatter: (val) => {return(this.formatadorUnidade(val))}
         }
       },
       {
@@ -587,28 +356,7 @@ export class AnalisemarcaService {
             colors: this._colors.palette3[1],
             cssClass: 'apexcharts-yaxis-label'
           },
-          formatter: function(val, index) {
-              var numero = val? val.toFixed(0) : '0';
-
-              var valor = numero;
-              if (String(numero).length < 4) {
-                  valor = numero;
-              }else{
-                  if (String(numero).length < 7) {
-                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
-                  } else {
-                      if (String(numero).length < 11) {
-                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
-                      }else{
-                          if (String(numero).length < 17) {
-                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
-                          }
-                      }
-                  }
-              }
-
-              return valor;
-          }
+          formatter: (val) => {return(this.formatadorUnidade(val))}
         }
       },
       {
@@ -622,28 +370,7 @@ export class AnalisemarcaService {
             colors: this._colors.palette3[2],
             cssClass: 'apexcharts-yaxis-label'
           },
-          formatter: function(val, index) {
-              var numero = val? val.toFixed(0) : '0';
-
-              var valor = numero;
-              if (String(numero).length < 4) {
-                  valor = numero;
-              }else{
-                  if (String(numero).length < 7) {
-                      valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
-                  } else {
-                      if (String(numero).length < 11) {
-                          valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'M';
-                      }else{
-                          if (String(numero).length < 17) {
-                              valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
-                          }
-                      }
-                  }
-              }
-
-              return valor;
-          }
+          formatter: (val) => {return(this.formatadorUnidade(val))}
         }
       }
     ];
@@ -703,6 +430,35 @@ export class AnalisemarcaService {
         this.param.descFilial   = descFilial;
         this.param.marca        = marca;
 
+    }
+    formatadorUnidade(val){
+        var numero = val? Number(val).toFixed(0) : '0';
+        var valor = numero;
+        console.log('TESTE');
+        if (String(numero).length < 4) {
+            valor = numero;
+        }else{
+            if (String(numero).length < 7) {
+                valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'K';
+            } else {
+                if (String(numero).length < 8) {
+                    valor =  numero.substring(0,1) +','+ numero.substring(1,2) +'M';
+                } else {
+                    if (String(numero).length < 9) {
+                        valor = numero.substring(0,2) +','+ numero.substring(1,2) + 'M';
+                    }else{
+                        if (String(numero).length < 10) {
+                        valor = numero.substring(0,3) +','+ numero.substring(1,2) + 'M';
+                        }else{
+                            if (String(numero).length < 17) {
+                                valor = numero.substring(0,1) +','+ numero.substring(1,2) + 'B';
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return valor;
     }
     /**
      * Constructor

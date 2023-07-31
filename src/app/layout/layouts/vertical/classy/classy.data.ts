@@ -86,7 +86,7 @@ export const navigationData: Navigation = {
                     children: [
                         {
                             id: '250',
-                            title: 'Tipo de Vendas',
+                            title: 'Tipos de Vendas',
                             type: 'basic',
                             icon: 'material_outline:bar_chart',
                             link: '/financeiro/tipovenda',

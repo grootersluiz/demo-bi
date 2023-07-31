@@ -1,22 +1,17 @@
-<!-- Div Geral, é necessário criar estas variáveis no export component:
-    titulo: string = "";
-    subTitulo: string = "";
-    isToggleOn: boolean;
- -->
-<div class="flex-col w-full pl-1 pr-1">
-    <div class="flex flex-grow w-full justify-end">
+<div class="flex flex-col flex-auto w-full">
+    <div class="flex items-center flex-grow justify-end">
         <mat-slide-toggle class="pt-1" [(ngModel)]="isToggleOn">
             {{ isToggleOn ? "Ocultar filtros" : "Mostrar filtros" }}
         </mat-slide-toggle>
     </div>
-    <div class="w-full">
+    <div class="w-full pl-1 pr-1">
         <div
-            class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
             *ngIf="isToggleOn"
+            class="flex flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro"
         >
             <div class="flex flex-auto">
                 <img
-                    class="mr-3 logo-filter lg:block"
+                    class="mr-3 logo-filter hidden lg:block"
                     src="assets/images/logo/Logo-Rede-JS-Pecas_7.png"
                     alt=""
                 />
@@ -25,21 +20,19 @@
                         class="text-3xl font-semibold tracking-tight leading-8"
                         style="color: #fff"
                     >
-                        {{ titulo }}
+                        ROL
                     </div>
 
                     <div class="font-medium tracking-tight" style="color: #fff">
-                        {{ subTitulo }}
+                        Rankings e Metas
                     </div>
                 </div>
             </div>
-            <div
-                class="flex flex-wrap justify-center md:justify-end lg:justify-end xl:justify-end 2xl:justify-end"
-            >
-                <!-- FILTROS VVVVV -->
-                <!-- Filtros Filial -->
+
+            <!-- Filtros Filial -->
+            <div class="flex items-start ml-15">
                 <mat-form-field
-                    class="sm:inline-flex ml-3 md:ml-0 lg:ml-0 xl:ml-0 2xl:ml-0"
+                    class="hidden sm:inline-flex ml-3"
                     style="width: 150px"
                     (click)="handleCompaniesFilterClick(dataInicio, dataFinal)"
                 >
@@ -81,7 +74,7 @@
 
                 <!-- Filtro Vendedor -->
                 <mat-form-field
-                    class="sm:inline-flex ml-3"
+                    class="hidden sm:inline-flex ml-3"
                     style="width: 150px"
                     (click)="handleSellersFilterClick(dataInicio, dataFinal)"
                 >
@@ -137,7 +130,7 @@
                 <!--Filtro Data-->
 
                 <mat-form-field
-                    class="sm:inline-flex ml-3"
+                    class="hidden sm:inline-flex ml-3"
                     style="width: 150px"
                 >
                     <mat-label style="font-size: 12px; color: #fff"
@@ -178,7 +171,7 @@
                 </mat-form-field>
 
                 <mat-form-field
-                    class="sm:inline-flex ml-3"
+                    class="hidden sm:inline-flex ml-3"
                     style="width: 150px"
                 >
                     <mat-label style="font-size: 12px; color: #fff"
@@ -196,7 +189,7 @@
                         "
                         (dateInput)="addEventEnd($event)"
                         readonly
-                        [max]="start.value ? start.value : today"
+                        [min]="start.value ? start.value : today"
                     />
 
                     <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
@@ -216,126 +209,301 @@
                         "
                     ></mat-datepicker>
                     <!-- <mat-error
-                *ngIf="
-                    convDataIni &&
-                    convDataFin &&
-                    convDataFin < convDataIni
-                "
-                >Data final inválida</mat-error
-            > -->
+                            *ngIf="
+                                convDataIni &&
+                                convDataFin &&
+                                convDataFin < convDataIni
+                            "
+                            >Data final inválida</mat-error
+                        > -->
                 </mat-form-field>
-
-                <!-- FILTROS ^^^^^ -->
+                <div class="pt-7">
+                    <button
+                        class="hidden sm:inline-flex ml-5 apply-button"
+                        style="width: 120px"
+                        mat-flat-button
+                        [color]="'primary'"
+                        (click)="
+                            handleApplyFilter(
+                                dataInicio,
+                                dataFinal,
+                                filiais.value,
+                                vendedores.value
+                            )
+                        "
+                    >
+                        <span style="font-size: 12px">Aplicar</span>
+                    </button>
+                </div>
             </div>
-            <!-- Botão de confirmar filtro, adicionar evento de (click) -->
-            <button
-                class="sm:inline-flex ml-5 apply-button"
-                style="width: 120px"
-                mat-flat-button
-                [color]="'primary'"
-                (click)="
-                    handleApplyFilter(
-                        dataInicio,
-                        dataFinal,
-                        filiais.value,
-                        vendedores.value
-                    )
-                "
-            >
-                <span style="font-size: 12px">Aplicar</span>
-            </button>
         </div>
     </div>
-    <div
-        class="relative w-full h-full flex flex-col sm:flex-col md:flex-col lg:flex-col xl:flex-col 2xl:flex-col mt-1"
-    >
-        <!-- COMPONENTES ABAIXO -->
-        <!-- Colocar class="grid px-2 py-2 w-12/12 rounded-2xl bg-card shadow mb-1" em todos componentes-->
-        <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-1 md:p-1">
-            <!-- Rol vs Rol realizada -->
-            <div
-                class="relative flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden"
-            >
-                <div class="flex items-start justify-between m-6 mb-0">
+    <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-1 md:p-1">
+        <!-- Rol vs Rol realizada -->
+        <div
+            class="relative flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden"
+        >
+            <div class="flex items-start justify-between m-6 mb-0">
+                <div
+                    class="text-lg font-medium tracking-tight leading-6 truncate"
+                >
+                    Meta ROL vs. ROL realizada
+                </div>
+                <div
+                    style="text-align: end"
+                    *ngFor="let dataset of data.age.series; let i = index"
+                >
+                    Dias úteis: {{ dataset ? dataset.toFixed(2) : 0 }}
+                </div>
+            </div>
+
+            <div class="flex flex-col flex-auto mt-3">
+                <apx-chart
+                    class="flex-auto w-full h-full"
+                    [chart]="chartVisitorsVsPageViews.chart"
+                    [colors]="chartVisitorsVsPageViews.colors"
+                    [dataLabels]="chartVisitorsVsPageViews.dataLabels"
+                    [grid]="chartVisitorsVsPageViews.grid"
+                    [legend]="chartVisitorsVsPageViews.legend"
+                    [series]="chartVisitorsVsPageViews.series"
+                    [stroke]="chartVisitorsVsPageViews.stroke"
+                    [tooltip]="chartVisitorsVsPageViews.tooltip"
+                    [xaxis]="chartVisitorsVsPageViews.xaxis"
+                    [yaxis]="chartVisitorsVsPageViews.yaxis"
+                ></apx-chart>
+            </div>
+        </div>
+
+        <!-- ROL vs Meta -->
+        <div
+            class="relative flex flex-col w-64 h-45 ml-1 bg-card shadow rounded-2xl overflow-hidden p-3"
+        >
+            <div class="flex items-start justify-between">
+                <div
+                    class="text-lg font-medium tracking-tight leading-6 truncate"
+                >
+                    <p style="font-size: 12px">ROL vs. Meta Vendedores</p>
+                </div>
+            </div>
+            <div class="flex flex-col flex-auto mt-2">
+                <apx-chart
+                    class="flex flex-auto items-center justify-center w-full h-full"
+                    [chart]="chartNewVsReturning.chart"
+                    [colors]="chartNewVsReturning.colors"
+                    [labels]="chartNewVsReturning.labels"
+                    [plotOptions]="chartNewVsReturning.plotOptions"
+                    [series]="chartNewVsReturning.series"
+                    [states]="chartNewVsReturning.states"
+                    [tooltip]="chartNewVsReturning.tooltip"
+                ></apx-chart>
+            </div>
+            <div class="mt-3">
+                <div class="-my-3 divide-y">
+                    <ng-container
+                        *ngFor="
+                            let dataset of data.newVsReturning.series;
+                            let i = index
+                        "
+                    >
+                        <div class="grid grid-cols-2 py-1">
+                            <div class="flex items-center">
+                                <div
+                                    class="flex-0 w-2 h-2 rounded-full"
+                                    [style.backgroundColor]="
+                                        chartNewVsReturning.colors[i]
+                                    "
+                                ></div>
+                                <div
+                                    class="ml-3 truncate"
+                                    style="font-size: 10px"
+                                >
+                                    {{ data.newVsReturning.labels[i] }}
+                                </div>
+                            </div>
+                            <div
+                                class="font-medium text-right"
+                                style="font-size: 10px; text-align: start"
+                            >
+                                {{
+                                    dataset
+                                        ? dataset.toLocaleString("pt-BR", {
+                                              style: "currency",
+                                              currency: "BRL"
+                                          })
+                                        : dataset
+                                }}
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+        <!-- Indicadores ROL -->
+        <div
+            class="relative flex flex-col w-64 p-3 pr-3 pb-3 ml-1 bg-card rounded-2xl shadow overflow-hidden"
+        >
+            <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
+                <mat-icon
+                    class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
+                    [svgIcon]="'heroicons_outline:check-circle'"
+                ></mat-icon>
+            </div>
+            <div class="flex items-center">
+                <div class="flex flex-col">
                     <div
                         class="text-lg font-medium tracking-tight leading-6 truncate"
                     >
-                        Meta ROL vs. ROL realizada
+                        Indicadores ROL
                     </div>
-                    <div
-                        style="text-align: end"
-                        *ngFor="let dataset of data.age.series; let i = index"
-                    >
-                        Dias úteis: {{ dataset ? dataset.toFixed(2) : 0 }}
-                    </div>
-                </div>
-
-                <div class="flex flex-col flex-auto mt-3">
-                    <apx-chart
-                        class="flex-auto w-full h-full"
-                        [chart]="chartVisitorsVsPageViews.chart"
-                        [colors]="chartVisitorsVsPageViews.colors"
-                        [dataLabels]="chartVisitorsVsPageViews.dataLabels"
-                        [grid]="chartVisitorsVsPageViews.grid"
-                        [legend]="chartVisitorsVsPageViews.legend"
-                        [series]="chartVisitorsVsPageViews.series"
-                        [stroke]="chartVisitorsVsPageViews.stroke"
-                        [tooltip]="chartVisitorsVsPageViews.tooltip"
-                        [xaxis]="chartVisitorsVsPageViews.xaxis"
-                        [yaxis]="chartVisitorsVsPageViews.yaxis"
-                    ></apx-chart>
                 </div>
             </div>
+            <div class="flex flex-col flex-wrap mt-4 -mx-6">
+                <div class="flex flex-col mx-6 my-3">
+                    <div
+                        class="text-sm font-medium leading-none text-secondary"
+                    >
+                        MÁX
+                    </div>
+                    <div class="mt-2 font-medium text-lg leading-none tooltip">
+                        {{ data.previousStatement.LIMITE | currency : "BRL" }}
+                        <span class="tooltiptext">{{
+                            maxRolSellerName + " - " + maxRolSellerBranch
+                        }}</span>
+                    </div>
+                </div>
+                <div class="flex flex-col mx-6 my-3">
+                    <div
+                        class="text-sm font-medium leading-none text-secondary"
+                    >
+                        MÍN
+                    </div>
+                    <div class="mt-2 font-medium text-lg leading-none tooltip">
+                        {{ data.previousStatement.SPENT | currency : "BRL" }}
+                        <span class="tooltiptext">{{
+                            minRolSellerName + " - " + minRolSellerBranch
+                        }}</span>
+                    </div>
+                </div>
+                <div class="flex flex-col mx-6 my-3">
+                    <div
+                        class="text-sm font-medium leading-none text-secondary"
+                    >
+                        Média
+                    </div>
+                    <div class="mt-2 font-medium text-lg leading-none">
+                        {{ data.previousStatement.MINIMUM | currency : "BRL" }}
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            <!-- ROL vs Meta -->
+        <div class="flex flex-wrap w-full max-w-screen-xl mx-auto md:pt-1 pb-1">
+            <!-- Gráfico - Metas atingidas -->
             <div
-                class="relative flex flex-col w-64 h-45 ml-1 bg-card shadow rounded-2xl overflow-hidden p-3"
+                class="flex flex-col w-44 h-60 bg-card shadow rounded-2xl overflow-hidden p-3"
             >
                 <div class="flex items-start justify-between">
                     <div
                         class="text-lg font-medium tracking-tight leading-6 truncate"
                     >
-                        <p style="font-size: 12px">ROL vs. Meta Vendedores</p>
+                        <p style="font-size: 12px">Metas de Vendas Atingidas</p>
                     </div>
                 </div>
-                <div class="flex flex-col flex-auto mt-2">
+                <div class="flex flex-col flex-auto mt-6">
                     <apx-chart
                         class="flex flex-auto items-center justify-center w-full h-full"
-                        [chart]="chartNewVsReturning.chart"
-                        [colors]="chartNewVsReturning.colors"
-                        [labels]="chartNewVsReturning.labels"
-                        [plotOptions]="chartNewVsReturning.plotOptions"
-                        [series]="chartNewVsReturning.series"
-                        [states]="chartNewVsReturning.states"
-                        [tooltip]="chartNewVsReturning.tooltip"
+                        [chart]="chartGender.chart"
+                        [colors]="chartGender.colors"
+                        [labels]="chartGender.labels"
+                        [plotOptions]="chartGender.plotOptions"
+                        [series]="chartGender.series"
+                        [states]="chartGender.states"
+                        [tooltip]="chartGender.tooltip"
                     ></apx-chart>
                 </div>
-                <div class="mt-3">
+                <div class="mt-8">
                     <div class="-my-3 divide-y">
                         <ng-container
                             *ngFor="
-                                let dataset of data.newVsReturning.series;
+                                let dataset of data.gender.series;
                                 let i = index
                             "
                         >
-                            <div class="grid grid-cols-2 py-1">
+                            <div class="grid grid-cols-2 py-2">
                                 <div class="flex items-center">
                                     <div
                                         class="flex-0 w-2 h-2 rounded-full"
                                         [style.backgroundColor]="
-                                            chartNewVsReturning.colors[i]
+                                            chartGender.colors[i]
                                         "
                                     ></div>
                                     <div
                                         class="ml-3 truncate"
                                         style="font-size: 10px"
                                     >
-                                        {{ data.newVsReturning.labels[i] }}
+                                        {{ data.gender.labels[i] }}
                                     </div>
                                 </div>
                                 <div
                                     class="font-medium text-right"
-                                    style="font-size: 10px; text-align: start"
+                                    style="font-size: 12px"
+                                >
+                                    {{ dataset }}
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+            </div>
+            <!-- Gráfico - TKM -->
+            <div
+                class="flex flex-col w-44 h-60 bg-card shadow rounded-2xl overflow-hidden p-3 ml-1"
+            >
+                <div class="flex items-start justify-between">
+                    <div
+                        class="text-lg font-medium tracking-tight leading-6 truncate"
+                    >
+                        <p style="font-size: 12px">TKM - Ticket Médio</p>
+                    </div>
+                </div>
+                <div class="flex flex-col flex-auto mt-6">
+                    <apx-chart
+                        class="flex flex-auto items-center justify-center w-full h-full"
+                        [chart]="chartTKM.chart"
+                        [colors]="chartTKM.colors"
+                        [labels]="chartTKM.labels"
+                        [plotOptions]="chartTKM.plotOptions"
+                        [series]="chartTKM.series"
+                        [states]="chartTKM.states"
+                        [tooltip]="chartTKM.tooltip"
+                    ></apx-chart>
+                </div>
+                <div class="mt-8">
+                    <div class="-my-3 divide-y">
+                        <ng-container
+                            *ngFor="
+                                let dataset of data.tkm.series;
+                                let i = index
+                            "
+                        >
+                            <div class="grid grid-cols-2 py-2">
+                                <div class="flex items-center">
+                                    <div
+                                        class="flex-0 w-2 h-2 rounded-full"
+                                        [style.backgroundColor]="
+                                            chartTKM.colors[i]
+                                        "
+                                    ></div>
+                                    <div
+                                        class="ml-3 truncate"
+                                        style="font-size: 10px"
+                                    >
+                                        {{ chartTKM.labels[i] }}
+                                    </div>
+                                </div>
+                                <div
+                                    class="font-medium text-right"
+                                    style="font-size: 10px"
                                 >
                                     {{
                                         dataset
@@ -351,513 +519,298 @@
                     </div>
                 </div>
             </div>
-            <!-- Indicadores ROL -->
-            <div
-                class="relative flex flex-col w-64 p-3 pr-3 pb-3 ml-1 bg-card rounded-2xl shadow overflow-hidden"
-            >
-                <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
-                    <mat-icon
-                        class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
-                        [svgIcon]="'heroicons_outline:check-circle'"
-                    ></mat-icon>
-                </div>
-                <div class="flex items-center">
-                    <div class="flex flex-col">
-                        <div
-                            class="text-lg font-medium tracking-tight leading-6 truncate"
-                        >
-                            Indicadores ROL
-                        </div>
-                    </div>
-                </div>
-                <div class="flex flex-col flex-wrap mt-4 -mx-6">
-                    <div class="flex flex-col mx-6 my-3">
-                        <div
-                            class="text-sm font-medium leading-none text-secondary"
-                        >
-                            MÁX
-                        </div>
-                        <div
-                            class="mt-2 font-medium text-lg leading-none tooltip"
-                        >
-                            {{
-                                data.previousStatement.LIMITE | currency : "BRL"
-                            }}
-                            <span class="tooltiptext">{{
-                                maxRolSellerName + " - " + maxRolSellerBranch
-                            }}</span>
-                        </div>
-                    </div>
-                    <div class="flex flex-col mx-6 my-3">
-                        <div
-                            class="text-sm font-medium leading-none text-secondary"
-                        >
-                            MÍN
-                        </div>
-                        <div
-                            class="mt-2 font-medium text-lg leading-none tooltip"
-                        >
-                            {{
-                                data.previousStatement.SPENT | currency : "BRL"
-                            }}
-                            <span class="tooltiptext">{{
-                                minRolSellerName + " - " + minRolSellerBranch
-                            }}</span>
-                        </div>
-                    </div>
-                    <div class="flex flex-col mx-6 my-3">
-                        <div
-                            class="text-sm font-medium leading-none text-secondary"
-                        >
-                            Média
-                        </div>
-                        <div class="mt-2 font-medium text-lg leading-none">
-                            {{
-                                data.previousStatement.MINIMUM
-                                    | currency : "BRL"
-                            }}
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div
-                class="flex flex-wrap w-full max-w-screen-xl mx-auto md:pt-1 pb-1"
+            <!-- Dias úteis -->
+            <!-- <div
+                class="flex flex-col w-32 h-60 bg-card shadow rounded-2xl overflow-hidden p-3 ml-1"
             >
-                <!-- Gráfico - Metas atingidas -->
                 <div
-                    class="flex flex-col w-44 h-60 bg-card shadow rounded-2xl overflow-hidden p-3"
-                >
-                    <div class="flex items-start justify-between">
-                        <div
-                            class="text-lg font-medium tracking-tight leading-6 truncate"
-                        >
-                            <p style="font-size: 12px">
-                                Metas de Vendas Atingidas
-                            </p>
-                        </div>
-                    </div>
-                    <div class="flex flex-col flex-auto mt-6">
-                        <apx-chart
-                            class="flex flex-auto items-center justify-center w-full h-full"
-                            [chart]="chartGender.chart"
-                            [colors]="chartGender.colors"
-                            [labels]="chartGender.labels"
-                            [plotOptions]="chartGender.plotOptions"
-                            [series]="chartGender.series"
-                            [states]="chartGender.states"
-                            [tooltip]="chartGender.tooltip"
-                        ></apx-chart>
-                    </div>
-                    <div class="mt-8">
-                        <div class="-my-3 divide-y">
-                            <ng-container
-                                *ngFor="
-                                    let dataset of data.gender.series;
-                                    let i = index
-                                "
-                            >
-                                <div class="grid grid-cols-2 py-2">
-                                    <div class="flex items-center">
-                                        <div
-                                            class="flex-0 w-2 h-2 rounded-full"
-                                            [style.backgroundColor]="
-                                                chartGender.colors[i]
-                                            "
-                                        ></div>
-                                        <div
-                                            class="ml-3 truncate"
-                                            style="font-size: 10px"
-                                        >
-                                            {{ data.gender.labels[i] }}
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="font-medium text-right"
-                                        style="font-size: 12px"
-                                    >
-                                        {{ dataset }}
-                                    </div>
-                                </div>
-                            </ng-container>
-                        </div>
-                    </div>
-                </div>
-                <!-- Gráfico - TKM -->
-                <div
-                    class="flex flex-col w-44 h-60 bg-card shadow rounded-2xl overflow-hidden p-3 ml-1"
-                >
-                    <div class="flex items-start justify-between">
-                        <div
-                            class="text-lg font-medium tracking-tight leading-6 truncate"
-                        >
-                            <p style="font-size: 12px">TKM - Ticket Médio</p>
-                        </div>
-                    </div>
-                    <div class="flex flex-col flex-auto mt-6">
-                        <apx-chart
-                            class="flex flex-auto items-center justify-center w-full h-full"
-                            [chart]="chartTKM.chart"
-                            [colors]="chartTKM.colors"
-                            [labels]="chartTKM.labels"
-                            [plotOptions]="chartTKM.plotOptions"
-                            [series]="chartTKM.series"
-                            [states]="chartTKM.states"
-                            [tooltip]="chartTKM.tooltip"
-                        ></apx-chart>
-                    </div>
-                    <div class="mt-8">
-                        <div class="-my-3 divide-y">
-                            <ng-container
-                                *ngFor="
-                                    let dataset of data.tkm.series;
-                                    let i = index
-                                "
-                            >
-                                <div class="grid grid-cols-2 py-2">
-                                    <div class="flex items-center">
-                                        <div
-                                            class="flex-0 w-2 h-2 rounded-full"
-                                            [style.backgroundColor]="
-                                                chartTKM.colors[i]
-                                            "
-                                        ></div>
-                                        <div
-                                            class="ml-3 truncate"
-                                            style="font-size: 10px"
-                                        >
-                                            {{ chartTKM.labels[i] }}
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="font-medium text-right"
-                                        style="font-size: 10px"
-                                    >
-                                        {{
-                                            dataset
-                                                ? dataset.toLocaleString(
-                                                      "pt-BR",
-                                                      {
-                                                          style: "currency",
-                                                          currency: "BRL"
-                                                      }
-                                                  )
-                                                : dataset
-                                        }}
-                                    </div>
-                                </div>
-                            </ng-container>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Dias úteis -->
-                <!-- <div
-                    class="flex flex-col w-32 h-60 bg-card shadow rounded-2xl overflow-hidden p-3 ml-1"
+                    class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5"
                 >
                     <div
-                        class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-8 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5"
+                        class="text-lg font-semibold leading-none tracking-tight"
+                        style="text-align: center"
+                    >
+                        Dias Úteis
+                    </div>
+                </div>
+
+                <div class="flex flex-col flex-auto mt-2">
+                    <ng-container
+                        *ngFor="let dataset of data.age.series; let i = index"
                     >
                         <div
-                            class="text-lg font-semibold leading-none tracking-tight"
-                            style="text-align: center"
-                        >
-                            Dias Úteis
-                        </div>
-                    </div>
-
-                    <div class="flex flex-col flex-auto mt-2">
-                        <ng-container
-                            *ngFor="let dataset of data.age.series; let i = index"
+                            class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-2 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5"
                         >
                             <div
-                                class="col-span-2 sm:col-span-1 flex flex-col items-center justify-center py-2 px-1 rounded-2xl bg-gray-100 text-secondary dark:bg-white dark:bg-opacity-5"
+                                class="text-lg font-semibold leading-none tracking-tight"
                             >
-                                <div
-                                    class="text-lg font-semibold leading-none tracking-tight"
-                                >
-                                    {{ dataset ? dataset.toFixed(2) : 0 }}
-                                </div>
-                                <mat-icon
-                                    class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
-                                    [svgIcon]="'heroicons_outline:check-circle'"
-                                ></mat-icon>
+                                {{ dataset ? dataset.toFixed(2) : 0 }}
                             </div>
-                        </ng-container>
-                    </div>
-                </div> -->
-                <!--CC x Metas-->
+                            <mat-icon
+                                class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
+                                [svgIcon]="'heroicons_outline:check-circle'"
+                            ></mat-icon>
+                        </div>
+                    </ng-container>
+                </div>
+            </div> -->
+            <!--CC x Metas-->
 
+            <div
+                class="sm:col-span-2 md:col-span-4 flex flex-col flex-auto h-60 p-3 bg-card shadow rounded-2xl overflow-hidden ml-1"
+            >
                 <div
-                    class="sm:col-span-2 md:col-span-4 flex flex-col flex-auto h-60 p-3 bg-card shadow rounded-2xl overflow-hidden ml-1"
+                    class="flex flex-col sm:flex-row items-start justify-between"
                 >
                     <div
-                        class="flex flex-col sm:flex-row items-start justify-between"
+                        class="text-lg font-medium tracking-tight leading-6 truncate"
                     >
-                        <div
-                            class="text-lg font-medium tracking-tight leading-6 truncate"
-                        >
-                            CC x Metas
-                        </div>
+                        CC x Metas
                     </div>
-                    <div
-                        class="grid grid-cols-1 lg:grid-cols-1 grid-flow-row gap-6 w-full mt-8 sm:mt-4"
-                    >
+                </div>
+                <div
+                    class="grid grid-cols-1 lg:grid-cols-1 grid-flow-row gap-6 w-full mt-8 sm:mt-4"
+                >
+                    <div class="flex flex-col flex-auto">
                         <div class="flex flex-col flex-auto">
-                            <div class="flex flex-col flex-auto">
-                                <apx-chart
-                                    class="flex-auto w-full h-50 pb-1"
-                                    [chart]="chartGithubIssues.chart"
-                                    [colors]="chartGithubIssues.colors"
-                                    [dataLabels]="chartGithubIssues.dataLabels"
-                                    [grid]="chartGithubIssues.grid"
-                                    [labels]="chartGithubIssues.labels"
-                                    [legend]="chartGithubIssues.legend"
-                                    [plotOptions]="
-                                        chartGithubIssues.plotOptions
-                                    "
-                                    [series]="
-                                        chartGithubIssues.series['this-year']
-                                    "
-                                    [states]="chartGithubIssues.states"
-                                    [stroke]="chartGithubIssues.stroke"
-                                    [tooltip]="chartGithubIssues.tooltip"
-                                    [xaxis]="chartGithubIssues.xaxis"
-                                    [yaxis]="chartGithubIssues.yaxis"
-                                ></apx-chart>
-                            </div>
+                            <apx-chart
+                                class="flex-auto w-full h-50 pb-1"
+                                [chart]="chartGithubIssues.chart"
+                                [colors]="chartGithubIssues.colors"
+                                [dataLabels]="chartGithubIssues.dataLabels"
+                                [grid]="chartGithubIssues.grid"
+                                [labels]="chartGithubIssues.labels"
+                                [legend]="chartGithubIssues.legend"
+                                [plotOptions]="chartGithubIssues.plotOptions"
+                                [series]="chartGithubIssues.series['this-year']"
+                                [states]="chartGithubIssues.states"
+                                [stroke]="chartGithubIssues.stroke"
+                                [tooltip]="chartGithubIssues.tooltip"
+                                [xaxis]="chartGithubIssues.xaxis"
+                                [yaxis]="chartGithubIssues.yaxis"
+                            ></apx-chart>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="flex w-full max-w-screen-xl mx-auto">
-                <!-- Ranking - ROL -->
-                <div
-                    class="flex flex-col flex-auto h-80 bg-card shadow rounded-2xl overflow-hidden pb-1"
-                >
-                    <div class="p-3">
-                        <div
-                            class="mr-4 text-sm font-medium tracking-tight leading-6 truncate"
-                        >
-                            Ranking - ROL
-                        </div>
-                    </div>
+        </div>
+        <div class="flex w-full max-w-screen-xl mx-auto">
+            <!-- Ranking - ROL -->
+            <div
+                class="flex flex-col flex-auto h-80 bg-card shadow rounded-2xl overflow-hidden pb-1"
+            >
+                <div class="p-3">
                     <div
-                        class="overflow-x-auto mx-2"
-                        style="overflow-y: scroll; height: 400px"
+                        class="mr-4 text-sm font-medium tracking-tight leading-6 truncate"
                     >
-                        <table
-                            class="w-full bg-transparent"
-                            mat-table
-                            matSort
-                            [dataSource]="recentTransactionsDataSource"
-                            [trackBy]="trackByFn"
-                            #recentTransactionsTable
-                        >
-                            <!-- Dynamic column -->
-                            <ng-container
-                                *ngFor="
-                                    let column of recentTransactionsTableColumns;
-                                    let i = index
-                                "
-                                [matColumnDef]="column"
-                            >
-                                <th
-                                    class="sticky-header"
-                                    mat-header-cell
-                                    *matHeaderCellDef
-                                    mat-sort-header
-                                    style="font-size: 12px"
-                                >
-                                    {{ rankingRolHeaders[i] }}
-                                    <mat-icon
-                                        class="pl-2 text-lg"
-                                        style="opacity: 0.4"
-                                        aria-hidden="false"
-                                        aria-label="Filter Icon"
-                                        fontIcon="menu"
-                                        (click)="
-                                            filterDialog(
-                                                $event,
-                                                column,
-                                                rankingRolHeaders[i]
-                                            )
-                                        "
-                                    ></mat-icon>
-                                </th>
-
-                                <td
-                                    style="font-size: 12px"
-                                    mat-cell
-                                    *matCellDef="let transaction"
-                                >
-                                    <span class="pr-2 whitespace-nowrap">
-                                        <!-- Conditional formatting for BRL currency -->
-                                        {{
-                                            (rankingRolHeaders[i] === "Meta" ||
-                                                rankingRolHeaders[i] ===
-                                                    "ROL") &&
-                                            transaction[column]
-                                                ? transaction[
-                                                      column
-                                                  ].toLocaleString("pt-BR", {
-                                                      style: "currency",
-                                                      currency: "BRL"
-                                                  })
-                                                : rankingRolHeaders[i] ===
-                                                      "Percentual" &&
-                                                  transaction[column]
-                                                ? transaction[column] + "%"
-                                                : transaction[column]
-                                        }}
-                                    </span>
-                                </td>
-                            </ng-container>
-
-                            <!-- Footer -->
-                            <ng-container
-                                matColumnDef="recentOrdersTableFooter"
-                            >
-                                <td
-                                    class="py-6 px-0 border-0"
-                                    mat-footer-cell
-                                    *matFooterCellDef
-                                    colspan="6"
-                                >
-                                    <!-- <button mat-stroked-button>
-                                        See all transactions
-                                    </button> -->
-                                </td>
-                            </ng-container>
-
-                            <tr
-                                class="order-row h-6"
-                                mat-header-row
-                                *matHeaderRowDef="
-                                    recentTransactionsTableColumns
-                                "
-                            ></tr>
-                            <tr
-                                class="order-row h-6"
-                                mat-row
-                                *matRowDef="
-                                    let row;
-                                    columns: recentTransactionsTableColumns
-                                "
-                            ></tr>
-                            <tr
-                                class="h-16 border-0"
-                                mat-footer-row
-                                *matFooterRowDef="['recentOrdersTableFooter']"
-                            ></tr>
-                        </table>
+                        Ranking - ROL
                     </div>
                 </div>
-                <!-- Ranking - Metas atingidas -->
                 <div
-                    class="flex flex-col w-120 h-80 bg-card shadow rounded-2xl overflow-hidden pb-1 ml-1"
+                    class="overflow-x-auto mx-2"
+                    style="overflow-y: scroll; height: 400px"
                 >
-                    <div class="p-3">
-                        <div
-                            class="mr-4 text-sm font-medium tracking-tight leading-6 truncate"
-                        >
-                            Ranking - Metas de Vendas Atingidas
-                        </div>
-                        <!-- <div class="text-secondary font-medium">
-                            1 pending, 4 completed
-                        </div> -->
-                    </div>
-                    <div
-                        class="overflow-x-auto mx-2"
-                        style="overflow-y: scroll; height: 400px"
+                    <table
+                        class="w-full bg-transparent"
+                        mat-table
+                        matSort
+                        [dataSource]="recentTransactionsDataSource"
+                        [trackBy]="trackByFn"
+                        #recentTransactionsTable
                     >
-                        <table
-                            class="w-full bg-transparent"
-                            mat-table
-                            matSort
-                            [dataSource]="recentTransactionsDataSource2"
-                            [trackBy]="trackByFn"
-                            #recentTransactionsTable
+                        <!-- Dynamic column -->
+                        <ng-container
+                            *ngFor="
+                                let column of recentTransactionsTableColumns;
+                                let i = index
+                            "
+                            [matColumnDef]="column"
                         >
-                            <!-- Dynamic column -->
-                            <ng-container
-                                *ngFor="
-                                    let column of recentTransactionsTableColumns2;
-                                    let i = index
-                                "
-                                [matColumnDef]="column"
+                            <th
+                                class="sticky-header"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                mat-sort-header
+                                style="font-size: 12px"
                             >
-                                <th
-                                    class="sticky-header"
-                                    mat-header-cell
-                                    *matHeaderCellDef
-                                    style="font-size: 12px"
-                                >
-                                    {{ column }}
-                                </th>
-                                <td
-                                    style="font-size: 12px"
-                                    mat-cell
-                                    *matCellDef="let transaction"
+                                {{ rankingRolHeaders[i] }}
+                                <mat-icon
+                                    class="pl-2 text-lg"
+                                    style="opacity: 0.4"
+                                    aria-hidden="false"
+                                    aria-label="Filter Icon"
+                                    fontIcon="menu"
                                     (click)="
-                                        chartGoalsDialog(
+                                        filterDialog(
                                             $event,
-                                            transaction,
-                                            getMonthDifference(
-                                                dataInicio,
-                                                dataFinal
-                                            )
+                                            column,
+                                            rankingRolHeaders[i]
                                         )
                                     "
-                                >
-                                    <span class="pr-2 whitespace-nowrap">
-                                        {{ transaction[i] }}
-                                    </span>
-                                </td>
-                            </ng-container>
+                                ></mat-icon>
+                            </th>
 
-                            <!-- Footer -->
-                            <ng-container
-                                matColumnDef="recentOrdersTableFooter"
+                            <td
+                                style="font-size: 12px"
+                                mat-cell
+                                *matCellDef="let transaction"
                             >
-                                <td
-                                    class="py-6 px-0 border-0"
-                                    mat-footer-cell
-                                    *matFooterCellDef
-                                    colspan="6"
-                                >
-                                    <!-- <button mat-stroked-button>
-                                        See all transactions
-                                    </button> -->
-                                </td>
-                            </ng-container>
+                                <span class="pr-2 whitespace-nowrap">
+                                    <!-- Conditional formatting for BRL currency -->
+                                    {{
+                                        (rankingRolHeaders[i] === "Meta" ||
+                                            rankingRolHeaders[i] === "ROL") &&
+                                        transaction[column]
+                                            ? transaction[
+                                                  column
+                                              ].toLocaleString("pt-BR", {
+                                                  style: "currency",
+                                                  currency: "BRL"
+                                              })
+                                            : rankingRolHeaders[i] ===
+                                                  "Percentual" &&
+                                              transaction[column]
+                                            ? transaction[column] + "%"
+                                            : transaction[column]
+                                    }}
+                                </span>
+                            </td>
+                        </ng-container>
 
-                            <tr
-                                class="order-row h-6"
-                                mat-header-row
-                                *matHeaderRowDef="
-                                    recentTransactionsTableColumns2
-                                "
-                            ></tr>
-                            <tr
-                                class="order-row h-6 row-enhance"
-                                mat-row
-                                *matRowDef="
-                                    let row;
-                                    columns: recentTransactionsTableColumns2
-                                "
-                            ></tr>
-                            <tr
-                                class="h-16 border-0"
-                                mat-footer-row
-                                *matFooterRowDef="['recentOrdersTableFooter']"
-                            ></tr>
-                        </table>
+                        <!-- Footer -->
+                        <ng-container matColumnDef="recentOrdersTableFooter">
+                            <td
+                                class="py-6 px-0 border-0"
+                                mat-footer-cell
+                                *matFooterCellDef
+                                colspan="6"
+                            >
+                                <!-- <button mat-stroked-button>
+                                    See all transactions
+                                </button> -->
+                            </td>
+                        </ng-container>
+
+                        <tr
+                            class="order-row h-6"
+                            mat-header-row
+                            *matHeaderRowDef="recentTransactionsTableColumns"
+                        ></tr>
+                        <tr
+                            class="order-row h-6"
+                            mat-row
+                            *matRowDef="
+                                let row;
+                                columns: recentTransactionsTableColumns
+                            "
+                        ></tr>
+                        <tr
+                            class="h-16 border-0"
+                            mat-footer-row
+                            *matFooterRowDef="['recentOrdersTableFooter']"
+                        ></tr>
+                    </table>
+                </div>
+            </div>
+            <!-- Ranking - Metas atingidas -->
+            <div
+                class="flex flex-col w-120 h-80 bg-card shadow rounded-2xl overflow-hidden pb-1 ml-1"
+            >
+                <div class="p-3">
+                    <div
+                        class="mr-4 text-sm font-medium tracking-tight leading-6 truncate"
+                    >
+                        Ranking - Metas de Vendas Atingidas
                     </div>
+                    <!-- <div class="text-secondary font-medium">
+                        1 pending, 4 completed
+                    </div> -->
+                </div>
+                <div
+                    class="overflow-x-auto mx-2"
+                    style="overflow-y: scroll; height: 400px"
+                >
+                    <table
+                        class="w-full bg-transparent"
+                        mat-table
+                        matSort
+                        [dataSource]="recentTransactionsDataSource2"
+                        [trackBy]="trackByFn"
+                        #recentTransactionsTable
+                    >
+                        <!-- Dynamic column -->
+                        <ng-container
+                            *ngFor="
+                                let column of recentTransactionsTableColumns2;
+                                let i = index
+                            "
+                            [matColumnDef]="column"
+                        >
+                            <th
+                                class="sticky-header"
+                                mat-header-cell
+                                *matHeaderCellDef
+                                style="font-size: 12px"
+                            >
+                                {{ column }}
+                            </th>
+                            <td
+                                style="font-size: 12px"
+                                mat-cell
+                                *matCellDef="let transaction"
+                                (click)="
+                                    chartGoalsDialog(
+                                        $event,
+                                        transaction,
+                                        getMonthDifference(
+                                            dataInicio,
+                                            dataFinal
+                                        )
+                                    )
+                                "
+                            >
+                                <span class="pr-2 whitespace-nowrap">
+                                    {{ transaction[i] }}
+                                </span>
+                            </td>
+                        </ng-container>
+
+                        <!-- Footer -->
+                        <ng-container matColumnDef="recentOrdersTableFooter">
+                            <td
+                                class="py-6 px-0 border-0"
+                                mat-footer-cell
+                                *matFooterCellDef
+                                colspan="6"
+                            >
+                                <!-- <button mat-stroked-button>
+                                    See all transactions
+                                </button> -->
+                            </td>
+                        </ng-container>
+
+                        <tr
+                            class="order-row h-6"
+                            mat-header-row
+                            *matHeaderRowDef="recentTransactionsTableColumns2"
+                        ></tr>
+                        <tr
+                            class="order-row h-6 row-enhance"
+                            mat-row
+                            *matRowDef="
+                                let row;
+                                columns: recentTransactionsTableColumns2
+                            "
+                        ></tr>
+                        <tr
+                            class="h-16 border-0"
+                            mat-footer-row
+                            *matFooterRowDef="['recentOrdersTableFooter']"
+                        ></tr>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<!--  -->
