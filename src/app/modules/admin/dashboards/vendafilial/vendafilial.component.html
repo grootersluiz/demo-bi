@@ -3,332 +3,537 @@
     subTitulo: string = "";
     isToggleOn: boolean;
  -->
- <div class=" flex-col w-full pl-1 pr-1 ">
-    <div class="flex flex-grow w-full justify-between" >
-        <button [hidden]="false" (click)="showDash(divChart)" matTooltip="Gráfico Dia" class="mr-4"  style="visibility: visible !important;">
-            <mat-icon class="pt-2" aria-hidden="false" fontIcon="fit_screen" ></mat-icon>
-          </button>
+<div class="flex-col w-full overflow-y-auto pl-1 pr-1">
+    <div class="flex flex-grow w-full justify-between">
+        <button
+            [hidden]="false"
+            (click)="showDash(divChart)"
+            matTooltip="Gráfico Dia"
+            class="mr-4"
+            style="visibility: visible !important"
+        >
+            <mat-icon
+                class="pt-2"
+                aria-hidden="false"
+                fontIcon="fit_screen"
+            ></mat-icon>
+        </button>
         <mat-slide-toggle class="pt-1" [(ngModel)]="isToggleOn">
             {{ isToggleOn ? "Ocultar filtros" : "Mostrar filtros" }}
         </mat-slide-toggle>
     </div>
     <div class="w-full">
-    <div class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
-    *ngIf="isToggleOn">
-        <div class="flex flex-auto ">
-            <img
-                class="mr-3 logo-filter lg:block"
-                src="assets/images/logo/Logo-Rede-JS-Pecas_7.png"
-                alt=""
-            />
-            <div class="flex flex-col">
-                <div
-                    class="text-3xl font-semibold tracking-tight leading-8"
-                    style="color: #fff"
-                >
-                    {{titulo}}
-                </div>
+        <div
+            class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
+            *ngIf="isToggleOn"
+        >
+            <div class="flex flex-auto">
+                <img
+                    class="mr-3 logo-filter lg:block"
+                    src="assets/images/logo/Logo-Rede-JS-Pecas_7.png"
+                    alt=""
+                />
+                <div class="flex flex-col">
+                    <div
+                        class="text-3xl font-semibold tracking-tight leading-8"
+                        style="color: #fff"
+                    >
+                        {{ titulo }}
+                    </div>
 
-                <div class="font-medium tracking-tight" style="color: #fff">
-                    {{subTitulo}}
+                    <div class="font-medium tracking-tight" style="color: #fff">
+                        {{ subTitulo }}
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="flex flex-wrap justify-end">
-<!-- FILTROS VVVVV -->
+            <div class="flex flex-wrap justify-end">
+                <!-- FILTROS VVVVV -->
 
-            <mat-form-field
-                  class="sm:inline-flex ml-3"
-                  style="width: 150px"
-              >
-                  <mat-label style="font-size: 12px; color: #fff"
-                      >Referência
-                      </mat-label
-                  >
-                  <input
-                  class="cursor-pointer"
-                  style="font-size: 15px"
-                  id="dtref"
-                  matInput
-                  [formControl]="end"
-                  [matDatepicker]="pickerFinal"
-                  (click)="
-                     handleDatePickerClick($event, pickerToggleFinal)
-                  "
-                  #dataref (dateChange)="formatDataMesAno($event)"
-                  (blur)="formatDataMesAno2(dataref)"
-                  [max]="dataHoje"
-                  readonly
-                  />
-                  <mat-hint>DD/MM/YYYY</mat-hint>
-                  <mat-datepicker-toggle
-                      #pickerToggleFinal
-                      matIconSuffix
-                      [for]="pickerFinal"
-                  ></mat-datepicker-toggle>
+                <mat-form-field
+                    class="sm:inline-flex ml-3"
+                    style="width: 150px"
+                >
+                    <mat-label style="font-size: 12px; color: #fff"
+                        >Referência
+                    </mat-label>
+                    <input
+                        class="cursor-pointer"
+                        style="font-size: 15px"
+                        id="dtref"
+                        matInput
+                        [formControl]="end"
+                        [matDatepicker]="pickerFinal"
+                        (click)="
+                            handleDatePickerClick($event, pickerToggleFinal)
+                        "
+                        #dataref
+                        (dateChange)="formatDataMesAno($event)"
+                        (blur)="formatDataMesAno2(dataref)"
+                        [max]="dataHoje"
+                        readonly
+                    />
+                    <mat-hint>DD/MM/YYYY</mat-hint>
+                    <mat-datepicker-toggle
+                        #pickerToggleFinal
+                        matIconSuffix
+                        [for]="pickerFinal"
+                    ></mat-datepicker-toggle>
 
-                  <mat-datepicker
-                      #pickerFinal
-                      [startView]="true? 'year' : 'month'"
-                      (monthSelected)="true ? setFinalMY($event, pickerFinal, dataref) : undefined"
-                  ></mat-datepicker>
-                  </mat-form-field>
+                    <mat-datepicker
+                        #pickerFinal
+                        [startView]="true ? 'year' : 'month'"
+                        (monthSelected)="
+                            true
+                                ? setFinalMY($event, pickerFinal, dataref)
+                                : undefined
+                        "
+                    ></mat-datepicker>
+                </mat-form-field>
 
-<!-- FILTROS ^^^^^ -->
-        </div>
-<!-- Botão de confirmar filtro, adicionar evento de (click) -->
+                <!-- FILTROS ^^^^^ -->
+            </div>
+            <!-- Botão de confirmar filtro, adicionar evento de (click) -->
             <button
-                class=" sm:inline-flex ml-5 apply-button"
+                class="sm:inline-flex ml-5 apply-button"
                 style="width: 120px"
                 mat-flat-button
                 [color]="'primary'"
-                (click)="consultavendafilial(dataref.value)">
+                (click)="consultavendafilial(dataref.value)"
+            >
                 <span style="font-size: 12px">Aplicar</span>
             </button>
         </div>
     </div>
-    <div class="relative w-full h-full flex flex-col sm:flex-col md:flex-col lg:flex-col xl:flex-col 2xl:flex-col mt-1">
-    <!-- COMPONENTES ABAIXO -->
+    <div
+        class="relative w-full h-full flex flex-col sm:flex-col md:flex-col lg:flex-col xl:flex-col 2xl:flex-col mt-1"
+    >
+        <!-- COMPONENTES ABAIXO -->
         <!-- Colocar class="grid px-2 py-2 w-12/12 rounded-2xl bg-card shadow mb-1" em todos componentes-->
-        <div id="containerDash" class="flex flex-row p-0 w-full sm:w-full md:w-full lg:w-4/5 xl:w-4/5 2xl:w-4/5">
-
-            <div id="divChart" #divChart class=" relative h-60 w-full" [hidden]="false">
+        <div
+            id="containerDash"
+            class="flex flex-row p-0 w-full sm:w-full md:w-full lg:w-4/5 xl:w-4/5 2xl:w-4/5"
+        >
+            <div
+                id="divChart"
+                #divChart
+                class="relative h-60 w-full"
+                [hidden]="false"
+            >
                 <!-- <app-vendafilialchart></app-vendafilialchart> -->
-                <div id="chart" class="h-60 w-full pt-1" >
-                  <apx-chart class="grid h-60 w-12/12 rounded-2xl bg-card shadow" style="background-color: white;"
-                    [series]="chartOptions.series"
-                    [chart]="chartOptions.chart"
-                    [fill]="chartOptions.fill"
-                    [yaxis]="chartOptions.yaxis"
-                    [xaxis]="chartOptions.xaxis"
-                    [dataLabels]="chartOptions.dataLabels"
-                    [grid]="chartOptions.grid"
-                    [stroke]="chartOptions.stroke"
-                    [title]="chartOptions.title"
-                    [responsive]="chartOptions.responsive"
-                    [tooltip]="chartOptions.tooltip"
-                  ></apx-chart>
+                <div id="chart" class="h-60 w-full pt-1">
+                    <apx-chart
+                        class="grid h-60 w-12/12 rounded-2xl bg-card shadow"
+                        style="background-color: white"
+                        [series]="chartOptions.series"
+                        [chart]="chartOptions.chart"
+                        [fill]="chartOptions.fill"
+                        [yaxis]="chartOptions.yaxis"
+                        [xaxis]="chartOptions.xaxis"
+                        [dataLabels]="chartOptions.dataLabels"
+                        [grid]="chartOptions.grid"
+                        [stroke]="chartOptions.stroke"
+                        [title]="chartOptions.title"
+                        [responsive]="chartOptions.responsive"
+                        [tooltip]="chartOptions.tooltip"
+                    ></apx-chart>
                 </div>
             </div>
-            <div class="relative flex w-full sm:w-full md:w-full lg:w-full xl:w-full 2xl:w-full mt-2 " >
-              <div class="overflow-x-auto overflow-y-auto w-full rounded-2xl bg-card shadow " >
-                <table mat-table [dataSource]="dataSource">
+            <div
+                class="relative flex w-full sm:w-full md:w-full lg:w-full xl:w-full 2xl:w-full mt-2"
+            >
+                <div
+                    class="overflow-x-auto overflow-y-auto w-full rounded-2xl bg-card shadow"
+                >
+                    <table mat-table [dataSource]="dataSource">
+                        <ng-container matColumnDef="NOMEFANTASIA">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Filial
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                {{ element.NOMEFANTASIA }}
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="NOMEFANTASIA">
-                    <th scope="col" mat-header-cell *matHeaderCellDef > Filial </th>
-                    <td scope="row" mat-cell *matCellDef="let element"> {{element.NOMEFANTASIA}} </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="METAROL">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Meta ROL
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                {{
+                                    element.METAROL
+                                        | currency : "BRL" : "" : "0.0-0"
+                                }}
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="METAROL">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> Meta ROL </th>
-                    <td scope="row" mat-cell *matCellDef="let element"> {{element.METAROL | currency: "BRL" :'':'0.0-0' }}  </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="REALROL">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Real ROL
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                {{
+                                    element.REALROL
+                                        | currency : "BRL" : "" : "0.0-0"
+                                }}
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="REALROL">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> Real ROL </th>
-                    <td scope="row" mat-cell *matCellDef="let element"> {{element.REALROL | currency: "BRL" :'':'0.0-0' }}  </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="REALROLINTERCOMP">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Real Inter
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                {{
+                                    element.REALROLINTERCOMP
+                                        | currency : "BRL" : "" : "0.0-0"
+                                }}
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="REALROLINTERCOMP">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> Real Inter </th>
-                    <td scope="row" mat-cell *matCellDef="let element"> {{element.REALROLINTERCOMP | currency: "BRL" :'':'0.0-0' }} </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="REALROLREGULAR">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Real Reg
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                {{
+                                    element.REALROLREGULAR
+                                        | currency : "BRL" : "" : "0.0-0"
+                                }}
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="REALROLREGULAR">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> Real Reg </th>
-                    <td scope="row" mat-cell *matCellDef="let element"> {{element.REALROLREGULAR | currency: "BRL" :'':'0.0-0' }} </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="REALROLINSUMO">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Real Ins
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                {{
+                                    element.REALROLINSUMO
+                                        | currency : "BRL" : "" : "0.0-0"
+                                }}
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="REALROLINSUMO">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> Real Ins </th>
-                    <td scope="row" mat-cell *matCellDef="let element"> {{element.REALROLINSUMO | currency: "BRL" :'':'0.0-0' }} </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="REALROLTOTAL">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Real ROL Total
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                {{
+                                    element.REALROLTOTAL
+                                        | currency : "BRL" : "" : "0.0-0"
+                                }}
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="REALROLTOTAL">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> Real ROL Total </th>
-                    <td scope="row" mat-cell *matCellDef="let element"> {{element.REALROLTOTAL | currency: "BRL" :'':'0.0-0' }} </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="PROJECAO">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Projeção
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                {{
+                                    element.PROJECAO
+                                        | currency : "BRL" : "" : "0.2-2"
+                                }}
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="PROJECAO">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> Projeção </th>
-                    <td scope="row" mat-cell *matCellDef="let element"> {{element.PROJECAO  | currency: "BRL" :'':'0.2-2' }} </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="ATINGMETAROL">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                % Proj.
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                <div [ngClass]="element.colorATINGMETAROL">
+                                    {{
+                                        element.ATINGMETAROL
+                                            | currency : "BRL" : "" : "0.2-2"
+                                    }}
+                                    %
+                                </div>
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="ATINGMETAROL">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> % Proj. </th>
-                    <td scope="row" mat-cell *matCellDef="let element" >
-                      <div [ngClass]="element.colorATINGMETAROL">
-                        {{element.ATINGMETAROL | currency: "BRL" :'':'0.2-2' }} %
-                      </div>
-                    </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="GAPMETAROL">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                GAP ROL $
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                <div [ngClass]="element.colorGAPMETAROL">
+                                    {{
+                                        element.GAPMETAROL
+                                            | currency : "BRL" : "" : "0.0-0"
+                                    }}
+                                </div>
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="GAPMETAROL">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> GAP ROL $ </th>
-                    <td scope="row" mat-cell *matCellDef="let element">
-                      <div [ngClass]="element.colorGAPMETAROL">
-                        {{element.GAPMETAROL  | currency: "BRL" :'':'0.0-0' }}
-                      </div>
-                    </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="METAVDROL">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Meta V.D
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                {{
+                                    element.METAVDROL
+                                        | currency : "BRL" : "" : "0.0-0"
+                                }}
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="METAVDROL">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> Meta V.D </th>
-                    <td scope="row" mat-cell *matCellDef="let element"> {{element.METAVDROL  | currency: "BRL" :'':'0.0-0' }} </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="REALVDROL">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Real V.D
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                {{
+                                    element.REALVDROL
+                                        | currency : "BRL" : "" : "0.0-0"
+                                }}
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="REALVDROL">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> Real V.D </th>
-                    <td scope="row" mat-cell *matCellDef="let element"> {{element.REALVDROL  | currency: "BRL" :'':'0.0-0' }} </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="DIFMETAROL">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Dif V.D
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                <div [ngClass]="element.colorDIFMETAROL">
+                                    {{
+                                        element.DIFMETAROL
+                                            | currency : "BRL" : "" : "0.0-0"
+                                    }}
+                                </div>
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="DIFMETAROL">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> Dif V.D </th>
-                    <td scope="row" mat-cell *matCellDef="let element">
-                      <div [ngClass]="element.colorDIFMETAROL">
-                        {{element.DIFMETAROL | currency: "BRL" :'':'0.0-0' }}
-                      </div>
-                    </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="NOVAMETAROL">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Nova ROL Dia
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                {{
+                                    element.NOVAMETAROL
+                                        | currency : "BRL" : "" : "0.0-0"
+                                }}
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="NOVAMETAROL">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> Nova ROL Dia </th>
-                    <td scope="row" mat-cell *matCellDef="let element"> {{element.NOVAMETAROL | currency: "BRL" :'':'0.0-0' }} </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="METAMB">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Meta MB %
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                {{
+                                    element.METAMB
+                                        | currency : "BRL" : "" : "0.2-2"
+                                }}
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="METAMB">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> Meta MB % </th>
-                    <td scope="row" mat-cell *matCellDef="let element"> {{element.METAMB | currency: "BRL" :'':'0.2-2' }} </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="REALMB">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Real MB %
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                {{
+                                    element.REALMB
+                                        | currency : "BRL" : "" : "0.2-2"
+                                }}
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="REALMB">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> Real MB % </th>
-                    <td scope="row" mat-cell *matCellDef="let element"> {{element.REALMB | currency: "BRL" :'':'0.2-2' }} </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="DIFMB">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Dif MB pp
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                <div [ngClass]="element.colorDIFMB">
+                                    {{
+                                        element.DIFMB
+                                            | currency : "BRL" : "" : "0.2-2"
+                                    }}
+                                </div>
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="DIFMB">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> Dif MB pp </th>
-                    <td scope="row" mat-cell *matCellDef="let element">
-                      <div [ngClass]="element.colorDIFMB">
-                        {{element.DIFMB  | currency: "BRL" :'':'0.2-2' }}
-                      </div>
-                    </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="METALB">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Meta LB
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                {{
+                                    element.METALB
+                                        | currency : "BRL" : "" : "0.0-0"
+                                }}
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="METALB">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> Meta LB </th>
-                    <td scope="row" mat-cell *matCellDef="let element"> {{element.METALB | currency: "BRL" :'':'0.0-0' }} </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="REALLB">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Real LB
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                {{
+                                    element.REALLB
+                                        | currency : "BRL" : "" : "0.0-0"
+                                }}
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="REALLB">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> Real LB </th>
-                    <td scope="row" mat-cell *matCellDef="let element"> {{element.REALLB | currency: "BRL" :'':'0.0-0' }} </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="PROJECAOLB">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Projeção LB
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                {{
+                                    element.PROJECAOLB
+                                        | currency : "BRL" : "" : "0.0-0"
+                                }}
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="PROJECAOLB">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> Projeção LB </th>
-                    <td scope="row" mat-cell *matCellDef="let element"> {{element.PROJECAOLB | currency: "BRL" :'':'0.0-0' }} </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="ATINGMETALB">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                % Ating. LB
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                <div [ngClass]="element.colorATINGMETALB">
+                                    {{
+                                        element.ATINGMETALB
+                                            | currency : "BRL" : "" : "0.2-2"
+                                    }}
+                                </div>
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="ATINGMETALB">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> % Ating. LB </th>
-                    <td scope="row" mat-cell *matCellDef="let element">
-                      <div [ngClass]="element.colorATINGMETALB">
-                        {{element.ATINGMETALB | currency: "BRL" :'':'0.2-2' }}
-                      </div>
-                    </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="GAPMETALB">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                GAP LB $
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                <div [ngClass]="element.colorGAPMETALB">
+                                    {{
+                                        element.GAPMETALB
+                                            | currency : "BRL" : "" : "0.0-0"
+                                    }}
+                                </div>
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="GAPMETALB">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> GAP LB $</th>
-                    <td scope="row" mat-cell *matCellDef="let element">
-                      <div [ngClass]="element.colorGAPMETALB">
-                        {{element.GAPMETALB | currency: "BRL" :'':'0.0-0' }}
-                      </div>
-                    </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="METAPMV">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Meta PMV
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                {{
+                                    element.METAPMV
+                                        | currency : "BRL" : "" : "0.0-0"
+                                }}
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="METAPMV">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> Meta PMV</th>
-                    <td scope="row" mat-cell *matCellDef="let element"> {{element.METAPMV | currency: "BRL" :'':'0.0-0' }} </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="REALPMV">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Real PMV
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                {{
+                                    element.REALPMV
+                                        | currency : "BRL" : "" : "0.0-0"
+                                }}
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="REALPMV">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> Real PMV</th>
-                    <td scope="row" mat-cell *matCellDef="let element"> {{element.REALPMV | currency: "BRL" :'':'0.0-0' }} </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="DIFPMV">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Dif PMV
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                <div [ngClass]="element.colorDIFPMV">
+                                    {{
+                                        element.DIFPMV
+                                            | currency : "BRL" : "" : "0.2-2"
+                                    }}
+                                </div>
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="DIFPMV">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> Dif PMV</th>
-                    <td scope="row" mat-cell *matCellDef="let element">
-                      <div [ngClass]="element.colorDIFPMV">
-                        {{element.DIFPMV | currency: "BRL" :'':'0.2-2' }}
-                      </div>
-                    </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="METACC">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Meta CC
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                {{
+                                    element.METACC
+                                        | currency : "BRL" : "" : "0.0-0"
+                                }}
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="METACC">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> Meta CC</th>
-                    <td scope="row" mat-cell *matCellDef="let element"> {{element.METACC | currency: "BRL" :'':'0.0-0' }} </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="REALCC">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Real CC
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                {{
+                                    element.REALCC
+                                        | currency : "BRL" : "" : "0.0-0"
+                                }}
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="REALCC">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> Real CC</th>
-                    <td scope="row" mat-cell *matCellDef="let element"> {{element.REALCC | currency: "BRL" :'':'0.0-0' }} </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef> </td> -->
-                  </ng-container>
+                        <ng-container matColumnDef="DIFCC">
+                            <th scope="col" mat-header-cell *matHeaderCellDef>
+                                Dif CC
+                            </th>
+                            <td scope="row" mat-cell *matCellDef="let element">
+                                <div [ngClass]="element.colorDIFCC">
+                                    {{
+                                        element.DIFCC
+                                            | currency : "BRL" : "" : "0.0-0"
+                                    }}
+                                </div>
+                            </td>
+                            <!-- <td mat-footer-cell *matFooterCellDef>  </td> -->
+                        </ng-container>
 
-                  <ng-container matColumnDef="DIFCC">
-                    <th scope="col" mat-header-cell *matHeaderCellDef> Dif CC</th>
-                    <td scope="row" mat-cell *matCellDef="let element">
-                      <div [ngClass]="element.colorDIFCC">
-                        {{element.DIFCC | currency: "BRL" :'':'0.0-0' }}
-                      </div>
-                    </td>
-                    <!-- <td mat-footer-cell *matFooterCellDef>  </td> -->
-                  </ng-container>
-
-                  <tr mat-header-row *matHeaderRowDef="cabecalho"></tr>
-                  <tr mat-row *matRowDef="let row; columns: cabecalho;"></tr>
-                  <!-- <tr mat-footer-row *matFooterRowDef="cabecalho"></tr> -->
-
-                </table>
-              </div>
-          </div>
+                        <tr mat-header-row *matHeaderRowDef="cabecalho"></tr>
+                        <tr
+                            mat-row
+                            *matRowDef="let row; columns: cabecalho"
+                        ></tr>
+                        <!-- <tr mat-footer-row *matFooterRowDef="cabecalho"></tr> -->
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-
 <!--  -->
-
-
-
-
-
