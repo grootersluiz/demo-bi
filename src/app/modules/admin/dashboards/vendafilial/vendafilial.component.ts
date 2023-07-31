@@ -799,7 +799,6 @@ export class VendafilialComponent {
             }]
           }
         }
-
       },
       fill: {
         type: 'gradient',
@@ -815,30 +814,23 @@ export class VendafilialComponent {
         enabled: false
       },
       tooltip: {
-        enabled: true,
+        followCursor: true,
+        theme: 'dark',
+        x: {
+            format: 'dd MMM, yyyy',
+        },
         y: {
-            formatter: function (val) {
-                var valor = val? Number(val).toFixed(2) : '0.00';
-
-                valor = valor.replace('.',',');
-
-                // if(valor.indexOf(",00") == -1)
-                if(Number((valor.length)) > 6 && Number(valor.length) < 10){
-                    var leng = valor.length;
-                    valor = valor.substring(0,leng-6)+'.'+valor.substring(leng-6,leng);
-
-                }else{
-
-                    if(Number((valor.length)) > 9 && Number(valor.length) < 13){
-                        var leng = valor.length;
-                        valor = valor.substring(0,leng-9)+'.'+valor.substring(leng-9,leng-6)+'.'+ valor.substring(leng-6,leng);
-                    }
+            formatter: function (value) {
+                if (!value) {
+                    value = 0;
                 }
-
-                return String(valor);
-            }
-        }
-      },
+                return value.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL',
+                });
+            },
+        },
+    },
       stroke: {
         curve: "smooth",
         width: 2
