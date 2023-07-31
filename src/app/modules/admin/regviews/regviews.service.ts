@@ -90,8 +90,10 @@ export class RegviewsService {
                 // Convert the input name to lowercase
                 const searchName = name.toLowerCase();
                 // Filter views whose name contains the searchName (case-insensitive)
-                const filteredViews = views['data'].filter((view) =>
-                    view.name.toLowerCase().includes(searchName)
+                const filteredViews = views['data'].filter(
+                    (view) =>
+                        view.name.toLowerCase().includes(searchName) ||
+                        view.id.toString().includes(searchName)
                 );
                 // Sort the filtered views by name (case-insensitive)
                 const orderedViews = filteredViews.sort((a, b) =>

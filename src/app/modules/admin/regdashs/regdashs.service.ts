@@ -148,8 +148,10 @@ export class RegdashsService {
                     // Convert the input name to lowercase
                     const searchName = name.toLowerCase();
                     // Filter dashs whose name contains the searchName (case-insensitive)
-                    const filteredDashs = dashs['data'].filter((dash) =>
-                        dash.name.toLowerCase().includes(searchName)
+                    const filteredDashs = dashs['data'].filter(
+                        (dash) =>
+                            dash.name.toLowerCase().includes(searchName) ||
+                            dash.id.toString().includes(searchName)
                     );
                     // Sort the filtered dashs by name (case-insensitive)
                     const orderedDashs = filteredDashs.sort((a, b) =>
