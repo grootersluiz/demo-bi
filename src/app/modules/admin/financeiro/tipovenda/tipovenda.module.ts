@@ -22,8 +22,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import localePt from '@angular/common/locales/pt';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
- import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgApexchartsModule } from "ng-apexcharts";
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgApexchartsModule } from 'ng-apexcharts';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SelectfilialModule } from '../../util/selectfilial/selectfilial.module';
 @NgModule({
@@ -48,7 +48,7 @@ import { SelectfilialModule } from '../../util/selectfilial/selectfilial.module'
         NgApexchartsModule,
         MatSlideToggleModule,
         ReactiveFormsModule,
-        SelectfilialModule
+        SelectfilialModule,
     ],
 })
 export class tipovendaModule {}

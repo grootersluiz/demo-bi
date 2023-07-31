@@ -539,7 +539,11 @@ export class AnalisemarcaComponent {
         }
       },
       tooltip: {
-        enabled: true,
+        followCursor: true,
+        theme: 'dark',
+        x: {
+            format: 'dd MMM, yyyy',
+        },
         y: {
             formatter: function (val) {
                 var valor = val? Number(val).toFixed(2) : '0.00';
@@ -561,8 +565,8 @@ export class AnalisemarcaComponent {
 
                 return String(valor);
             }
-        }
-      },
+        },
+    },
       stroke: {
         curve: "smooth",
         width: 2

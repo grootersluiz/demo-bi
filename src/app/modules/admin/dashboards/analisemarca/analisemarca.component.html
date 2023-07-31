@@ -3,106 +3,141 @@
     subTitulo: string = "";
     isToggleOn: boolean;
  -->
- <div class=" flex-col w-full pl-1 pr-1 ">
-    <div class="flex flex-grow w-full justify-between" >
-        <button matTooltip="Indicadores Adicionais" class="mr-4" style="visibility: visible !important;" disabled>
-            <mat-icon class="pt-2 pb-1" aria-hidden="false" fontIcon="settings" ></mat-icon>
+<div class="flex-col w-full overflow-y-hidden pl-1 pr-1">
+    <div class="flex flex-grow w-full justify-between">
+        <button
+            matTooltip="Indicadores Adicionais"
+            class="mr-4"
+            style="visibility: visible !important"
+            disabled
+        >
+            <mat-icon
+                class="pt-2 pb-1"
+                aria-hidden="false"
+                fontIcon="settings"
+            ></mat-icon>
         </button>
         <mat-slide-toggle class="pt-1" [(ngModel)]="isToggleOn">
             {{ isToggleOn ? "Ocultar filtros" : "Mostrar filtros" }}
         </mat-slide-toggle>
     </div>
     <div class="w-full">
-    <div class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
-    *ngIf="isToggleOn">
-        <div class="flex flex-auto ">
-            <img
-                class="mr-3 logo-filter lg:block"
-                src="assets/images/logo/Logo-Rede-JS-Pecas_7.png"
-                alt=""
-            />
-            <div class="flex flex-col">
-                <div
-                    class="text-3xl font-semibold tracking-tight leading-8"
-                    style="color: #fff"
-                >
-                    {{titulo}}
-                </div>
+        <div
+            class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
+            *ngIf="isToggleOn"
+        >
+            <div class="flex flex-auto">
+                <img
+                    class="mr-3 logo-filter lg:block"
+                    src="assets/images/logo/Logo-Rede-JS-Pecas_7.png"
+                    alt=""
+                />
+                <div class="flex flex-col">
+                    <div
+                        class="text-3xl font-semibold tracking-tight leading-8"
+                        style="color: #fff"
+                    >
+                        {{ titulo }}
+                    </div>
 
-                <div class="font-medium tracking-tight" style="color: #fff">
-                    {{subTitulo}}
+                    <div class="font-medium tracking-tight" style="color: #fff">
+                        {{ subTitulo }}
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="flex flex-wrap justify-end">
-<!-- FILTROS VVVVV -->
+            <div class="flex flex-wrap justify-end">
+                <!-- FILTROS VVVVV -->
 
-            <app-selectfilial #filial ></app-selectfilial>
-            <app-listamarca #marca ></app-listamarca>
-            <mat-form-field
-                  class="sm:inline-flex ml-3"
-                  style="width: 150px">
-                  <mat-label style="font-size: 12px; color: #fff"
-                      >Referência
-                    </mat-label>
-                <input
-                    style="font-size: 15px"
-                    id="dtref"
-                    matInput
-                    [matDatepicker]="picker"  #dataref [formControl]="end"
-                    [max]="dataHoje"
-                    (dateChange)="formatDataMesAno($event)" (blur)="formatDataMesAno2(dataref)"
-                    >
-                <mat-hint>DD/MM/YYYY</mat-hint>
-                <mat-datepicker-toggle
-                    matIconSuffix
-                    [for]="picker">
-                </mat-datepicker-toggle>
-                <mat-datepicker
-                    #picker
-                    [startView]="true ? 'year' : 'month'"
-                    (monthSelected)="true ? setFinalMY($event, picker, dataref) : undefined"
+                <app-selectfilial #filial></app-selectfilial>
+                <app-listamarca #marca></app-listamarca>
+                <mat-form-field
+                    class="sm:inline-flex ml-3"
+                    style="width: 150px"
                 >
-                </mat-datepicker>
-            </mat-form-field>
+                    <mat-label style="font-size: 12px; color: #fff"
+                        >Referência
+                    </mat-label>
+                    <input
+                        style="font-size: 15px"
+                        id="dtref"
+                        matInput
+                        [matDatepicker]="picker"
+                        #dataref
+                        [formControl]="end"
+                        [max]="dataHoje"
+                        (dateChange)="formatDataMesAno($event)"
+                        (blur)="formatDataMesAno2(dataref)"
+                    />
+                    <mat-hint>DD/MM/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="picker">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker
+                        #picker
+                        [startView]="true ? 'year' : 'month'"
+                        (monthSelected)="
+                            true
+                                ? setFinalMY($event, picker, dataref)
+                                : undefined
+                        "
+                    >
+                    </mat-datepicker>
+                </mat-form-field>
 
-<!-- FILTROS ^^^^^ -->
-        </div>
-<!-- Botão de confirmar filtro, adicionar evento de (click) -->
+                <!-- FILTROS ^^^^^ -->
+            </div>
+            <!-- Botão de confirmar filtro, adicionar evento de (click) -->
             <button
-                class=" sm:inline-flex ml-5 apply-button"
+                class="sm:inline-flex ml-5 apply-button"
                 style="width: 120px"
                 mat-flat-button
                 [color]="'primary'"
-                (click)="consultavendafilial(dataref.value,filial.filiais.value,marca.marcas.value)">
+                (click)="
+                    consultavendafilial(
+                        dataref.value,
+                        filial.filiais.value,
+                        marca.marcas.value
+                    )
+                "
+            >
                 <span style="font-size: 12px">Aplicar</span>
             </button>
         </div>
     </div>
-    <div class="relative w-full h-full flex flex-col sm:flex-col md:flex-col lg:flex-col xl:flex-col 2xl:flex-col mt-1">
-    <!-- COMPONENTES ABAIXO -->
+    <div
+        class="relative w-full h-full flex flex-col sm:flex-col md:flex-col lg:flex-col xl:flex-col 2xl:flex-col mt-1"
+    >
+        <!-- COMPONENTES ABAIXO -->
         <!-- Colocar class="grid px-2 py-2 w-12/12 rounded-2xl bg-card shadow mb-1" em todos componentes-->
-        <div id="containerDash" [hidden]="false" style="height: 98% ">
-            <div id="divChart" #divChart class="w-full h-full p-0 mt-0 mr-0 mb-0 ml-0" [hidden]="false">
-                <div id="chart" #chart [ngClass]="_classChart" style="height: 98% " >
-                <apx-chart [ngClass]="_classChart" style="background-color: white; "
-                    [series]="chartOptions.series"
-                    [chart]="chartOptions.chart"
-                    [fill]="chartOptions.fill"
-                    [yaxis]="chartOptions.yaxis"
-                    [xaxis]="chartOptions.xaxis"
-                    [dataLabels]="chartOptions.dataLabels"
-                    [grid]="chartOptions.grid"
-                    [stroke]="chartOptions.stroke"
-                    [title]="chartOptions.title"
-                    [responsive]="chartOptions.responsive"
-                    [tooltip]="chartOptions.tooltip"
-                ></apx-chart>
+        <div id="containerDash" [hidden]="false" style="height: 98%">
+            <div
+                id="divChart"
+                #divChart
+                class="w-full h-full p-0 mt-0 mr-0 mb-0 ml-0"
+                [hidden]="false"
+            >
+                <div
+                    id="chart"
+                    #chart
+                    [ngClass]="_classChart"
+                    style="height: 98%"
+                >
+                    <apx-chart
+                        [ngClass]="_classChart"
+                        style="background-color: white"
+                        [series]="chartOptions.series"
+                        [chart]="chartOptions.chart"
+                        [fill]="chartOptions.fill"
+                        [yaxis]="chartOptions.yaxis"
+                        [xaxis]="chartOptions.xaxis"
+                        [dataLabels]="chartOptions.dataLabels"
+                        [grid]="chartOptions.grid"
+                        [stroke]="chartOptions.stroke"
+                        [title]="chartOptions.title"
+                        [responsive]="chartOptions.responsive"
+                        [tooltip]="chartOptions.tooltip"
+                    ></apx-chart>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-
