@@ -33,7 +33,7 @@ const moment = _rollupMoment || _moment;
     templateUrl: './rol.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    styleUrls: ['./rol.component.css','../../util/css/css.component.scss'],
+    styleUrls: ['./rol.component.css'],
 })
 export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild(MatSort) sort: MatSort;
@@ -108,8 +108,6 @@ export class RolComponent implements OnInit, AfterViewInit, OnDestroy {
 
     isChecked: boolean;
     isToggleOn: boolean;
-    titulo: string = "ROL";
-    subTitulo: string = "Rankings e Metas";
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
