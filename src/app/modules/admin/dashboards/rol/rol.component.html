@@ -3,215 +3,219 @@
     subTitulo: string = "";
     isToggleOn: boolean;
  -->
- <div class=" flex-col w-full pl-1 pr-1 ">
-    <div class="flex flex-grow w-full justify-end" >
+<div class="flex-col w-full pl-1 pr-1">
+    <div class="flex flex-grow w-full justify-end">
         <mat-slide-toggle class="pt-1" [(ngModel)]="isToggleOn">
             {{ isToggleOn ? "Ocultar filtros" : "Mostrar filtros" }}
         </mat-slide-toggle>
     </div>
     <div class="w-full">
-    <div class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
-    *ngIf="isToggleOn">
-        <div class="flex flex-auto ">
-            <img
-                class="mr-3 logo-filter lg:block"
-                src="assets/images/logo/Logo-Rede-JS-Pecas_7.png"
-                alt=""
-            />
-            <div class="flex flex-col">
-                <div
-                    class="text-3xl font-semibold tracking-tight leading-8"
-                    style="color: #fff"
-                >
-                    {{titulo}}
-                </div>
-
-                <div class="font-medium tracking-tight" style="color: #fff">
-                    {{subTitulo}}
-                </div>
-            </div>
-        </div>
-        <div class="flex flex-wrap justify-center md:justify-end lg:justify-end xl:justify-end 2xl:justify-end">
-<!-- FILTROS VVVVV -->
-<!-- Filtros Filial -->
-    <mat-form-field
-        class="sm:inline-flex ml-3 md:ml-0 lg:ml-0 xl:ml-0 2xl:ml-0"
-        style="width: 150px"
-        (click)="handleCompaniesFilterClick(dataInicio, dataFinal)"
-    >
-        <mat-label style="font-size: 12px; color: #fff"
-            >Filial</mat-label
+        <div
+            class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
+            *ngIf="isToggleOn"
         >
-        <mat-select
-            class="my-custom-class"
-            style="font-size: 12px"
-            [formControl]="filiais"
-            multiple
-        >
-            <mat-option
-                class="select-all-companies"
-                style="font-size: 12px"
-                [value]="'-1'"
-                (click)="selectAllCompanies()"
-                >{{
-                    allCompaniesSelected
-                        ? "Desmarcar Todos"
-                        : "Marcar Todos"
-                }}</mat-option
-            >
-
-            <mat-option
-                style="font-size: 12px"
-                *ngFor="
-                    let filial of filiaisStringList;
-                    let i = index
-                "
-                [value]="filiaisObjects[i].id.toString()"
-                (click)="
-                    handleCompanyFilterSelect(filiaisObjects[i].id)
-                "
-                >{{ filial }}</mat-option
-            >
-        </mat-select>
-    </mat-form-field>
-
-    <!-- Filtro Vendedor -->
-    <mat-form-field
-        class="sm:inline-flex ml-3"
-        style="width: 150px"
-        (click)="handleSellersFilterClick(dataInicio, dataFinal)"
-    >
-        <mat-label style="font-size: 12px; color: #fff"
-            >Vendedor</mat-label
-        >
-        <mat-select
-            style="font-size: 12px"
-            [formControl]="vendedores"
-            multiple
-        >
-            <div
-                class="sellers-search-container flex justify-center"
-            >
-                <input
-                    class="sellers-search-input"
-                    type="text"
-                    placeholder="Buscar..."
-                    [formControl]="sellersSearchInput"
-                    (input)="onInput($event.target.value)"
+            <div class="flex flex-auto">
+                <img
+                    class="mr-3 logo-filter lg:block"
+                    src="assets/images/logo/Logo-Rede-JS-Pecas_7.png"
+                    alt=""
                 />
+                <div class="flex flex-col">
+                    <div
+                        class="text-3xl font-semibold tracking-tight leading-8"
+                        style="color: #fff"
+                    >
+                        {{ titulo }}
+                    </div>
+
+                    <div class="font-medium tracking-tight" style="color: #fff">
+                        {{ subTitulo }}
+                    </div>
+                </div>
             </div>
-
-            <mat-option
-                class="select-all-companies"
-                style="font-size: 12px"
-                [value]="'-1'"
-                (click)="selectAllSellers()"
-                >{{
-                    allSellersSelected
-                        ? "Desmarcar Todos"
-                        : "Marcar Todos"
-                }}
-            </mat-option>
-
-            <mat-option
-                style="font-size: 12px"
-                *ngFor="
-                    let vendedor of filteredVendedoresStringList;
-                    let i = index
-                "
-                [value]="filteredVendedoresObjects[i].id.toString()"
-                (click)="
-                    handleSellersFilterSelect(
-                        filteredVendedoresObjects[i].id
-                    )
-                "
-                >{{ vendedor }}</mat-option
+            <div
+                class="flex flex-wrap justify-center md:justify-end lg:justify-end xl:justify-end 2xl:justify-end"
             >
-        </mat-select>
-    </mat-form-field>
+                <!-- FILTROS VVVVV -->
+                <!-- Filtros Filial -->
+                <mat-form-field
+                    class="sm:inline-flex ml-3 md:ml-0 lg:ml-0 xl:ml-0 2xl:ml-0"
+                    style="width: 150px"
+                    (click)="handleCompaniesFilterClick(dataInicio, dataFinal)"
+                >
+                    <mat-label style="font-size: 12px; color: #fff"
+                        >Filial</mat-label
+                    >
+                    <mat-select
+                        class="my-custom-class"
+                        style="font-size: 12px"
+                        [formControl]="filiais"
+                        multiple
+                    >
+                        <mat-option
+                            class="select-all-companies"
+                            style="font-size: 12px"
+                            [value]="'-1'"
+                            (click)="selectAllCompanies()"
+                            >{{
+                                allCompaniesSelected
+                                    ? "Desmarcar Todos"
+                                    : "Marcar Todos"
+                            }}</mat-option
+                        >
 
-    <!--Filtro Data-->
+                        <mat-option
+                            style="font-size: 12px"
+                            *ngFor="
+                                let filial of filiaisStringList;
+                                let i = index
+                            "
+                            [value]="filiaisObjects[i].id.toString()"
+                            (click)="
+                                handleCompanyFilterSelect(filiaisObjects[i].id)
+                            "
+                            >{{ filial }}</mat-option
+                        >
+                    </mat-select>
+                </mat-form-field>
 
-    <mat-form-field
-        class="sm:inline-flex ml-3"
-        style="width: 150px"
-    >
-        <mat-label style="font-size: 12px; color: #fff"
-            >Data Inicial
-            <input
-                type="checkbox"
-                [(ngModel)]="isChecked"
-                style="margin-left: 1rem"
-                (change)="resetDateInputs()"
-            />
-            Mensal</mat-label
-        >
-        <input
-            class="cursor-pointer"
-            style="font-size: 15px"
-            matInput
-            [formControl]="start"
-            [matDatepicker]="picker"
-            (click)="handleDatePickerClick($event, pickerToggle)"
-            (dateInput)="addEventBegin($event)"
-            readonly
-        />
+                <!-- Filtro Vendedor -->
+                <mat-form-field
+                    class="sm:inline-flex ml-3"
+                    style="width: 150px"
+                    (click)="handleSellersFilterClick(dataInicio, dataFinal)"
+                >
+                    <mat-label style="font-size: 12px; color: #fff"
+                        >Vendedor</mat-label
+                    >
+                    <mat-select
+                        style="font-size: 12px"
+                        [formControl]="vendedores"
+                        multiple
+                    >
+                        <div
+                            class="sellers-search-container flex justify-center"
+                        >
+                            <input
+                                class="sellers-search-input"
+                                type="text"
+                                placeholder="Buscar..."
+                                [formControl]="sellersSearchInput"
+                                (input)="onInput($event.target.value)"
+                            />
+                        </div>
 
-        <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
-        <mat-datepicker-toggle
-            #pickerToggle
-            matIconSuffix
-            [for]="picker"
-        ></mat-datepicker-toggle>
+                        <mat-option
+                            class="select-all-companies"
+                            style="font-size: 12px"
+                            [value]="'-1'"
+                            (click)="selectAllSellers()"
+                            >{{
+                                allSellersSelected
+                                    ? "Desmarcar Todos"
+                                    : "Marcar Todos"
+                            }}
+                        </mat-option>
 
-        <mat-datepicker
-            #picker
-            [startView]="isChecked ? 'year' : 'month'"
-            (monthSelected)="
-                isChecked ? setInitialMY($event, picker) : undefined
-            "
-        ></mat-datepicker>
-    </mat-form-field>
+                        <mat-option
+                            style="font-size: 12px"
+                            *ngFor="
+                                let vendedor of filteredVendedoresStringList;
+                                let i = index
+                            "
+                            [value]="filteredVendedoresObjects[i].id.toString()"
+                            (click)="
+                                handleSellersFilterSelect(
+                                    filteredVendedoresObjects[i].id
+                                )
+                            "
+                            >{{ vendedor }}</mat-option
+                        >
+                    </mat-select>
+                </mat-form-field>
 
-    <mat-form-field
-        class="sm:inline-flex ml-3"
-        style="width: 150px"
-    >
-        <mat-label style="font-size: 12px; color: #fff"
-            >Data Final
-        </mat-label>
+                <!--Filtro Data-->
 
-        <input
-            class="cursor-pointer"
-            style="font-size: 15px"
-            matInput
-            [formControl]="end"
-            [matDatepicker]="pickerFinal"
-            (click)="
-                handleDatePickerClick($event, pickerToggleFinal)
-            "
-            (dateInput)="addEventEnd($event)"
-            readonly
-            [max]="start.value ? start.value : today"
-        />
+                <mat-form-field
+                    class="sm:inline-flex ml-3"
+                    style="width: 150px"
+                >
+                    <mat-label style="font-size: 12px; color: #fff"
+                        >Data Inicial
+                        <input
+                            type="checkbox"
+                            [(ngModel)]="isChecked"
+                            style="margin-left: 1rem"
+                            (change)="resetDateInputs()"
+                        />
+                        Mensal</mat-label
+                    >
+                    <input
+                        class="cursor-pointer"
+                        style="font-size: 15px"
+                        matInput
+                        [formControl]="start"
+                        [matDatepicker]="picker"
+                        (click)="handleDatePickerClick($event, pickerToggle)"
+                        (dateInput)="addEventBegin($event)"
+                        readonly
+                    />
 
-        <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
-        <mat-datepicker-toggle
-            #pickerToggleFinal
-            matIconSuffix
-            [for]="pickerFinal"
-        ></mat-datepicker-toggle>
+                    <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
+                    <mat-datepicker-toggle
+                        #pickerToggle
+                        matIconSuffix
+                        [for]="picker"
+                    ></mat-datepicker-toggle>
 
-        <mat-datepicker
-            #pickerFinal
-            [startView]="isChecked ? 'year' : 'month'"
-            (monthSelected)="
-                isChecked
-                    ? setFinalMY($event, pickerFinal)
-                    : undefined
-            "
-        ></mat-datepicker>
-        <!-- <mat-error
+                    <mat-datepicker
+                        #picker
+                        [startView]="isChecked ? 'year' : 'month'"
+                        (monthSelected)="
+                            isChecked ? setInitialMY($event, picker) : undefined
+                        "
+                    ></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field
+                    class="sm:inline-flex ml-3"
+                    style="width: 150px"
+                >
+                    <mat-label style="font-size: 12px; color: #fff"
+                        >Data Final
+                    </mat-label>
+
+                    <input
+                        class="cursor-pointer"
+                        style="font-size: 15px"
+                        matInput
+                        [formControl]="end"
+                        [matDatepicker]="pickerFinal"
+                        (click)="
+                            handleDatePickerClick($event, pickerToggleFinal)
+                        "
+                        (dateInput)="addEventEnd($event)"
+                        readonly
+                        [max]="start.value ? start.value : today"
+                    />
+
+                    <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
+                    <mat-datepicker-toggle
+                        #pickerToggleFinal
+                        matIconSuffix
+                        [for]="pickerFinal"
+                    ></mat-datepicker-toggle>
+
+                    <mat-datepicker
+                        #pickerFinal
+                        [startView]="isChecked ? 'year' : 'month'"
+                        (monthSelected)="
+                            isChecked
+                                ? setFinalMY($event, pickerFinal)
+                                : undefined
+                        "
+                    ></mat-datepicker>
+                    <!-- <mat-error
                 *ngIf="
                     convDataIni &&
                     convDataFin &&
@@ -219,30 +223,33 @@
                 "
                 >Data final inválida</mat-error
             > -->
-    </mat-form-field>
+                </mat-form-field>
 
-<!-- FILTROS ^^^^^ -->
-        </div>
-<!-- Botão de confirmar filtro, adicionar evento de (click) -->
+                <!-- FILTROS ^^^^^ -->
+            </div>
+            <!-- Botão de confirmar filtro, adicionar evento de (click) -->
             <button
-                class=" sm:inline-flex ml-5 apply-button"
+                class="sm:inline-flex ml-5 apply-button"
                 style="width: 120px"
                 mat-flat-button
                 [color]="'primary'"
                 (click)="
-                            handleApplyFilter(
-                                dataInicio,
-                                dataFinal,
-                                filiais.value,
-                                vendedores.value
-                            )
-                        ">
+                    handleApplyFilter(
+                        dataInicio,
+                        dataFinal,
+                        filiais.value,
+                        vendedores.value
+                    )
+                "
+            >
                 <span style="font-size: 12px">Aplicar</span>
             </button>
         </div>
     </div>
-    <div class="relative w-full h-full flex flex-col sm:flex-col md:flex-col lg:flex-col xl:flex-col 2xl:flex-col mt-1">
-    <!-- COMPONENTES ABAIXO -->
+    <div
+        class="relative w-full h-full flex flex-col sm:flex-col md:flex-col lg:flex-col xl:flex-col 2xl:flex-col mt-1"
+    >
+        <!-- COMPONENTES ABAIXO -->
         <!-- Colocar class="grid px-2 py-2 w-12/12 rounded-2xl bg-card shadow mb-1" em todos componentes-->
         <div class="flex flex-wrap w-full max-w-screen-xl mx-auto p-1 md:p-1">
             <!-- Rol vs Rol realizada -->
@@ -370,8 +377,12 @@
                         >
                             MÁX
                         </div>
-                        <div class="mt-2 font-medium text-lg leading-none tooltip">
-                            {{ data.previousStatement.LIMITE | currency : "BRL" }}
+                        <div
+                            class="mt-2 font-medium text-lg leading-none tooltip"
+                        >
+                            {{
+                                data.previousStatement.LIMITE | currency : "BRL"
+                            }}
                             <span class="tooltiptext">{{
                                 maxRolSellerName + " - " + maxRolSellerBranch
                             }}</span>
@@ -383,8 +394,12 @@
                         >
                             MÍN
                         </div>
-                        <div class="mt-2 font-medium text-lg leading-none tooltip">
-                            {{ data.previousStatement.SPENT | currency : "BRL" }}
+                        <div
+                            class="mt-2 font-medium text-lg leading-none tooltip"
+                        >
+                            {{
+                                data.previousStatement.SPENT | currency : "BRL"
+                            }}
                             <span class="tooltiptext">{{
                                 minRolSellerName + " - " + minRolSellerBranch
                             }}</span>
@@ -397,13 +412,18 @@
                             Média
                         </div>
                         <div class="mt-2 font-medium text-lg leading-none">
-                            {{ data.previousStatement.MINIMUM | currency : "BRL" }}
+                            {{
+                                data.previousStatement.MINIMUM
+                                    | currency : "BRL"
+                            }}
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="flex flex-wrap w-full max-w-screen-xl mx-auto md:pt-1 pb-1">
+            <div
+                class="flex flex-wrap w-full max-w-screen-xl mx-auto md:pt-1 pb-1"
+            >
                 <!-- Gráfico - Metas atingidas -->
                 <div
                     class="flex flex-col w-44 h-60 bg-card shadow rounded-2xl overflow-hidden p-3"
@@ -412,7 +432,9 @@
                         <div
                             class="text-lg font-medium tracking-tight leading-6 truncate"
                         >
-                            <p style="font-size: 12px">Metas de Vendas Atingidas</p>
+                            <p style="font-size: 12px">
+                                Metas de Vendas Atingidas
+                            </p>
                         </div>
                     </div>
                     <div class="flex flex-col flex-auto mt-6">
@@ -513,10 +535,13 @@
                                     >
                                         {{
                                             dataset
-                                                ? dataset.toLocaleString("pt-BR", {
-                                                      style: "currency",
-                                                      currency: "BRL"
-                                                  })
+                                                ? dataset.toLocaleString(
+                                                      "pt-BR",
+                                                      {
+                                                          style: "currency",
+                                                          currency: "BRL"
+                                                      }
+                                                  )
                                                 : dataset
                                         }}
                                     </div>
@@ -588,8 +613,12 @@
                                     [grid]="chartGithubIssues.grid"
                                     [labels]="chartGithubIssues.labels"
                                     [legend]="chartGithubIssues.legend"
-                                    [plotOptions]="chartGithubIssues.plotOptions"
-                                    [series]="chartGithubIssues.series['this-year']"
+                                    [plotOptions]="
+                                        chartGithubIssues.plotOptions
+                                    "
+                                    [series]="
+                                        chartGithubIssues.series['this-year']
+                                    "
                                     [states]="chartGithubIssues.states"
                                     [stroke]="chartGithubIssues.stroke"
                                     [tooltip]="chartGithubIssues.tooltip"
@@ -666,7 +695,8 @@
                                         <!-- Conditional formatting for BRL currency -->
                                         {{
                                             (rankingRolHeaders[i] === "Meta" ||
-                                                rankingRolHeaders[i] === "ROL") &&
+                                                rankingRolHeaders[i] ===
+                                                    "ROL") &&
                                             transaction[column]
                                                 ? transaction[
                                                       column
@@ -685,7 +715,9 @@
                             </ng-container>
 
                             <!-- Footer -->
-                            <ng-container matColumnDef="recentOrdersTableFooter">
+                            <ng-container
+                                matColumnDef="recentOrdersTableFooter"
+                            >
                                 <td
                                     class="py-6 px-0 border-0"
                                     mat-footer-cell
@@ -701,7 +733,9 @@
                             <tr
                                 class="order-row h-6"
                                 mat-header-row
-                                *matHeaderRowDef="recentTransactionsTableColumns"
+                                *matHeaderRowDef="
+                                    recentTransactionsTableColumns
+                                "
                             ></tr>
                             <tr
                                 class="order-row h-6"
@@ -783,7 +817,9 @@
                             </ng-container>
 
                             <!-- Footer -->
-                            <ng-container matColumnDef="recentOrdersTableFooter">
+                            <ng-container
+                                matColumnDef="recentOrdersTableFooter"
+                            >
                                 <td
                                     class="py-6 px-0 border-0"
                                     mat-footer-cell
@@ -799,7 +835,9 @@
                             <tr
                                 class="order-row h-6"
                                 mat-header-row
-                                *matHeaderRowDef="recentTransactionsTableColumns2"
+                                *matHeaderRowDef="
+                                    recentTransactionsTableColumns2
+                                "
                             ></tr>
                             <tr
                                 class="order-row h-6 row-enhance"
@@ -822,10 +860,4 @@
     </div>
 </div>
 
-
 <!--  -->
-
-
-
-
-
