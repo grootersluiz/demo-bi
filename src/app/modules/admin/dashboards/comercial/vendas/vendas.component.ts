@@ -11,7 +11,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'globaldash',
+    selector: 'vendasdash',
     templateUrl: './vendas.component.html',
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
