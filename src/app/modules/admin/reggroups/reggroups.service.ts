@@ -108,8 +108,10 @@ export class ReggroupsService {
                     // Convert the input name to lowercase
                     const searchName = name.toLowerCase();
                     // Filter groups whose name contains the searchName (case-insensitive)
-                    const filteredGroups = groups['data'].filter((group) =>
-                        group.name.toLowerCase().includes(searchName)
+                    const filteredGroups = groups['data'].filter(
+                        (group) =>
+                            group.name.toLowerCase().includes(searchName) ||
+                            group.id.toString().includes(searchName)
                     );
                     // Sort the filtered groups by name (case-insensitive)
                     const orderedGroups = filteredGroups.sort((a, b) =>

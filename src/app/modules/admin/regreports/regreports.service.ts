@@ -116,8 +116,10 @@ export class RegreportsService {
                     // Convert the input name to lowercase
                     const searchName = name.toLowerCase();
                     // Filter reports whose name contains the searchName (case-insensitive)
-                    const filteredReports = reports['data'].filter((report) =>
-                        report.name.toLowerCase().includes(searchName)
+                    const filteredReports = reports['data'].filter(
+                        (report) =>
+                            report.name.toLowerCase().includes(searchName) ||
+                            report.id.toString().includes(searchName)
                     );
                     // Sort the filtered reports by name (case-insensitive)
                     const orderedReports = filteredReports.sort((a, b) =>
