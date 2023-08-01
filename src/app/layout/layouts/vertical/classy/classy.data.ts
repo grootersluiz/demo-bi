@@ -70,7 +70,7 @@ export const navigationData: Navigation = {
                         },
                         {
                             id: '258',
-                            title: 'Clientes Compradores',
+                            title: 'Vendas',
                             type: 'basic',
                             icon: 'material_outline:bar_chart',
                             link: '/dashboards/258',

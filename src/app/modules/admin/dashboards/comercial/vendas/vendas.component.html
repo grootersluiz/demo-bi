@@ -237,150 +237,81 @@
                 </div>
             </div>
         </div>
-        <div class="flex w-full max-w-screen-xl mx-auto md:pt-1 pb-1">
-            <!--CC x Metas-->
 
-            <div
-                class="relative flex flex-col flex-auto h-60 p-3 bg-card shadow rounded-2xl overflow-hidden ml-1"
+        <div class="relative w-full max-w-screen-xl mx-auto">
+            <!-- Tabs -->
+            <mat-tab-group
+                class="sm:px-2"
+                mat-stretch-tabs="false"
+                [animationDuration]="'0'"
             >
-                <div
-                    class="flex flex-col sm:flex-row items-start justify-between"
-                >
-                    <div
-                        class="text-lg font-medium tracking-tight leading-6 truncate"
-                    >
-                        CC x Metas
-                    </div>
-                </div>
-                <div
-                    class="grid grid-cols-1 lg:grid-cols-1 grid-flow-row gap-6 w-full mt-8 sm:mt-4"
-                >
-                    <div class="flex flex-col flex-auto">
-                        <div class="flex flex-col flex-auto">
-                            <apx-chart
-                                class="flex-auto w-full h-50 pb-1"
-                                [chart]="chartCC.chart"
-                                [colors]="chartCC.colors"
-                                [dataLabels]="chartCC.dataLabels"
-                                [grid]="chartCC.grid"
-                                [labels]="chartCC.labels"
-                                [legend]="chartCC.legend"
-                                [plotOptions]="chartCC.plotOptions"
-                                [series]="chartCC.series['this-year']"
-                                [states]="chartCC.states"
-                                [stroke]="chartCC.stroke"
-                                [tooltip]="chartCC.tooltip"
-                                [xaxis]="chartCC.xaxis"
-                                [yaxis]="chartCC.yaxis"
-                            ></apx-chart>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Gráfico - TKM -->
-            <div
-                class="relative flex flex-col w-44 h-60 bg-card shadow rounded-2xl overflow-hidden p-3 ml-1"
-            >
-                <div class="flex items-start justify-between">
-                    <div
-                        class="text-lg font-medium tracking-tight leading-6 truncate"
-                    >
-                        <p style="font-size: 12px">TKM - Ticket Médio</p>
-                    </div>
-                </div>
-                <div class="flex flex-col flex-auto mt-6">
-                    <apx-chart
-                        class="flex flex-auto items-center justify-center w-full h-full"
-                        [chart]="chartTKM.chart"
-                        [colors]="chartTKM.colors"
-                        [labels]="chartTKM.labels"
-                        [plotOptions]="chartTKM.plotOptions"
-                        [series]="chartTKM.series"
-                        [states]="chartTKM.states"
-                        [tooltip]="chartTKM.tooltip"
-                    ></apx-chart>
-                </div>
-                <div class="mt-8">
-                    <div class="-my-3 divide-y">
-                        <ng-container
-                            *ngFor="
-                                let dataset of data.tkm.series;
-                                let i = index
-                            "
+                <!-- CC -->
+                <mat-tab label="Clientes Compradores">
+                    <ng-template matTabContent>
+                        <div
+                            class="flex w-full max-w-screen-xl mx-auto md:pt-1 pb-1"
                         >
-                            <div class="grid grid-cols-2 py-2">
-                                <div class="flex items-center">
-                                    <div
-                                        class="flex-0 w-2 h-2 rounded-full"
-                                        [style.backgroundColor]="
-                                            chartTKM.colors[i]
-                                        "
-                                    ></div>
-                                    <div
-                                        class="ml-3 truncate"
-                                        style="font-size: 10px"
-                                    >
-                                        {{ chartTKM.labels[i] }}
-                                    </div>
+                            <div class="flex flex-col flex-auto gap-1">
+                                <div
+                                    class="relative flex flex-col h-60 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
+                                >
+                                    <apx-chart
+                                        [series]="chartCC.series"
+                                        [chart]="chartCC.chart"
+                                        [colors]="chartCC.colors"
+                                        [xaxis]="chartCC.xaxis"
+                                        [stroke]="chartCC.stroke"
+                                        [dataLabels]="chartCC.dataLabels"
+                                        [yaxis]="chartCC.yaxis"
+                                        [labels]="chartCC.labels"
+                                        [legend]="chartCC.legend"
+                                        [title]="chartCC.title"
+                                        [subtitle]="chartCC.subtitle"
+                                    ></apx-chart>
                                 </div>
                                 <div
-                                    class="font-medium text-right"
-                                    style="font-size: 10px"
+                                    class="relative flex flex-col h-60 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
                                 >
-                                    {{
-                                        dataset
-                                            ? dataset.toLocaleString("pt-BR", {
-                                                  style: "currency",
-                                                  currency: "BRL"
-                                              })
-                                            : dataset
-                                    }}
+                                    <apx-chart
+                                        [series]="chartAnual.series"
+                                        [chart]="chartAnual.chart"
+                                        [dataLabels]="chartAnual.dataLabels"
+                                        [plotOptions]="chartAnual.plotOptions"
+                                        [yaxis]="chartAnual.yaxis"
+                                        [legend]="chartAnual.legend"
+                                        [fill]="chartAnual.fill"
+                                        [stroke]="chartAnual.stroke"
+                                        [tooltip]="chartAnual.tooltip"
+                                        [xaxis]="chartAnual.xaxis"
+                                    ></apx-chart>
                                 </div>
                             </div>
-                        </ng-container>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="flex w-full max-w-screen-xl mx-auto md:pb-1">
-            <div
-                class="relative flex flex-col flex-auto h-60 bg-card shadow rounded-2xl overflow-hidden p-3 ml-1"
-            >
-                <div class="flex flex-col flex-auto">
-                    <apx-chart
-                        [series]="chartVendasDia.series"
-                        [chart]="chartVendasDia.chart"
-                        [colors]="chartVendasDia.colors"
-                        [xaxis]="chartVendasDia.xaxis"
-                        [stroke]="chartVendasDia.stroke"
-                        [dataLabels]="chartVendasDia.dataLabels"
-                        [yaxis]="chartVendasDia.yaxis"
-                        [labels]="chartVendasDia.labels"
-                        [legend]="chartVendasDia.legend"
-                        [title]="chartVendasDia.title"
-                        [subtitle]="chartVendasDia.subtitle"
-                    ></apx-chart>
-                </div>
-            </div>
-            <div
-                class="relative flex flex-col flex-auto h-60 bg-card shadow rounded-2xl overflow-hidden p-3 ml-1"
-            >
-                <div class="flex flex-col flex-auto">
-                    <apx-chart
-                        [series]="chartMetaMes.series"
-                        [chart]="chartMetaMes.chart"
-                        [colors]="chartMetaMes.colors"
-                        [xaxis]="chartMetaMes.xaxis"
-                        [stroke]="chartMetaMes.stroke"
-                        [dataLabels]="chartMetaMes.dataLabels"
-                        [yaxis]="chartMetaMes.yaxis"
-                        [labels]="chartMetaMes.labels"
-                        [legend]="chartMetaMes.legend"
-                        [title]="chartMetaMes.title"
-                        [subtitle]="chartMetaMes.subtitle"
-                    ></apx-chart>
-                </div>
-            </div>
+
+                            <div
+                                class="relative flex flex-col w-120 h-121 bg-card shadow rounded-2xl overflow-hidden p-3"
+                            >
+                                <apx-chart
+                                    [series]="chartByCurve.series"
+                                    [chart]="chartByCurve.chart"
+                                    [xaxis]="chartByCurve.xaxis"
+                                    [stroke]="chartByCurve.stroke"
+                                    [colors]="chartByCurve.colors"
+                                    [dataLabels]="chartByCurve.dataLabels"
+                                    [tooltip]="chartByCurve.tooltip"
+                                    [plotOptions]="chartByCurve.plotOptions"
+                                    [markers]="chartByCurve.markers"
+                                    [yaxis]="chartByCurve.yaxis"
+                                    [fill]="chartByCurve.fill"
+                                    [title]="chartByCurve.title"
+                                ></apx-chart>
+                            </div>
+                        </div>
+                    </ng-template>
+                </mat-tab>
+                <mat-tab label="Performance Consultores">
+                    <ng-template matTabContent> </ng-template>
+                </mat-tab>
+            </mat-tab-group>
         </div>
     </div>
 </div>

@@ -26,10 +26,9 @@ import * as _moment from 'moment';
     styleUrls: ['../../../util/css/css.component.scss'],
 })
 export class VendasDashComponent implements OnInit {
-    chartTKM: ApexOptions;
-    chartCC: ApexOptions = {};
-    chartVendasDia: ApexOptions;
-    chartMetaMes: ApexOptions;
+    chartCC: ApexOptions;
+    chartByCurve: ApexOptions;
+    chartAnual: ApexOptions;
     data: any;
 
     // Filtros principais do dashboard
@@ -60,8 +59,8 @@ export class VendasDashComponent implements OnInit {
 
     isChecked: boolean;
     isToggleOn: boolean;
-    titulo: string = 'CC';
-    subTitulo: string = 'Clientes Compradores';
+    titulo: string = 'Vendas';
+    subTitulo: string = 'Indicadores de Vendas';
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -375,300 +374,24 @@ export class VendasDashComponent implements OnInit {
      * @private
      */
     private _prepareChartData(): void {
-        // TKM
-        this.chartTKM = {
-            chart: {
-                animations: {
-                    speed: 400,
-                    animateGradually: {
-                        enabled: false,
-                    },
-                },
-                fontFamily: 'inherit',
-                foreColor: 'inherit',
-                height: '60%',
-                type: 'donut',
-                sparkline: {
-                    enabled: true,
-                },
-            },
-            colors: ['#FF8C00', '#94A3B8'],
-            labels: this.data.tkm.labels,
-            plotOptions: {
-                pie: {
-                    customScale: 0.9,
-                    expandOnClick: false,
-                    donut: {
-                        size: '70%',
-                    },
-                },
-            },
-            series: this.data.tkm.series,
-            states: {
-                hover: {
-                    filter: {
-                        type: 'none',
-                    },
-                },
-                active: {
-                    filter: {
-                        type: 'none',
-                    },
-                },
-            },
-            tooltip: {
-                enabled: true,
-                fillSeriesColor: false,
-                theme: 'dark',
-                custom: ({
-                    seriesIndex,
-                    w,
-                }): string => `<div class="flex items-center h-8 min-h-8 max-h-8 px-3">
-                                                 <div class="w-3 h-3 rounded-full" style="background-color: ${
-                                                     w.config.colors[
-                                                         seriesIndex
-                                                     ]
-                                                 };"></div>
-                                                 <div class="ml-2 text-md leading-none">${
-                                                     w.config.labels[
-                                                         seriesIndex
-                                                     ]
-                                                 }:</div>
-                                                 <div class="ml-2 text-md font-bold leading-none">${(
-                                                     (w.config.series[
-                                                         seriesIndex
-                                                     ] *
-                                                         100) /
-                                                     w.config.series[0]
-                                                 ).toFixed(2)}%</div>
-                                             </div>`,
-            },
-        };
-
-        //CC vs Metas
+        // Clientes Compradores
 
         this.chartCC = {
-            chart: {
-                fontFamily: 'inherit',
-                foreColor: 'inherit',
-                height: '100%',
-                type: 'line',
-                toolbar: {
-                    show: false,
-                },
-                zoom: {
-                    enabled: false,
-                },
-            },
-            colors: ['#FF8C00', '#94A3B8'],
-            dataLabels: {
-                enabled: true,
-                enabledOnSeries: [0],
-                background: {
-                    borderWidth: 0,
-                },
-            },
-            grid: {
-                borderColor: 'var(--fuse-border)',
-            },
-            labels: this.data.ccXMeta.labels,
-            legend: {
-                show: false,
-            },
-            plotOptions: {
-                bar: {
-                    columnWidth: '50%',
-                },
-            },
-            series: this.data.ccXMeta.series,
-            states: {
-                hover: {
-                    filter: {
-                        type: 'darken',
-                        value: 0.75,
-                    },
-                },
-            },
-            stroke: {
-                width: [3, 0],
-            },
-            tooltip: {
-                followCursor: true,
-                theme: 'dark',
-            },
-            xaxis: {
-                axisBorder: {
-                    show: false,
-                },
-                axisTicks: {
-                    color: 'var(--fuse-border)',
-                },
-                labels: {
-                    style: {
-                        colors: 'var(--fuse-text-secondary)',
-                    },
-                },
-                tooltip: {
-                    enabled: false,
-                },
-            },
-            yaxis: {
-                labels: {
-                    offsetX: -16,
-                    style: {
-                        colors: 'var(--fuse-text-secondary)',
-                    },
-                },
-            },
-        };
-
-        // Vendas diárias
-
-        this.chartVendasDia = {
             series: [
                 {
-                    name: 'Vendas',
-                    data: [
-                        8107.85, 8128.0, 8122.9, 8165.5, 8340.7, 8423.7, 8423.5,
-                        8514.3, 8481.85, 8487.7, 8506.9, 8626.2, 8668.95,
-                        8602.3, 8607.55, 8512.9, 8496.25, 8600.65, 8881.1,
-                        9340.85,
-                    ],
-                },
-            ],
-            chart: {
-                fontFamily: 'inherit',
-                type: 'area',
-                height: 220,
-                zoom: {
-                    enabled: false,
-                },
-                locales: [
-                    {
-                        name: 'pt-br',
-                        options: {
-                            months: [
-                                'Janeiro',
-                                'Fevereiro',
-                                'Março',
-                                'Abril',
-                                'Maio',
-                                'Junho',
-                                'Julho',
-                                'Agosto',
-                                'Setembro',
-                                'Outubro',
-                                'Novembro',
-                                'Dezembro',
-                            ],
-                            shortMonths: [
-                                'Jan',
-                                'Fev',
-                                'Mar',
-                                'Abr',
-                                'Mai',
-                                'Jun',
-                                'Jul',
-                                'Ago',
-                                'Set',
-                                'Out',
-                                'Nov',
-                                'Dez',
-                            ],
-                            days: [
-                                'Domingo',
-                                'Segunda',
-                                'Terça',
-                                'Quarta',
-                                'Quinta',
-                                'Sexta',
-                                'Sábado',
-                            ],
-                            shortDays: [
-                                'Dom',
-                                'Seg',
-                                'Ter',
-                                'Qua',
-                                'Qui',
-                                'Sex',
-                                'Sab',
-                            ],
-                            toolbar: {
-                                exportToSVG: 'Baixar SVG',
-                                exportToPNG: 'Baixar PNG',
-                                exportToCSV: 'Baixar CSV',
-                                menu: 'Menu',
-                                selection: 'Selecionar',
-                                selectionZoom: 'Selecionar Zoom',
-                                zoomIn: 'Aumentar',
-                                zoomOut: 'Diminuir',
-                                pan: 'Navegação',
-                                reset: 'Reiniciar Zoom',
-                            },
-                        },
-                    },
-                ],
-                defaultLocale: 'pt-br',
-            },
-            colors: ['#FF8C00'],
-            dataLabels: {
-                enabled: false,
-            },
-            stroke: {
-                curve: 'straight',
-                width: 1,
-            },
-
-            title: {
-                text: 'Análise de Vendas',
-                align: 'left',
-            },
-            subtitle: {
-                text: 'Vendas diárias',
-                align: 'left',
-            },
-            labels: [
-                '13 Nov 2017',
-                '14 Nov 2017',
-                '15 Nov 2017',
-                '16 Nov 2017',
-                '17 Nov 2017',
-                '20 Nov 2017',
-                '21 Nov 2017',
-                '22 Nov 2017',
-                '23 Nov 2017',
-                '24 Nov 2017',
-                '27 Nov 2017',
-                '28 Nov 2017',
-                '29 Nov 2017',
-                '30 Nov 2017',
-                '01 Dec 2017',
-                '04 Dec 2017',
-                '05 Dec 2017',
-                '06 Dec 2017',
-                '07 Dec 2017',
-                '08 Dec 2017',
-            ],
-            xaxis: {
-                type: 'datetime',
-            },
-            yaxis: {
-                opposite: true,
-            },
-            legend: {
-                horizontalAlign: 'left',
-            },
-        };
-
-        this.chartMetaMes = {
-            series: [
-                {
-                    name: 'Metas',
+                    name: 'Dentro da carteira',
                     data: [
                         8107.85, 8128.0, 8122.9, 8165.5, 8340.7, 8423.7, 8423.5,
                         8514.3, 8481.85, 8487.7, 8506.9, 8626.2,
                     ],
                 },
+                {
+                    name: 'Fora da carteira',
+                    data: [
+                        8423.5, 8514.3, 8481.85, 8487.7, 8506.9, 8626.2,
+                        8668.95, 8496.25, 8600.65, 8881.1, 9340.85, 8602.3,
+                    ],
+                },
             ],
             chart: {
                 fontFamily: 'inherit',
@@ -744,7 +467,7 @@ export class VendasDashComponent implements OnInit {
                 ],
                 defaultLocale: 'pt-br',
             },
-            colors: ['#94A3B8'],
+            colors: ['#FF8C00', '#94A3B8'],
             dataLabels: {
                 enabled: false,
             },
@@ -754,11 +477,11 @@ export class VendasDashComponent implements OnInit {
             },
 
             title: {
-                text: 'Análise de Metas',
+                text: 'Clientes Compradores',
                 align: 'left',
             },
             subtitle: {
-                text: 'Metas Mensais',
+                text: 'Dentro/Fora da carteira',
                 align: 'left',
             },
             labels: [
@@ -783,6 +506,121 @@ export class VendasDashComponent implements OnInit {
             },
             legend: {
                 horizontalAlign: 'left',
+            },
+        };
+
+        // CC por curva
+        this.chartByCurve = {
+            series: [
+                {
+                    name: 'Dentro da carteira',
+                    data: [20, 100, 40, 30, 50],
+                },
+                {
+                    name: 'Fora da carteira',
+                    data: [6, 74, 26, 12, 37],
+                },
+            ],
+            chart: {
+                height: 400,
+                type: 'radar',
+            },
+            dataLabels: {
+                enabled: true,
+            },
+            plotOptions: {
+                radar: {
+                    size: 170,
+                    polygons: {
+                        fill: {
+                            colors: ['#f8f8f8', '#fff'],
+                        },
+                    },
+                },
+            },
+            title: {
+                text: 'CC por curva',
+            },
+            colors: ['#FF8C00', '#94A3B8'],
+            markers: {
+                size: 4,
+                colors: ['#FF8C00', '#94A3B8'],
+                strokeColors: ['#FF4560'],
+                strokeWidth: 2,
+            },
+            tooltip: {
+                theme: 'dark',
+                y: {
+                    formatter: (val: number): string => `${val}`,
+                },
+            },
+            xaxis: {
+                categories: ['A', 'B', 'C', 'N', 'Vazio'],
+            },
+            yaxis: {
+                tickAmount: 7,
+                labels: {
+                    formatter: (val: number): string => `${val}`,
+                },
+            },
+        };
+
+        //CC Anual
+
+        this.chartAnual = {
+            series: [
+                {
+                    name: 'C. Positivados DC',
+                    data: [44, 55, 57],
+                },
+                {
+                    name: 'C. Não Positivados DC',
+                    data: [76, 85, 101],
+                },
+                {
+                    name: 'C. Positivados FC',
+                    data: [35, 41, 36],
+                },
+                {
+                    name: 'C. Não Positivados FC',
+                    data: [63, 60, 66],
+                },
+            ],
+            chart: {
+                type: 'bar',
+                height: 220,
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '55%',
+                },
+            },
+            dataLabels: {
+                enabled: false,
+            },
+            stroke: {
+                show: true,
+                width: 2,
+                colors: ['transparent'],
+            },
+            xaxis: {
+                categories: ['2021', '2022', '2023'],
+            },
+            yaxis: {
+                title: {
+                    text: 'Clientes',
+                },
+            },
+            fill: {
+                opacity: 1,
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return val.toString();
+                    },
+                },
             },
         };
     }
