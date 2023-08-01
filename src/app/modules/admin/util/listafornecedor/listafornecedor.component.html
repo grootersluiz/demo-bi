@@ -1,0 +1,49 @@
+<mat-form-field
+        class="sm:inline-flex ml-3"
+        style="width: 200px"
+    >
+        <mat-label style="font-size: 12px; color: #fff">
+            Fornecedor
+        </mat-label>
+            <mat-select
+                style="font-size: 11px"
+                [formControl]="fornecedores"
+                multiple
+            >
+                <div
+                    class="sellers-search-container flex justify-center"
+                >
+                    <input
+                        class="sellers-search-input"
+                        type="text"
+                        placeholder="Buscar..."
+                        [formControl]="sellersSearchInput"
+                        (input)="onInput($event.target.value)"
+                    />
+                </div>
+
+                <mat-option
+                    class="select-all-companies"
+                    style="font-size: 12px"
+                    [value]="'-1'"
+                    (click)="selectAllSellers()"
+                    >{{
+                        allSellersSelected
+                            ? "Desmarcar Todos"
+                            : "Marcar Todos"
+                    }}
+                </mat-option>
+
+            <mat-option
+                style="font-size: 11px"
+                *ngFor="
+                    let fornecedor of filteredFornecedoresStringList;
+                    let i = index
+                "
+                [value]="filteredFornecedoresObjects[i].id.toString()"
+                (click)=" handleSellersFilterSelect(filteredFornecedoresObjects[i].id)"
+            >
+                {{ fornecedor }}
+            </mat-option>
+        </mat-select>
+</mat-form-field>
