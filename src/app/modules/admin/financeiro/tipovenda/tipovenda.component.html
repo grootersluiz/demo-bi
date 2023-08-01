@@ -35,7 +35,7 @@
             </div>
             <div class="flex flex-wrap justify-end">
                 <!-- FILTROS VVVVV -->
-                <app-selectfilial></app-selectfilial>
+                <app-selectfilial #filial></app-selectfilial>
                 <!-- FILTROS ^^^^^ -->
             </div>
             <!-- Botão de confirmar filtro, adicionar evento de (click) -->
@@ -44,6 +44,11 @@
                 style="width: 120px"
                 mat-flat-button
                 [color]="'primary'"
+                (click)="
+                    consultavendafilial(
+                        filial.filiais.value
+                    )
+                "
             >
                 <span style="font-size: 12px">Aplicar</span>
             </button>

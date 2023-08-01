@@ -13,6 +13,7 @@ import { ApexOptions } from 'apexcharts';
 import _ from 'lodash';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
+import { categories } from '../../../../mock-api/apps/ecommerce/inventory/data';
 
 @Component({
     selector: 'tipovenda',
@@ -48,9 +49,19 @@ export class tipovendaComponent implements AfterViewInit {
     labelsPie: any = [];
     seriesPie2: any = [];
     labelsPie2: any = [];
-    categories: any = [];
-    categories2: any = [];
-    auxMes: string;
+    categories = [];
+    categories2 = [];
+    auxMes1: string;
+    auxMes2: string;
+
+    param = {
+        mes: null,
+        ano: null,
+        ultDia:null,
+        filial:null,
+        descFilial: null,
+        marca: null
+      };
 
     meses = [
         ['Jan', '01'],
@@ -112,7 +123,7 @@ export class tipovendaComponent implements AfterViewInit {
         },
     ];
 
-    ngAfterViewInit() {
+    SetGeral(){
         this._tipovendaService.getSeriesPie().subscribe((dataresponse) => {
             this.series.columns = dataresponse.columns;
             this.series.rows = dataresponse.rows;
@@ -133,7 +144,9 @@ export class tipovendaComponent implements AfterViewInit {
             this.series4.rows = dataresponse.rows;
             this.setDataM2();
         });
-
+    }
+    ngAfterViewInit() {
+        this.SetGeral();
         // Primeiro, crie um objeto para armazenar as somas temporárias
         const tempTotals = {};
 
@@ -165,6 +178,8 @@ export class tipovendaComponent implements AfterViewInit {
         for (let index = 0; index < this.series.rows.length; index++) {
             this.labelsPie[index] = this.series.rows[index][0];
         }
+        this.chartOptionsPie.series = this.seriesPie;
+        this.chartOptionsPie.labels = this.labelsPie;
         var reflow = new ApexCharts(this.chartPie, this.chartOptionsPie);
     }
     setDataM1() {
@@ -178,14 +193,16 @@ export class tipovendaComponent implements AfterViewInit {
                     this.seriesM1[index1].name = this.series2.rows[index][1];
                 this.seriesM1[index1].data.push(this.series2.rows[index][2]);
             }
-            this.auxMes = this.series2.rows[index - 1][0];
+            this.auxMes1 = this.series2.rows[index - 1][0];
             for (let aux = 0; aux < this.meses.length; aux++) {
-                if (this.meses[aux][1] === this.auxMes.substring(0, 2)) {
+                if (this.meses[aux][1] === this.auxMes1.substring(0, 2)) {
                     this.categories[indexdata] = this.meses[aux][0];
                     break;
                 }
             }
         }
+        this.chartOptions1.series = this.seriesM1;
+        this.chartOptions1.xaxis.categories = this.categories;
         var reflow = new ApexCharts(this.chart, this.chartOptions1);
     }
 
@@ -196,6 +213,9 @@ export class tipovendaComponent implements AfterViewInit {
         for (let index = 0; index < this.series3.rows.length; index++) {
             this.labelsPie2[index] = this.series3.rows[index][0];
         }
+        this.chartOptionsPie2.series = this.seriesPie2;
+        this.chartOptionsPie2.labels = this.labelsPie2;
+
         var reflow = new ApexCharts(this.chartPie2, this.chartOptionsPie2);
     }
     setDataM2() {
@@ -209,17 +229,90 @@ export class tipovendaComponent implements AfterViewInit {
                     this.seriesM2[index1].name = this.series4.rows[index][1];
                 this.seriesM2[index1].data.push(this.series4.rows[index][2]);
             }
-            this.auxMes = this.series4.rows[index - 1][0];
+            this.auxMes2 = this.series4.rows[index - 1][0];
             for (let aux = 0; aux < this.meses.length; aux++) {
-                if (this.meses[aux][1] === this.auxMes.substring(0, 2)) {
+                if (this.meses[aux][1] === this.auxMes2.substring(0, 2)) {
                     this.categories2[indexdata] = this.meses[aux][0];
                     break;
                 }
             }
         }
+        this.chartOptions2.series = this.seriesM2;
+        this.chartOptions2.xaxis.categories = this.categories2;
+
         var reflow = new ApexCharts(this.chart2, this.chartOptions2);
     }
 
+    limpar(){
+        this.series = {columns: [], rows: []};
+        this.series2 = {columns: [], rows: []};
+        this.series3 = {columns: [], rows: []};
+        this.series4 = {columns: [], rows: []};
+        this.seriesM1 = [
+            {
+                name: '',
+                data: [],
+            },
+            {
+                name: '',
+                data: [],
+            },
+            {
+                name: '',
+                data: [],
+            },
+            {
+                name: '',
+                data: [],
+            },
+            {
+                name: '',
+                data: [],
+            },
+        ];
+        this.seriesM2 = [
+            {
+                name: '',
+                data: [],
+            },
+            {
+                name: '',
+                data: [],
+            },
+            {
+                name: '',
+                data: [],
+            },
+            {
+                name: '',
+                data: [],
+            },
+            {
+                name: '',
+                data: [],
+            },
+        ];
+        this.categories = new Array();
+        this.categories2 = new Array();
+
+      }
+      validaParam(){
+
+        this.param.filial     = this._tipovendaService.param.filial;
+        this.param.descFilial = this._tipovendaService.param.descFilial;
+      }
+    consultavendafilial(filial){
+        if(filial.length == 1){
+            if (filial[0]=='null'){
+                filial = 99;
+            }
+        }
+        this._tipovendaService.setParam(filial,'REDE');
+        this.limpar(); // viewSerie, categorias, series
+        this.validaParam();
+        this.SetGeral();
+
+      }
     seriesData = [
         {
             name: 'Filial 1',
@@ -506,14 +599,8 @@ export class tipovendaComponent implements AfterViewInit {
                     format: 'dd MMM, yyyy',
                 },
                 y: {
-                    formatter: function (value) {
-                        if (!value) {
-                            value = 0;
-                        }
-                        return value.toLocaleString('pt-BR', {
-                            style: 'currency',
-                            currency: 'BRL',
-                        });
+                    formatter: (val) => {
+                        return this.formatadorPts(val);
                     },
                 },
             },
@@ -639,14 +726,8 @@ export class tipovendaComponent implements AfterViewInit {
                     format: 'dd MMM, yyyy',
                 },
                 y: {
-                    formatter: function (value) {
-                        if (!value) {
-                            value = 0;
-                        }
-                        return value.toLocaleString('pt-BR', {
-                            style: 'currency',
-                            currency: 'BRL',
-                        });
+                    formatter: (val) => {
+                        return this.formatadorPts(val);
                     },
                 },
             },
