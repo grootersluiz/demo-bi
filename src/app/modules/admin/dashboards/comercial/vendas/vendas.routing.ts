@@ -1,6 +1,6 @@
 import { Route } from '@angular/router';
 import { VendasDashComponent } from './vendas.component';
-import { VendasDashResolver } from './vendas.resolver';
+import { VendasDashResolver, SellersResolver } from './vendas.resolver';
 
 export const vendasDashRoutes: Route[] = [
     {
@@ -8,6 +8,7 @@ export const vendasDashRoutes: Route[] = [
         component: VendasDashComponent,
         resolve: {
             vendasDash: VendasDashResolver,
+            sellers: SellersResolver,
         },
     },
 ];

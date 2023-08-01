@@ -7,12 +7,15 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 })
 export class VendasDashService {
     private _data: BehaviorSubject<any> = new BehaviorSubject(null);
+    private _sellersData: BehaviorSubject<any> = new BehaviorSubject([]);
 
     //reports
 
     readonly REPORT_TKM = '261';
     readonly REPORT_ROL = '3';
     readonly CC_META_YEAR = '2023';
+    readonly REPORT_FILTRO_FILIAIS = '101';
+    readonly REPORT_FILTRO_VENDEDORES = '121';
 
     readonly INITIAL_INITIAL_DATE = this.getCurrentDate();
     readonly INITIAL_FINAL_DATE = this.getCurrentDate();
@@ -33,6 +36,10 @@ export class VendasDashService {
         return this._data.asObservable();
     }
 
+    get sellersData$(): Observable<any> {
+        return this._sellersData.asObservable();
+    }
+
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
@@ -43,7 +50,9 @@ export class VendasDashService {
     getData(dtIni, dtFin, companiesIds, sellersIds): Observable<any> {
         let url = `http://10.2.1.108/v1/dashboards/data?reportId=${
             this.REPORT_TKM
-        }&reportId=${this.REPORT_ROL}&dtini=
+        }&reportId=${this.REPORT_ROL}&reportId=${
+            this.REPORT_FILTRO_FILIAIS
+        }&dtini=
         ${this.formatDate(dtIni)}
         &codvend=${sellersIds.join(',')}&codemp=${companiesIds.join(',')}&dtfin=
         ${this.formatDate(dtFin)}`;
@@ -98,11 +107,54 @@ export class VendasDashService {
 
                 //---------------------------------------------------
 
+                //---------------------------------------------------
+
+                //Filtro Filiais
+
+                const COD_EMPRESA = 0;
+                const RAZAO_ABREV = 1;
+
+                const companyFilter = response[this.REPORT_FILTRO_FILIAIS][
+                    'rows'
+                ].map((item) => {
+                    return {
+                        id: item[COD_EMPRESA],
+                        string:
+                            item[COD_EMPRESA].toString() +
+                            ' - ' +
+                            item[RAZAO_ABREV],
+                    };
+                });
+
                 const dashData = {
                     ccXMeta: ccMeta,
                     tkm: chartTKM,
+                    filiaisLista: companyFilter,
                 };
                 this._data.next(dashData);
+            })
+        );
+    }
+
+    getSellersData(dtIni, dtFin, companiesIds) {
+        let url = `http://10.2.1.108/v1/dashboards/data?&reportId=121&dtini=${this.formatDate(
+            dtIni
+        )}&codvend=null&codemp=${companiesIds.join(
+            ','
+        )}&dtfin=${this.formatDate(dtFin)}`;
+
+        return this._httpClient.get(url).pipe(
+            tap((response: any) => {
+                const sellersFilter = response[this.REPORT_FILTRO_VENDEDORES][
+                    'rows'
+                ].map((item) => {
+                    return {
+                        id: item[0],
+                        string: item[0].toString() + ' - ' + item[1],
+                    };
+                });
+
+                this._sellersData.next(sellersFilter);
             })
         );
     }

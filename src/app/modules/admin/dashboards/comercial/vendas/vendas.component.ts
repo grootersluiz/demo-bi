@@ -2,6 +2,7 @@ import {
     Component,
     OnInit,
     ViewEncapsulation,
+    ChangeDetectorRef,
     ChangeDetectionStrategy,
 } from '@angular/core';
 import { VendasDashService } from './vendas.service';
@@ -9,6 +10,13 @@ import { ApexOptions } from 'ng-apexcharts';
 import { FormControl } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
+import {
+    MatDatepicker,
+    MatDatepickerToggle,
+    MatDatepickerInputEvent,
+} from '@angular/material/datepicker';
+import { default as _rollupMoment, Moment } from 'moment';
+import * as _moment from 'moment';
 
 @Component({
     selector: 'vendasdash',
@@ -52,8 +60,8 @@ export class VendasDashComponent implements OnInit {
 
     isChecked: boolean;
     isToggleOn: boolean;
-    titulo: string = 'ROL';
-    subTitulo: string = 'Rankings e Metas';
+    titulo: string = 'CC';
+    subTitulo: string = 'Clientes Compradores';
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -62,7 +70,8 @@ export class VendasDashComponent implements OnInit {
      */
     constructor(
         private _vendasService: VendasDashService,
-        private _router: Router
+        private _router: Router,
+        private _cdr: ChangeDetectorRef
     ) {}
 
     // -----------------------------------------------------------------------------------------------------
@@ -81,6 +90,28 @@ export class VendasDashComponent implements OnInit {
                 this.data = data;
                 // Prepare the chart data
                 this._prepareChartData();
+                this.filiaisObjects = this.data.filiaisLista;
+                this.filiaisStringList = this.filiaisObjects.map(
+                    (item) => item.string
+                );
+
+                // Trigger the change detection mechanism so that it updates the chart when filtering
+                this._cdr.markForCheck();
+            });
+
+        // Get the sellers data
+        this._vendasService.sellersData$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data) => {
+                this.vendedoresObjects = data;
+                this.vendedoresStringList = this.vendedoresObjects.map(
+                    (item) => item.string
+                );
+
+                this.filteredVendedoresObjects = this.vendedoresObjects;
+                this.filteredVendedoresStringList = this.vendedoresStringList;
+
+                this._cdr.markForCheck();
             });
 
         // Attach SVG fill fixer to all ApexCharts
@@ -110,6 +141,191 @@ export class VendasDashComponent implements OnInit {
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
+
+    setInitialMY(evMY: Moment, datepicker: MatDatepicker<Moment>) {
+        this.dataInicio = { year: evMY.year(), month: evMY.month(), date: 1 };
+        this.start.setValue(
+            new Date(this.dataInicio.year, this.dataInicio.month, 1)
+        );
+        datepicker.close();
+    }
+
+    setFinalMY(evMY: Moment, datepicker: MatDatepicker<Moment>) {
+        function getLastDayOfMonth(year, month) {
+            // Create a new date object with the given year and month (0-based index)
+            let date = new Date(year, month + 1, 0);
+
+            // Get the last day of the month
+            let lastDay = date.getDate();
+
+            return lastDay;
+        }
+
+        // Get the current date
+        let currentDate = new Date();
+
+        // Extract the current year and month (0-based index)
+        let currentYear = currentDate.getFullYear();
+        let currentMonth = currentDate.getMonth();
+
+        // Extract the year and month from the given evMY
+        let evYear = evMY.year();
+        let evMonth = evMY.month();
+
+        if (evYear === currentYear && evMonth === currentMonth) {
+            // The given year and month match the current date
+            // Return the current day
+            this.dataFinal = {
+                year: evMY.year(),
+                month: evMY.month(),
+                date: currentDate.getDate(),
+            };
+            this.end.setValue(
+                new Date(
+                    this.dataFinal.year,
+                    this.dataFinal.month,
+                    currentDate.getDate()
+                )
+            );
+
+            datepicker.close();
+        } else {
+            // The given year and month do not match the current date
+            // Continue with the existing functionality to get the last day of the month
+            this.dataFinal = {
+                year: evMY.year(),
+                month: evMY.month(),
+                date: getLastDayOfMonth(evMY.year(), evMY.month()),
+            };
+            this.end.setValue(
+                new Date(
+                    this.dataFinal.year,
+                    this.dataFinal.month,
+                    getLastDayOfMonth(evMY.year(), evMY.month())
+                )
+            );
+
+            datepicker.close();
+        }
+    }
+
+    resetDateInputs(): void {
+        this.start.setValue(null);
+        this.end.setValue(null);
+    }
+
+    selectAllCompanies() {
+        if (!this.allCompaniesSelected) {
+            let newFiliais = this.filiaisObjects.map((item) =>
+                item.id.toString()
+            );
+            this.filiais.setValue(newFiliais);
+            this.allCompaniesSelected = true;
+        } else {
+            this.filiais.setValue(this._vendasService.INITIAL_COMPANIES_IDS);
+            this.allCompaniesSelected = false;
+        }
+    }
+
+    selectAllSellers() {
+        if (this.allSellersSelected || this.vendedoresObjects.length === 0) {
+            this.vendedores.setValue(this._vendasService.INITIAL_SELLERS_IDS);
+            this.selectedSellers.setValue([]);
+            this.allSellersSelected = false;
+        } else {
+            let newVendedores = this.filteredVendedoresObjects.map((item) =>
+                item.id.toString()
+            );
+            this.vendedores.setValue(newVendedores);
+            this.selectedSellers.setValue(newVendedores);
+            this.allSellersSelected = true;
+        }
+    }
+
+    handleDatePickerClick(
+        event: Event,
+        pickerToggle: MatDatepickerToggle<Date>
+    ) {
+        // Makes DatePicker open by clicking anywhere in the input
+        pickerToggle._open(event);
+    }
+
+    handleCompaniesFilterClick(dtIni, dtFin) {
+        this.vendedores.setValue(this._vendasService.INITIAL_SELLERS_IDS);
+    }
+
+    handleSellersFilterClick(dtIni, dtFin) {
+        this._vendasService
+            .getSellersData(dtIni, dtFin, this.filiais.value)
+            .subscribe();
+        this.sellersSearchInput.setValue('');
+    }
+
+    handleCompanyFilterSelect(filialId: number) {
+        //this.vendedoresStringList = ['Carregando...'];
+        if (this.filiais.value.length > 0) {
+            this.allCompaniesSelected = true;
+        }
+        if (this.filiais.value.length == 0) {
+            this.filiais.setValue(this._vendasService.INITIAL_COMPANIES_IDS);
+            this.allCompaniesSelected = false;
+        }
+    }
+
+    handleSellersFilterSelect(vendedorId: number) {
+        const id = vendedorId.toString();
+        if (this.vendedores.value.includes(id)) {
+            this.selectedSellers.setValue([...this.selectedSellers.value, id]);
+        } else {
+            const updatedItems = this.selectedSellers.value.filter(
+                (item) => item !== id
+            );
+            this.selectedSellers.setValue(updatedItems);
+        }
+        this.vendedores.setValue(this.selectedSellers.value);
+
+        if (this.vendedores.value.length == 0) {
+            this.vendedores.setValue(this._vendasService.INITIAL_SELLERS_IDS);
+        }
+        if (this.selectedSellers.value.length > 0) {
+            this.allSellersSelected = true;
+        } else {
+            this.allSellersSelected = false;
+        }
+    }
+
+    addEventBegin(event: MatDatepickerInputEvent<Date>) {
+        if (event.value) {
+            this.dataInicio = event.value['_i'];
+            this.end.setValue(null);
+            this.dataFinal = event.value['_i'];
+        }
+    }
+
+    addEventEnd(event: MatDatepickerInputEvent<Date>) {
+        if (event.value) {
+            this.dataFinal = event.value['_i'];
+        }
+    }
+
+    handleApplyFilter(dtIni, dtFin, filiaisIds, vendedoresIds) {
+        if (dtIni && dtFin) {
+            this._vendasService
+                .getData(dtIni, dtFin, filiaisIds, vendedoresIds)
+                .subscribe();
+        }
+    }
+
+    onInput(value: string) {
+        const filteredSellers = this.vendedoresObjects.filter((seller) =>
+            seller.string.toLowerCase().includes(value.toLowerCase())
+        );
+        const filteredSellersString = this.vendedoresStringList.filter(
+            (seller) => seller.toLowerCase().includes(value.toLowerCase())
+        );
+        this.filteredVendedoresStringList = filteredSellersString;
+        this.filteredVendedoresObjects = filteredSellers;
+    }
 
     /**
      * Track by function for ngFor loops

@@ -38,3 +38,34 @@ export class VendasDashResolver implements Resolve<any> {
         );
     }
 }
+
+@Injectable({
+    providedIn: 'root',
+})
+export class SellersResolver implements Resolve<any> {
+    /**
+     * Constructor
+     */
+    constructor(private _vendasdashService: VendasDashService) {}
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Public methods
+    // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * Resolver
+     *
+     * @param route
+     * @param state
+     */
+    resolve(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot
+    ): Observable<any> {
+        return this._vendasdashService.getSellersData(
+            this._vendasdashService.INITIAL_INITIAL_DATE,
+            this._vendasdashService.INITIAL_FINAL_DATE,
+            this._vendasdashService.INITIAL_COMPANIES_IDS
+        );
+    }
+}
