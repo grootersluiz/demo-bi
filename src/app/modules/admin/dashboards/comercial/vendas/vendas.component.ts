@@ -516,15 +516,15 @@ export class VendasDashComponent implements OnInit {
             series: [
                 {
                     name: 'Dentro da carteira',
-                    data: [20, 100, 40, 30, 50],
+                    data: [68, 100, 40, 30, 50],
                 },
                 {
                     name: 'Fora da carteira',
-                    data: [6, 74, 26, 12, 37],
+                    data: [26, 74, 26, 12, 37],
                 },
             ],
             chart: {
-                height: 400,
+                height: 430,
                 type: 'radar',
             },
             dataLabels: {
@@ -532,7 +532,7 @@ export class VendasDashComponent implements OnInit {
             },
             plotOptions: {
                 radar: {
-                    size: 170,
+                    size: 180,
                     polygons: {
                         fill: {
                             colors: ['#f8f8f8', '#fff'],
@@ -541,7 +541,7 @@ export class VendasDashComponent implements OnInit {
                 },
             },
             title: {
-                text: 'CC por curva',
+                text: 'CC por Curva',
             },
             colors: ['#FF8C00', '#94A3B8'],
             markers: {
