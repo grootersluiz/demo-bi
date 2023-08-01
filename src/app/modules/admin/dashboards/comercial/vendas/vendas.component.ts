@@ -29,6 +29,8 @@ export class VendasDashComponent implements OnInit {
     chartCC: ApexOptions;
     chartByCurve: ApexOptions;
     chartAnual: ApexOptions;
+    chartCCPosNeg: ApexOptions;
+    chartCCEstados: ApexOptions;
     data: any;
 
     // Filtros principais do dashboard
@@ -590,6 +592,7 @@ export class VendasDashComponent implements OnInit {
                 type: 'bar',
                 height: 220,
             },
+            colors: ['#FF8C00', '#F0E68C', '#FF4500', '#94A3B8'],
             plotOptions: {
                 bar: {
                     horizontal: false,
@@ -609,7 +612,160 @@ export class VendasDashComponent implements OnInit {
             },
             yaxis: {
                 title: {
-                    text: 'Clientes',
+                    text: 'CC Anual',
+                },
+            },
+            fill: {
+                opacity: 1,
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return val.toString();
+                    },
+                },
+            },
+        };
+
+        //CC Dentro e Fora da Carteira
+
+        this.chartCCPosNeg = {
+            chart: {
+                fontFamily: 'inherit',
+                foreColor: 'inherit',
+                height: 300,
+                type: 'polarArea',
+                toolbar: {
+                    show: false,
+                },
+                zoom: {
+                    enabled: false,
+                },
+            },
+            labels: [
+                'DC Positivados',
+                'DC Não Positivados',
+                'FC Positivados',
+                'FC Não Positivados',
+            ],
+            legend: {
+                position: 'bottom',
+            },
+            plotOptions: {
+                polarArea: {
+                    spokes: {
+                        connectorColors: 'var(--fuse-border)',
+                    },
+                    rings: {
+                        strokeColor: 'var(--fuse-border)',
+                    },
+                },
+            },
+            series: [5248, 2547, 6874, 1234],
+            states: {
+                hover: {
+                    filter: {
+                        type: 'darken',
+                        value: 0.75,
+                    },
+                },
+            },
+            stroke: {
+                width: 2,
+            },
+            theme: {
+                monochrome: {
+                    enabled: true,
+                    color: '#FF8C00',
+                    shadeIntensity: 0.75,
+                    shadeTo: 'dark',
+                },
+            },
+            tooltip: {
+                followCursor: true,
+                theme: 'dark',
+            },
+            yaxis: {
+                labels: {
+                    style: {
+                        colors: 'var(--fuse-text-secondary)',
+                    },
+                },
+            },
+        };
+
+        //CC Por estados
+
+        this.chartCCEstados = {
+            series: [
+                {
+                    name: 'Dentro da carteira',
+                    data: [
+                        1, 5, 7, 12, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65,
+                        70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 125,
+                    ],
+                },
+                {
+                    name: 'Fora da carteira',
+                    data: [
+                        2, 6, 8, 14, 16, 21, 26, 31, 36, 41, 46, 51, 56, 61, 66,
+                        71, 76, 81, 86, 91, 96, 101, 106, 111, 116, 121, 126,
+                    ],
+                },
+            ],
+            chart: {
+                type: 'bar',
+                height: 300,
+            },
+            colors: ['#FF8C00', '#F0E68C'],
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '55%',
+                },
+            },
+            dataLabels: {
+                enabled: false,
+            },
+            stroke: {
+                show: true,
+                width: 2,
+                colors: ['transparent'],
+            },
+            xaxis: {
+                categories: [
+                    'AC', // Acre
+                    'AL', // Alagoas
+                    'AP', // Amapá
+                    'AM', // Amazonas
+                    'BA', // Bahia
+                    'CE', // Ceará
+                    'DF', // Distrito Federal
+                    'ES', // Espírito Santo
+                    'GO', // Goiás
+                    'MA', // Maranhão
+                    'MT', // Mato Grosso
+                    'MS', // Mato Grosso do Sul
+                    'MG', // Minas Gerais
+                    'PA', // Pará
+                    'PB', // Paraíba
+                    'PR', // Paraná
+                    'PE', // Pernambuco
+                    'PI', // Piauí
+                    'RJ', // Rio de Janeiro
+                    'RN', // Rio Grande do Norte
+                    'RS', // Rio Grande do Sul
+                    'RO', // Rondônia
+                    'RR', // Roraima
+                    'SC', // Santa Catarina
+                    'SP', // São Paulo
+                    'SE', // Sergipe
+                    'TO', // Tocantins
+                ],
+            },
+            yaxis: {
+                title: {
+                    text: 'CC por Estado',
                 },
             },
             fill: {
