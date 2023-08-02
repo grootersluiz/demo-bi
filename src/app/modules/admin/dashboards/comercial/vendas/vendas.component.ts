@@ -553,7 +553,22 @@ export class VendasDashComponent implements OnInit {
             tooltip: {
                 theme: 'dark',
                 y: {
-                    formatter: (val: number): string => `${val}`,
+                    formatter: (
+                        value: number,
+                        { series, seriesIndex, dataPointIndex }
+                    ): string => {
+                        const percentage =
+                            (value /
+                                (series[
+                                    seriesIndex == 0
+                                        ? seriesIndex + 1
+                                        : seriesIndex - 1
+                                ][dataPointIndex] +
+                                    value)) *
+                            100;
+
+                        return percentage.toFixed(2).toString() + '%';
+                    },
                 },
             },
             xaxis: {
