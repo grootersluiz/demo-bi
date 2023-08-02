@@ -61,8 +61,8 @@ export class DreDashComponent implements OnInit {
 
     isChecked: boolean;
     isToggleOn: boolean;
-    titulo: string = 'Vendas';
-    subTitulo: string = 'Indicadores de Vendas';
+    titulo: string = 'DRE';
+    subTitulo: string = 'Resultados';
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
