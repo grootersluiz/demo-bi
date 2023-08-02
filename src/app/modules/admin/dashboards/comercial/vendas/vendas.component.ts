@@ -634,9 +634,23 @@ export class VendasDashComponent implements OnInit {
                 opacity: 1,
             },
             tooltip: {
+                theme: 'dark',
                 y: {
-                    formatter: function (val) {
-                        return val.toString();
+                    formatter: (
+                        value: number,
+                        { series, seriesIndex, dataPointIndex }
+                    ): string => {
+                        const intel =
+                            (value /
+                                (series[
+                                    seriesIndex == 0 || seriesIndex == 2
+                                        ? seriesIndex + 1
+                                        : seriesIndex - 1
+                                ][dataPointIndex] +
+                                    value)) *
+                            100;
+
+                        return `${value} (${intel.toFixed(2)}%)`;
                     },
                 },
             },
@@ -697,8 +711,22 @@ export class VendasDashComponent implements OnInit {
                 },
             },
             tooltip: {
-                followCursor: true,
                 theme: 'dark',
+                y: {
+                    formatter: (value: number, { seriesIndex }): string => {
+                        const divValue =
+                            this.chartCCPosNeg.series[
+                                seriesIndex == 0 || seriesIndex == 2
+                                    ? seriesIndex + 1
+                                    : seriesIndex - 1
+                            ];
+                        const intel =
+                            (value / (parseInt(divValue.toString()) + value)) *
+                            100;
+
+                        return `${value} (${intel.toFixed(2)}%)`;
+                    },
+                },
             },
             yaxis: {
                 labels: {
@@ -813,9 +841,23 @@ export class VendasDashComponent implements OnInit {
                 opacity: 1,
             },
             tooltip: {
+                theme: 'dark',
                 y: {
-                    formatter: function (val) {
-                        return val.toString();
+                    formatter: (
+                        value: number,
+                        { series, seriesIndex, dataPointIndex }
+                    ): string => {
+                        const percentage =
+                            (value /
+                                (series[
+                                    seriesIndex == 0
+                                        ? seriesIndex + 1
+                                        : seriesIndex - 1
+                                ][dataPointIndex] +
+                                    value)) *
+                            100;
+
+                        return `${value} (${percentage.toFixed(2)}%)`;
                     },
                 },
             },
