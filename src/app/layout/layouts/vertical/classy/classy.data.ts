@@ -78,22 +78,6 @@ export const navigationData: Navigation = {
                     ],
                 },
                 {
-                    id: 'financeiro',
-                    title: 'Financeiro',
-                    type: 'collapsable',
-                    icon: 'material_outline:account_balance',
-                    link: '/analiseindicadores/financeiro',
-                    children: [
-                        {
-                            id: '250',
-                            title: 'Tipos de Vendas',
-                            type: 'basic',
-                            icon: 'material_outline:bar_chart',
-                            link: '/financeiro/tipovenda',
-                        },
-                    ],
-                },
-                {
                     id: 'contabil',
                     title: 'Contábil',
                     type: 'collapsable',
@@ -106,6 +90,22 @@ export const navigationData: Navigation = {
                             type: 'basic',
                             icon: 'material_outline:bar_chart',
                             link: '/dashboards/contabil/259',
+                        },
+                    ],
+                },
+                {
+                    id: 'financeiro',
+                    title: 'Financeiro',
+                    type: 'collapsable',
+                    icon: 'material_outline:account_balance',
+                    link: '/analiseindicadores/financeiro',
+                    children: [
+                        {
+                            id: '250',
+                            title: 'Tipos de Vendas',
+                            type: 'basic',
+                            icon: 'material_outline:bar_chart',
+                            link: '/financeiro/tipovenda',
                         },
                     ],
                 },
