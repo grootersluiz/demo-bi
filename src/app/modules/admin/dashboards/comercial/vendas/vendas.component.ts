@@ -540,9 +540,7 @@ export class VendasDashComponent implements OnInit {
                     },
                 },
             },
-            title: {
-                text: 'CC por Curva de Produto',
-            },
+
             colors: ['#FF8C00', '#94A3B8'],
             markers: {
                 size: 4,
