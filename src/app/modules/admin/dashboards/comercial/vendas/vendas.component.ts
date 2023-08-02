@@ -479,7 +479,7 @@ export class VendasDashComponent implements OnInit {
             },
 
             title: {
-                text: 'Clientes Compradores',
+                text: 'CC por Faturamento',
                 align: 'left',
             },
             subtitle: {
@@ -541,7 +541,7 @@ export class VendasDashComponent implements OnInit {
                 },
             },
             title: {
-                text: 'CC por Curva',
+                text: 'CC por Curva de Produto',
             },
             colors: ['#FF8C00', '#94A3B8'],
             markers: {
