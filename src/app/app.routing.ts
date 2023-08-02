@@ -228,6 +228,13 @@ export const appRoutes: Route[] = [
                                 'app/modules/admin/dashboards/comercial/vendas/vendas.module'
                             ).then((m) => m.VendasDashModule),
                     },
+                    {
+                        path: 'contabil/259',
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/dashboards/contabil/dre/dre.module'
+                            ).then((m) => m.DreDashModule),
+                    },
                 ],
             },
 

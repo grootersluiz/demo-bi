@@ -1,0 +1,358 @@
+<div class="flex-col w-full overflow-y-hidden pl-1 pr-1">
+    <div class="flex flex-grow w-full justify-end">
+        <mat-slide-toggle class="pt-1" [(ngModel)]="isToggleOn">
+            {{ isToggleOn ? "Ocultar filtros" : "Mostrar filtros" }}
+        </mat-slide-toggle>
+    </div>
+    <div class="w-full">
+        <div
+            class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
+            *ngIf="isToggleOn"
+        >
+            <div class="flex flex-auto">
+                <img
+                    class="mr-3 logo-filter lg:block"
+                    src="assets/images/logo/Logo-Rede-JS-Pecas_7.png"
+                    alt=""
+                />
+                <div class="flex flex-col">
+                    <div
+                        class="text-3xl font-semibold tracking-tight leading-8"
+                        style="color: #fff"
+                    >
+                        {{ titulo }}
+                    </div>
+
+                    <div class="font-medium tracking-tight" style="color: #fff">
+                        {{ subTitulo }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-start ml-15">
+                <!-- Filtros Filial -->
+                <mat-form-field
+                    class="hidden sm:inline-flex ml-3"
+                    style="width: 150px"
+                    (click)="handleCompaniesFilterClick(dataInicio, dataFinal)"
+                >
+                    <mat-label style="font-size: 12px; color: #fff"
+                        >Filial</mat-label
+                    >
+                    <mat-select
+                        class="my-custom-class"
+                        style="font-size: 12px"
+                        [formControl]="filiais"
+                        multiple
+                    >
+                        <mat-option
+                            class="select-all-companies"
+                            style="font-size: 12px"
+                            [value]="'-1'"
+                            (click)="selectAllCompanies()"
+                            >{{
+                                allCompaniesSelected
+                                    ? "Desmarcar Todos"
+                                    : "Marcar Todos"
+                            }}</mat-option
+                        >
+
+                        <mat-option
+                            style="font-size: 12px"
+                            *ngFor="
+                                let filial of filiaisStringList;
+                                let i = index
+                            "
+                            [value]="filiaisObjects[i].id.toString()"
+                            (click)="
+                                handleCompanyFilterSelect(filiaisObjects[i].id)
+                            "
+                            >{{ filial }}</mat-option
+                        >
+                    </mat-select>
+                </mat-form-field>
+
+                <!-- Filtro Vendedor -->
+                <mat-form-field
+                    class="hidden sm:inline-flex ml-3"
+                    style="width: 150px"
+                    (click)="handleSellersFilterClick(dataInicio, dataFinal)"
+                >
+                    <mat-label style="font-size: 12px; color: #fff"
+                        >Vendedor</mat-label
+                    >
+                    <mat-select
+                        style="font-size: 12px"
+                        [formControl]="vendedores"
+                        multiple
+                    >
+                        <div
+                            class="sellers-search-container flex justify-center"
+                        >
+                            <input
+                                class="sellers-search-input"
+                                type="text"
+                                placeholder="Buscar..."
+                                [formControl]="sellersSearchInput"
+                                (input)="onInput($event.target.value)"
+                            />
+                        </div>
+
+                        <mat-option
+                            class="select-all-companies"
+                            style="font-size: 12px"
+                            [value]="'-1'"
+                            (click)="selectAllSellers()"
+                            >{{
+                                allSellersSelected
+                                    ? "Desmarcar Todos"
+                                    : "Marcar Todos"
+                            }}
+                        </mat-option>
+
+                        <mat-option
+                            style="font-size: 12px"
+                            *ngFor="
+                                let vendedor of filteredVendedoresStringList;
+                                let i = index
+                            "
+                            [value]="filteredVendedoresObjects[i].id.toString()"
+                            (click)="
+                                handleSellersFilterSelect(
+                                    filteredVendedoresObjects[i].id
+                                )
+                            "
+                            >{{ vendedor }}</mat-option
+                        >
+                    </mat-select>
+                </mat-form-field>
+
+                <!--Filtro Data-->
+
+                <mat-form-field
+                    class="hidden sm:inline-flex ml-3"
+                    style="width: 150px"
+                >
+                    <mat-label style="font-size: 12px; color: #fff"
+                        >Data Inicial
+                        <input
+                            type="checkbox"
+                            [(ngModel)]="isChecked"
+                            style="margin-left: 1rem"
+                            (change)="resetDateInputs()"
+                        />
+                        Mensal</mat-label
+                    >
+                    <input
+                        class="cursor-pointer"
+                        style="font-size: 15px"
+                        matInput
+                        [formControl]="start"
+                        [matDatepicker]="picker"
+                        (click)="handleDatePickerClick($event, pickerToggle)"
+                        (dateInput)="addEventBegin($event)"
+                        readonly
+                    />
+
+                    <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
+                    <mat-datepicker-toggle
+                        #pickerToggle
+                        matIconSuffix
+                        [for]="picker"
+                    ></mat-datepicker-toggle>
+
+                    <mat-datepicker
+                        #picker
+                        [startView]="isChecked ? 'year' : 'month'"
+                        (monthSelected)="
+                            isChecked ? setInitialMY($event, picker) : undefined
+                        "
+                    ></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field
+                    class="hidden sm:inline-flex ml-3"
+                    style="width: 150px"
+                >
+                    <mat-label style="font-size: 12px; color: #fff"
+                        >Data Final
+                    </mat-label>
+
+                    <input
+                        class="cursor-pointer"
+                        style="font-size: 15px"
+                        matInput
+                        [formControl]="end"
+                        [matDatepicker]="pickerFinal"
+                        (click)="
+                            handleDatePickerClick($event, pickerToggleFinal)
+                        "
+                        (dateInput)="addEventEnd($event)"
+                        readonly
+                        [min]="start.value ? start.value : today"
+                    />
+
+                    <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
+                    <mat-datepicker-toggle
+                        #pickerToggleFinal
+                        matIconSuffix
+                        [for]="pickerFinal"
+                    ></mat-datepicker-toggle>
+
+                    <mat-datepicker
+                        #pickerFinal
+                        [startView]="isChecked ? 'year' : 'month'"
+                        (monthSelected)="
+                            isChecked
+                                ? setFinalMY($event, pickerFinal)
+                                : undefined
+                        "
+                    ></mat-datepicker>
+                    <!-- <mat-error
+                            *ngIf="
+                                convDataIni &&
+                                convDataFin &&
+                                convDataFin < convDataIni
+                            "
+                            >Data final inválida</mat-error
+                        > -->
+                </mat-form-field>
+                <div class="pt-7">
+                    <button
+                        class="hidden sm:inline-flex ml-5 apply-button"
+                        style="width: 120px"
+                        mat-flat-button
+                        [color]="'primary'"
+                        (click)="
+                            handleApplyFilter(
+                                dataInicio,
+                                dataFinal,
+                                filiais.value,
+                                vendedores.value
+                            )
+                        "
+                    >
+                        <span style="font-size: 12px">Aplicar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="relative w-full max-w-screen-xl mx-auto">
+            <!-- Tabs -->
+            <mat-tab-group
+                class="sm:px-2"
+                mat-stretch-tabs="false"
+                [animationDuration]="'0'"
+            >
+                <!-- CC -->
+                <mat-tab label="Clientes Compradores">
+                    <ng-template matTabContent>
+                        <div
+                            class="flex w-full max-w-screen-xl mx-auto md:pt-1 pb-1"
+                        >
+                            <div class="grid grid-rows-2 flex-auto gap-1">
+                                <div
+                                    class="relative flex flex-auto h-60 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
+                                >
+                                    <apx-chart
+                                        class="w-full"
+                                        [series]="chartCC.series"
+                                        [chart]="chartCC.chart"
+                                        [colors]="chartCC.colors"
+                                        [xaxis]="chartCC.xaxis"
+                                        [stroke]="chartCC.stroke"
+                                        [dataLabels]="chartCC.dataLabels"
+                                        [yaxis]="chartCC.yaxis"
+                                        [labels]="chartCC.labels"
+                                        [legend]="chartCC.legend"
+                                        [title]="chartCC.title"
+                                        [subtitle]="chartCC.subtitle"
+                                    ></apx-chart>
+                                </div>
+                                <div
+                                    class="relative flex flex-auto h-60 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
+                                >
+                                    <apx-chart
+                                        class="w-full"
+                                        [series]="chartAnual.series"
+                                        [chart]="chartAnual.chart"
+                                        [colors]="chartAnual.colors"
+                                        [dataLabels]="chartAnual.dataLabels"
+                                        [plotOptions]="chartAnual.plotOptions"
+                                        [yaxis]="chartAnual.yaxis"
+                                        [legend]="chartAnual.legend"
+                                        [fill]="chartAnual.fill"
+                                        [stroke]="chartAnual.stroke"
+                                        [tooltip]="chartAnual.tooltip"
+                                        [xaxis]="chartAnual.xaxis"
+                                    ></apx-chart>
+                                </div>
+                            </div>
+
+                            <div
+                                class="relative w-120 h-121 bg-card shadow rounded-2xl overflow-hidden p-3"
+                            >
+                                <apx-chart
+                                    [series]="chartByCurve.series"
+                                    [chart]="chartByCurve.chart"
+                                    [xaxis]="chartByCurve.xaxis"
+                                    [stroke]="chartByCurve.stroke"
+                                    [colors]="chartByCurve.colors"
+                                    [dataLabels]="chartByCurve.dataLabels"
+                                    [tooltip]="chartByCurve.tooltip"
+                                    [plotOptions]="chartByCurve.plotOptions"
+                                    [markers]="chartByCurve.markers"
+                                    [yaxis]="chartByCurve.yaxis"
+                                    [fill]="chartByCurve.fill"
+                                    [title]="chartByCurve.title"
+                                ></apx-chart>
+                            </div>
+                        </div>
+                        <div
+                            class="flex w-full max-w-screen-xl mx-auto md: pb-1"
+                        >
+                            <div
+                                class="relative h-80 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
+                            >
+                                <apx-chart
+                                    [chart]="chartCCPosNeg.chart"
+                                    [labels]="chartCCPosNeg.labels"
+                                    [legend]="chartCCPosNeg.legend"
+                                    [plotOptions]="chartCCPosNeg.plotOptions"
+                                    [series]="chartCCPosNeg.series"
+                                    [states]="chartCCPosNeg.states"
+                                    [stroke]="chartCCPosNeg.stroke"
+                                    [theme]="chartCCPosNeg.theme"
+                                    [tooltip]="chartCCPosNeg.tooltip"
+                                    [yaxis]="chartCCPosNeg.yaxis"
+                                ></apx-chart>
+                            </div>
+                            <div
+                                class="relative flex flex-auto h-80 bg-card shadow rounded-2xl overflow-hidden p-3"
+                            >
+                                <apx-chart
+                                    class="w-full"
+                                    [series]="chartCCEstados.series"
+                                    [chart]="chartCCEstados.chart"
+                                    [colors]="chartCCEstados.colors"
+                                    [dataLabels]="chartCCEstados.dataLabels"
+                                    [plotOptions]="chartCCEstados.plotOptions"
+                                    [yaxis]="chartCCEstados.yaxis"
+                                    [legend]="chartCCEstados.legend"
+                                    [fill]="chartCCEstados.fill"
+                                    [stroke]="chartCCEstados.stroke"
+                                    [tooltip]="chartCCEstados.tooltip"
+                                    [xaxis]="chartCCEstados.xaxis"
+                                ></apx-chart>
+                            </div>
+                        </div>
+                    </ng-template>
+                </mat-tab>
+                <mat-tab label="Performance Consultores">
+                    <ng-template matTabContent> </ng-template>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+</div>

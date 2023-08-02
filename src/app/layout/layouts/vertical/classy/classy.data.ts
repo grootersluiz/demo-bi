@@ -93,6 +93,22 @@ export const navigationData: Navigation = {
                         },
                     ],
                 },
+                {
+                    id: 'contabil',
+                    title: 'Contábil',
+                    type: 'collapsable',
+                    icon: 'material_outline:timeline',
+                    link: '/analiseindicadores/financeiro',
+                    children: [
+                        {
+                            id: '259',
+                            title: 'DRE - Resultados',
+                            type: 'basic',
+                            icon: 'material_outline:bar_chart',
+                            link: '/dashboards/contabil/259',
+                        },
+                    ],
+                },
             ],
         },
 
