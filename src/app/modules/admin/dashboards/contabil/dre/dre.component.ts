@@ -30,7 +30,7 @@ export class DreDashComponent implements OnInit {
     chartAcumulado: ApexOptions;
     chartDespesas: ApexOptions;
     selectedIntel: string = 'ROL';
-    intelOptions: string[] = ['ROL', 'LB', 'MB', 'EBTIDA'];
+    intelOptions: string[] = ['ROL', 'LB', 'MB', 'EBITDA'];
     data: any;
 
     // Filtros principais do dashboard
@@ -393,7 +393,7 @@ export class DreDashComponent implements OnInit {
                     data: [76, 85, 101],
                 },
                 {
-                    name: 'EBTIDA',
+                    name: 'EBITDA',
                     data: [63, 60, 66],
                 },
             ],
@@ -424,7 +424,7 @@ export class DreDashComponent implements OnInit {
             },
             yaxis: {
                 title: {
-                    text: 'ROL / LB / EBTIDA',
+                    text: 'ROL / LB / EBITDA',
                 },
             },
             fill: {
