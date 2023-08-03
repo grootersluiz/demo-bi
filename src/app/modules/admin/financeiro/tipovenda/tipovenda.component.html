@@ -12,7 +12,7 @@
     <div class="w-full">
         <div
             class="flex flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
-            *ngIf="isToggleOn"
+            [class.hidden]="!isToggleOn"
         >
             <div class="flex flex-auto">
                 <img
@@ -44,11 +44,7 @@
                 style="width: 120px"
                 mat-flat-button
                 [color]="'primary'"
-                (click)="
-                    consultavendafilial(
-                        filial.filiais.value
-                    )
-                "
+                (click)="consultavendafilial(filial.filiais.value)"
             >
                 <span style="font-size: 12px">Aplicar</span>
             </button>
@@ -67,6 +63,7 @@
                 class="grid px-2 py-2 w-full md:w-2/5 lg:w-2/5 xl:w-2/5 2xl:w-2/5 justify-center center rounded-l-2xl bg-card shadow mb-1 overflow-hidden"
             >
                 <div>Prazo - TOTAL</div>
+                <div>Total: {{totalPie1}}</div>
                 <div id="chartPie">
                     <apx-chart
                         [series]="chartOptionsPie.series"
@@ -105,6 +102,7 @@
                 class="grid px-2 py-2 w-full md:w-2/5 lg:w-2/5 xl:w-2/5 2xl:w-2/5 justify-center center rounded-l-2xl bg-card shadow mb-1 overflow-hidden"
             >
                 <div>Tipos - TOTAL</div>
+                <div>Total: {{totalPie2}}</div>
                 <div id="chartPie2">
                     <apx-chart
                         [series]="chartOptionsPie2.series"
@@ -119,7 +117,7 @@
                 class="grid px-2 py-2 w-full md:w-3/5 lg:w-3/5 xl:w-3/5 2xl:w-3/5 center rounded-r-2xl bg-card shadow mb-1 overflow-hidden"
             >
                 <div>Tipos - MENSAL</div>
-                <div id="chat2">
+                <div id="chart2">
                     <apx-chart
                         [series]="chartOptions2.series"
                         [chart]="chartOptions2.chart"
@@ -139,17 +137,21 @@
         <div
             class="grid px-2 py-2 w-full center rounded-r-2xl bg-card shadow mb-1 overflow-hidden"
         >
-            <apx-chart
-                [series]="heatMap.series"
-                [chart]="heatMap.chart"
-                [dataLabels]="heatMap.dataLabels"
-                [colors]="heatMap.colors"
-                [stroke]="heatMap.stroke"
-                [plotOptions]="heatMap.plotOptions"
-                [xaxis]="heatMap.xaxis"
-                [title]="heatMap.title"
-                [legend]="heatMap.legend"
-            ></apx-chart>
+         <div>Totais por filiais - Parcelas</div>
+            <div id="chartheat">
+                <apx-chart
+                    [series]="heatMap.series"
+                    [chart]="heatMap.chart"
+                    [dataLabels]="heatMap.dataLabels"
+                    [colors]="heatMap.colors"
+                    [stroke]="heatMap.stroke"
+                    [plotOptions]="heatMap.plotOptions"
+                    [xaxis]="heatMap.xaxis"
+                    [yaxis]="heatMap.yaxis"
+                    [tooltip]="heatMap.tooltip"
+                    [legend]="heatMap.legend"
+                ></apx-chart>
+            </div>
         </div>
     </div>
 </div>
