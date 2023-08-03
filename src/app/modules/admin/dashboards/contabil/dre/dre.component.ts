@@ -444,7 +444,10 @@ export class DreDashComponent implements OnInit {
         this.chartAcumulado = {
             series: [
                 {
-                    data: [580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540],
+                    data: [
+                        580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
+                        580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
+                    ],
                 },
             ],
             chart: {
@@ -476,6 +479,16 @@ export class DreDashComponent implements OnInit {
                     'Filial 8',
                     'Filial 9',
                     'Filial 10',
+                    'Filial 11',
+                    'Filial 12',
+                    'Filial 13',
+                    'Filial 14',
+                    'Filial 15',
+                    'Filial 16',
+                    'Filial 17',
+                    'Filial 18',
+                    'Filial 19',
+                    'Filial 20',
                 ],
             },
             yaxis: {
