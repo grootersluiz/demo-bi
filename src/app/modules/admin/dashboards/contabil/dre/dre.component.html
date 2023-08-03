@@ -280,23 +280,45 @@
                     ></apx-chart>
                 </div>
             </div>
-            <div
-                class="relative flex flex-auto bg-card shadow rounded-2xl overflow-hidden p-3"
-            >
-                <apx-chart
-                    class="w-full"
-                    [series]="chartAnual.series"
-                    [chart]="chartAnual.chart"
-                    [colors]="chartAnual.colors"
-                    [dataLabels]="chartAnual.dataLabels"
-                    [plotOptions]="chartAnual.plotOptions"
-                    [yaxis]="chartAnual.yaxis"
-                    [legend]="chartAnual.legend"
-                    [fill]="chartAnual.fill"
-                    [stroke]="chartAnual.stroke"
-                    [tooltip]="chartAnual.tooltip"
-                    [xaxis]="chartAnual.xaxis"
-                ></apx-chart>
+            <div class="grid h-120 grid-rows-2 flex-auto gap-1">
+                <div
+                    class="relative flex flex-auto bg-card shadow rounded-2xl overflow-hidden p-3"
+                >
+                    <apx-chart
+                        class="w-full"
+                        [series]="chartAnual.series"
+                        [chart]="chartAnual.chart"
+                        [colors]="chartAnual.colors"
+                        [dataLabels]="chartAnual.dataLabels"
+                        [plotOptions]="chartAnual.plotOptions"
+                        [yaxis]="chartAnual.yaxis"
+                        [legend]="chartAnual.legend"
+                        [fill]="chartAnual.fill"
+                        [stroke]="chartAnual.stroke"
+                        [tooltip]="chartAnual.tooltip"
+                        [xaxis]="chartAnual.xaxis"
+                        [yaxis]="chartAnual.yaxis"
+                    ></apx-chart>
+                </div>
+                <div
+                    class="relative flex flex-auto bg-card shadow rounded-2xl overflow-hidden p-3"
+                >
+                    <apx-chart
+                        class="w-full"
+                        [series]="chartDespesas.series"
+                        [chart]="chartDespesas.chart"
+                        [colors]="chartDespesas.colors"
+                        [dataLabels]="chartDespesas.dataLabels"
+                        [plotOptions]="chartDespesas.plotOptions"
+                        [yaxis]="chartDespesas.yaxis"
+                        [legend]="chartDespesas.legend"
+                        [fill]="chartDespesas.fill"
+                        [stroke]="chartDespesas.stroke"
+                        [tooltip]="chartDespesas.tooltip"
+                        [xaxis]="chartDespesas.xaxis"
+                        [yaxis]="chartDespesas.yaxis"
+                    ></apx-chart>
+                </div>
             </div>
         </div>
     </div>

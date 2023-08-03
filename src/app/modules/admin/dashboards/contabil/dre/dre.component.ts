@@ -28,6 +28,7 @@ import * as _moment from 'moment';
 export class DreDashComponent implements OnInit {
     chartAnual: ApexOptions;
     chartAcumulado: ApexOptions;
+    chartDespesas: ApexOptions;
     selectedIntel: string = 'ROL';
     intelOptions: string[] = ['ROL', 'LB', 'MB', 'EBTIDA'];
     data: any;
@@ -392,10 +393,6 @@ export class DreDashComponent implements OnInit {
                     data: [76, 85, 101],
                 },
                 {
-                    name: 'Despesa Variável e Operacional',
-                    data: [35, 41, 36],
-                },
-                {
                     name: 'EBTIDA',
                     data: [63, 60, 66],
                 },
@@ -407,7 +404,7 @@ export class DreDashComponent implements OnInit {
                     show: false,
                 },
             },
-            colors: ['#FF8C00', '#F0E68C', '#FF4500', '#94A3B8'],
+            colors: ['#FF8C00', '#F0E68C', '#FF4500'],
             plotOptions: {
                 bar: {
                     horizontal: false,
@@ -424,6 +421,11 @@ export class DreDashComponent implements OnInit {
             },
             xaxis: {
                 categories: ['2021', '2022', '2023'],
+            },
+            yaxis: {
+                title: {
+                    text: 'ROL / LB / EBTIDA',
+                },
             },
             fill: {
                 opacity: 1,
@@ -479,6 +481,61 @@ export class DreDashComponent implements OnInit {
             yaxis: {
                 title: {
                     text: 'Acumulado Filiais',
+                },
+            },
+        };
+
+        //CC Anual Despesas
+
+        this.chartDespesas = {
+            series: [
+                {
+                    name: 'Despesas Variáveis',
+                    data: [35, 41, 36],
+                },
+                {
+                    name: 'Despesas Operacionais',
+                    data: [63, 60, 66],
+                },
+            ],
+            chart: {
+                type: 'area',
+                height: 220,
+                toolbar: {
+                    show: false,
+                },
+            },
+            colors: ['#FF8C00', '#F0E68C'],
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                    columnWidth: '55%',
+                },
+            },
+            dataLabels: {
+                enabled: false,
+            },
+            stroke: {
+                show: true,
+                width: 1,
+            },
+            yaxis: {
+                title: {
+                    text: 'Despesas',
+                },
+            },
+            xaxis: {
+                categories: ['2021', '2022', '2023'],
+            },
+            fill: {
+                colors: ['#FF8C00', '#F0E68C'],
+                opacity: 0.4,
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return val.toString();
+                    },
                 },
             },
         };
