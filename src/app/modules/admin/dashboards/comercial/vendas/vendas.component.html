@@ -647,39 +647,269 @@
                         <div
                             class="flex w-full max-w-screen-xl mx-auto md: pb-1"
                         >
-                            <div
-                                class="relative h-80 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
-                            >
-                                <apx-chart
-                                    [chart]="chartCCPosNeg.chart"
-                                    [labels]="chartCCPosNeg.labels"
-                                    [legend]="chartCCPosNeg.legend"
-                                    [plotOptions]="chartCCPosNeg.plotOptions"
-                                    [series]="chartCCPosNeg.series"
-                                    [states]="chartCCPosNeg.states"
-                                    [stroke]="chartCCPosNeg.stroke"
-                                    [theme]="chartCCPosNeg.theme"
-                                    [tooltip]="chartCCPosNeg.tooltip"
-                                    [yaxis]="chartCCPosNeg.yaxis"
-                                ></apx-chart>
+                            <div class="grid h-120 grid-rows-2 flex-auto gap-1">
+                                <div
+                                    class="relative flex flex-auto bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
+                                >
+                                    <div
+                                        class="absolute bottom-0 right-0 w-24 h-24 -m-6"
+                                    >
+                                        <mat-icon
+                                            class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
+                                            [svgIcon]="
+                                                'heroicons_outline:check-circle'
+                                            "
+                                        ></mat-icon>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="absolute top-2 left-2">
+                                            <div
+                                                class="text-lg font-bold tracking-tight leading-6 truncate"
+                                            >
+                                                Margem Bruta vs. CC
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="flex flex-col flex-wrap mt-4 p-1"
+                                    >
+                                        <div class="flex flex-col mx-1 my-3">
+                                            <div
+                                                class="text-sm font-medium leading-none text-secondary"
+                                            >
+                                                Margem Bruta
+                                            </div>
+                                            <div
+                                                class="mt-2 font-medium text-lg leading-none tooltip"
+                                            >
+                                                30.680.000
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-col mx-1 my-3">
+                                            <div
+                                                class="text-sm font-medium leading-none text-secondary"
+                                            >
+                                                Margem Bruta DC
+                                            </div>
+                                            <div
+                                                class="mt-2 font-medium text-lg leading-none tooltip"
+                                            >
+                                                28.650.000
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-col mx-1 my-3">
+                                            <div
+                                                class="text-sm font-medium leading-none text-secondary"
+                                            >
+                                                Margem Bruta FC
+                                            </div>
+                                            <div
+                                                class="mt-2 font-medium text-lg leading-none"
+                                            >
+                                                2.030.000
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-col mx-1 my-3">
+                                            <div
+                                                class="text-sm font-medium leading-none text-secondary"
+                                            >
+                                                Meta
+                                            </div>
+                                            <div
+                                                class="mt-2 font-medium text-lg leading-none"
+                                            >
+                                                18.600.000
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-col mx-1 my-3">
+                                            <div
+                                                class="text-sm font-medium leading-none text-secondary"
+                                            >
+                                                GAP
+                                            </div>
+                                            <div
+                                                class="mt-2 font-medium text-lg leading-none"
+                                            >
+                                                10.050.000
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="relative flex flex-auto bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
+                                >
+                                    <div
+                                        class="absolute bottom-0 right-0 w-24 h-24 -m-6"
+                                    >
+                                        <mat-icon
+                                            class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
+                                            [svgIcon]="
+                                                'heroicons_outline:check-circle'
+                                            "
+                                        ></mat-icon>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <div class="absolute top-2 left-2">
+                                            <div
+                                                class="text-lg font-bold tracking-tight leading-6 truncate"
+                                            >
+                                                Cobertura de Carteira
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="flex flex-col flex-wrap mt-4 p-1"
+                                    >
+                                        <div class="flex flex-col mx-1 my-3">
+                                            <div
+                                                class="text-sm font-medium leading-none text-secondary"
+                                            >
+                                                Cobertura Total
+                                            </div>
+                                            <div
+                                                class="mt-2 font-medium text-lg leading-none tooltip"
+                                            >
+                                                7.845
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-col mx-1 my-3">
+                                            <div
+                                                class="text-sm font-medium leading-none text-secondary"
+                                            >
+                                                Cobertura PJ
+                                            </div>
+                                            <div
+                                                class="mt-2 font-medium text-lg leading-none tooltip"
+                                            >
+                                                4.545
+                                            </div>
+                                        </div>
+                                        <div class="flex flex-col mx-1 my-3">
+                                            <div
+                                                class="text-sm font-medium leading-none text-secondary"
+                                            >
+                                                Cobertura PF
+                                            </div>
+                                            <div
+                                                class="mt-2 font-medium text-lg leading-none"
+                                            >
+                                                3.300
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div
-                                class="relative flex flex-auto h-80 bg-card shadow rounded-2xl overflow-hidden p-3"
+                                class="relative flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden"
                             >
-                                <apx-chart
-                                    class="w-full"
-                                    [series]="chartCCEstados.series"
-                                    [chart]="chartCCEstados.chart"
-                                    [colors]="chartCCEstados.colors"
-                                    [dataLabels]="chartCCEstados.dataLabels"
-                                    [plotOptions]="chartCCEstados.plotOptions"
-                                    [yaxis]="chartCCEstados.yaxis"
-                                    [legend]="chartCCEstados.legend"
-                                    [fill]="chartCCEstados.fill"
-                                    [stroke]="chartCCEstados.stroke"
-                                    [tooltip]="chartCCEstados.tooltip"
-                                    [xaxis]="chartCCEstados.xaxis"
-                                ></apx-chart>
+                                <div
+                                    class="flex items-start justify-between m-6 mb-0"
+                                >
+                                    <div
+                                        class="text-lg font-medium tracking-tight leading-6 truncate"
+                                    >
+                                        Indicadores Mensais (CC)
+                                    </div>
+                                    <div style="text-align: end">
+                                        <div class="m-1">
+                                            <button
+                                                class="h-6 min-h-6 px-2 rounded-full bg-hover"
+                                                mat-button
+                                                [matMenuTriggerFor]="intelMenu"
+                                            >
+                                                <span
+                                                    class="font-medium text-sm text-secondary"
+                                                    >{{ selectedIntel }}</span
+                                                >
+                                            </button>
+                                            <mat-menu #intelMenu="matMenu">
+                                                <button
+                                                    mat-menu-item
+                                                    *ngFor="
+                                                        let intel of intelOptions
+                                                    "
+                                                    (click)="
+                                                        onMenuIntelSelected(
+                                                            intel
+                                                        )
+                                                    "
+                                                >
+                                                    {{ intel }}
+                                                </button>
+                                            </mat-menu>
+                                        </div>
+                                        <div class="m-1">
+                                            <button
+                                                class="h-6 min-h-6 px-2 rounded-full bg-hover"
+                                                mat-button
+                                                [matMenuTriggerFor]="curveMenu"
+                                            >
+                                                <span
+                                                    class="font-medium text-sm text-secondary"
+                                                    >{{ selectedCurve }}</span
+                                                >
+                                            </button>
+                                            <mat-menu #curveMenu="matMenu">
+                                                <button
+                                                    mat-menu-item
+                                                    *ngFor="
+                                                        let curve of curveOptions
+                                                    "
+                                                    (click)="
+                                                        onMenuCurveSelected(
+                                                            curve
+                                                        )
+                                                    "
+                                                >
+                                                    {{ curve }}
+                                                </button>
+                                            </mat-menu>
+                                        </div>
+                                        <div class="m-1">
+                                            <button
+                                                class="h-6 min-h-6 px-2 rounded-full bg-hover"
+                                                mat-button
+                                                [matMenuTriggerFor]="stateMenu"
+                                            >
+                                                <span
+                                                    class="font-medium text-sm text-secondary"
+                                                    >{{ selectedState }}</span
+                                                >
+                                            </button>
+                                            <mat-menu #stateMenu="matMenu">
+                                                <button
+                                                    mat-menu-item
+                                                    *ngFor="
+                                                        let state of stateOptions
+                                                    "
+                                                    (click)="
+                                                        onMenuStateSelected(
+                                                            state
+                                                        )
+                                                    "
+                                                >
+                                                    {{ state }}
+                                                </button>
+                                            </mat-menu>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col flex-auto mt-3">
+                                    <apx-chart
+                                        class="flex-auto w-full h-full"
+                                        [chart]="chartGlobal.chart"
+                                        [colors]="chartGlobal.colors"
+                                        [dataLabels]="chartGlobal.dataLabels"
+                                        [grid]="chartGlobal.grid"
+                                        [legend]="chartGlobal.legend"
+                                        [series]="chartGlobal.series"
+                                        [stroke]="chartGlobal.stroke"
+                                        [tooltip]="chartGlobal.tooltip"
+                                        [xaxis]="chartGlobal.xaxis"
+                                        [yaxis]="chartGlobal.yaxis"
+                                    ></apx-chart>
+                                </div>
                             </div>
                         </div>
                     </ng-template>

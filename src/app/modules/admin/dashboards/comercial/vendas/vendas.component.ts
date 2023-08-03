@@ -26,12 +26,45 @@ import * as _moment from 'moment';
     styleUrls: ['../../../util/css/css.component.scss'],
 })
 export class VendasDashComponent implements OnInit {
-    chartCC: ApexOptions;
     chartByCurve: ApexOptions;
-    chartAnual: ApexOptions;
-    chartCCPosNeg: ApexOptions;
+    chartGlobal: ApexOptions;
     chartCCEstados: ApexOptions;
     data: any;
+    selectedCurve: string = 'Todas';
+    selectedState: string = 'Todos';
+    selectedIntel: string = 'Positivação';
+    intelOptions: string[] = ['Positivação', 'ROL', 'LB', 'MB'];
+    curveOptions: string[] = ['Todas', 'A', 'B', 'C', 'N', 'Vazio'];
+    stateOptions: string[] = [
+        'Todos',
+        'AC',
+        'AL',
+        'AP',
+        'AM',
+        'BA',
+        'CE',
+        'DF',
+        'ES',
+        'GO',
+        'MA',
+        'MT',
+        'MS',
+        'MG',
+        'PA',
+        'PB',
+        'PR',
+        'PE',
+        'PI',
+        'RJ',
+        'RN',
+        'RS',
+        'RO',
+        'RR',
+        'SC',
+        'SP',
+        'SE',
+        'TO',
+    ];
 
     // Filtros principais do dashboard
 
@@ -142,6 +175,18 @@ export class VendasDashComponent implements OnInit {
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
+
+    onMenuCurveSelected(curve: string) {
+        this.selectedCurve = curve;
+    }
+
+    onMenuStateSelected(state: string) {
+        this.selectedState = state;
+    }
+
+    onMenuIntelSelected(intel: string) {
+        this.selectedIntel = intel;
+    }
 
     setInitialMY(evMY: Moment, datepicker: MatDatepicker<Moment>) {
         this.dataInicio = { year: evMY.year(), month: evMY.month(), date: 1 };
@@ -378,138 +423,138 @@ export class VendasDashComponent implements OnInit {
     private _prepareChartData(): void {
         // Clientes Compradores
 
-        this.chartCC = {
-            series: [
-                {
-                    name: 'Dentro da carteira',
-                    data: [
-                        8107.85, 8128.0, 8122.9, 8165.5, 8340.7, 8423.7, 8423.5,
-                        8514.3, 8481.85, 8487.7, 8506.9, 8626.2,
-                    ],
-                },
-                {
-                    name: 'Fora da carteira',
-                    data: [
-                        8423.5, 8514.3, 8481.85, 8487.7, 8506.9, 8626.2,
-                        8668.95, 8496.25, 8600.65, 8881.1, 9340.85, 8602.3,
-                    ],
-                },
-            ],
-            chart: {
-                fontFamily: 'inherit',
-                type: 'area',
-                height: 220,
-                zoom: {
-                    enabled: false,
-                },
-                locales: [
-                    {
-                        name: 'pt-br',
-                        options: {
-                            months: [
-                                'Janeiro',
-                                'Fevereiro',
-                                'Março',
-                                'Abril',
-                                'Maio',
-                                'Junho',
-                                'Julho',
-                                'Agosto',
-                                'Setembro',
-                                'Outubro',
-                                'Novembro',
-                                'Dezembro',
-                            ],
-                            shortMonths: [
-                                'Jan',
-                                'Fev',
-                                'Mar',
-                                'Abr',
-                                'Mai',
-                                'Jun',
-                                'Jul',
-                                'Ago',
-                                'Set',
-                                'Out',
-                                'Nov',
-                                'Dez',
-                            ],
-                            days: [
-                                'Domingo',
-                                'Segunda',
-                                'Terça',
-                                'Quarta',
-                                'Quinta',
-                                'Sexta',
-                                'Sábado',
-                            ],
-                            shortDays: [
-                                'Dom',
-                                'Seg',
-                                'Ter',
-                                'Qua',
-                                'Qui',
-                                'Sex',
-                                'Sab',
-                            ],
-                            toolbar: {
-                                exportToSVG: 'Baixar SVG',
-                                exportToPNG: 'Baixar PNG',
-                                exportToCSV: 'Baixar CSV',
-                                menu: 'Menu',
-                                selection: 'Selecionar',
-                                selectionZoom: 'Selecionar Zoom',
-                                zoomIn: 'Aumentar',
-                                zoomOut: 'Diminuir',
-                                pan: 'Navegação',
-                                reset: 'Reiniciar Zoom',
-                            },
-                        },
-                    },
-                ],
-                defaultLocale: 'pt-br',
-            },
-            colors: ['#FF8C00', '#94A3B8'],
-            dataLabels: {
-                enabled: false,
-            },
-            stroke: {
-                curve: 'straight',
-                width: 1,
-            },
+        // this.chartCC = {
+        //     series: [
+        //         {
+        //             name: 'Dentro da carteira',
+        //             data: [
+        //                 8107.85, 8128.0, 8122.9, 8165.5, 8340.7, 8423.7, 8423.5,
+        //                 8514.3, 8481.85, 8487.7, 8506.9, 8626.2,
+        //             ],
+        //         },
+        //         {
+        //             name: 'Fora da carteira',
+        //             data: [
+        //                 8423.5, 8514.3, 8481.85, 8487.7, 8506.9, 8626.2,
+        //                 8668.95, 8496.25, 8600.65, 8881.1, 9340.85, 8602.3,
+        //             ],
+        //         },
+        //     ],
+        //     chart: {
+        //         fontFamily: 'inherit',
+        //         type: 'area',
+        //         height: 220,
+        //         zoom: {
+        //             enabled: false,
+        //         },
+        //         locales: [
+        //             {
+        //                 name: 'pt-br',
+        //                 options: {
+        //                     months: [
+        //                         'Janeiro',
+        //                         'Fevereiro',
+        //                         'Março',
+        //                         'Abril',
+        //                         'Maio',
+        //                         'Junho',
+        //                         'Julho',
+        //                         'Agosto',
+        //                         'Setembro',
+        //                         'Outubro',
+        //                         'Novembro',
+        //                         'Dezembro',
+        //                     ],
+        //                     shortMonths: [
+        //                         'Jan',
+        //                         'Fev',
+        //                         'Mar',
+        //                         'Abr',
+        //                         'Mai',
+        //                         'Jun',
+        //                         'Jul',
+        //                         'Ago',
+        //                         'Set',
+        //                         'Out',
+        //                         'Nov',
+        //                         'Dez',
+        //                     ],
+        //                     days: [
+        //                         'Domingo',
+        //                         'Segunda',
+        //                         'Terça',
+        //                         'Quarta',
+        //                         'Quinta',
+        //                         'Sexta',
+        //                         'Sábado',
+        //                     ],
+        //                     shortDays: [
+        //                         'Dom',
+        //                         'Seg',
+        //                         'Ter',
+        //                         'Qua',
+        //                         'Qui',
+        //                         'Sex',
+        //                         'Sab',
+        //                     ],
+        //                     toolbar: {
+        //                         exportToSVG: 'Baixar SVG',
+        //                         exportToPNG: 'Baixar PNG',
+        //                         exportToCSV: 'Baixar CSV',
+        //                         menu: 'Menu',
+        //                         selection: 'Selecionar',
+        //                         selectionZoom: 'Selecionar Zoom',
+        //                         zoomIn: 'Aumentar',
+        //                         zoomOut: 'Diminuir',
+        //                         pan: 'Navegação',
+        //                         reset: 'Reiniciar Zoom',
+        //                     },
+        //                 },
+        //             },
+        //         ],
+        //         defaultLocale: 'pt-br',
+        //     },
+        //     colors: ['#FF8C00', '#94A3B8'],
+        //     dataLabels: {
+        //         enabled: false,
+        //     },
+        //     stroke: {
+        //         curve: 'straight',
+        //         width: 1,
+        //     },
 
-            title: {
-                text: 'CC por Faturamento',
-                align: 'left',
-            },
-            subtitle: {
-                text: 'Dentro/Fora da carteira',
-                align: 'left',
-            },
-            labels: [
-                'Jan',
-                'Fev',
-                'Mar',
-                'Abr',
-                'Mai',
-                'Jun',
-                'Jul',
-                'Ago',
-                'Set',
-                'Out',
-                'Nov',
-                'Dez',
-            ],
-            xaxis: {
-                type: 'category',
-            },
-            yaxis: {
-                opposite: true,
-            },
-            legend: {
-                horizontalAlign: 'left',
-            },
-        };
+        //     title: {
+        //         text: 'CC por Faturamento',
+        //         align: 'left',
+        //     },
+        //     subtitle: {
+        //         text: 'Dentro/Fora da carteira',
+        //         align: 'left',
+        //     },
+        //     labels: [
+        //         'Jan',
+        //         'Fev',
+        //         'Mar',
+        //         'Abr',
+        //         'Mai',
+        //         'Jun',
+        //         'Jul',
+        //         'Ago',
+        //         'Set',
+        //         'Out',
+        //         'Nov',
+        //         'Dez',
+        //     ],
+        //     xaxis: {
+        //         type: 'category',
+        //     },
+        //     yaxis: {
+        //         opposite: true,
+        //     },
+        //     legend: {
+        //         horizontalAlign: 'left',
+        //     },
+        // };
 
         // CC por curva
         this.chartByCurve = {
@@ -582,86 +627,169 @@ export class VendasDashComponent implements OnInit {
 
         //CC Anual
 
-        this.chartAnual = {
-            series: [
-                {
-                    name: 'C. Positivados DC',
-                    data: [44, 55, 57],
-                },
-                {
-                    name: 'C. Não Positivados DC',
-                    data: [76, 85, 101],
-                },
-                {
-                    name: 'C. Positivados FC',
-                    data: [35, 41, 36],
-                },
-                {
-                    name: 'C. Não Positivados FC',
-                    data: [63, 60, 66],
-                },
-            ],
-            chart: {
-                type: 'bar',
-                height: 220,
-            },
-            colors: ['#FF8C00', '#F0E68C', '#FF4500', '#94A3B8'],
-            plotOptions: {
-                bar: {
-                    horizontal: false,
-                    columnWidth: '55%',
-                },
-            },
-            dataLabels: {
-                enabled: false,
-            },
-            stroke: {
-                show: true,
-                width: 2,
-                colors: ['transparent'],
-            },
-            xaxis: {
-                categories: ['2021', '2022', '2023'],
-            },
-            yaxis: {
-                title: {
-                    text: 'CC Anual',
-                },
-            },
-            fill: {
-                opacity: 1,
-            },
-            tooltip: {
-                theme: 'dark',
-                y: {
-                    formatter: (
-                        value: number,
-                        { series, seriesIndex, dataPointIndex }
-                    ): string => {
-                        const intel =
-                            (value /
-                                (series[
-                                    seriesIndex == 0 || seriesIndex == 2
-                                        ? seriesIndex + 1
-                                        : seriesIndex - 1
-                                ][dataPointIndex] +
-                                    value)) *
-                            100;
+        // this.chartAnual = {
+        //     series: [
+        //         {
+        //             name: 'C. Positivados DC',
+        //             data: [44, 55, 57],
+        //         },
+        //         {
+        //             name: 'C. Não Positivados DC',
+        //             data: [76, 85, 101],
+        //         },
+        //         {
+        //             name: 'C. Positivados FC',
+        //             data: [35, 41, 36],
+        //         },
+        //         {
+        //             name: 'C. Não Positivados FC',
+        //             data: [63, 60, 66],
+        //         },
+        //     ],
+        //     chart: {
+        //         type: 'bar',
+        //         height: 220,
+        //     },
+        //     colors: ['#FF8C00', '#F0E68C', '#FF4500', '#94A3B8'],
+        //     plotOptions: {
+        //         bar: {
+        //             horizontal: false,
+        //             columnWidth: '55%',
+        //         },
+        //     },
+        //     dataLabels: {
+        //         enabled: false,
+        //     },
+        //     stroke: {
+        //         show: true,
+        //         width: 2,
+        //         colors: ['transparent'],
+        //     },
+        //     xaxis: {
+        //         categories: ['2021', '2022', '2023'],
+        //     },
+        //     yaxis: {
+        //         title: {
+        //             text: 'CC Anual',
+        //         },
+        //     },
+        //     fill: {
+        //         opacity: 1,
+        //     },
+        //     tooltip: {
+        //         theme: 'dark',
+        //         y: {
+        //             formatter: (
+        //                 value: number,
+        //                 { series, seriesIndex, dataPointIndex }
+        //             ): string => {
+        //                 const intel =
+        //                     (value /
+        //                         (series[
+        //                             seriesIndex == 0 || seriesIndex == 2
+        //                                 ? seriesIndex + 1
+        //                                 : seriesIndex - 1
+        //                         ][dataPointIndex] +
+        //                             value)) *
+        //                     100;
 
-                        return `${value} (${intel.toFixed(2)}%)`;
-                    },
-                },
-            },
-        };
+        //                 return `${value} (${intel.toFixed(2)}%)`;
+        //             },
+        //         },
+        //     },
+        // };
 
         //CC Dentro e Fora da Carteira
 
-        this.chartCCPosNeg = {
+        // this.chartCCPosNeg = {
+        //     chart: {
+        //         fontFamily: 'inherit',
+        //         foreColor: 'inherit',
+        //         height: 300,
+        //         type: 'polarArea',
+        //         toolbar: {
+        //             show: false,
+        //         },
+        //         zoom: {
+        //             enabled: false,
+        //         },
+        //     },
+        //     labels: [
+        //         'DC Positivados',
+        //         'DC Não Positivados',
+        //         'FC Positivados',
+        //         'FC Não Positivados',
+        //     ],
+        //     legend: {
+        //         position: 'bottom',
+        //     },
+        //     plotOptions: {
+        //         polarArea: {
+        //             spokes: {
+        //                 connectorColors: 'var(--fuse-border)',
+        //             },
+        //             rings: {
+        //                 strokeColor: 'var(--fuse-border)',
+        //             },
+        //         },
+        //     },
+        //     series: [5248, 2547, 6874, 1234],
+        //     states: {
+        //         hover: {
+        //             filter: {
+        //                 type: 'darken',
+        //                 value: 0.75,
+        //             },
+        //         },
+        //     },
+        //     stroke: {
+        //         width: 2,
+        //     },
+        //     theme: {
+        //         monochrome: {
+        //             enabled: true,
+        //             color: '#FF8C00',
+        //             shadeIntensity: 0.75,
+        //             shadeTo: 'dark',
+        //         },
+        //     },
+        //     tooltip: {
+        //         theme: 'dark',
+        //         y: {
+        //             formatter: (value: number, { seriesIndex }): string => {
+        //                 const divValue =
+        //                     this.chartCCPosNeg.series[
+        //                         seriesIndex == 0 || seriesIndex == 2
+        //                             ? seriesIndex + 1
+        //                             : seriesIndex - 1
+        //                     ];
+        //                 const intel =
+        //                     (value / (parseInt(divValue.toString()) + value)) *
+        //                     100;
+
+        //                 return `${value} (${intel.toFixed(2)}%)`;
+        //             },
+        //         },
+        //     },
+        //     yaxis: {
+        //         labels: {
+        //             style: {
+        //                 colors: 'var(--fuse-text-secondary)',
+        //             },
+        //         },
+        //     },
+        // };
+
+        // Global Chart
+        this.chartGlobal = {
             chart: {
+                animations: {
+                    enabled: false,
+                },
                 fontFamily: 'inherit',
                 foreColor: 'inherit',
-                height: 300,
-                type: 'polarArea',
+                height: '100%',
+                type: 'area',
                 toolbar: {
                     show: false,
                 },
@@ -669,62 +797,263 @@ export class VendasDashComponent implements OnInit {
                     enabled: false,
                 },
             },
-            labels: [
-                'DC Positivados',
-                'DC Não Positivados',
-                'FC Positivados',
-                'FC Não Positivados',
-            ],
+            colors: ['#FF8C00', '#F0E68C', '#FF4500', '#94A3B8'],
+            dataLabels: {
+                enabled: false,
+            },
+            fill: {
+                colors: ['#FF8C00', '#F0E68C', '#FF4500', '#94A3B8'],
+                opacity: 0.5,
+            },
+            grid: {
+                show: false,
+                padding: {
+                    bottom: -40,
+                    left: 0,
+                    right: -10,
+                },
+            },
             legend: {
-                position: 'bottom',
+                show: false,
             },
-            plotOptions: {
-                polarArea: {
-                    spokes: {
-                        connectorColors: 'var(--fuse-border)',
-                    },
-                    rings: {
-                        strokeColor: 'var(--fuse-border)',
-                    },
+            series: [
+                {
+                    name: 'Meta',
+                    data: [
+                        {
+                            x: 'Jan',
+                            y: 3578,
+                        },
+                        {
+                            x: 'Fev',
+                            y: 3857,
+                        },
+                        {
+                            x: 'Mar',
+                            y: 3687,
+                        },
+                        {
+                            x: 'Abr',
+                            y: 3874,
+                        },
+                        {
+                            x: 'Mai',
+                            y: 3587,
+                        },
+                        {
+                            x: 'Jun',
+                            y: 3854,
+                        },
+                        {
+                            x: 'Jul',
+                            y: 3965,
+                        },
+                        {
+                            x: 'Ago',
+                            y: 3854,
+                        },
+                        {
+                            x: 'Set',
+                            y: 3987,
+                        },
+                        {
+                            x: 'Out',
+                            y: 3412,
+                        },
+                        {
+                            x: 'Nov',
+                            y: 3965,
+                        },
+                        {
+                            x: 'Dez',
+                            y: 3795,
+                        },
+                    ],
                 },
-            },
-            series: [5248, 2547, 6874, 1234],
-            states: {
-                hover: {
-                    filter: {
-                        type: 'darken',
-                        value: 0.75,
-                    },
+                {
+                    name: 'Positivados DC',
+                    data: [
+                        {
+                            x: 'Jan',
+                            y: 1547,
+                        },
+                        {
+                            x: 'Fev',
+                            y: 2456,
+                        },
+                        {
+                            x: 'Mar',
+                            y: 1547,
+                        },
+                        {
+                            x: 'Abr',
+                            y: 2301,
+                        },
+                        {
+                            x: 'Mai',
+                            y: 2890,
+                        },
+                        {
+                            x: 'Jun',
+                            y: 1775,
+                        },
+                        {
+                            x: 'Jul',
+                            y: 2678,
+                        },
+                        {
+                            x: 'Ago',
+                            y: 1324,
+                        },
+                        {
+                            x: 'Set',
+                            y: 2135,
+                        },
+                        {
+                            x: 'Out',
+                            y: 2988,
+                        },
+                        {
+                            x: 'Nov',
+                            y: 1765,
+                        },
+                        {
+                            x: 'Dez',
+                            y: 2076,
+                        },
+                    ],
                 },
-            },
+                {
+                    name: 'Positivados FC',
+                    data: [
+                        {
+                            x: 'Jan',
+                            y: 2098,
+                        },
+                        {
+                            x: 'Fev',
+                            y: 1845,
+                        },
+                        {
+                            x: 'Mar',
+                            y: 2567,
+                        },
+                        {
+                            x: 'Abr',
+                            y: 1578,
+                        },
+                        {
+                            x: 'Mai',
+                            y: 2789,
+                        },
+                        {
+                            x: 'Jun',
+                            y: 2100,
+                        },
+                        {
+                            x: 'Jul',
+                            y: 1867,
+                        },
+                        {
+                            x: 'Ago',
+                            y: 2745,
+                        },
+                        {
+                            x: 'Set',
+                            y: 1954,
+                        },
+                        {
+                            x: 'Out',
+                            y: 1567,
+                        },
+                        {
+                            x: 'Nov',
+                            y: 2234,
+                        },
+                        {
+                            x: 'Dez',
+                            y: 1856,
+                        },
+                    ],
+                },
+                {
+                    name: 'Total Positivados',
+                    data: [
+                        {
+                            x: 'Jan',
+                            y: 1798,
+                        },
+                        {
+                            x: 'Fev',
+                            y: 1476,
+                        },
+                        {
+                            x: 'Mar',
+                            y: 2154,
+                        },
+                        {
+                            x: 'Abr',
+                            y: 1367,
+                        },
+                        {
+                            x: 'Mai',
+                            y: 2567,
+                        },
+                        {
+                            x: 'Jun',
+                            y: 1920,
+                        },
+                        {
+                            x: 'Jul',
+                            y: 1850,
+                        },
+                        {
+                            x: 'Ago',
+                            y: 2054,
+                        },
+                        {
+                            x: 'Set',
+                            y: 2345,
+                        },
+                        {
+                            x: 'Out',
+                            y: 1634,
+                        },
+                        {
+                            x: 'Nov',
+                            y: 2200,
+                        },
+                        {
+                            x: 'Dez',
+                            y: 1987,
+                        },
+                    ],
+                },
+            ],
             stroke: {
-                width: 2,
-            },
-            theme: {
-                monochrome: {
-                    enabled: true,
-                    color: '#FF8C00',
-                    shadeIntensity: 0.75,
-                    shadeTo: 'dark',
-                },
+                curve: 'straight',
+                width: 1,
             },
             tooltip: {
+                followCursor: true,
                 theme: 'dark',
-                y: {
-                    formatter: (value: number, { seriesIndex }): string => {
-                        const divValue =
-                            this.chartCCPosNeg.series[
-                                seriesIndex == 0 || seriesIndex == 2
-                                    ? seriesIndex + 1
-                                    : seriesIndex - 1
-                            ];
-                        const intel =
-                            (value / (parseInt(divValue.toString()) + value)) *
-                            100;
-
-                        return `${value} (${intel.toFixed(2)}%)`;
+            },
+            xaxis: {
+                axisBorder: {
+                    show: false,
+                },
+                labels: {
+                    offsetY: -20,
+                    rotate: 0,
+                    style: {
+                        colors: 'var(--fuse-text-secondary)',
                     },
                 },
+
+                tooltip: {
+                    enabled: false,
+                },
+                type: 'category',
             },
             yaxis: {
                 labels: {
@@ -732,6 +1061,10 @@ export class VendasDashComponent implements OnInit {
                         colors: 'var(--fuse-text-secondary)',
                     },
                 },
+                max: (max): number => max + 250,
+                min: (min): number => min - 250,
+                show: false,
+                tickAmount: 5,
             },
         };
 
