@@ -594,7 +594,7 @@ export class VendasDashComponent implements OnInit {
                 ],
                 defaultLocale: 'pt-br',
             },
-            colors: ['#0FAF14', '#527DE2', '#FEB013', '#B3B4B7'],
+            colors: ['#0FAF14', '#527DE2', '#FF8C00', '#94A3B8'],
             stroke: {
                 width: [1, 1, 3, 3],
                 curve: 'smooth',
