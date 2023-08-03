@@ -28,7 +28,6 @@ import * as _moment from 'moment';
 export class VendasDashComponent implements OnInit {
     chartByCurve: ApexOptions;
     chartGlobal: ApexOptions;
-    chartCCEstados: ApexOptions;
     data: any;
     selectedCurve: string = 'Todas';
     selectedState: string = 'Todos';
