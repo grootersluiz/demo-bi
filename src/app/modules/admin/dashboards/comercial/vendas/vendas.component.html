@@ -647,9 +647,11 @@
                         <div
                             class="flex w-full max-w-screen-xl mx-auto md: pb-1"
                         >
-                            <div class="grid h-120 grid-rows-2 flex-auto gap-1">
+                            <div
+                                class="grid h-100 w-48 grid-rows-2 flex-auto gap-1"
+                            >
                                 <div
-                                    class="relative flex flex-auto bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
+                                    class="relative flex w-48 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
                                 >
                                     <div
                                         class="absolute bottom-0 right-0 w-24 h-24 -m-6"
@@ -673,62 +675,62 @@
                                     <div
                                         class="flex flex-col flex-wrap mt-4 p-1"
                                     >
-                                        <div class="flex flex-col mx-1 my-3">
+                                        <div class="flex flex-col mx-1 my-2">
                                             <div
                                                 class="text-sm font-medium leading-none text-secondary"
                                             >
-                                                Margem Bruta
+                                                MB
                                             </div>
                                             <div
-                                                class="mt-2 font-medium text-lg leading-none tooltip"
+                                                class="mt-1 font-medium text-sm leading-none tooltip"
                                             >
                                                 30.680.000
                                             </div>
                                         </div>
-                                        <div class="flex flex-col mx-1 my-3">
+                                        <div class="flex flex-col mx-1 my-2">
                                             <div
                                                 class="text-sm font-medium leading-none text-secondary"
                                             >
-                                                Margem Bruta DC
+                                                MB DC
                                             </div>
                                             <div
-                                                class="mt-2 font-medium text-lg leading-none tooltip"
+                                                class="mt-1 font-medium text-sm leading-none tooltip"
                                             >
                                                 28.650.000
                                             </div>
                                         </div>
-                                        <div class="flex flex-col mx-1 my-3">
+                                        <div class="flex flex-col mx-1 my-2">
                                             <div
                                                 class="text-sm font-medium leading-none text-secondary"
                                             >
-                                                Margem Bruta FC
+                                                MB FC
                                             </div>
                                             <div
-                                                class="mt-2 font-medium text-lg leading-none"
+                                                class="mt-1 font-medium text-sm leading-none"
                                             >
                                                 2.030.000
                                             </div>
                                         </div>
-                                        <div class="flex flex-col mx-1 my-3">
+                                        <div class="flex flex-col mx-1 my-2">
                                             <div
                                                 class="text-sm font-medium leading-none text-secondary"
                                             >
                                                 Meta
                                             </div>
                                             <div
-                                                class="mt-2 font-medium text-lg leading-none"
+                                                class="mt-1 font-medium text-sm leading-none"
                                             >
                                                 18.600.000
                                             </div>
                                         </div>
-                                        <div class="flex flex-col mx-1 my-3">
+                                        <div class="flex flex-col mx-1 my-2">
                                             <div
                                                 class="text-sm font-medium leading-none text-secondary"
                                             >
                                                 GAP
                                             </div>
                                             <div
-                                                class="mt-2 font-medium text-lg leading-none"
+                                                class="mt-1 font-medium text-sm leading-none"
                                             >
                                                 10.050.000
                                             </div>
@@ -736,7 +738,7 @@
                                     </div>
                                 </div>
                                 <div
-                                    class="relative flex flex-auto bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
+                                    class="relative flex w-48 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
                                 >
                                     <div
                                         class="absolute bottom-0 right-0 w-24 h-24 -m-6"
@@ -760,38 +762,38 @@
                                     <div
                                         class="flex flex-col flex-wrap mt-4 p-1"
                                     >
-                                        <div class="flex flex-col mx-1 my-3">
+                                        <div class="flex flex-col mx-1 my-2">
                                             <div
                                                 class="text-sm font-medium leading-none text-secondary"
                                             >
                                                 Cobertura Total
                                             </div>
                                             <div
-                                                class="mt-2 font-medium text-lg leading-none tooltip"
+                                                class="mt-1 font-medium text-sm leading-none tooltip"
                                             >
                                                 7.845
                                             </div>
                                         </div>
-                                        <div class="flex flex-col mx-1 my-3">
+                                        <div class="flex flex-col mx-1 my-2">
                                             <div
                                                 class="text-sm font-medium leading-none text-secondary"
                                             >
                                                 Cobertura PJ
                                             </div>
                                             <div
-                                                class="mt-2 font-medium text-lg leading-none tooltip"
+                                                class="mt-1 font-medium text-sm leading-none tooltip"
                                             >
                                                 4.545
                                             </div>
                                         </div>
-                                        <div class="flex flex-col mx-1 my-3">
+                                        <div class="flex flex-col mx-1 my-2">
                                             <div
                                                 class="text-sm font-medium leading-none text-secondary"
                                             >
                                                 Cobertura PF
                                             </div>
                                             <div
-                                                class="mt-2 font-medium text-lg leading-none"
+                                                class="mt-1 font-medium text-sm leading-none"
                                             >
                                                 3.300
                                             </div>
@@ -800,13 +802,13 @@
                                 </div>
                             </div>
                             <div
-                                class="relative flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden"
+                                class="relative w-full bg-card shadow rounded-2xl overflow-hidden ml-1"
                             >
                                 <div
                                     class="flex items-start justify-between m-6 mb-0"
                                 >
                                     <div
-                                        class="text-lg font-medium tracking-tight leading-6 truncate"
+                                        class="text-lg font-bold tracking-tight leading-6 truncate"
                                     >
                                         Indicadores Mensais (CC)
                                     </div>
@@ -897,17 +899,17 @@
 
                                 <div class="flex flex-col flex-auto mt-3">
                                     <apx-chart
-                                        class="flex-auto w-full h-full"
+                                        [series]="chartGlobal.series"
                                         [chart]="chartGlobal.chart"
                                         [colors]="chartGlobal.colors"
-                                        [dataLabels]="chartGlobal.dataLabels"
-                                        [grid]="chartGlobal.grid"
-                                        [legend]="chartGlobal.legend"
-                                        [series]="chartGlobal.series"
-                                        [stroke]="chartGlobal.stroke"
-                                        [tooltip]="chartGlobal.tooltip"
-                                        [xaxis]="chartGlobal.xaxis"
                                         [yaxis]="chartGlobal.yaxis"
+                                        [xaxis]="chartGlobal.xaxis"
+                                        [labels]="chartGlobal.labels"
+                                        [stroke]="chartGlobal.stroke"
+                                        [plotOptions]="chartGlobal.plotOptions"
+                                        [markers]="chartGlobal.markers"
+                                        [fill]="chartGlobal.fill"
+                                        [tooltip]="chartGlobal.tooltip"
                                     ></apx-chart>
                                 </div>
                             </div>
