@@ -871,6 +871,59 @@ export class VendasDashComponent implements OnInit {
                     ],
                 },
                 {
+                    name: 'Total Positivados',
+                    data: [
+                        {
+                            x: 'Jan',
+                            y: 1798,
+                        },
+                        {
+                            x: 'Fev',
+                            y: 1476,
+                        },
+                        {
+                            x: 'Mar',
+                            y: 2154,
+                        },
+                        {
+                            x: 'Abr',
+                            y: 1367,
+                        },
+                        {
+                            x: 'Mai',
+                            y: 2567,
+                        },
+                        {
+                            x: 'Jun',
+                            y: 1920,
+                        },
+                        {
+                            x: 'Jul',
+                            y: 1850,
+                        },
+                        {
+                            x: 'Ago',
+                            y: 2054,
+                        },
+                        {
+                            x: 'Set',
+                            y: 2345,
+                        },
+                        {
+                            x: 'Out',
+                            y: 1634,
+                        },
+                        {
+                            x: 'Nov',
+                            y: 2200,
+                        },
+                        {
+                            x: 'Dez',
+                            y: 1987,
+                        },
+                    ],
+                },
+                {
                     name: 'Positivados DC',
                     data: [
                         {
@@ -973,59 +1026,6 @@ export class VendasDashComponent implements OnInit {
                         {
                             x: 'Dez',
                             y: 1856,
-                        },
-                    ],
-                },
-                {
-                    name: 'Total Positivados',
-                    data: [
-                        {
-                            x: 'Jan',
-                            y: 1798,
-                        },
-                        {
-                            x: 'Fev',
-                            y: 1476,
-                        },
-                        {
-                            x: 'Mar',
-                            y: 2154,
-                        },
-                        {
-                            x: 'Abr',
-                            y: 1367,
-                        },
-                        {
-                            x: 'Mai',
-                            y: 2567,
-                        },
-                        {
-                            x: 'Jun',
-                            y: 1920,
-                        },
-                        {
-                            x: 'Jul',
-                            y: 1850,
-                        },
-                        {
-                            x: 'Ago',
-                            y: 2054,
-                        },
-                        {
-                            x: 'Set',
-                            y: 2345,
-                        },
-                        {
-                            x: 'Out',
-                            y: 1634,
-                        },
-                        {
-                            x: 'Nov',
-                            y: 2200,
-                        },
-                        {
-                            x: 'Dez',
-                            y: 1987,
                         },
                     ],
                 },
