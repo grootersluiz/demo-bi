@@ -239,99 +239,66 @@
         </div>
 
         <div class="flex w-full max-w-screen-xl mx-auto md:pt-1 pb-1">
-            <div class="grid grid-rows-2 flex-auto gap-1">
-                <div
-                    class="relative flex flex-auto h-60 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
-                >
+            <div
+                class="relative h-120 w-120 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
+            >
+                <div class="flex items-start justify-between m-1 mb-0">
+                    <div
+                        class="text-lg font-bold tracking-tight leading-6 truncate"
+                    >
+                        Comparativo anual
+                    </div>
+                    <div style="text-align: end">
+                        <button
+                            class="h-6 min-h-6 px-2 rounded-full bg-hover"
+                            mat-button
+                            [matMenuTriggerFor]="intelMenu"
+                        >
+                            <span class="font-medium text-sm text-secondary">{{
+                                selectedIntel
+                            }}</span>
+                        </button>
+                        <mat-menu #intelMenu="matMenu">
+                            <button
+                                mat-menu-item
+                                *ngFor="let intel of intelOptions"
+                                (click)="onMenuIntelSelected(intel)"
+                            >
+                                {{ intel }}
+                            </button>
+                        </mat-menu>
+                    </div>
+                </div>
+                <div class="pt-5">
                     <apx-chart
-                        class="w-full"
-                        [series]="chartCC.series"
-                        [chart]="chartCC.chart"
-                        [colors]="chartCC.colors"
-                        [xaxis]="chartCC.xaxis"
-                        [stroke]="chartCC.stroke"
-                        [dataLabels]="chartCC.dataLabels"
-                        [yaxis]="chartCC.yaxis"
-                        [labels]="chartCC.labels"
-                        [legend]="chartCC.legend"
-                        [title]="chartCC.title"
-                        [subtitle]="chartCC.subtitle"
+                        [series]="chartAcumulado.series"
+                        [chart]="chartAcumulado.chart"
+                        [colors]="chartAcumulado.colors"
+                        [dataLabels]="chartAcumulado.dataLabels"
+                        [plotOptions]="chartAcumulado.plotOptions"
+                        [xaxis]="chartAcumulado.xaxis"
                     ></apx-chart>
                 </div>
-                <div
-                    class="relative flex flex-auto h-60 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
-                >
-                    <apx-chart
-                        class="w-full"
-                        [series]="chartAnual.series"
-                        [chart]="chartAnual.chart"
-                        [colors]="chartAnual.colors"
-                        [dataLabels]="chartAnual.dataLabels"
-                        [plotOptions]="chartAnual.plotOptions"
-                        [yaxis]="chartAnual.yaxis"
-                        [legend]="chartAnual.legend"
-                        [fill]="chartAnual.fill"
-                        [stroke]="chartAnual.stroke"
-                        [tooltip]="chartAnual.tooltip"
-                        [xaxis]="chartAnual.xaxis"
-                    ></apx-chart>
-                </div>
-            </div>
-
-            <div
-                class="relative w-120 h-121 bg-card shadow rounded-2xl overflow-hidden p-3"
-            >
-                <apx-chart
-                    [series]="chartByCurve.series"
-                    [chart]="chartByCurve.chart"
-                    [xaxis]="chartByCurve.xaxis"
-                    [stroke]="chartByCurve.stroke"
-                    [colors]="chartByCurve.colors"
-                    [dataLabels]="chartByCurve.dataLabels"
-                    [tooltip]="chartByCurve.tooltip"
-                    [plotOptions]="chartByCurve.plotOptions"
-                    [markers]="chartByCurve.markers"
-                    [yaxis]="chartByCurve.yaxis"
-                    [fill]="chartByCurve.fill"
-                    [title]="chartByCurve.title"
-                ></apx-chart>
-            </div>
-        </div>
-        <div class="flex w-full max-w-screen-xl mx-auto md: pb-1">
-            <div
-                class="relative h-80 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
-            >
-                <apx-chart
-                    [chart]="chartCCPosNeg.chart"
-                    [labels]="chartCCPosNeg.labels"
-                    [legend]="chartCCPosNeg.legend"
-                    [plotOptions]="chartCCPosNeg.plotOptions"
-                    [series]="chartCCPosNeg.series"
-                    [states]="chartCCPosNeg.states"
-                    [stroke]="chartCCPosNeg.stroke"
-                    [theme]="chartCCPosNeg.theme"
-                    [tooltip]="chartCCPosNeg.tooltip"
-                    [yaxis]="chartCCPosNeg.yaxis"
-                ></apx-chart>
             </div>
             <div
-                class="relative flex flex-auto h-80 bg-card shadow rounded-2xl overflow-hidden p-3"
+                class="relative flex flex-auto bg-card shadow rounded-2xl overflow-hidden p-3"
             >
                 <apx-chart
                     class="w-full"
-                    [series]="chartCCEstados.series"
-                    [chart]="chartCCEstados.chart"
-                    [colors]="chartCCEstados.colors"
-                    [dataLabels]="chartCCEstados.dataLabels"
-                    [plotOptions]="chartCCEstados.plotOptions"
-                    [yaxis]="chartCCEstados.yaxis"
-                    [legend]="chartCCEstados.legend"
-                    [fill]="chartCCEstados.fill"
-                    [stroke]="chartCCEstados.stroke"
-                    [tooltip]="chartCCEstados.tooltip"
-                    [xaxis]="chartCCEstados.xaxis"
+                    [series]="chartAnual.series"
+                    [chart]="chartAnual.chart"
+                    [colors]="chartAnual.colors"
+                    [dataLabels]="chartAnual.dataLabels"
+                    [plotOptions]="chartAnual.plotOptions"
+                    [yaxis]="chartAnual.yaxis"
+                    [legend]="chartAnual.legend"
+                    [fill]="chartAnual.fill"
+                    [stroke]="chartAnual.stroke"
+                    [tooltip]="chartAnual.tooltip"
+                    [xaxis]="chartAnual.xaxis"
                 ></apx-chart>
             </div>
         </div>
     </div>
+    <div class="flex w-full max-w-screen-xl mx-auto md: pb-1"></div>
 </div>

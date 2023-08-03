@@ -26,11 +26,10 @@ import * as _moment from 'moment';
     styleUrls: ['../../../util/css/css.component.scss'],
 })
 export class DreDashComponent implements OnInit {
-    chartCC: ApexOptions;
-    chartByCurve: ApexOptions;
     chartAnual: ApexOptions;
-    chartCCPosNeg: ApexOptions;
-    chartCCEstados: ApexOptions;
+    chartAcumulado: ApexOptions;
+    selectedIntel: string = 'ROL';
+    intelOptions: string[] = ['ROL', 'LB', 'MB', 'EBTIDA'];
     data: any;
 
     // Filtros principais do dashboard
@@ -142,6 +141,10 @@ export class DreDashComponent implements OnInit {
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
+
+    onMenuIntelSelected(intel: string) {
+        this.selectedIntel = intel;
+    }
 
     setInitialMY(evMY: Moment, datepicker: MatDatepicker<Moment>) {
         this.dataInicio = { year: evMY.year(), month: evMY.month(), date: 1 };
@@ -376,221 +379,33 @@ export class DreDashComponent implements OnInit {
      * @private
      */
     private _prepareChartData(): void {
-        // Clientes Compradores
-
-        this.chartCC = {
-            series: [
-                {
-                    name: 'Dentro da carteira',
-                    data: [
-                        8107.85, 8128.0, 8122.9, 8165.5, 8340.7, 8423.7, 8423.5,
-                        8514.3, 8481.85, 8487.7, 8506.9, 8626.2,
-                    ],
-                },
-                {
-                    name: 'Fora da carteira',
-                    data: [
-                        8423.5, 8514.3, 8481.85, 8487.7, 8506.9, 8626.2,
-                        8668.95, 8496.25, 8600.65, 8881.1, 9340.85, 8602.3,
-                    ],
-                },
-            ],
-            chart: {
-                fontFamily: 'inherit',
-                type: 'area',
-                height: 220,
-                zoom: {
-                    enabled: false,
-                },
-                locales: [
-                    {
-                        name: 'pt-br',
-                        options: {
-                            months: [
-                                'Janeiro',
-                                'Fevereiro',
-                                'Março',
-                                'Abril',
-                                'Maio',
-                                'Junho',
-                                'Julho',
-                                'Agosto',
-                                'Setembro',
-                                'Outubro',
-                                'Novembro',
-                                'Dezembro',
-                            ],
-                            shortMonths: [
-                                'Jan',
-                                'Fev',
-                                'Mar',
-                                'Abr',
-                                'Mai',
-                                'Jun',
-                                'Jul',
-                                'Ago',
-                                'Set',
-                                'Out',
-                                'Nov',
-                                'Dez',
-                            ],
-                            days: [
-                                'Domingo',
-                                'Segunda',
-                                'Terça',
-                                'Quarta',
-                                'Quinta',
-                                'Sexta',
-                                'Sábado',
-                            ],
-                            shortDays: [
-                                'Dom',
-                                'Seg',
-                                'Ter',
-                                'Qua',
-                                'Qui',
-                                'Sex',
-                                'Sab',
-                            ],
-                            toolbar: {
-                                exportToSVG: 'Baixar SVG',
-                                exportToPNG: 'Baixar PNG',
-                                exportToCSV: 'Baixar CSV',
-                                menu: 'Menu',
-                                selection: 'Selecionar',
-                                selectionZoom: 'Selecionar Zoom',
-                                zoomIn: 'Aumentar',
-                                zoomOut: 'Diminuir',
-                                pan: 'Navegação',
-                                reset: 'Reiniciar Zoom',
-                            },
-                        },
-                    },
-                ],
-                defaultLocale: 'pt-br',
-            },
-            colors: ['#FF8C00', '#94A3B8'],
-            dataLabels: {
-                enabled: false,
-            },
-            stroke: {
-                curve: 'straight',
-                width: 1,
-            },
-
-            title: {
-                text: 'CC por Faturamento',
-                align: 'left',
-            },
-            subtitle: {
-                text: 'Dentro/Fora da carteira',
-                align: 'left',
-            },
-            labels: [
-                'Jan',
-                'Fev',
-                'Mar',
-                'Abr',
-                'Mai',
-                'Jun',
-                'Jul',
-                'Ago',
-                'Set',
-                'Out',
-                'Nov',
-                'Dez',
-            ],
-            xaxis: {
-                type: 'category',
-            },
-            yaxis: {
-                opposite: true,
-            },
-            legend: {
-                horizontalAlign: 'left',
-            },
-        };
-
-        // CC por curva
-        this.chartByCurve = {
-            series: [
-                {
-                    name: 'Dentro da carteira',
-                    data: [68, 100, 40, 30, 50],
-                },
-                {
-                    name: 'Fora da carteira',
-                    data: [26, 74, 26, 12, 37],
-                },
-            ],
-            chart: {
-                height: 430,
-                type: 'radar',
-            },
-            dataLabels: {
-                enabled: true,
-            },
-            plotOptions: {
-                radar: {
-                    size: 180,
-                    polygons: {
-                        fill: {
-                            colors: ['#f8f8f8', '#fff'],
-                        },
-                    },
-                },
-            },
-            title: {
-                text: 'CC por Curva de Produto',
-            },
-            colors: ['#FF8C00', '#94A3B8'],
-            markers: {
-                size: 4,
-                colors: ['#FF8C00', '#94A3B8'],
-                strokeColors: ['#FF4560'],
-                strokeWidth: 2,
-            },
-            tooltip: {
-                theme: 'dark',
-                y: {
-                    formatter: (val: number): string => `${val}`,
-                },
-            },
-            xaxis: {
-                categories: ['A', 'B', 'C', 'N', 'Vazio'],
-            },
-            yaxis: {
-                tickAmount: 7,
-                labels: {
-                    formatter: (val: number): string => `${val}`,
-                },
-            },
-        };
-
         //CC Anual
 
         this.chartAnual = {
             series: [
                 {
-                    name: 'C. Positivados DC',
+                    name: 'ROL',
                     data: [44, 55, 57],
                 },
                 {
-                    name: 'C. Não Positivados DC',
+                    name: 'Lucro Bruto',
                     data: [76, 85, 101],
                 },
                 {
-                    name: 'C. Positivados FC',
+                    name: 'Despesa Variável e Operacional',
                     data: [35, 41, 36],
                 },
                 {
-                    name: 'C. Não Positivados FC',
+                    name: 'EBTIDA',
                     data: [63, 60, 66],
                 },
             ],
             chart: {
                 type: 'bar',
                 height: 220,
+                toolbar: {
+                    show: false,
+                },
             },
             colors: ['#FF8C00', '#F0E68C', '#FF4500', '#94A3B8'],
             plotOptions: {
@@ -610,11 +425,6 @@ export class DreDashComponent implements OnInit {
             xaxis: {
                 categories: ['2021', '2022', '2023'],
             },
-            yaxis: {
-                title: {
-                    text: 'CC Anual',
-                },
-            },
             fill: {
                 opacity: 1,
             },
@@ -627,181 +437,48 @@ export class DreDashComponent implements OnInit {
             },
         };
 
-        //CC Dentro e Fora da Carteira
+        //Acumulado Anual
 
-        this.chartCCPosNeg = {
-            chart: {
-                fontFamily: 'inherit',
-                foreColor: 'inherit',
-                height: 300,
-                type: 'polarArea',
-                toolbar: {
-                    show: false,
-                },
-                zoom: {
-                    enabled: false,
-                },
-            },
-            labels: [
-                'DC Positivados',
-                'DC Não Positivados',
-                'FC Positivados',
-                'FC Não Positivados',
-            ],
-            legend: {
-                position: 'bottom',
-            },
-            plotOptions: {
-                polarArea: {
-                    spokes: {
-                        connectorColors: 'var(--fuse-border)',
-                    },
-                    rings: {
-                        strokeColor: 'var(--fuse-border)',
-                    },
-                },
-            },
-            series: [5248, 2547, 6874, 1234],
-            states: {
-                hover: {
-                    filter: {
-                        type: 'darken',
-                        value: 0.75,
-                    },
-                },
-            },
-            stroke: {
-                width: 2,
-            },
-            theme: {
-                monochrome: {
-                    enabled: true,
-                    color: '#FF8C00',
-                    shadeIntensity: 0.75,
-                    shadeTo: 'dark',
-                },
-            },
-            tooltip: {
-                followCursor: true,
-                theme: 'dark',
-            },
-            yaxis: {
-                labels: {
-                    style: {
-                        colors: 'var(--fuse-text-secondary)',
-                    },
-                },
-            },
-        };
-
-        //CC Por estados
-
-        this.chartCCEstados = {
+        this.chartAcumulado = {
             series: [
                 {
-                    name: 'Dentro da carteira',
-                    data: [
-                        15,
-                        20,
-                        25,
-                        60,
-                        65,
-                        30,
-                        35,
-                        1,
-                        5,
-                        7,
-                        12,
-                        40,
-                        45,
-                        50,
-                        55,
-                        ,
-                        120,
-                        125,
-                        70,
-                        105,
-                        110,
-                        115,
-                        75,
-                        80,
-                        85,
-                        90,
-                        95,
-                        100,
-                    ],
-                },
-                {
-                    name: 'Fora da carteira',
-                    data: [
-                        2, 6, 8, 14, 16, 21, 26, 31, 36, 41, 46, 51, 56, 61, 66,
-                        71, 76, 81, 86, 91, 96, 101, 106, 111, 116, 121, 126,
-                    ],
+                    data: [580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540],
                 },
             ],
             chart: {
                 type: 'bar',
-                height: 300,
+                height: 400,
+                toolbar: {
+                    show: false,
+                },
             },
-            colors: ['#FF8C00', '#F0E68C'],
+            colors: ['#FF8C00'],
             plotOptions: {
                 bar: {
-                    horizontal: false,
-                    columnWidth: '55%',
+                    borderRadius: 4,
+                    horizontal: true,
                 },
             },
             dataLabels: {
                 enabled: false,
             },
-            stroke: {
-                show: true,
-                width: 2,
-                colors: ['transparent'],
-            },
             xaxis: {
                 categories: [
-                    'AC', // Acre
-                    'AL', // Alagoas
-                    'AP', // Amapá
-                    'AM', // Amazonas
-                    'BA', // Bahia
-                    'CE', // Ceará
-                    'DF', // Distrito Federal
-                    'ES', // Espírito Santo
-                    'GO', // Goiás
-                    'MA', // Maranhão
-                    'MT', // Mato Grosso
-                    'MS', // Mato Grosso do Sul
-                    'MG', // Minas Gerais
-                    'PA', // Pará
-                    'PB', // Paraíba
-                    'PR', // Paraná
-                    'PE', // Pernambuco
-                    'PI', // Piauí
-                    'RJ', // Rio de Janeiro
-                    'RN', // Rio Grande do Norte
-                    'RS', // Rio Grande do Sul
-                    'RO', // Rondônia
-                    'RR', // Roraima
-                    'SC', // Santa Catarina
-                    'SP', // São Paulo
-                    'SE', // Sergipe
-                    'TO', // Tocantins
+                    'Filial 1',
+                    'Filial 2',
+                    'Filial 3',
+                    'Filial 4',
+                    'Filial 5',
+                    'Filial 6',
+                    'Filial 7',
+                    'Filial 8',
+                    'Filial 9',
+                    'Filial 10',
                 ],
             },
             yaxis: {
                 title: {
-                    text: 'CC por Estado',
-                },
-            },
-            fill: {
-                opacity: 1,
-            },
-            tooltip: {
-                y: {
-                    formatter: function (val) {
-                        return val.toString();
-                    },
+                    text: 'Acumulado Filiais',
                 },
             },
         };
