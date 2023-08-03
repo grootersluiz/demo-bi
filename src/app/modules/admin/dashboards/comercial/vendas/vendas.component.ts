@@ -32,6 +32,7 @@ export class VendasDashComponent implements OnInit {
     selectedCurve: string = 'Todas';
     selectedState: string = 'Todos';
     selectedIntel: string = 'Positivação';
+    anualIntel: string = 'Positivação';
     intelOptions: string[] = ['Positivação', 'ROL', 'LB', 'MB'];
     curveOptions: string[] = ['Todas', 'A', 'B', 'C', 'N', 'Vazio'];
     stateOptions: string[] = [
@@ -185,6 +186,10 @@ export class VendasDashComponent implements OnInit {
 
     onMenuIntelSelected(intel: string) {
         this.selectedIntel = intel;
+    }
+
+    onAnualIntelSelected(intel: string) {
+        this.anualIntel = intel;
     }
 
     setInitialMY(evMY: Moment, datepicker: MatDatepicker<Moment>) {
@@ -435,6 +440,9 @@ export class VendasDashComponent implements OnInit {
             chart: {
                 height: 430,
                 type: 'radar',
+                toolbar: {
+                    show: false,
+                },
             },
             dataLabels: {
                 enabled: true,
@@ -479,7 +487,7 @@ export class VendasDashComponent implements OnInit {
                 },
             },
             xaxis: {
-                categories: ['A', 'B', 'C', 'N', 'Vazio'],
+                categories: ['2023', '2022', '2021', '2020', '2019'],
             },
             yaxis: {
                 tickAmount: 7,
