@@ -404,7 +404,7 @@ export class DreDashComponent implements OnInit {
                     show: false,
                 },
             },
-            colors: ['#FF8C00', '#F0E68C', '#FF4500'],
+            colors: ['#FF8C00', '#F0E68C', '#94A3B8'],
             plotOptions: {
                 bar: {
                     horizontal: false,
@@ -505,7 +505,7 @@ export class DreDashComponent implements OnInit {
                     show: false,
                 },
             },
-            colors: ['#FF8C00', '#F0E68C'],
+            colors: ['#FF8C00', '#94A3B8'],
             plotOptions: {
                 bar: {
                     horizontal: true,
@@ -528,7 +528,7 @@ export class DreDashComponent implements OnInit {
                 categories: ['2021', '2022', '2023'],
             },
             fill: {
-                colors: ['#FF8C00', '#F0E68C'],
+                colors: ['#FF8C00', '#94A3B8'],
                 opacity: 0.4,
             },
             tooltip: {
