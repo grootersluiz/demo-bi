@@ -438,7 +438,7 @@ export class VendasDashComponent implements OnInit {
                 },
             ],
             chart: {
-                height: 430,
+                height: 470,
                 type: 'radar',
                 toolbar: {
                     show: false,
