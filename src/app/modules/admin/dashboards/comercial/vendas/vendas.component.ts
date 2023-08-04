@@ -610,7 +610,7 @@ export class VendasDashComponent implements OnInit {
             },
 
             fill: {
-                opacity: [0.3, 1, 1, 1],
+                opacity: [0.7, 1, 1, 1],
                 gradient: {
                     inverseColors: false,
                     shade: 'light',
