@@ -204,6 +204,7 @@ export class VendasDashComponent implements OnInit {
         } else if (state == 'Todos') {
             this.selectedStates = ['Todos'];
         }
+        this.isSelected(state);
     }
 
     isSelected(state: string): boolean {
