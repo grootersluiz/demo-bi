@@ -903,23 +903,33 @@
                                             >
                                                 <span
                                                     class="font-medium text-sm text-secondary"
-                                                    >{{ selectedState }}</span
+                                                    >{{ selectedStates }}</span
                                                 >
                                             </button>
                                             <mat-menu #stateMenu="matMenu">
-                                                <button
-                                                    mat-menu-item
+                                                <mat-menu-item
                                                     *ngFor="
                                                         let state of stateOptions
                                                     "
-                                                    (click)="
-                                                        onMenuStateSelected(
-                                                            state
-                                                        )
-                                                    "
                                                 >
-                                                    {{ state }}
-                                                </button>
+                                                    <mat-checkbox
+                                                        (click)="
+                                                            onMenuStateSelected(
+                                                                state
+                                                            )
+                                                        "
+                                                        [checked]="
+                                                            isSelected(state)
+                                                        "
+                                                    >
+                                                        <button
+                                                            class="h-6 min-h-6 px-2 rounded-full bg-hover"
+                                                            mat-button
+                                                        >
+                                                            {{ state }}
+                                                        </button>
+                                                    </mat-checkbox>
+                                                </mat-menu-item>
                                             </mat-menu>
                                         </div>
                                     </div>

@@ -30,7 +30,7 @@ export class VendasDashComponent implements OnInit {
     chartGlobal: ApexOptions;
     data: any;
     selectedCurve: string = 'Todas';
-    selectedState: string = 'Todos';
+    selectedStates: string[] = ['Todos'];
     selectedIntel: string = 'Positivação';
     anualIntel: string = 'Positivação';
     intelOptions: string[] = ['Positivação', 'ROL', 'LB', 'MB'];
@@ -181,7 +181,27 @@ export class VendasDashComponent implements OnInit {
     }
 
     onMenuStateSelected(state: string) {
-        this.selectedState = state;
+        if (state != 'Todos') {
+            this.selectedStates = this.selectedStates.filter(
+                (item) => item !== 'Todos'
+            );
+
+            let stateExists = false;
+            this.selectedStates.forEach((selectedState, index) => {
+                if (selectedState === state) {
+                    stateExists = true;
+                    this.selectedStates.splice(index, 1);
+                }
+            });
+
+            if (!stateExists) {
+                this.selectedStates.push(state);
+            }
+        } else this.selectedStates = ['Todos'];
+    }
+
+    isSelected(state: string): boolean {
+        return this.selectedStates.indexOf(state) !== -1;
     }
 
     onMenuIntelSelected(intel: string) {
