@@ -105,8 +105,9 @@ export class tipovendaService {
         );
     }
     getSeriesHeat(): Observable<any> {
+        var filiais = this.param.filial;
         return this._httpClient.get<{ columns: []; rows: [] }>(
-            'http://api.portal.jspecas.com.br/v1/views/520/data?'
+            'http://api.portal.jspecas.com.br/v1/views/520/data?'+'filiais='+filiais
         );
     }
     constructor(private _httpClient: HttpClient) {}

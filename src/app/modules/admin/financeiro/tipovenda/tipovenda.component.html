@@ -62,7 +62,7 @@
             <div
                 class="grid px-2 py-2 w-full md:w-2/5 lg:w-2/5 xl:w-2/5 2xl:w-2/5 justify-center center rounded-l-2xl bg-card shadow mb-1 overflow-hidden"
             >
-                <div>Prazo - TOTAL</div>
+                <div style="font-weight: bold;">Prazo - TOTAL</div>
                 <div>Total: {{totalPie1}}</div>
                 <div id="chartPie">
                     <apx-chart
@@ -77,7 +77,7 @@
             <div
                 class="grid px-2 py-2 w-full md:w-3/5 lg:w-3/5 xl:w-3/5 2xl:w-3/5 center rounded-r-2xl bg-card shadow mb-1 overflow-hidden"
             >
-                <div>Prazo - MENSAL</div>
+                <div style="font-weight: bold;">Prazo - MENSAL</div>
                 <div id="chart">
                     <apx-chart
                         [series]="chartOptions1.series"
@@ -101,7 +101,7 @@
             <div
                 class="grid px-2 py-2 w-full md:w-2/5 lg:w-2/5 xl:w-2/5 2xl:w-2/5 justify-center center rounded-l-2xl bg-card shadow mb-1 overflow-hidden"
             >
-                <div>Tipos - TOTAL</div>
+                <div style="font-weight: bold;">Tipos - TOTAL</div>
                 <div>Total: {{totalPie2}}</div>
                 <div id="chartPie2">
                     <apx-chart
@@ -116,7 +116,7 @@
             <div
                 class="grid px-2 py-2 w-full md:w-3/5 lg:w-3/5 xl:w-3/5 2xl:w-3/5 center rounded-r-2xl bg-card shadow mb-1 overflow-hidden"
             >
-                <div>Tipos - MENSAL</div>
+                <div style="font-weight: bold;">Tipos - MENSAL</div>
                 <div id="chart2">
                     <apx-chart
                         [series]="chartOptions2.series"
@@ -135,9 +135,9 @@
             </div>
         </div>
         <div
-            class="grid px-2 py-2 w-full center rounded-r-2xl bg-card shadow mb-1 overflow-hidden"
+            class="grid px-2 py-2 h-full w-full rounded-2xl bg-card shadow mb-1 overflow-hidden"
         >
-         <div>Totais por filiais - Parcelas</div>
+         <div style="font-weight: bold;">Totais por filiais - Parcelas</div>
             <div id="chartheat">
                 <apx-chart
                     [series]="heatMap.series"

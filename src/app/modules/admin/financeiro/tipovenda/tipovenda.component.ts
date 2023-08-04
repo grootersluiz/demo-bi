@@ -38,8 +38,8 @@ export class tipovendaComponent implements AfterViewInit {
     @ViewChild('chartPie2') chartPie2: ChartComponent;
     @ViewChild('chartheat') chartheat: ChartComponent;
     datasource = this._tipovendaService.ELEMENT_DATA;
-    titulo: string = 'Financeiro';
-    subTitulo: string = '';
+    titulo: string = 'Tipos de Vendas';
+    subTitulo: string = 'Mensal e totais';
     isToggleOn: boolean;
     _serviceChart: any;
     totalPie1: any = 0;
@@ -64,7 +64,7 @@ export class tipovendaComponent implements AfterViewInit {
         filial: null,
         descFilial: null,
     };
-    parcelas = [0,1,2,3,4,5,6,7,8,9,10,11,12];
+    parcelas = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
     meses = [
         ['Jan', '01'],
@@ -193,30 +193,42 @@ export class tipovendaComponent implements AfterViewInit {
         this.HeatFiliais.push(this.seriesHeat.rows[0][2]);
         nextExpected = this.seriesHeat.rows[0][1] + 1; // Atualiza o valor esperado para o próximo
         var aux = 1;
-        while (aux < this.seriesHeat.rows.length) { // Ajusta a condição do loop para evitar acessar um índice não existente
-            if (aux > 0 && this.seriesHeat.rows[aux][0] != this.seriesHeat.rows[aux-1][0]) {
+        while (aux < this.seriesHeat.rows.length) {
+            // Ajusta a condição do loop para evitar acessar um índice não existente
+            if (
+                aux > 0 &&
+                this.seriesHeat.rows[aux][0] != this.seriesHeat.rows[aux - 1][0]
+            ) {
                 // Preenche o resto com zeros até 12
                 while (nextExpected <= 12) {
                     this.HeatFiliais.push(0);
                     nextExpected++;
                 }
 
-                for(let aux2=0;aux2<this.filiais.length;aux2++){
-                    if(this.filiais[aux2][1]==this.seriesHeat.rows[aux-1][0]){
+                for (let aux2 = 0; aux2 < this.filiais.length; aux2++) {
+                    if (
+                        this.filiais[aux2][1] ==
+                        this.seriesHeat.rows[aux - 1][0]
+                    ) {
                         filial = this.filiais[aux2][0];
                         break;
                     }
                 }
 
-                this.seriesData.push({name: filial, data: this.HeatFiliais});
+                this.seriesData.push({ name: filial, data: this.HeatFiliais });
                 this.HeatFiliais = [];
 
                 // Reinicia o valor esperado para a próxima filial e adiciona a primeira parcela da nova filial
                 this.HeatFiliais.push(this.seriesHeat.rows[aux][2]);
                 nextExpected = this.seriesHeat.rows[aux][1] + 1;
-            } else if(this.seriesHeat.rows[aux][0]==this.seriesHeat.rows[aux-1][0]){
+            } else if (
+                this.seriesHeat.rows[aux][0] == this.seriesHeat.rows[aux - 1][0]
+            ) {
                 // Verifica se a parcela atual é a esperada
-                while (this.seriesHeat.rows[aux][1] > nextExpected && nextExpected <= 12) {
+                while (
+                    this.seriesHeat.rows[aux][1] > nextExpected &&
+                    nextExpected <= 12
+                ) {
                     this.HeatFiliais.push(0);
                     nextExpected++;
                 }
@@ -232,14 +244,14 @@ export class tipovendaComponent implements AfterViewInit {
             nextExpected++;
         }
 
-        for(let aux2=0;aux2<this.filiais.length;aux2++){
-            if(this.filiais[aux2][1]==this.seriesHeat.rows[aux-1][0]){
+        for (let aux2 = 0; aux2 < this.filiais.length; aux2++) {
+            if (this.filiais[aux2][1] == this.seriesHeat.rows[aux - 1][0]) {
                 filial = this.filiais[aux2][0];
                 break;
             }
         }
 
-        this.seriesData.push({name: filial, data: this.HeatFiliais});
+        this.seriesData.push({ name: filial, data: this.HeatFiliais });
 
         // Primeiro, inicialize um array para armazenar os totais de cada parcela.
         // Inicie cada total como 0.
@@ -254,30 +266,29 @@ export class tipovendaComponent implements AfterViewInit {
 
         // Depois disso, crie uma nova série com os totais e adicione-a ao conjunto de dados.
         let totalSeries = {
-            name: "TOTAL",
-            data: totals
+            name: 'TOTAL',
+            data: totals,
         };
         this.seriesData.push(totalSeries);
         this.seriesData.reverse();
         this.heatMap.series = this.seriesData;
-        console.log(this.heatMap.series)
+        console.log(this.heatMap.series);
     }
 
     setDataPie() {
         for (let index = 0; index < this.series.rows.length; index++) {
             this.seriesPie[index] = this.series.rows[index][1];
-            this.totalPie1+=this.series.rows[index][1];
+            this.totalPie1 += this.series.rows[index][1];
         }
         for (let index = 0; index < this.series.rows.length; index++) {
-            if(this.series.rows[index][0] === 'A vista'){
+            if (this.series.rows[index][0] === 'A vista') {
                 this.labelsPie[index] = 'Até 1 dia';
-            }else{
+            } else {
                 this.labelsPie[index] = this.series.rows[index][0];
             }
-
         }
         this.totalPie1 = this.formatadorPts(this.totalPie1);
-        console.log(this.totalPie1)
+        console.log(this.totalPie1);
         this.chartOptionsPie.series = this.seriesPie;
         this.chartOptionsPie.labels = this.labelsPie;
         var reflow = new ApexCharts(this.chartPie, this.chartOptionsPie);
@@ -289,11 +300,12 @@ export class tipovendaComponent implements AfterViewInit {
             indexdata++
         ) {
             for (let index1 = 0; index1 < 5; index1++, index++) {
-                if (index < 5){
-                    if(this.series2.rows[index][1] === 'A vista'){
-                        this.seriesM1[index1].name = 'Até 1 dia'
-                    }else{
-                        this.seriesM1[index1].name = this.series2.rows[index][1];
+                if (index < 5) {
+                    if (this.series2.rows[index][1] === 'A vista') {
+                        this.seriesM1[index1].name = 'Até 1 dia';
+                    } else {
+                        this.seriesM1[index1].name =
+                            this.series2.rows[index][1];
                     }
                 }
                 this.seriesM1[index1].data.push(this.series2.rows[index][2]);
@@ -315,12 +327,12 @@ export class tipovendaComponent implements AfterViewInit {
     setDataPie2() {
         for (let index = 0; index < this.series3.rows.length; index++) {
             this.seriesPie2[index] = this.series3.rows[index][1];
-            this.totalPie2+=this.series3.rows[index][1];
+            this.totalPie2 += this.series3.rows[index][1];
         }
         for (let index = 0; index < this.series3.rows.length; index++) {
             this.labelsPie2[index] = this.series3.rows[index][0];
         }
-        this.totalPie2= this.formatadorPts(this.totalPie2);
+        this.totalPie2 = this.formatadorPts(this.totalPie2);
         this.chartOptionsPie2.series = this.seriesPie2;
         this.chartOptionsPie2.labels = this.labelsPie2;
 
@@ -360,6 +372,7 @@ export class tipovendaComponent implements AfterViewInit {
         this.series3 = { columns: [], rows: [] };
         this.series4 = { columns: [], rows: [] };
         this.seriesHeat = { columns: [], rows: [] };
+        this.seriesData = [];
         this.seriesM1 = [
             {
                 name: '',
@@ -404,7 +417,7 @@ export class tipovendaComponent implements AfterViewInit {
                 data: [],
             },
         ];
-        this.seriesData = new Array();
+
         this.categories = new Array();
         this.categories2 = new Array();
     }
@@ -688,7 +701,6 @@ export class tipovendaComponent implements AfterViewInit {
             series: this.seriesData,
             chart: {
                 width: '100%',
-                height: 780,
                 type: 'heatmap',
             },
             legend: {
@@ -707,7 +719,7 @@ export class tipovendaComponent implements AfterViewInit {
                 },
             },
             stroke: {
-                width: 0,
+                width: 0.1,
             },
             plotOptions: {
                 heatmap: {
@@ -716,42 +728,70 @@ export class tipovendaComponent implements AfterViewInit {
                     colorScale: {
                         ranges: [
                             {
-                            from: 0,
-                            to: 0,
-                            color: '#c3c3c3',
+                                from: 0,
+                                to: 0,
+                                color: '#c3c3c3',
                             },
                             {
                                 from: 1,
                                 to: 100000,
-                                color: '#ff000a',
+                                color: '#ff0000',
                             },
                             {
-                                from: 100000,
+                                from: 100001,
                                 to: 200000,
-                                color: '#ff5e00',
+                                color: '#ff3300',
                             },
                             {
-                                from: 200000,
+                                from: 200001,
                                 to: 300000,
-                                color: '#ffe100',
+                                color: '#ff6600',
                             },
                             {
-                                from: 300000,
+                                from: 300001,
                                 to: 400000,
-                                color: '#e1ff00',
+                                color: '#ff9900',
                             },
                             {
-                                from: 400000,
+                                from: 400001,
                                 to: 500000,
-                                color: '#84ff00',
+                                color: '#ffcc00',
                             },
                             {
-                                from: 500000,
+                                from: 500001,
+                                to: 600000,
+                                color: '#ffff00',
+                            },
+                            {
+                                from: 600001,
+                                to: 700000,
+                                color: '#ccff00',
+                            },
+                            {
+                                from: 700001,
+                                to: 800000,
+                                color: '#99ff00',
+                            },
+                            {
+                                from: 800001,
+                                to: 900000,
+                                color: '#66ff00',
+                            },
+                            {
+                                from: 900001,
+                                to: 1000000,
+                                color: '#33ff00',
+                            },
+                            {
+                                from: 1000001,
                                 to: 99999999999,
-                                color: '#2fff00',
+                                color: '#00ff00',
                             },
                         ],
                     },
+
+
+
                 },
             },
             dataLabels: {
@@ -766,8 +806,22 @@ export class tipovendaComponent implements AfterViewInit {
             xaxis: {
                 type: 'category',
                 position: 'top',
-                categories: ['A Vista', '1x', '2x', '3x', '4x', '5x', '6x', '7x', '8x', '9x', '10x', '11x', '12x', 'TOTAL']
-
+                categories: [
+                    'A Vista',
+                    '1x',
+                    '2x',
+                    '3x',
+                    '4x',
+                    '5x',
+                    '6x',
+                    '7x',
+                    '8x',
+                    '9x',
+                    '10x',
+                    '11x',
+                    '12x',
+                    'TOTAL',
+                ],
             },
             yaxis: {
                 show: true,
@@ -787,37 +841,53 @@ export class tipovendaComponent implements AfterViewInit {
         if (String(numero).length < 4) {
             valor = numero;
         } else {
-            if (String(numero).length < 7) {
+            if (String(numero).length < 5) {
                 valor =
                     numero.substring(0, 1) + ',' + numero.substring(1, 2) + 'K';
             } else {
-                if (String(numero).length < 8) {
+                if (String(numero).length < 6) {
                     valor =
-                        numero.substring(0, 1) +
+                        numero.substring(0, 2) +
                         ',' +
-                        numero.substring(1, 2) +
-                        'M';
+                        numero.substring(2, 3) +
+                        'K';
                 } else {
-                    if (String(numero).length < 9) {
+                    if (String(numero).length < 7) {
                         valor =
-                            numero.substring(0, 2) +
+                            numero.substring(0, 3) +
                             ',' +
-                            numero.substring(1, 2) +
-                            'M';
+                            numero.substring(3, 4) +
+                            'K';
                     } else {
-                        if (String(numero).length < 10) {
+                        if (String(numero).length < 8) {
                             valor =
-                                numero.substring(0, 3) +
+                                numero.substring(0, 1) +
                                 ',' +
                                 numero.substring(1, 2) +
                                 'M';
                         } else {
-                            if (String(numero).length < 17) {
+                            if (String(numero).length < 9) {
                                 valor =
-                                    numero.substring(0, 1) +
+                                    numero.substring(0, 2) +
                                     ',' +
-                                    numero.substring(1, 2) +
-                                    'B';
+                                    numero.substring(2, 3) +
+                                    'M';
+                            } else {
+                                if (String(numero).length < 10) {
+                                    valor =
+                                        numero.substring(0, 3) +
+                                        ',' +
+                                        numero.substring(3, 4) +
+                                        'M';
+                                } else {
+                                    if (String(numero).length < 17) {
+                                        valor =
+                                            numero.substring(0, 1) +
+                                            ',' +
+                                            numero.substring(1, 2) +
+                                            'B';
+                                    }
+                                }
                             }
                         }
                     }
@@ -827,7 +897,7 @@ export class tipovendaComponent implements AfterViewInit {
         return valor;
     }
     formatadorPts(val) {
-        if(isNumber(val)){
+        if (isNumber(val)) {
             if (!val) {
                 val = 0;
             }
