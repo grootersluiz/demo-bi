@@ -181,7 +181,7 @@ export class VendasDashComponent implements OnInit {
     }
 
     onMenuStateSelected(state: string) {
-        if (state != 'Todos') {
+        if (state != 'Todos' && this.selectedStates.length > 0) {
             this.selectedStates = this.selectedStates.filter(
                 (item) => item !== 'Todos'
             );
@@ -197,7 +197,13 @@ export class VendasDashComponent implements OnInit {
             if (!stateExists) {
                 this.selectedStates.push(state);
             }
-        } else this.selectedStates = ['Todos'];
+
+            if (this.selectedStates.length == 0) {
+                this.selectedStates = ['Todos'];
+            }
+        } else if (state == 'Todos') {
+            this.selectedStates = ['Todos'];
+        }
     }
 
     isSelected(state: string): boolean {
