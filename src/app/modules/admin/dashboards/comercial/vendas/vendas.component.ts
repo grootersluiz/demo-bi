@@ -26,7 +26,7 @@ import * as _moment from 'moment';
     styleUrls: ['../../../util/css/css.component.scss'],
 })
 export class VendasDashComponent implements OnInit {
-    chartByCurve: ApexOptions;
+    chartAcumulado: ApexOptions;
     chartGlobal: ApexOptions;
     data: any;
     selectedCurve: string = 'Todas';
@@ -425,74 +425,78 @@ export class VendasDashComponent implements OnInit {
      * @private
      */
     private _prepareChartData(): void {
-        // CC por curva
-        this.chartByCurve = {
+        // CC Comparativo Acumulado
+        this.chartAcumulado = {
             series: [
                 {
-                    name: 'Dentro da carteira',
-                    data: [68, 100, 40, 30, 50],
+                    name: '2023',
+                    data: [
+                        580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
+                        580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
+                    ],
                 },
                 {
-                    name: 'Fora da carteira',
-                    data: [26, 74, 26, 12, 37],
+                    name: '2022',
+                    data: [
+                        1380, 400, 430, 448, 470, 540, 580, 690, 1100, 1200,
+                        580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
+                    ],
+                },
+                {
+                    name: '2021',
+                    data: [
+                        580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
+                        1380, 400, 430, 448, 470, 540, 580, 690, 1100, 1200,
+                    ],
                 },
             ],
             chart: {
-                height: 470,
-                type: 'radar',
+                type: 'bar',
+                height: 800,
                 toolbar: {
                     show: false,
                 },
             },
-            dataLabels: {
-                enabled: true,
+            legend: {
+                position: 'top',
             },
+            colors: ['#FF8C00', '#94A3B8', '#F0E68C'],
             plotOptions: {
-                radar: {
-                    size: 180,
-                    polygons: {
-                        fill: {
-                            colors: ['#f8f8f8', '#fff'],
-                        },
-                    },
+                bar: {
+                    borderRadius: 4,
+                    horizontal: true,
                 },
             },
-
-            colors: ['#FF8C00', '#94A3B8'],
-            markers: {
-                size: 4,
-                colors: ['#FF8C00', '#94A3B8'],
-                strokeColors: ['#FF4560'],
-                strokeWidth: 2,
-            },
-            tooltip: {
-                theme: 'dark',
-                y: {
-                    formatter: (
-                        value: number,
-                        { series, seriesIndex, dataPointIndex }
-                    ): string => {
-                        const percentage =
-                            (value /
-                                (series[
-                                    seriesIndex == 0
-                                        ? seriesIndex + 1
-                                        : seriesIndex - 1
-                                ][dataPointIndex] +
-                                    value)) *
-                            100;
-
-                        return percentage.toFixed(2).toString() + '%';
-                    },
-                },
+            dataLabels: {
+                enabled: false,
             },
             xaxis: {
-                categories: ['2023', '2022', '2021', '2020', '2019'],
+                categories: [
+                    'Filial 1',
+                    'Filial 2',
+                    'Filial 3',
+                    'Filial 4',
+                    'Filial 5',
+                    'Filial 6',
+                    'Filial 7',
+                    'Filial 8',
+                    'Filial 9',
+                    'Filial 10',
+                    'Filial 11',
+                    'Filial 12',
+                    'Filial 13',
+                    'Filial 14',
+                    'Filial 15',
+                    'Filial 16',
+                    'Filial 17',
+                    'Filial 18',
+                    'Filial 19',
+                    'Filial 20',
+                ],
             },
             yaxis: {
-                tickAmount: 7,
-                labels: {
-                    formatter: (val: number): string => `${val}`,
+                title: {
+                    text: 'Acumulado',
                 },
             },
         };
