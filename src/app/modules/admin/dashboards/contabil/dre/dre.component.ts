@@ -399,7 +399,7 @@ export class DreDashComponent implements OnInit {
             ],
             chart: {
                 type: 'bar',
-                height: 220,
+                height: 190,
                 toolbar: {
                     show: false,
                 },
@@ -421,11 +421,6 @@ export class DreDashComponent implements OnInit {
             },
             xaxis: {
                 categories: ['2021', '2022', '2023'],
-            },
-            yaxis: {
-                title: {
-                    text: 'ROL / LB / EBITDA',
-                },
             },
             fill: {
                 opacity: 1,
@@ -513,7 +508,7 @@ export class DreDashComponent implements OnInit {
             ],
             chart: {
                 type: 'area',
-                height: 220,
+                height: 190,
                 toolbar: {
                     show: false,
                 },
@@ -531,11 +526,6 @@ export class DreDashComponent implements OnInit {
             stroke: {
                 show: true,
                 width: 1,
-            },
-            yaxis: {
-                title: {
-                    text: 'Despesas',
-                },
             },
             xaxis: {
                 categories: ['2021', '2022', '2023'],
