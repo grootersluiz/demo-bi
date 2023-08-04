@@ -439,20 +439,38 @@ export class DreDashComponent implements OnInit {
         this.chartAcumulado = {
             series: [
                 {
+                    name: '2023',
                     data: [
                         580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
                         580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
                     ],
                 },
+                {
+                    name: '2022',
+                    data: [
+                        1380, 400, 430, 448, 470, 540, 580, 690, 1100, 1200,
+                        580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
+                    ],
+                },
+                {
+                    name: '2021',
+                    data: [
+                        580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
+                        1380, 400, 430, 448, 470, 540, 580, 690, 1100, 1200,
+                    ],
+                },
             ],
             chart: {
                 type: 'bar',
-                height: 400,
+                height: 800,
                 toolbar: {
                     show: false,
                 },
             },
-            colors: ['#FF8C00'],
+            legend: {
+                position: 'top',
+            },
+            colors: ['#FF8C00', '#94A3B8', '#F0E68C'],
             plotOptions: {
                 bar: {
                     borderRadius: 4,
@@ -498,6 +516,10 @@ export class DreDashComponent implements OnInit {
         this.chartDespesas = {
             series: [
                 {
+                    name: 'ROL',
+                    data: [78, 84, 75],
+                },
+                {
                     name: 'Despesas Variáveis',
                     data: [35, 41, 36],
                 },
@@ -513,7 +535,7 @@ export class DreDashComponent implements OnInit {
                     show: false,
                 },
             },
-            colors: ['#FF8C00', '#94A3B8'],
+            colors: ['#008000', '#FF8C00', '#94A3B8'],
             plotOptions: {
                 bar: {
                     horizontal: true,
@@ -531,7 +553,7 @@ export class DreDashComponent implements OnInit {
                 categories: ['2021', '2022', '2023'],
             },
             fill: {
-                colors: ['#FF8C00', '#94A3B8'],
+                colors: ['#008000', '#FF8C00', '#94A3B8'],
                 opacity: 0.4,
             },
             tooltip: {
