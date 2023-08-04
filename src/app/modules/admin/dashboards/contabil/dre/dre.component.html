@@ -240,7 +240,7 @@
 
         <div class="flex w-full max-w-screen-xl mx-auto md:pt-1 pb-1">
             <div
-                class="relative h-120 w-120 bg-card shadow rounded-2xl overflow-y-auto p-3 mr-1"
+                class="relative h-200 w-160 bg-card shadow rounded-2xl overflow-y-auto p-3 mr-1"
             >
                 <div class="flex items-start justify-between m-1 mb-0">
                     <div
@@ -281,7 +281,7 @@
                     ></apx-chart>
                 </div>
             </div>
-            <div class="grid h-120 grid-rows-2 flex-auto gap-1">
+            <div class="grid h-200 grid-rows-2 flex-auto gap-1">
                 <div
                     class="relative flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden p-3"
                 >
@@ -334,8 +334,33 @@
                         ></apx-chart>
                     </div>
                 </div>
+                <div
+                    class="relative flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden p-3"
+                >
+                    <div class="flex items-start justify-between m-1 mb-0">
+                        <div
+                            class="text-lg font-bold tracking-tight leading-6 truncate"
+                        >
+                            Projeção (ROL vs. Despesas)
+                        </div>
+                    </div>
+                    <div class="flex flex-col flex-auto pt-1">
+                        <apx-chart
+                            [series]="chartProjecao.series"
+                            [chart]="chartProjecao.chart"
+                            [colors]="chartProjecao.colors"
+                            [dataLabels]="chartProjecao.dataLabels"
+                            [plotOptions]="chartProjecao.plotOptions"
+                            [yaxis]="chartProjecao.yaxis"
+                            [legend]="chartProjecao.legend"
+                            [fill]="chartProjecao.fill"
+                            [stroke]="chartProjecao.stroke"
+                            [tooltip]="chartProjecao.tooltip"
+                            [xaxis]="chartProjecao.xaxis"
+                        ></apx-chart>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="flex w-full max-w-screen-xl mx-auto md: pb-1"></div>
     </div>
 </div>

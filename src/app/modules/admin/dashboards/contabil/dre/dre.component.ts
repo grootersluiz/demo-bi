@@ -29,6 +29,7 @@ export class DreDashComponent implements OnInit {
     chartAnual: ApexOptions;
     chartAcumulado: ApexOptions;
     chartDespesas: ApexOptions;
+    chartProjecao: ApexOptions;
     selectedIntel: string = 'ROL';
     intelOptions: string[] = ['ROL', 'LB', 'MB', 'EBITDA'];
     data: any;
@@ -380,7 +381,7 @@ export class DreDashComponent implements OnInit {
      * @private
      */
     private _prepareChartData(): void {
-        //CC Anual
+        //Chart Anual
 
         this.chartAnual = {
             series: [
@@ -399,7 +400,7 @@ export class DreDashComponent implements OnInit {
             ],
             chart: {
                 type: 'bar',
-                height: 190,
+                height: 200,
                 toolbar: {
                     show: false,
                 },
@@ -511,7 +512,7 @@ export class DreDashComponent implements OnInit {
             },
         };
 
-        //CC Anual Despesas
+        //Chart Anual Despesas
 
         this.chartDespesas = {
             series: [
@@ -530,7 +531,61 @@ export class DreDashComponent implements OnInit {
             ],
             chart: {
                 type: 'area',
-                height: 190,
+                height: 200,
+                toolbar: {
+                    show: false,
+                },
+            },
+            colors: ['#008000', '#FF8C00', '#94A3B8'],
+            plotOptions: {
+                bar: {
+                    horizontal: true,
+                    columnWidth: '55%',
+                },
+            },
+            dataLabels: {
+                enabled: false,
+            },
+            stroke: {
+                show: true,
+                width: 1,
+            },
+            xaxis: {
+                categories: ['2021', '2022', '2023'],
+            },
+            fill: {
+                colors: ['#008000', '#FF8C00', '#94A3B8'],
+                opacity: 0.4,
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return val.toString();
+                    },
+                },
+            },
+        };
+
+        //Chart Projeção
+
+        this.chartProjecao = {
+            series: [
+                {
+                    name: 'ROL',
+                    data: [78, 84, 75],
+                },
+                {
+                    name: 'Despesas Variáveis',
+                    data: [35, 41, 36],
+                },
+                {
+                    name: 'Despesas Operacionais',
+                    data: [63, 60, 66],
+                },
+            ],
+            chart: {
+                type: 'area',
+                height: 200,
                 toolbar: {
                     show: false,
                 },
