@@ -40,6 +40,28 @@ export class DreDashComponent implements OnInit {
     currentYear: any = '2023';
     lastYear: any = '2022';
     secondToLastYear: any = '2021';
+    labels: any = [
+        'Filial 1',
+        'Filial 2',
+        'Filial 3',
+        'Filial 4',
+        'Filial 5',
+        'Filial 6',
+        'Filial 7',
+        'Filial 8',
+        'Filial 9',
+        'Filial 10',
+        'Filial 11',
+        'Filial 12',
+        'Filial 13',
+        'Filial 14',
+        'Filial 15',
+        'Filial 16',
+        'Filial 17',
+        'Filial 18',
+        'Filial 19',
+        'Filial 20',
+    ]
     currentYearData: any = [
         580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
         580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
@@ -52,6 +74,12 @@ export class DreDashComponent implements OnInit {
         580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
         1380, 400, 430, 448, 470, 540, 580, 690, 1100, 1200,
     ];
+
+    currentYearDataObjectsArray = this.currentYearData.map((value, index) => {
+        const label = `Filial ${index + 1}`;
+        return { label, value };
+    });
+
     data: any;
 
     // Filtros principais do dashboard
@@ -164,7 +192,11 @@ export class DreDashComponent implements OnInit {
 
     onSort(sortOption: string) {
         this.selectedSortOption = sortOption;
-        console.log(sortOption);
+        this.currentYearDataObjectsArray.sort((a, b) => a.value - b.value);
+        this._cdr.markForCheck();
+        console.log(this.currentYearDataObjectsArray);
+        this._prepareChartAcumulado();
+        //this.chartAcumulado.series[0].data as any = this.currentYearDataObjectsArray.map((item) => item.value);
 
     }
 
@@ -405,6 +437,54 @@ export class DreDashComponent implements OnInit {
      *
      * @private
      */
+
+    private _prepareChartAcumulado(): void {
+        this.chartAcumulado = {
+            series: [
+                {
+                    name: this.currentYear,
+                    data: this.currentYearDataObjectsArray.map((item) => item.value),
+                },
+                {
+                    name: this.lastYear,
+                    data: this.lastYearData
+                },
+                {
+                    name: this.secondToLastYear,
+                    data: this.secondToLastYearData,
+                },
+            ],
+            chart: {
+                type: 'bar',
+                height: 800,
+                toolbar: {
+                    show: false,
+                },
+            },
+            legend: {
+                position: 'top',
+            },
+            colors: ['#ed7b00', '#6e7a8a', '#edca00'],
+            plotOptions: {
+                bar: {
+                    borderRadius: 1,
+                    horizontal: true,
+                },
+            },
+            dataLabels: {
+                enabled: false,
+            },
+            xaxis: {
+                categories: this.currentYearDataObjectsArray.map((item) => item.label),
+            },
+            yaxis: {
+                title: {
+                    text: 'Acumulado Filiais',
+                },
+            },
+        };
+    }
+
     private _prepareChartData(): void {
         //Chart Anual
 
@@ -461,72 +541,7 @@ export class DreDashComponent implements OnInit {
         };
 
         //Acumulado Anual
-
-        this.chartAcumulado = {
-            series: [
-                {
-                    name: this.currentYear,
-                    data: this.currentYearData,
-                },
-                {
-                    name: this.lastYear,
-                    data: this.lastYearData
-                },
-                {
-                    name: this.secondToLastYear,
-                    data: this.secondToLastYearData,
-                },
-            ],
-            chart: {
-                type: 'bar',
-                height: 800,
-                toolbar: {
-                    show: false,
-                },
-            },
-            legend: {
-                position: 'top',
-            },
-            colors: ['#FF8C00', '#94A3B8', '#F0E68C'],
-            plotOptions: {
-                bar: {
-                    borderRadius: 4,
-                    horizontal: true,
-                },
-            },
-            dataLabels: {
-                enabled: false,
-            },
-            xaxis: {
-                categories: [
-                    'Filial 1',
-                    'Filial 2',
-                    'Filial 3',
-                    'Filial 4',
-                    'Filial 5',
-                    'Filial 6',
-                    'Filial 7',
-                    'Filial 8',
-                    'Filial 9',
-                    'Filial 10',
-                    'Filial 11',
-                    'Filial 12',
-                    'Filial 13',
-                    'Filial 14',
-                    'Filial 15',
-                    'Filial 16',
-                    'Filial 17',
-                    'Filial 18',
-                    'Filial 19',
-                    'Filial 20',
-                ],
-            },
-            yaxis: {
-                title: {
-                    text: 'Acumulado Filiais',
-                },
-            },
-        };
+        this._prepareChartAcumulado();
 
         //Chart Anual Despesas
 
