@@ -250,6 +250,25 @@
                     </div>
                     <div style="text-align: end">
                         <button
+                            class="h-6 min-h-6 px-2 rounded-full bg-hover mr-1"
+                            mat-button
+                            [matMenuTriggerFor]="sortMenu"
+                        >
+                            <span class="font-medium text-sm text-secondary">{{
+                                'Ordenar'
+                            }}</span>
+                        </button>
+                        <mat-menu #sortMenu="matMenu">
+                            <button
+                                mat-menu-item
+                                *ngFor="let option of sortOptions"
+                                (click)="onSort(option)"
+                            >
+                                {{ option }}
+                            </button>
+                        </mat-menu>
+
+                        <button
                             class="h-6 min-h-6 px-2 rounded-full bg-hover"
                             mat-button
                             [matMenuTriggerFor]="intelMenu"

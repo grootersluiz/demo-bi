@@ -27,11 +27,16 @@ import * as _moment from 'moment';
 })
 export class DreDashComponent implements OnInit {
     chartAnual: ApexOptions;
-    chartAcumulado: ApexOptions;
     chartDespesas: ApexOptions;
     chartProjecao: ApexOptions;
+
+    // Grafico Comparativo (Esquerda)
+
+    chartAcumulado: ApexOptions;
     selectedIntel: string = 'ROL';
     intelOptions: string[] = ['ROL', 'LB', 'MB', 'EBITDA'];
+    selectedSortOption: string = 'Por filial';
+    sortOptions: string[] = ['Ascendente', 'Descendente', 'Por filial'];
     data: any;
 
     // Filtros principais do dashboard
@@ -109,10 +114,8 @@ export class DreDashComponent implements OnInit {
                 this.vendedoresStringList = this.vendedoresObjects.map(
                     (item) => item.string
                 );
-
                 this.filteredVendedoresObjects = this.vendedoresObjects;
                 this.filteredVendedoresStringList = this.vendedoresStringList;
-
                 this._cdr.markForCheck();
             });
 
@@ -144,8 +147,15 @@ export class DreDashComponent implements OnInit {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
+    onSort(sortOption: string) {
+        this.selectedSortOption = sortOption;
+        console.log('sort')
+
+    }
+
     onMenuIntelSelected(intel: string) {
         this.selectedIntel = intel;
+        console.log('intel')
     }
 
     setInitialMY(evMY: Moment, datepicker: MatDatepicker<Moment>) {
