@@ -37,6 +37,21 @@ export class DreDashComponent implements OnInit {
     intelOptions: string[] = ['ROL', 'LB', 'MB', 'EBITDA'];
     selectedSortOption: string = 'Por filial';
     sortOptions: string[] = ['Ascendente', 'Descendente', 'Por filial'];
+    currentYear: any = '2023';
+    lastYear: any = '2022';
+    secondToLastYear: any = '2021';
+    currentYearData: any = [
+        580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
+        580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
+    ];
+    lastYearData: any = [
+        1380, 400, 430, 448, 470, 540, 580, 690, 1100, 1200,
+        580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
+    ];
+    secondToLastYearData: any = [
+        580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
+        1380, 400, 430, 448, 470, 540, 580, 690, 1100, 1200,
+    ];
     data: any;
 
     // Filtros principais do dashboard
@@ -149,7 +164,7 @@ export class DreDashComponent implements OnInit {
 
     onSort(sortOption: string) {
         this.selectedSortOption = sortOption;
-        console.log('sort')
+        console.log(sortOption);
 
     }
 
@@ -450,25 +465,16 @@ export class DreDashComponent implements OnInit {
         this.chartAcumulado = {
             series: [
                 {
-                    name: '2023',
-                    data: [
-                        580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
-                        580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
-                    ],
+                    name: this.currentYear,
+                    data: this.currentYearData,
                 },
                 {
-                    name: '2022',
-                    data: [
-                        1380, 400, 430, 448, 470, 540, 580, 690, 1100, 1200,
-                        580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
-                    ],
+                    name: this.lastYear,
+                    data: this.lastYearData
                 },
                 {
-                    name: '2021',
-                    data: [
-                        580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
-                        1380, 400, 430, 448, 470, 540, 580, 690, 1100, 1200,
-                    ],
+                    name: this.secondToLastYear,
+                    data: this.secondToLastYearData,
                 },
             ],
             chart: {
