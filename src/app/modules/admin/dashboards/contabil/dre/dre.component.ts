@@ -201,17 +201,14 @@ export class DreDashComponent implements OnInit {
                 this.sortedDataObjectsArray.sort((a, b) => b.secondToLastYear - a.secondToLastYear);
             break;
         }
-        //this.dataObjectsArray.sort((a, b) => a.currentYear - b.currentYear);
-        this._cdr.markForCheck();
-        console.log(this.dataObjectsArray);
+
         this._prepareChartAcumulado();
-        //this.chartAcumulado.series[0].data as any = this.currentYearDataObjectsArray.map((item) => item.value);
+     
 
     }
 
     onMenuIntelSelected(intel: string) {
         this.selectedIntel = intel;
-        console.log('intel')
     }
 
     setInitialMY(evMY: Moment, datepicker: MatDatepicker<Moment>) {
@@ -465,7 +462,7 @@ export class DreDashComponent implements OnInit {
             ],
             chart: {
                 type: 'bar',
-                height: 800,
+                height: 50*this.sortedDataObjectsArray.length, //800
                 toolbar: {
                     show: false,
                 },
@@ -519,7 +516,7 @@ export class DreDashComponent implements OnInit {
                     show: false,
                 },
             },
-            colors: ['#FF8C00', '#F0E68C', '#94A3B8'],
+            colors: ['#ed7b00', '#6e7a8a', '#edca00'],
             plotOptions: {
                 bar: {
                     horizontal: false,
