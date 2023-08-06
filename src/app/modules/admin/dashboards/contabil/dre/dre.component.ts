@@ -36,32 +36,18 @@ export class DreDashComponent implements OnInit {
     selectedIntel: string = 'ROL';
     intelOptions: string[] = ['ROL', 'LB', 'MB', 'EBITDA'];
     selectedSortOption: string = 'Por filial';
-    sortOptions: string[] = ['Ascendente', 'Descendente', 'Por filial'];
     currentYear: any = '2023';
     lastYear: any = '2022';
     secondToLastYear: any = '2021';
-    labels: any = [
-        'Filial 1',
-        'Filial 2',
-        'Filial 3',
-        'Filial 4',
-        'Filial 5',
-        'Filial 6',
-        'Filial 7',
-        'Filial 8',
-        'Filial 9',
-        'Filial 10',
-        'Filial 11',
-        'Filial 12',
-        'Filial 13',
-        'Filial 14',
-        'Filial 15',
-        'Filial 16',
-        'Filial 17',
-        'Filial 18',
-        'Filial 19',
-        'Filial 20',
-    ]
+    sortOptions: string[] = [
+        `Ascendente (${this.currentYear})`,
+        `Descendente (${this.currentYear})`,
+        `Ascendente (${this.lastYear})`,
+        `Descendente (${this.lastYear})`,
+        `Ascendente (${this.secondToLastYear})`,
+        `Descendente (${this.secondToLastYear})`,
+        'Por filial',
+    ];
     currentYearData: any = [
         580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
         580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
@@ -74,12 +60,12 @@ export class DreDashComponent implements OnInit {
         580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
         1380, 400, 430, 448, 470, 540, 580, 690, 1100, 1200,
     ];
-
-    currentYearDataObjectsArray = this.currentYearData.map((value, index) => {
+    
+    dataObjectsArray = this.currentYearData.map((value, index) => {
         const label = `Filial ${index + 1}`;
-        return { label, value };
+        return { label, currentYear: value, lastYear: this.lastYearData[index], secondToLastYear: this.secondToLastYearData[index] };
     });
-
+    sortedDataObjectsArray = [...this.dataObjectsArray];
     data: any;
 
     // Filtros principais do dashboard
@@ -192,9 +178,32 @@ export class DreDashComponent implements OnInit {
 
     onSort(sortOption: string) {
         this.selectedSortOption = sortOption;
-        this.currentYearDataObjectsArray.sort((a, b) => a.value - b.value);
+        switch (sortOption) {
+            case 'Por filial':
+                this.sortedDataObjectsArray = [...this.dataObjectsArray];
+            break;
+            case `Ascendente (${this.currentYear})`:
+                this.sortedDataObjectsArray.sort((a, b) => a.currentYear - b.currentYear);
+            break;
+            case `Descendente (${this.currentYear})`:
+                this.sortedDataObjectsArray.sort((a, b) => b.currentYear - a.currentYear);
+            break;
+            case `Ascendente (${this.lastYear})`:
+                this.sortedDataObjectsArray.sort((a, b) => a.lastYear - b.lastYear);
+            break;
+            case `Descendente (${this.lastYear})`:
+                this.sortedDataObjectsArray.sort((a, b) => b.lastYear - a.lastYear);
+            break;
+            case `Ascendente (${this.secondToLastYear})`:
+                this.sortedDataObjectsArray.sort((a, b) => a.secondToLastYear - b.secondToLastYear);
+            break;
+            case `Descendente (${this.secondToLastYear})`:
+                this.sortedDataObjectsArray.sort((a, b) => b.secondToLastYear - a.secondToLastYear);
+            break;
+        }
+        //this.dataObjectsArray.sort((a, b) => a.currentYear - b.currentYear);
         this._cdr.markForCheck();
-        console.log(this.currentYearDataObjectsArray);
+        console.log(this.dataObjectsArray);
         this._prepareChartAcumulado();
         //this.chartAcumulado.series[0].data as any = this.currentYearDataObjectsArray.map((item) => item.value);
 
@@ -443,15 +452,15 @@ export class DreDashComponent implements OnInit {
             series: [
                 {
                     name: this.currentYear,
-                    data: this.currentYearDataObjectsArray.map((item) => item.value),
+                    data: this.sortedDataObjectsArray.map((item) => item.currentYear),
                 },
                 {
                     name: this.lastYear,
-                    data: this.lastYearData
+                    data: this.sortedDataObjectsArray.map((item) => item.lastYear),
                 },
                 {
                     name: this.secondToLastYear,
-                    data: this.secondToLastYearData,
+                    data: this.sortedDataObjectsArray.map((item) => item.secondToLastYear),
                 },
             ],
             chart: {
@@ -475,7 +484,7 @@ export class DreDashComponent implements OnInit {
                 enabled: false,
             },
             xaxis: {
-                categories: this.currentYearDataObjectsArray.map((item) => item.label),
+                categories: this.sortedDataObjectsArray.map((item) => item.label),
             },
             yaxis: {
                 title: {
