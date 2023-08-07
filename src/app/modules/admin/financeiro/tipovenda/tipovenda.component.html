@@ -55,103 +55,163 @@
     >
         <!-- COMPONENTES ABAIXO -->
         <!-- Colocar class="grid px-2 py-2 w-12/12 rounded-2xl bg-card shadow mb-1" em todos componentes-->
+        <div class="relative w-full max-w-screen-xl mx-auto">
+            <mat-tab-group
+                class="sm:px-2"
+                mat-stretch-tabs="false"
+                [animationDuration]="'0'"
+            >
+                <mat-tab label="Relatórios tipos de Vendas">
+                    <ng-template matTabContent>
+                        <div
+                            class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row w-full"
+                        >
+                            <div
+                                class="grid px-2 py-2 w-full md:w-2/5 lg:w-2/5 xl:w-2/5 2xl:w-2/5 justify-center center rounded-l-2xl bg-card shadow mb-1 overflow-hidden"
+                            >
+                                <div style="font-weight: bold" class="p-2">
+                                    Prazo - TOTAL
+                                </div>
+                                <div class="p-2">Total: {{ totalPie1 }}</div>
+                                <div id="chartPie">
+                                    <apx-chart
+                                        [series]="chartOptionsPie.series"
+                                        [chart]="chartOptionsPie.chart"
+                                        [yaxis]="chartOptionsPie.yaxis"
+                                        [labels]="chartOptionsPie.labels"
+                                        [responsive]="
+                                            chartOptionsPie.responsive
+                                        "
+                                    ></apx-chart>
+                                </div>
+                            </div>
+                            <div
+                                class="grid px-2 py-2 w-full md:w-3/5 lg:w-3/5 xl:w-3/5 2xl:w-3/5 center rounded-r-2xl bg-card shadow mb-1 overflow-hidden"
+                            >
+                                <div style="font-weight: bold" class="p-2">
+                                    Prazo - MENSAL
+                                </div>
+                                <div id="chart">
+                                    <apx-chart
+                                        [series]="chartOptions1.series"
+                                        [chart]="chartOptions1.chart"
+                                        [stroke]="chartOptions1.stroke"
+                                        [tooltip]="chartOptions1.tooltip"
+                                        [dataLabels]="chartOptions1.dataLabels"
+                                        [plotOptions]="
+                                            chartOptions1.plotOptions
+                                        "
+                                        [responsive]="chartOptions1.responsive"
+                                        [xaxis]="chartOptions1.xaxis"
+                                        [yaxis]="chartOptions1.yaxis"
+                                        [legend]="chartOptions1.legend"
+                                        [fill]="chartOptions1.fill"
+                                    ></apx-chart>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row w-full"
+                        >
+                            <div
+                                class="grid px-2 py-2 w-full md:w-2/5 lg:w-2/5 xl:w-2/5 2xl:w-2/5 justify-center center rounded-l-2xl bg-card shadow mb-1 overflow-hidden"
+                            >
+                                <div style="font-weight: bold" class="p-2">
+                                    Tipos - TOTAL
+                                </div>
+                                <div class="p-2">Total: {{ totalPie2 }}</div>
+                                <div id="chartPie2">
+                                    <apx-chart
+                                        [series]="chartOptionsPie2.series"
+                                        [chart]="chartOptionsPie2.chart"
+                                        [yaxis]="chartOptionsPie2.yaxis"
+                                        [labels]="chartOptionsPie2.labels"
+                                        [responsive]="
+                                            chartOptionsPie2.responsive
+                                        "
+                                    ></apx-chart>
+                                </div>
+                            </div>
+                            <div
+                                class="grid px-2 py-2 w-full md:w-3/5 lg:w-3/5 xl:w-3/5 2xl:w-3/5 center rounded-r-2xl bg-card shadow mb-1 overflow-hidden"
+                            >
+                                <div style="font-weight: bold" class="p-2">
+                                    Tipos - MENSAL
+                                </div>
+                                <div id="chart2">
+                                    <apx-chart
+                                        [series]="chartOptions2.series"
+                                        [chart]="chartOptions2.chart"
+                                        [stroke]="chartOptions2.stroke"
+                                        [tooltip]="chartOptions2.tooltip"
+                                        [dataLabels]="chartOptions2.dataLabels"
+                                        [plotOptions]="
+                                            chartOptions2.plotOptions
+                                        "
+                                        [responsive]="chartOptions2.responsive"
+                                        [xaxis]="chartOptions2.xaxis"
+                                        [yaxis]="chartOptions2.yaxis"
+                                        [legend]="chartOptions2.legend"
+                                        [fill]="chartOptions2.fill"
+                                    ></apx-chart>
+                                </div>
+                            </div>
+                        </div>
+                        <div
+                            class="grid px-2 py-2 w-full rounded-2xl bg-card shadow mb-1 overflow-hidden"
+                        >
+                            <div style="font-weight: bold" class="p-2">
+                                Totais por filiais - Parcelas
+                            </div>
+                            <div id="chartheat">
+                                <apx-chart
+                                    [series]="heatMap.series"
+                                    [chart]="heatMap.chart"
+                                    [dataLabels]="heatMap.dataLabels"
+                                    [colors]="heatMap.colors"
+                                    [stroke]="heatMap.stroke"
+                                    [plotOptions]="heatMap.plotOptions"
+                                    [xaxis]="heatMap.xaxis"
+                                    [yaxis]="heatMap.yaxis"
+                                    [tooltip]="heatMap.tooltip"
+                                    [legend]="heatMap.legend"
+                                ></apx-chart>
+                            </div>
+                        </div>
+                    </ng-template>
+                </mat-tab>
 
-        <div
-            class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row w-full"
-        >
-            <div
-                class="grid px-2 py-2 w-full md:w-2/5 lg:w-2/5 xl:w-2/5 2xl:w-2/5 justify-center center rounded-l-2xl bg-card shadow mb-1 overflow-hidden"
-            >
-                <div style="font-weight: bold;">Prazo - TOTAL</div>
-                <div>Total: {{totalPie1}}</div>
-                <div id="chartPie">
-                    <apx-chart
-                        [series]="chartOptionsPie.series"
-                        [chart]="chartOptionsPie.chart"
-                        [yaxis]="chartOptionsPie.yaxis"
-                        [labels]="chartOptionsPie.labels"
-                        [responsive]="chartOptionsPie.responsive"
-                    ></apx-chart>
-                </div>
-            </div>
-            <div
-                class="grid px-2 py-2 w-full md:w-3/5 lg:w-3/5 xl:w-3/5 2xl:w-3/5 center rounded-r-2xl bg-card shadow mb-1 overflow-hidden"
-            >
-                <div style="font-weight: bold;">Prazo - MENSAL</div>
-                <div id="chart">
-                    <apx-chart
-                        [series]="chartOptions1.series"
-                        [chart]="chartOptions1.chart"
-                        [stroke]="chartOptions1.stroke"
-                        [tooltip]="chartOptions1.tooltip"
-                        [dataLabels]="chartOptions1.dataLabels"
-                        [plotOptions]="chartOptions1.plotOptions"
-                        [responsive]="chartOptions1.responsive"
-                        [xaxis]="chartOptions1.xaxis"
-                        [yaxis]="chartOptions1.yaxis"
-                        [legend]="chartOptions1.legend"
-                        [fill]="chartOptions1.fill"
-                    ></apx-chart>
-                </div>
-            </div>
-        </div>
-        <div
-            class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row w-full"
-        >
-            <div
-                class="grid px-2 py-2 w-full md:w-2/5 lg:w-2/5 xl:w-2/5 2xl:w-2/5 justify-center center rounded-l-2xl bg-card shadow mb-1 overflow-hidden"
-            >
-                <div style="font-weight: bold;">Tipos - TOTAL</div>
-                <div>Total: {{totalPie2}}</div>
-                <div id="chartPie2">
-                    <apx-chart
-                        [series]="chartOptionsPie2.series"
-                        [chart]="chartOptionsPie2.chart"
-                        [yaxis]="chartOptionsPie2.yaxis"
-                        [labels]="chartOptionsPie2.labels"
-                        [responsive]="chartOptionsPie2.responsive"
-                    ></apx-chart>
-                </div>
-            </div>
-            <div
-                class="grid px-2 py-2 w-full md:w-3/5 lg:w-3/5 xl:w-3/5 2xl:w-3/5 center rounded-r-2xl bg-card shadow mb-1 overflow-hidden"
-            >
-                <div style="font-weight: bold;">Tipos - MENSAL</div>
-                <div id="chart2">
-                    <apx-chart
-                        [series]="chartOptions2.series"
-                        [chart]="chartOptions2.chart"
-                        [stroke]="chartOptions2.stroke"
-                        [tooltip]="chartOptions2.tooltip"
-                        [dataLabels]="chartOptions2.dataLabels"
-                        [plotOptions]="chartOptions2.plotOptions"
-                        [responsive]="chartOptions2.responsive"
-                        [xaxis]="chartOptions2.xaxis"
-                        [yaxis]="chartOptions2.yaxis"
-                        [legend]="chartOptions2.legend"
-                        [fill]="chartOptions2.fill"
-                    ></apx-chart>
-                </div>
-            </div>
-        </div>
-        <div
-            class="grid px-2 py-2 h-full w-full rounded-2xl bg-card shadow mb-1 overflow-hidden"
-        >
-         <div style="font-weight: bold;">Totais por filiais - Parcelas</div>
-            <div id="chartheat">
-                <apx-chart
-                    [series]="heatMap.series"
-                    [chart]="heatMap.chart"
-                    [dataLabels]="heatMap.dataLabels"
-                    [colors]="heatMap.colors"
-                    [stroke]="heatMap.stroke"
-                    [plotOptions]="heatMap.plotOptions"
-                    [xaxis]="heatMap.xaxis"
-                    [yaxis]="heatMap.yaxis"
-                    [tooltip]="heatMap.tooltip"
-                    [legend]="heatMap.legend"
-                ></apx-chart>
-            </div>
+                <mat-tab label="Comparativo anual">
+                    <ng-template matTabContent>
+                        <div
+                            class="grid px-2 py-2 w-full center rounded-2xl bg-card shadow mb-1 overflow-hidden"
+                        >
+                            <div style="font-weight: bold">Comparativo</div>
+                            <div id="chartMixed">
+                                <apx-chart
+                                    [series]="chartOptionsMixed.series"
+                                    [chart]="chartOptionsMixed.chart"
+                                    [xaxis]="chartOptionsMixed.xaxis"
+                                    [yaxis]="chartOptionsMixed.yaxis"
+                                    [fill]="chartOptionsMixed.fill"
+                                    [stroke]="chartOptionsMixed.stroke"
+                                    [title]="chartOptionsMixed.title"
+                                    [dataLabels]="chartOptionsMixed.dataLabels"
+                                    [legend]="chartOptionsMixed.legend"
+                                    [colors]="chartOptionsMixed.colors"
+                                    [grid]="chartOptionsMixed.grid"
+                                    [labels]="chartOptionsMixed.labels"
+                                    [tooltip]="chartOptionsMixed.tooltip"
+                                    [plotOptions]="
+                                        chartOptionsMixed.plotOptions
+                                    "
+                                >
+                                </apx-chart>
+                            </div>
+                        </div>
+                    </ng-template>
+                </mat-tab>
+            </mat-tab-group>
         </div>
     </div>
 </div>

@@ -26,6 +26,8 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SelectfilialModule } from '../../util/selectfilial/selectfilial.module';
+import { MatTabsModule } from '@angular/material/tabs';
+
 @NgModule({
     declarations: [tipovendaComponent],
     imports: [
@@ -49,6 +51,7 @@ import { SelectfilialModule } from '../../util/selectfilial/selectfilial.module'
         MatSlideToggleModule,
         ReactiveFormsModule,
         SelectfilialModule,
+        MatTabsModule
     ],
 })
 export class tipovendaModule {}

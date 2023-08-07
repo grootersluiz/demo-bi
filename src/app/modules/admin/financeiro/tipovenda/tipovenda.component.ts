@@ -31,25 +31,26 @@ export class tipovendaComponent implements AfterViewInit {
     chartOptionsPie2: ApexOptions;
     chartOptions1: ApexOptions;
     chartOptions2: ApexOptions;
+    chartOptionsMixed: ApexOptions;
     heatMap: ApexOptions;
     @ViewChild('chart') chart: ChartComponent;
     @ViewChild('chartPie') chartPie: ChartComponent;
     @ViewChild('chart2') chart2: ChartComponent;
     @ViewChild('chartPie2') chartPie2: ChartComponent;
     @ViewChild('chartheat') chartheat: ChartComponent;
+    @ViewChild('chartMixed') chartMixed: ChartComponent;
     datasource = this._tipovendaService.ELEMENT_DATA;
     titulo: string = 'Tipos de Vendas';
     subTitulo: string = 'Mensal e totais';
     isToggleOn: boolean;
-    _serviceChart: any;
     totalPie1: any = 0;
     totalPie2: any = 0;
-    totals = [];
     series = { columns: [], rows: [] };
     series2 = { columns: [], rows: [] };
     series3 = { columns: [], rows: [] };
     series4 = { columns: [], rows: [] };
     seriesHeat = { columns: [], rows: [] };
+    seriesMixed: any = [];
     seriesPie: any = [];
     labelsPie: any = [];
     seriesPie2: any = [];
@@ -64,7 +65,6 @@ export class tipovendaComponent implements AfterViewInit {
         filial: null,
         descFilial: null,
     };
-    parcelas = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
     meses = [
         ['Jan', '01'],
@@ -80,33 +80,47 @@ export class tipovendaComponent implements AfterViewInit {
         ['Nov', '11'],
         ['Dez', '12'],
     ];
+    DataMixed = [
+        ['Jan'],
+        ['Fev'],
+        ['Mar'],
+        ['Abr'],
+        ['Mai'],
+        ['Jun'],
+        ['Jul'],
+        ['Ago'],
+        ['Set'],
+        ['Out'],
+        ['Nov'],
+        ['Dez'],
+    ];
 
     filiais = [
-        ['Belém .2', '2'],
-        ['Cuiabá .3', '3'],
-        ['São Luis .5', '5'],
-        ['Teresina .6', '6'],
-        ['Salvador .7', '7'],
-        ['Fortaleza .8', '8'],
-        ['Natal .9', '9'],
-        ['Belo Horizonte .10', '10'],
-        ['João Pessoa .11', '11'],
-        ['Aracajú .12', '12'],
-        ['Sinop .13', '13'],
-        ['Marabá .14', '14'],
-        ['Campina Grande .15', '15'],
-        ['Juazeiro do Norte .16', '16'],
-        ['Imperatriz .17', '17'],
-        ['Macapá .18', '18'],
-        ['Vitória da Conq. .19', '19'],
-        ['Maceió .20', '20'],
-        ['Recife .21', '21'],
-        ['Goiânia .22', '22'],
-        ['Rio de Janeiro .23', '23'],
-        ['Juiz de Fora .24', '24'],
-        ['Centro de Dist. .25', '25'],
-        ['Tailândia .27', '27'],
-        ['Cuiabá - EXP .28', '28'],
+        ['Belém - 2', '2'],
+        ['Cuiabá - 3', '3'],
+        ['São Luis - 5', '5'],
+        ['Teresina - 6', '6'],
+        ['Salvador - 7', '7'],
+        ['Fortaleza - 8', '8'],
+        ['Natal - 9', '9'],
+        ['Belo Horizonte - 10', '10'],
+        ['João Pessoa - 11', '11'],
+        ['Aracajú - 12', '12'],
+        ['Sinop - 13', '13'],
+        ['Marabá - 14', '14'],
+        ['Campina Grande - 15', '15'],
+        ['Juazeiro do Norte - 16', '16'],
+        ['Imperatriz - 17', '17'],
+        ['Macapá - 18', '18'],
+        ['Vitória da Conq. - 19', '19'],
+        ['Maceió - 20', '20'],
+        ['Recife - 21', '21'],
+        ['Goiânia - 22', '22'],
+        ['Rio de Janeiro - 23', '23'],
+        ['Juiz de Fora - 24', '24'],
+        ['Centro de Dist-  - 25', '25'],
+        ['Tailândia - 27', '27'],
+        ['Cuiabá - EXP - 28', '28'],
     ];
 
     seriesM1 = [
@@ -184,6 +198,10 @@ export class tipovendaComponent implements AfterViewInit {
             this.seriesHeat.columns = dataresponse.columns;
             this.seriesHeat.rows = dataresponse.rows;
             this.setDataHeat();
+            console.log(this.seriesHeat.rows);
+        });
+        this._tipovendaService.getSeriesMixed().subscribe((dataresponse) => {
+            this.setDataMixed(dataresponse.rows);
         });
     }
 
@@ -216,9 +234,13 @@ export class tipovendaComponent implements AfterViewInit {
                 }
 
                 this.seriesData.push({ name: filial, data: this.HeatFiliais });
+                this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][3]);
+                this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][4]);
+                this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][5]);
                 this.HeatFiliais = [];
 
                 // Reinicia o valor esperado para a próxima filial e adiciona a primeira parcela da nova filial
+
                 this.HeatFiliais.push(this.seriesHeat.rows[aux][2]);
                 nextExpected = this.seriesHeat.rows[aux][1] + 1;
             } else if (
@@ -232,12 +254,15 @@ export class tipovendaComponent implements AfterViewInit {
                     this.HeatFiliais.push(0);
                     nextExpected++;
                 }
+
                 this.HeatFiliais.push(this.seriesHeat.rows[aux][2]);
                 nextExpected = this.seriesHeat.rows[aux][1] + 1;
             }
             aux++;
         }
-
+        this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][3]);
+        this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][4]);
+        this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][5]);
         // Preenche o resto com zeros até 12 para a última filial
         while (nextExpected <= 12) {
             this.HeatFiliais.push(0);
@@ -255,7 +280,7 @@ export class tipovendaComponent implements AfterViewInit {
 
         // Primeiro, inicialize um array para armazenar os totais de cada parcela.
         // Inicie cada total como 0.
-        let totals = new Array(14).fill(0);
+        let totals = new Array(17).fill(0);
 
         // Em seguida, faça um loop através do conjunto de dados e some os valores de cada parcela.
         for (let series of this.seriesData) {
@@ -272,7 +297,6 @@ export class tipovendaComponent implements AfterViewInit {
         this.seriesData.push(totalSeries);
         this.seriesData.reverse();
         this.heatMap.series = this.seriesData;
-        console.log(this.heatMap.series);
     }
 
     setDataPie() {
@@ -288,17 +312,19 @@ export class tipovendaComponent implements AfterViewInit {
             }
         }
         this.totalPie1 = this.formatadorPts(this.totalPie1);
-        console.log(this.totalPie1);
         this.chartOptionsPie.series = this.seriesPie;
         this.chartOptionsPie.labels = this.labelsPie;
         var reflow = new ApexCharts(this.chartPie, this.chartOptionsPie);
     }
     setDataM1() {
+        this.seriesM1 = this.seriesM1.concat({ name: 'Total', data: [] });
+
         for (
             let index = 0, indexdata = 0;
             index < this.series2.rows.length;
             indexdata++
         ) {
+            let total = 0;
             for (let index1 = 0; index1 < 5; index1++, index++) {
                 if (index < 5) {
                     if (this.series2.rows[index][1] === 'A vista') {
@@ -308,8 +334,12 @@ export class tipovendaComponent implements AfterViewInit {
                             this.series2.rows[index][1];
                     }
                 }
-                this.seriesM1[index1].data.push(this.series2.rows[index][2]);
+                let value = this.series2.rows[index][2];
+                this.seriesM1[index1].data.push(value);
+                total += value;
             }
+            this.seriesM1[this.seriesM1.length - 1].data.push(total);
+
             this.auxMes1 = this.series2.rows[index - 1][0];
             for (let aux = 0; aux < this.meses.length; aux++) {
                 if (this.meses[aux][1] === this.auxMes1.substring(0, 2)) {
@@ -339,16 +369,21 @@ export class tipovendaComponent implements AfterViewInit {
         var reflow = new ApexCharts(this.chartPie2, this.chartOptionsPie2);
     }
     setDataM2() {
+        this.seriesM2 = this.seriesM2.concat({ name: 'Total', data: [] });
         for (
             let index = 0, indexdata = 0;
             index < this.series4.rows.length;
             indexdata++
         ) {
+            let total = 0;
             for (let index1 = 0; index1 < 5; index1++, index++) {
                 if (index < 5)
                     this.seriesM2[index1].name = this.series4.rows[index][1];
-                this.seriesM2[index1].data.push(this.series4.rows[index][2]);
+                let value = this.series4.rows[index][2];
+                this.seriesM2[index1].data.push(value);
+                total += value;
             }
+            this.seriesM2[this.seriesM2.length - 1].data.push(total);
             this.auxMes2 = this.series4.rows[index - 1][0];
             for (let aux = 0; aux < this.meses.length; aux++) {
                 if (this.meses[aux][1] === this.auxMes2.substring(0, 2)) {
@@ -363,6 +398,40 @@ export class tipovendaComponent implements AfterViewInit {
         var reflow = new ApexCharts(this.chart2, this.chartOptions2);
     }
 
+    setDataMixed(dataRow) {
+        let rawData = {};
+        let years = new Set<number>(); // Vamos manter o controle de quais anos temos
+
+        for (let row of dataRow) {
+            let [date, type, value] = row;
+            let [month, year] = date.split('/').map((part) => parseInt(part));
+            let monthIndex = month - 1; // Converte o mês para um índice (0-11)
+
+            if (!rawData[year]) rawData[year] = Array(12).fill(0); // Inicializa os dados para este ano, se necessário
+
+            // Adiciona o valor ao total para este mês/ano
+            rawData[year][monthIndex] += parseFloat(value);
+
+            years.add(year);
+        }
+
+        this.seriesMixed = [];
+
+        // Converte os dados brutos para o formato de série do ApexCharts
+        for (let year of years) {
+            this.seriesMixed.push({
+                name: year.toString(),
+                data: rawData[year],
+            });
+        }
+
+        this.chartOptionsMixed.series = this.seriesMixed;
+        var chartMixed = new ApexCharts(
+            this.chartMixed,
+            this.chartOptionsMixed
+        );
+    }
+
     limpar() {
         this.HeatFiliais = [];
         this.series = { columns: [], rows: [] };
@@ -373,6 +442,7 @@ export class tipovendaComponent implements AfterViewInit {
         this.series4 = { columns: [], rows: [] };
         this.seriesHeat = { columns: [], rows: [] };
         this.seriesData = [];
+        this.seriesMixed = [];
         this.seriesM1 = [
             {
                 name: '',
@@ -443,6 +513,63 @@ export class tipovendaComponent implements AfterViewInit {
         private _httpClient: HttpClient,
         private cdr: ChangeDetectorRef
     ) {
+        this.chartOptionsMixed = {
+            series: this.seriesMixed,
+            chart: {
+                type: 'bar',
+                height: 350,
+                width: '100%',
+                stacked: false,
+            },
+            dataLabels: {
+                enabled: false,
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false, // ou true, dependendo da orientação das barras // ajustar conforme necessário
+                },
+            },
+            stroke: {
+                curve: 'smooth',
+                width: 2,
+            },
+            title: {
+                text: 'Anos anteriores',
+                align: 'left',
+                offsetX: 110,
+            },
+            xaxis: {
+                categories: this.DataMixed, // Este array deve conter os nomes dos meses
+                type: 'category', // Força o eixo X a ser tratado como categorias
+            },
+            yaxis: {
+                show: true,
+                showAlways: true,
+                labels: {
+                    show: true,
+                    formatter: (val) => {
+                        return this.formatadorPts(val);
+                    },
+                },
+            },
+            tooltip: {
+                followCursor: true,
+                theme: 'dark',
+                x: {
+                    format: 'dd MMM, yyyy',
+                },
+                y: {
+                    formatter: (val) => {
+                        return this.formatadorPts(val);
+                    },
+                },
+            },
+            legend: {
+                horizontalAlign: 'left',
+                offsetX: 40,
+            },
+        };
+
         this.chartOptionsPie = {
             series: this.seriesPie,
             chart: {
@@ -710,12 +837,16 @@ export class tipovendaComponent implements AfterViewInit {
                 followCursor: true,
                 theme: 'dark',
                 x: {
+                    show: true,
                     format: 'dd MMM, yyyy',
                 },
                 y: {
                     formatter: (val) => {
                         return this.formatadorPts(val);
                     },
+                },
+                marker: {
+                    show: true,
                 },
             },
             stroke: {
@@ -728,59 +859,114 @@ export class tipovendaComponent implements AfterViewInit {
                     colorScale: {
                         ranges: [
                             {
+                                from: -999999999,
+                                to: -1,
+                                color: '#ff0000',
+                            },
+                            {
                                 from: 0,
                                 to: 0,
                                 color: '#c3c3c3',
                             },
                             {
                                 from: 1,
-                                to: 100000,
+                                to: 50000,
                                 color: '#ff0000',
                             },
                             {
+                                from: 50001,
+                                to: 100000,
+                                color: '#ff1a00',
+                            },
+                            {
                                 from: 100001,
-                                to: 200000,
+                                to: 150000,
                                 color: '#ff3300',
                             },
                             {
+                                from: 150001,
+                                to: 200000,
+                                color: '#ff4d00',
+                            },
+                            {
                                 from: 200001,
-                                to: 300000,
+                                to: 250000,
                                 color: '#ff6600',
                             },
                             {
+                                from: 250001,
+                                to: 300000,
+                                color: '#ff8000',
+                            },
+                            {
                                 from: 300001,
-                                to: 400000,
+                                to: 350000,
                                 color: '#ff9900',
                             },
                             {
+                                from: 350001,
+                                to: 400000,
+                                color: '#ffb200',
+                            },
+                            {
                                 from: 400001,
-                                to: 500000,
+                                to: 450000,
                                 color: '#ffcc00',
                             },
                             {
+                                from: 450001,
+                                to: 500000,
+                                color: '#ffe500',
+                            },
+                            {
                                 from: 500001,
-                                to: 600000,
+                                to: 550000,
                                 color: '#ffff00',
                             },
                             {
+                                from: 550001,
+                                to: 600000,
+                                color: '#e5ff00',
+                            },
+                            {
                                 from: 600001,
-                                to: 700000,
+                                to: 650000,
                                 color: '#ccff00',
                             },
                             {
+                                from: 650001,
+                                to: 700000,
+                                color: '#b2ff00',
+                            },
+                            {
                                 from: 700001,
-                                to: 800000,
+                                to: 750000,
                                 color: '#99ff00',
                             },
                             {
+                                from: 750001,
+                                to: 800000,
+                                color: '#80ff00',
+                            },
+                            {
                                 from: 800001,
-                                to: 900000,
+                                to: 850000,
                                 color: '#66ff00',
                             },
                             {
+                                from: 850001,
+                                to: 900000,
+                                color: '#4dff00',
+                            },
+                            {
                                 from: 900001,
-                                to: 1000000,
+                                to: 950000,
                                 color: '#33ff00',
+                            },
+                            {
+                                from: 950001,
+                                to: 1000000,
+                                color: '#1aff00',
                             },
                             {
                                 from: 1000001,
@@ -789,9 +975,6 @@ export class tipovendaComponent implements AfterViewInit {
                             },
                         ],
                     },
-
-
-
                 },
             },
             dataLabels: {
@@ -820,7 +1003,10 @@ export class tipovendaComponent implements AfterViewInit {
                     '10x',
                     '11x',
                     '12x',
-                    'TOTAL',
+                    'TOTAL FIN',
+                    'Impostos',
+                    'Frete',
+                    'TOTAL ROL',
                 ],
             },
             yaxis: {
@@ -838,54 +1024,60 @@ export class tipovendaComponent implements AfterViewInit {
     formatadorUnidade(val) {
         var numero = val ? Number(val).toFixed(0) : '0';
         var valor = numero;
-        if (String(numero).length < 4) {
-            valor = numero;
-        } else {
-            if (String(numero).length < 5) {
-                valor =
-                    numero.substring(0, 1) + ',' + numero.substring(1, 2) + 'K';
+
+        if (val >= 0) {
+            if (String(numero).length < 4) {
+                valor = numero;
             } else {
-                if (String(numero).length < 6) {
+                if (String(numero).length < 5) {
                     valor =
-                        numero.substring(0, 2) +
+                        numero.substring(0, 1) +
                         ',' +
-                        numero.substring(2, 3) +
+                        numero.substring(1, 2) +
                         'K';
                 } else {
-                    if (String(numero).length < 7) {
+                    if (String(numero).length < 6) {
                         valor =
-                            numero.substring(0, 3) +
+                            numero.substring(0, 2) +
                             ',' +
-                            numero.substring(3, 4) +
+                            numero.substring(2, 3) +
                             'K';
                     } else {
-                        if (String(numero).length < 8) {
+                        if (String(numero).length < 7) {
                             valor =
-                                numero.substring(0, 1) +
+                                numero.substring(0, 3) +
                                 ',' +
-                                numero.substring(1, 2) +
-                                'M';
+                                numero.substring(3, 4) +
+                                'K';
                         } else {
-                            if (String(numero).length < 9) {
+                            if (String(numero).length < 8) {
                                 valor =
-                                    numero.substring(0, 2) +
+                                    numero.substring(0, 1) +
                                     ',' +
-                                    numero.substring(2, 3) +
+                                    numero.substring(1, 2) +
                                     'M';
                             } else {
-                                if (String(numero).length < 10) {
+                                if (String(numero).length < 9) {
                                     valor =
-                                        numero.substring(0, 3) +
+                                        numero.substring(0, 2) +
                                         ',' +
-                                        numero.substring(3, 4) +
+                                        numero.substring(2, 3) +
                                         'M';
                                 } else {
-                                    if (String(numero).length < 17) {
+                                    if (String(numero).length < 10) {
                                         valor =
-                                            numero.substring(0, 1) +
+                                            numero.substring(0, 3) +
                                             ',' +
-                                            numero.substring(1, 2) +
-                                            'B';
+                                            numero.substring(3, 4) +
+                                            'M';
+                                    } else {
+                                        if (String(numero).length < 17) {
+                                            valor =
+                                                numero.substring(0, 1) +
+                                                ',' +
+                                                numero.substring(1, 2) +
+                                                'B';
+                                        }
                                     }
                                 }
                             }
@@ -893,6 +1085,67 @@ export class tipovendaComponent implements AfterViewInit {
                     }
                 }
             }
+        }else{
+            if (String(numero).length < 4) {
+                valor = numero;
+            } else {
+                if (String(numero).length-1 < 5) {
+                    valor =
+                        numero.substring(0, 2) +
+                        ',' +
+                        numero.substring(2, 3) +
+                        'K';
+                } else {
+                    if (String(numero).length-1 < 6) {
+                        valor =
+                            numero.substring(0, 3) +
+                            ',' +
+                            numero.substring(3, 4) +
+                            'K';
+                    } else {
+                        if (String(numero).length-1 < 7) {
+                            valor =
+                                numero.substring(0, 4) +
+                                ',' +
+                                numero.substring(5, 5) +
+                                'K';
+                        } else {
+                            if (String(numero).length-1 < 8) {
+                                valor =
+                                    numero.substring(0, 2) +
+                                    ',' +
+                                    numero.substring(2, 3) +
+                                    'M';
+                            } else {
+                                if (String(numero).length-1 < 9) {
+                                    valor =
+                                        numero.substring(0, 3) +
+                                        ',' +
+                                        numero.substring(3, 4) +
+                                        'M';
+                                } else {
+                                    if (String(numero).length-1 < 10) {
+                                        valor =
+                                            numero.substring(0, 4) +
+                                            ',' +
+                                            numero.substring(4, 5) +
+                                            'M';
+                                    } else {
+                                        if (String(numero).length-1 < 17) {
+                                            valor =
+                                                numero.substring(0, 2) +
+                                                ',' +
+                                                numero.substring(2, 3) +
+                                                'B';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
         }
         return valor;
     }
