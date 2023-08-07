@@ -16,7 +16,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
@@ -26,6 +25,8 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SelectfilialModule } from '../../util/selectfilial/selectfilial.module';
+import { MatTabsModule } from '@angular/material/tabs';
+import { dateModule } from '../../util/dtfimmes/date.module';
 @NgModule({
     declarations: [tipovendaComponent],
     imports: [
@@ -39,7 +40,6 @@ import { SelectfilialModule } from '../../util/selectfilial/selectfilial.module'
         MatIconModule,
         MatTableModule,
         MatCardModule,
-        MatFormFieldModule,
         MatInputModule,
         FormsModule,
         MatDatepickerModule,
@@ -49,6 +49,8 @@ import { SelectfilialModule } from '../../util/selectfilial/selectfilial.module'
         MatSlideToggleModule,
         ReactiveFormsModule,
         SelectfilialModule,
+        MatTabsModule,
+        dateModule
     ],
 })
 export class tipovendaModule {}

@@ -1,0 +1,90 @@
+<!--Filtro Data-->
+
+<mat-form-field
+class="sm:inline-flex ml-3"
+style="width: 150px"
+>
+<mat-label style="font-size: 12px; color: #fff"
+    >Data Inicial
+    <input
+        type="checkbox"
+        [(ngModel)]="isChecked"
+        style="margin-left: 1rem"
+        (change)="resetDateInputs()"
+    />
+    Mensal</mat-label
+>
+<input
+    class="cursor-pointer"
+    style="font-size: 15px"
+    matInput
+    [formControl]="start"
+    [matDatepicker]="picker"
+    (click)="handleDatePickerClick($event, pickerToggle)"
+    (dateInput)="addEventBegin($event)"
+    readonly
+/>
+
+<!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
+<mat-datepicker-toggle
+    #pickerToggle
+    matIconSuffix
+    [for]="picker"
+></mat-datepicker-toggle>
+
+<mat-datepicker
+    #picker
+    [startView]="isChecked ? 'year' : 'month'"
+    (monthSelected)="
+        isChecked ? setInitialMY($event, picker) : undefined
+    "
+></mat-datepicker>
+</mat-form-field>
+
+<mat-form-field
+class="sm:inline-flex ml-3"
+style="width: 150px"
+>
+<mat-label style="font-size: 12px; color: #fff"
+    >Data Final
+</mat-label>
+
+<input
+    class="cursor-pointer"
+    style="font-size: 15px"
+    matInput
+    [formControl]="end"
+    [matDatepicker]="pickerFinal"
+    (click)="
+        handleDatePickerClick($event, pickerToggleFinal)
+    "
+    (dateInput)="addEventEnd($event)"
+    readonly
+    [min]="start.value ? start.value : today"
+/>
+
+<!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
+<mat-datepicker-toggle
+    #pickerToggleFinal
+    matIconSuffix
+    [for]="pickerFinal"
+></mat-datepicker-toggle>
+
+<mat-datepicker
+    #pickerFinal
+    [startView]="isChecked ? 'year' : 'month'"
+    (monthSelected)="
+        isChecked
+            ? setFinalMY($event, pickerFinal)
+            : undefined
+    "
+></mat-datepicker>
+<!-- <mat-error
+        *ngIf="
+            convDataIni &&
+            convDataFin &&
+            convDataFin < convDataIni
+        "
+        >Data final inválida</mat-error
+    > -->
+</mat-form-field>
