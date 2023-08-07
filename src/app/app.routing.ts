@@ -10,6 +10,7 @@ import { AuthRedirectGuard } from 'app/core/auth/guards/auth.redirect.guard';
 import { DashLinksTIGuard } from './core/auth/guards/dashLinksTI.guard';
 import { DashAnalisemarcaGuard } from './core/auth/guards/dashAnalisemarca.guard';
 import { tipovendaGuard } from './core/auth/guards/tipovenda.guard';
+import { dashEstoqueGuard } from './core/auth/guards/dashestoque.guard';
 
 // @formatter:off
 /* eslint-disable max-len */
@@ -235,6 +236,8 @@ export const appRoutes: Route[] = [
                                 'app/modules/admin/dashboards/contabil/dre/dre.module'
                             ).then((m) => m.DreDashModule),
                     },
+
+
                 ],
             },
 
@@ -269,6 +272,19 @@ export const appRoutes: Route[] = [
                             import(
                                 'app/modules/admin/financeiro/tipovenda/tipovenda.module'
                             ).then((m) => m.tipovendaModule),
+                    },
+                ],
+            },
+            {
+                path: 'estoque',
+                children: [
+                    {
+                        path: 'dashestoque',
+                        canActivate: [dashEstoqueGuard],
+                        loadChildren: () =>
+                            import(
+                                'app/modules/admin/estoque/dashestoque/dashestoque.module'
+                            ).then((m) => m.DashEstoqueModule),
                     },
                 ],
             },

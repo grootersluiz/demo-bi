@@ -17,5 +17,6 @@
             "username": "ALEX_LOURENCO",
             "database": "SANKHYA.JSPDB.JSPVCN.ORACLEVCN.COM"
         }
-    ]
+    ],
+    "npm-scripts.showStartNotification": false
 }
