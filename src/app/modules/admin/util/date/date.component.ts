@@ -16,7 +16,7 @@ import * as _moment from 'moment';
   styleUrls: ['./date.component.scss','../css/css.component.scss']
 })
 export class dateComponent {
-    isChecked: boolean;
+    isChecked: boolean = true;
     isToggleOn: boolean;
     dataInicio = this._dateService.INITIAL_INITIAL_DATE;
     dataFinal = this._dateService.INITIAL_FINAL_DATE;

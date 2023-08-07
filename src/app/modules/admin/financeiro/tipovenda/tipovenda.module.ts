@@ -26,7 +26,7 @@ import { NgApexchartsModule } from 'ng-apexcharts';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SelectfilialModule } from '../../util/selectfilial/selectfilial.module';
 import { MatTabsModule } from '@angular/material/tabs';
-import { dateModule } from '../../util/dtfimmes/date.module';
+import { dateModule } from '../../util/date/date.module';
 @NgModule({
     declarations: [tipovendaComponent],
     imports: [

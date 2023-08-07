@@ -507,7 +507,6 @@ export class tipovendaComponent implements AfterViewInit {
     }
 
     consultavendafilial(filial,dtini,dtfin) {
-        console.log(dtini,dtfin)
         if (filial.length == 1) {
             if (filial[0] == 'null') {
                 filial = 99;
