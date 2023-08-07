@@ -36,6 +36,8 @@
             <div class="flex flex-wrap justify-end">
                 <!-- FILTROS VVVVV -->
                 <app-selectfilial #filial></app-selectfilial>
+                <app-date #dtmes></app-date>
+
                 <!-- FILTROS ^^^^^ -->
             </div>
             <!-- Botão de confirmar filtro, adicionar evento de (click) -->
@@ -44,7 +46,7 @@
                 style="width: 120px"
                 mat-flat-button
                 [color]="'primary'"
-                (click)="consultavendafilial(filial.filiais.value)"
+                (click)="consultavendafilial(filial.filiais.value,dtmes.dataInicio,dtmes.dataFinal)"
             >
                 <span style="font-size: 12px">Aplicar</span>
             </button>
@@ -191,22 +193,15 @@
                                 <apx-chart
                                     [series]="chartOptionsMixed.series"
                                     [chart]="chartOptionsMixed.chart"
-                                    [xaxis]="chartOptionsMixed.xaxis"
-                                    [yaxis]="chartOptionsMixed.yaxis"
-                                    [fill]="chartOptionsMixed.fill"
                                     [stroke]="chartOptionsMixed.stroke"
-                                    [title]="chartOptionsMixed.title"
                                     [dataLabels]="chartOptionsMixed.dataLabels"
-                                    [legend]="chartOptionsMixed.legend"
+                                    [plotOptions]="chartOptionsMixed.plotOptions"
+                                    [xaxis]="chartOptionsMixed.xaxis"
                                     [colors]="chartOptionsMixed.colors"
-                                    [grid]="chartOptionsMixed.grid"
-                                    [labels]="chartOptionsMixed.labels"
-                                    [tooltip]="chartOptionsMixed.tooltip"
-                                    [plotOptions]="
-                                        chartOptionsMixed.plotOptions
-                                    "
-                                >
-                                </apx-chart>
+                                    [fill]="chartOptionsMixed.fill"
+                                    [yaxis]="chartOptionsMixed.yaxis"
+                                    [legend]="chartOptionsMixed.legend"
+                                ></apx-chart>
                             </div>
                         </div>
                     </ng-template>

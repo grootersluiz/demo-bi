@@ -15,7 +15,10 @@ import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
 import { categories } from '../../../../mock-api/apps/ecommerce/inventory/data';
 import { items } from 'app/mock-api/apps/file-manager/data';
-
+import { FormControl } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDatepickerToggle, MatDatepickerInputEvent,MatDatepicker } from '@angular/material/datepicker';
+import { Moment } from 'moment';
 @Component({
     selector: 'tipovenda',
     templateUrl: './tipovenda.component.html',
@@ -39,10 +42,11 @@ export class tipovendaComponent implements AfterViewInit {
     @ViewChild('chartPie2') chartPie2: ChartComponent;
     @ViewChild('chartheat') chartheat: ChartComponent;
     @ViewChild('chartMixed') chartMixed: ChartComponent;
-    datasource = this._tipovendaService.ELEMENT_DATA;
     titulo: string = 'Tipos de Vendas';
     subTitulo: string = 'Mensal e totais';
+    isChecked: boolean;
     isToggleOn: boolean;
+    today = new Date();
     totalPie1: any = 0;
     totalPie2: any = 0;
     series = { columns: [], rows: [] };
@@ -64,6 +68,8 @@ export class tipovendaComponent implements AfterViewInit {
     param = {
         filial: null,
         descFilial: null,
+        dtIni: null,
+        dtFin: null
     };
 
     meses = [
@@ -198,7 +204,6 @@ export class tipovendaComponent implements AfterViewInit {
             this.seriesHeat.columns = dataresponse.columns;
             this.seriesHeat.rows = dataresponse.rows;
             this.setDataHeat();
-            console.log(this.seriesHeat.rows);
         });
         this._tipovendaService.getSeriesMixed().subscribe((dataresponse) => {
             this.setDataMixed(dataresponse.rows);
@@ -235,7 +240,7 @@ export class tipovendaComponent implements AfterViewInit {
 
                 this.seriesData.push({ name: filial, data: this.HeatFiliais });
                 this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][3]);
-                this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][4]);
+                // this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][4]);
                 this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][5]);
                 this.HeatFiliais = [];
 
@@ -261,7 +266,7 @@ export class tipovendaComponent implements AfterViewInit {
             aux++;
         }
         this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][3]);
-        this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][4]);
+        // this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][4]);
         this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][5]);
         // Preenche o resto com zeros até 12 para a última filial
         while (nextExpected <= 12) {
@@ -280,7 +285,7 @@ export class tipovendaComponent implements AfterViewInit {
 
         // Primeiro, inicialize um array para armazenar os totais de cada parcela.
         // Inicie cada total como 0.
-        let totals = new Array(17).fill(0);
+        let totals = new Array(16).fill(0);
 
         // Em seguida, faça um loop através do conjunto de dados e some os valores de cada parcela.
         for (let series of this.seriesData) {
@@ -400,31 +405,36 @@ export class tipovendaComponent implements AfterViewInit {
 
     setDataMixed(dataRow) {
         let rawData = {};
-        let years = new Set<number>(); // Vamos manter o controle de quais anos temos
+        let types = new Set<string>(); // Vamos manter o controle de quais anos temos
 
         for (let row of dataRow) {
             let [date, type, value] = row;
             let [month, year] = date.split('/').map((part) => parseInt(part));
             let monthIndex = month - 1; // Converte o mês para um índice (0-11)
 
-            if (!rawData[year]) rawData[year] = Array(12).fill(0); // Inicializa os dados para este ano, se necessário
+            let key = `${type}-${year}`; // Usamos uma chave composta para identificar cada série
 
-            // Adiciona o valor ao total para este mês/ano
-            rawData[year][monthIndex] += parseFloat(value);
+            if (!rawData[key]) rawData[key] = Array(12).fill(0); // Inicializa os dados para este tipo/ano, se necessário
 
-            years.add(year);
+            // Adiciona o valor ao total para este mês/tipo/ano
+            rawData[key][monthIndex] += parseFloat(value);
+
+            types.add(type);
         }
 
         this.seriesMixed = [];
 
         // Converte os dados brutos para o formato de série do ApexCharts
-        for (let year of years) {
-            this.seriesMixed.push({
-                name: year.toString(),
-                data: rawData[year],
-            });
+        for (let type of types) {
+            for (let year of [2021, 2022, 2023]) { // Presumindo que você tem dados para esses anos
+                let key = `${type}-${year}`;
+                this.seriesMixed.push({
+                    name: year.toString() + ' - ' + type,
+                    group: year.toString(),
+                    data: rawData[key] || Array(12).fill(0),
+                });
+            }
         }
-
         this.chartOptionsMixed.series = this.seriesMixed;
         var chartMixed = new ApexCharts(
             this.chartMixed,
@@ -496,13 +506,14 @@ export class tipovendaComponent implements AfterViewInit {
         this.param.descFilial = this._tipovendaService.param.descFilial;
     }
 
-    consultavendafilial(filial) {
+    consultavendafilial(filial,dtini,dtfin) {
+        console.log(dtini,dtfin)
         if (filial.length == 1) {
             if (filial[0] == 'null') {
                 filial = 99;
             }
         }
-        this._tipovendaService.setParam(filial, 'REDE');
+        this._tipovendaService.setParam(dtini,dtfin,filial, 'REDE');
         this.limpar(); // viewSerie, categorias, series
         this.validaParam();
         this.SetGeral();
@@ -517,18 +528,22 @@ export class tipovendaComponent implements AfterViewInit {
             series: this.seriesMixed,
             chart: {
                 type: 'bar',
-                height: 350,
+                height: 3500,
                 width: '100%',
                 stacked: false,
             },
             dataLabels: {
-                enabled: false,
+                enabled: true,
+                formatter: (val) => {
+                    return this.formatadorUnidade(val);
+                },
             },
             plotOptions: {
                 bar: {
-                    horizontal: false, // ou true, dependendo da orientação das barras // ajustar conforme necessário
+                    horizontal: true, // ou true, dependendo da orientação das barras // ajustar conforme necessário
                 },
             },
+            colors:['#FF8C00','#FF8C00','#FF8C00', '#585858','#585858','#585858', '#FF4500','#FF4500','#FF4500','#FF4560','#FF4560','#FF4560','#FF1111','#FF1111','#FF1111'],
             stroke: {
                 curve: 'smooth',
                 width: 2,
@@ -566,6 +581,7 @@ export class tipovendaComponent implements AfterViewInit {
             },
             legend: {
                 horizontalAlign: 'left',
+                position: 'top',
                 offsetX: 40,
             },
         };
@@ -1005,7 +1021,6 @@ export class tipovendaComponent implements AfterViewInit {
                     '12x',
                     'TOTAL FIN',
                     'Impostos',
-                    'Frete',
                     'TOTAL ROL',
                 ],
             },
