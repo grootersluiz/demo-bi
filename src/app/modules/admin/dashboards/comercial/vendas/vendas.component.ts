@@ -487,10 +487,10 @@ export class VendasDashComponent implements OnInit {
             legend: {
                 position: 'top',
             },
-            colors: ['#FF8C00', '#94A3B8', '#F0E68C'],
+            colors: ['#ed7b00', '#6e7a8a', '#edca00'],
             plotOptions: {
                 bar: {
-                    borderRadius: 4,
+                    borderRadius: 1,
                     horizontal: true,
                 },
             },
