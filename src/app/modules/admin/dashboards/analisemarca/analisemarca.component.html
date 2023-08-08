@@ -24,7 +24,7 @@
     <div class="w-full">
         <div
             class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
-            *ngIf="isToggleOn"
+            [class.hidden]="!isToggleOn"
         >
             <div class="flex flex-auto">
                 <img
@@ -45,11 +45,12 @@
                     </div>
                 </div>
             </div>
-            <div class="flex flex-wrap justify-end">
+            <div class="flex flex-wrap justify-end items-start">
                 <!-- FILTROS VVVVV -->
 
-                <app-selectfilial #filial></app-selectfilial>
-                <app-listamarca #marca></app-listamarca>
+                <app-selectfilial #filial ></app-selectfilial>
+
+                <app-listamarca #marca ></app-listamarca>
                 <mat-form-field
                     class="sm:inline-flex ml-3"
                     style="width: 150px"

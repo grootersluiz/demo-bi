@@ -34,6 +34,8 @@ import { AnalisemarcaComponent, AnalisemarcaDialogComponent } from 'app/modules/
 import { analisemarcaRoutes } from 'app/modules/admin/dashboards/analisemarca/analisemarca.routing';
 import { SelectfilialModule } from '../../util/selectfilial/selectfilial.module';
 import { ListamarcaModule } from '../../util/listamarca/listamarca.module';
+// import { ListafornecedorModule } from '../../util/listafornecedor/listafornecedor.module';
+import { ListafornecedorkeypressModule } from '../../util/listafornecedorkeypress/listafornecedorkeypress.module';
 
 import {NgFor} from '@angular/common';
 import {MatSelectModule} from '@angular/material/select';
@@ -63,6 +65,7 @@ registerLocaleData(localePt);
         ,NgFor,MatSelectModule
         ,SelectfilialModule
         ,ListamarcaModule
+        ,ListafornecedorkeypressModule
     ],
     providers: [
         { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },

@@ -21,11 +21,8 @@ export class SelectfilialService {
   getData(): Observable<any> {
     let url = `http://10.2.1.108/v1/dashboards/data?reportId=${this.REPORT_FILTRO_FILIAIS}`;
 
-    console.log(url);
-
      this._httpClient.get<Observable<any>>(url)
                                 .subscribe((dataresponse: any) => {
-                                    // console.log(dataresponse);
 
                                     const COD_EMPRESA = 0;
                                     const RAZAO_ABREV = 1;
@@ -48,30 +45,5 @@ export class SelectfilialService {
 
                                 return;
 
-    // return this._httpClient.get(url).pipe(
-    //     tap((response: any) => {
-
-    //         const COD_EMPRESA = 0;
-    //         const RAZAO_ABREV = 1;
-
-    //         const companyFilter = response[this.REPORT_FILTRO_FILIAIS][
-    //             'rows'
-    //         ].map((item) => {
-    //             return {
-    //                 id: item[COD_EMPRESA],
-    //                 string:
-    //                     item[COD_EMPRESA].toString() +
-    //                     ' - ' +
-    //                     item[RAZAO_ABREV],
-    //             };
-    //         });
-
-    //         const dashData = {
-    //             filiaisLista: companyFilter
-    //         };
-
-    //         this._data.next(dashData);
-    //     })
-    // );
-}
+    }
 }

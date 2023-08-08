@@ -434,7 +434,7 @@ export class AnalisemarcaService {
     formatadorUnidade(val){
         var numero = val? Number(val).toFixed(0) : '0';
         var valor = numero;
-        console.log('TESTE');
+
         if (String(numero).length < 4) {
             valor = numero;
         }else{

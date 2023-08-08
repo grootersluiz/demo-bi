@@ -597,7 +597,6 @@ export class AnalisemarcaComponent {
       ]
     };
 
-
   }
 
   ngAfterViewInit(): void {
@@ -606,6 +605,7 @@ export class AnalisemarcaComponent {
 
         chart: {
             events: {
+
               click: (event: any, chartContext?: any, config? :any): void => {
 
                 switch (event.srcElement.className) {
