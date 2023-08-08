@@ -11,7 +11,7 @@
     </div>
     <div class="w-full">
         <div
-            class="flex flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
+            class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
             [class.hidden]="!isToggleOn"
         >
             <div class="flex flex-auto">
@@ -46,7 +46,13 @@
                 style="width: 120px"
                 mat-flat-button
                 [color]="'primary'"
-                (click)="consultavendafilial(filial.filiais.value,dtmes.dataInicio,dtmes.dataFinal)"
+                (click)="
+                    consultavendafilial(
+                        filial.filiais.value,
+                        dtmes.dataInicio,
+                        dtmes.dataFinal
+                    )
+                "
             >
                 <span style="font-size: 12px">Aplicar</span>
             </button>
@@ -57,12 +63,8 @@
     >
         <!-- COMPONENTES ABAIXO -->
         <!-- Colocar class="grid px-2 py-2 w-12/12 rounded-2xl bg-card shadow mb-1" em todos componentes-->
-        <div class="relative w-full max-w-screen-xl mx-auto">
-            <mat-tab-group
-                class="sm:px-2"
-                mat-stretch-tabs="false"
-                [animationDuration]="'0'"
-            >
+        <div class="flex-grow w-full max-w-screen-xl mx-auto">
+            <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0'">
                 <mat-tab label="Relatórios tipos de Vendas">
                     <ng-template matTabContent>
                         <div
@@ -159,6 +161,38 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div
+                            class="grid px-2 py-2 w-full rounded-2xl bg-card shadow mb-1 overflow-hidden justify-center center"
+                        >
+                            <mat-button-toggle-group
+                            class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row"
+                                name="TP"
+                                aria-label="TP"
+                                multiple
+                            >
+                                <mat-button-toggle class="pl-1" (click)="av = !av"
+                                    >A vista</mat-button-toggle
+                                >
+                                <mat-button-toggle (click)="bol = !bol"
+                                    >Boleto</mat-button-toggle
+                                >
+                                <mat-button-toggle (click)="cc = !cc"
+                                    >Cartão de Crédito</mat-button-toggle
+                                >
+                                <mat-button-toggle (click)="cd = !cd"
+                                    >Cartão de Débito</mat-button-toggle
+                                >
+                                <button
+                                    class="ml-5 apply-button"
+                                    style="width: 120px"
+                                    mat-flat-button
+                                    [color]="'primary'"
+                                >
+                                    <span style="font-size: 12px">Aplicar</span>
+                                </button>
+                            </mat-button-toggle-group>
+                        </div>
                         <div
                             class="grid px-2 py-2 w-full rounded-2xl bg-card shadow mb-1 overflow-hidden"
                         >
@@ -185,7 +219,7 @@
 
                 <mat-tab label="Comparativo anual">
                     <ng-template matTabContent>
-                        <div
+                        <!-- <div
                             class="grid px-2 py-2 w-full center rounded-2xl bg-card shadow mb-1 overflow-hidden"
                         >
                             <div style="font-weight: bold">Comparativo</div>
@@ -195,7 +229,9 @@
                                     [chart]="chartOptionsMixed.chart"
                                     [stroke]="chartOptionsMixed.stroke"
                                     [dataLabels]="chartOptionsMixed.dataLabels"
-                                    [plotOptions]="chartOptionsMixed.plotOptions"
+                                    [plotOptions]="
+                                        chartOptionsMixed.plotOptions
+                                    "
                                     [xaxis]="chartOptionsMixed.xaxis"
                                     [colors]="chartOptionsMixed.colors"
                                     [fill]="chartOptionsMixed.fill"
@@ -203,7 +239,7 @@
                                     [legend]="chartOptionsMixed.legend"
                                 ></apx-chart>
                             </div>
-                        </div>
+                        </div> -->
                     </ng-template>
                 </mat-tab>
             </mat-tab-group>

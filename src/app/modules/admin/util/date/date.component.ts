@@ -49,16 +49,6 @@ export class dateComponent {
             this.dataFinal = event.value['_i'];
         }
     }
-
-
-    formatDate(date) {
-        const day = date.date.toString();
-        const month = (date.month + 1).toString();
-        const year = date.year.toString();
-        return `${day}/${month}/${year}`;
-    }
-
-
     setInitialMY(evMY: Moment, datepicker: MatDatepicker<Moment>) {
         this.dataInicio = { year: evMY.year(), month: evMY.month(), date: 1 };
         this.start.setValue(

@@ -1,5 +1,3 @@
-import { AuthService } from '../../../../core/auth/auth.service';
-import { Navigation } from 'app/core/navigation/navigation.types';
 import { tipovendaService } from './tipovenda.service';
 import {
     AfterViewInit,
@@ -10,15 +8,9 @@ import {
 } from '@angular/core';
 import { ChartComponent } from 'ng-apexcharts';
 import { ApexOptions } from 'apexcharts';
-import _, { isNumber } from 'lodash';
+import _, { isNumber, toNumber } from 'lodash';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
-import { categories } from '../../../../mock-api/apps/ecommerce/inventory/data';
-import { items } from 'app/mock-api/apps/file-manager/data';
-import { FormControl } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDatepickerToggle, MatDatepickerInputEvent,MatDatepicker } from '@angular/material/datepicker';
-import { Moment } from 'moment';
 @Component({
     selector: 'tipovenda',
     templateUrl: './tipovenda.component.html',
@@ -56,6 +48,8 @@ export class tipovendaComponent implements AfterViewInit {
     seriesHeat = { columns: [], rows: [] };
     seriesMixed: any = [];
     seriesPie: any = [];
+    seriesM1: any = [];
+    seriesM2: any = [];
     labelsPie: any = [];
     seriesPie2: any = [];
     labelsPie2: any = [];
@@ -64,13 +58,12 @@ export class tipovendaComponent implements AfterViewInit {
     categories2 = [];
     auxMes1: string;
     auxMes2: string;
+    anos: number[];
     HeatFiliais: any[] = [];
-    param = {
-        filial: null,
-        descFilial: null,
-        dtIni: null,
-        dtFin: null
-    };
+    av: boolean = false;
+    bol: boolean = false;
+    cc: boolean = false;
+    cd: boolean = false;
 
     meses = [
         ['Jan', '01'],
@@ -129,51 +122,6 @@ export class tipovendaComponent implements AfterViewInit {
         ['Cuiabá - EXP - 28', '28'],
     ];
 
-    seriesM1 = [
-        {
-            name: '',
-            data: [],
-        },
-        {
-            name: '',
-            data: [],
-        },
-        {
-            name: '',
-            data: [],
-        },
-        {
-            name: '',
-            data: [],
-        },
-        {
-            name: '',
-            data: [],
-        },
-    ];
-    seriesM2 = [
-        {
-            name: '',
-            data: [],
-        },
-        {
-            name: '',
-            data: [],
-        },
-        {
-            name: '',
-            data: [],
-        },
-        {
-            name: '',
-            data: [],
-        },
-        {
-            name: '',
-            data: [],
-        },
-    ];
-
     ngAfterViewInit() {
         this.limpar();
         this.SetGeral();
@@ -205,19 +153,18 @@ export class tipovendaComponent implements AfterViewInit {
             this.seriesHeat.rows = dataresponse.rows;
             this.setDataHeat();
         });
-        this._tipovendaService.getSeriesMixed().subscribe((dataresponse) => {
-            this.setDataMixed(dataresponse.rows);
-        });
+        // this._tipovendaService.getSeriesMixed().subscribe((dataresponse) => {
+        //     this.setDataMixed(dataresponse.rows);
+        // });
     }
 
     setDataHeat() {
         var filial: String;
-        var nextExpected = 1; // Inicia o esperado em 1
+        var nextExpected = 1;
         this.HeatFiliais.push(this.seriesHeat.rows[0][2]);
         nextExpected = this.seriesHeat.rows[0][1] + 1; // Atualiza o valor esperado para o próximo
         var aux = 1;
         while (aux < this.seriesHeat.rows.length) {
-            // Ajusta a condição do loop para evitar acessar um índice não existente
             if (
                 aux > 0 &&
                 this.seriesHeat.rows[aux][0] != this.seriesHeat.rows[aux - 1][0]
@@ -283,18 +230,15 @@ export class tipovendaComponent implements AfterViewInit {
 
         this.seriesData.push({ name: filial, data: this.HeatFiliais });
 
-        // Primeiro, inicialize um array para armazenar os totais de cada parcela.
         // Inicie cada total como 0.
         let totals = new Array(16).fill(0);
 
-        // Em seguida, faça um loop através do conjunto de dados e some os valores de cada parcela.
         for (let series of this.seriesData) {
             for (let index = 0; index < series.data.length; index++) {
                 totals[index] += series.data[index];
             }
         }
 
-        // Depois disso, crie uma nova série com os totais e adicione-a ao conjunto de dados.
         let totalSeries = {
             name: 'TOTAL',
             data: totals,
@@ -344,7 +288,6 @@ export class tipovendaComponent implements AfterViewInit {
                 total += value;
             }
             this.seriesM1[this.seriesM1.length - 1].data.push(total);
-
             this.auxMes1 = this.series2.rows[index - 1][0];
             for (let aux = 0; aux < this.meses.length; aux++) {
                 if (this.meses[aux][1] === this.auxMes1.substring(0, 2)) {
@@ -356,6 +299,9 @@ export class tipovendaComponent implements AfterViewInit {
 
         this.chartOptions1.series = this.seriesM1;
         this.chartOptions1.xaxis.categories = this.categories;
+        if (this.categories.length === 1) {
+            this.chartOptions1.chart.type = 'bar';
+        }
         var reflow = new ApexCharts(this.chart, this.chartOptions1);
     }
 
@@ -399,6 +345,9 @@ export class tipovendaComponent implements AfterViewInit {
         }
         this.chartOptions2.series = this.seriesM2;
         this.chartOptions2.xaxis.categories = this.categories2;
+        if (this.categories2.length === 1) {
+            this.chartOptions2.chart.type = 'bar';
+        }
 
         var reflow = new ApexCharts(this.chart2, this.chartOptions2);
     }
@@ -423,10 +372,12 @@ export class tipovendaComponent implements AfterViewInit {
         }
 
         this.seriesMixed = [];
-
-        // Converte os dados brutos para o formato de série do ApexCharts
+        var sysdate = new Date();
+        for (let i = sysdate.getFullYear(); i >= (sysdate.getFullYear()-2); i--) {
+            this.anos.push(i);
+        }
         for (let type of types) {
-            for (let year of [2021, 2022, 2023]) { // Presumindo que você tem dados para esses anos
+            for (let year of this.anos) {
                 let key = `${type}-${year}`;
                 this.seriesMixed.push({
                     name: year.toString() + ' - ' + type,
@@ -443,6 +394,7 @@ export class tipovendaComponent implements AfterViewInit {
     }
 
     limpar() {
+        this.anos = [];
         this.HeatFiliais = [];
         this.series = { columns: [], rows: [] };
         this.totalPie1 = 0;
@@ -501,28 +453,19 @@ export class tipovendaComponent implements AfterViewInit {
         this.categories = new Array();
         this.categories2 = new Array();
     }
-    validaParam() {
-        this.param.filial = this._tipovendaService.param.filial;
-        this.param.descFilial = this._tipovendaService.param.descFilial;
-    }
 
-    consultavendafilial(filial,dtini,dtfin) {
+    consultavendafilial(filial, dtini, dtfin) {
         if (filial.length == 1) {
             if (filial[0] == 'null') {
                 filial = 99;
             }
         }
-        this._tipovendaService.setParam(dtini,dtfin,filial, 'REDE');
+        this._tipovendaService.setParam(dtini, dtfin, filial, 'REDE');
         this.limpar(); // viewSerie, categorias, series
-        this.validaParam();
         this.SetGeral();
     }
 
-    constructor(
-        private _tipovendaService: tipovendaService,
-        private _httpClient: HttpClient,
-        private cdr: ChangeDetectorRef
-    ) {
+    constructor(private _tipovendaService: tipovendaService) {
         this.chartOptionsMixed = {
             series: this.seriesMixed,
             chart: {
@@ -542,7 +485,23 @@ export class tipovendaComponent implements AfterViewInit {
                     horizontal: true, // ou true, dependendo da orientação das barras // ajustar conforme necessário
                 },
             },
-            colors:['#FF8C00','#FF8C00','#FF8C00', '#585858','#585858','#585858', '#FF4500','#FF4500','#FF4500','#FF4560','#FF4560','#FF4560','#FF1111','#FF1111','#FF1111'],
+            colors: [
+                '#FF8C00',
+                '#FF8C00',
+                '#FF8C00',
+                '#585858',
+                '#585858',
+                '#585858',
+                '#FF4500',
+                '#FF4500',
+                '#FF4500',
+                '#FF4560',
+                '#FF4560',
+                '#FF4560',
+                '#FF1111',
+                '#FF1111',
+                '#FF1111',
+            ],
             stroke: {
                 curve: 'smooth',
                 width: 2,
@@ -876,7 +835,7 @@ export class tipovendaComponent implements AfterViewInit {
                             {
                                 from: -999999999,
                                 to: -1,
-                                color: '#ff0000',
+                                color: '#FF4560',
                             },
                             {
                                 from: 0,
@@ -885,108 +844,8 @@ export class tipovendaComponent implements AfterViewInit {
                             },
                             {
                                 from: 1,
-                                to: 50000,
-                                color: '#ff0000',
-                            },
-                            {
-                                from: 50001,
-                                to: 100000,
-                                color: '#ff1a00',
-                            },
-                            {
-                                from: 100001,
-                                to: 150000,
-                                color: '#ff3300',
-                            },
-                            {
-                                from: 150001,
-                                to: 200000,
-                                color: '#ff4d00',
-                            },
-                            {
-                                from: 200001,
-                                to: 250000,
-                                color: '#ff6600',
-                            },
-                            {
-                                from: 250001,
-                                to: 300000,
-                                color: '#ff8000',
-                            },
-                            {
-                                from: 300001,
-                                to: 350000,
-                                color: '#ff9900',
-                            },
-                            {
-                                from: 350001,
-                                to: 400000,
-                                color: '#ffb200',
-                            },
-                            {
-                                from: 400001,
-                                to: 450000,
-                                color: '#ffcc00',
-                            },
-                            {
-                                from: 450001,
-                                to: 500000,
-                                color: '#ffe500',
-                            },
-                            {
-                                from: 500001,
-                                to: 550000,
-                                color: '#ffff00',
-                            },
-                            {
-                                from: 550001,
-                                to: 600000,
-                                color: '#e5ff00',
-                            },
-                            {
-                                from: 600001,
-                                to: 650000,
-                                color: '#ccff00',
-                            },
-                            {
-                                from: 650001,
-                                to: 700000,
-                                color: '#b2ff00',
-                            },
-                            {
-                                from: 700001,
-                                to: 750000,
-                                color: '#99ff00',
-                            },
-                            {
-                                from: 750001,
-                                to: 800000,
-                                color: '#80ff00',
-                            },
-                            {
-                                from: 800001,
-                                to: 850000,
-                                color: '#66ff00',
-                            },
-                            {
-                                from: 850001,
-                                to: 900000,
-                                color: '#4dff00',
-                            },
-                            {
-                                from: 900001,
-                                to: 950000,
-                                color: '#33ff00',
-                            },
-                            {
-                                from: 950001,
-                                to: 1000000,
-                                color: '#1aff00',
-                            },
-                            {
-                                from: 1000001,
-                                to: 99999999999,
-                                color: '#00ff00',
+                                to: 9999999999,
+                                color: '#00E396',
                             },
                         ],
                     },
@@ -995,7 +854,8 @@ export class tipovendaComponent implements AfterViewInit {
             dataLabels: {
                 enabled: true,
                 style: {
-                    colors: ['#fff'],
+                    fontSize: '10px',
+                    colors: ['#000000'],
                 },
                 formatter: (val) => {
                     return this.formatadorUnidade(val);
@@ -1099,53 +959,53 @@ export class tipovendaComponent implements AfterViewInit {
                     }
                 }
             }
-        }else{
+        } else {
             if (String(numero).length < 4) {
                 valor = numero;
             } else {
-                if (String(numero).length-1 < 5) {
+                if (String(numero).length - 1 < 5) {
                     valor =
                         numero.substring(0, 2) +
                         ',' +
                         numero.substring(2, 3) +
                         'K';
                 } else {
-                    if (String(numero).length-1 < 6) {
+                    if (String(numero).length - 1 < 6) {
                         valor =
                             numero.substring(0, 3) +
                             ',' +
                             numero.substring(3, 4) +
                             'K';
                     } else {
-                        if (String(numero).length-1 < 7) {
+                        if (String(numero).length - 1 < 7) {
                             valor =
                                 numero.substring(0, 4) +
                                 ',' +
                                 numero.substring(5, 5) +
                                 'K';
                         } else {
-                            if (String(numero).length-1 < 8) {
+                            if (String(numero).length - 1 < 8) {
                                 valor =
                                     numero.substring(0, 2) +
                                     ',' +
                                     numero.substring(2, 3) +
                                     'M';
                             } else {
-                                if (String(numero).length-1 < 9) {
+                                if (String(numero).length - 1 < 9) {
                                     valor =
                                         numero.substring(0, 3) +
                                         ',' +
                                         numero.substring(3, 4) +
                                         'M';
                                 } else {
-                                    if (String(numero).length-1 < 10) {
+                                    if (String(numero).length - 1 < 10) {
                                         valor =
                                             numero.substring(0, 4) +
                                             ',' +
                                             numero.substring(4, 5) +
                                             'M';
                                     } else {
-                                        if (String(numero).length-1 < 17) {
+                                        if (String(numero).length - 1 < 17) {
                                             valor =
                                                 numero.substring(0, 2) +
                                                 ',' +
@@ -1159,7 +1019,6 @@ export class tipovendaComponent implements AfterViewInit {
                     }
                 }
             }
-
         }
         return valor;
     }
@@ -1168,11 +1027,12 @@ export class tipovendaComponent implements AfterViewInit {
             if (!val) {
                 val = 0;
             }
-            return val.toLocaleString('pt-BR', {
+            return String(val.toLocaleString('pt-BR', {
                 style: 'currency',
                 currency: 'BRL',
-            });
+            })).slice(2);
         }
+        console.log(val)
         return val;
     }
 }
