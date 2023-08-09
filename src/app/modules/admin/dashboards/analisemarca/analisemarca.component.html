@@ -3,27 +3,30 @@
     subTitulo: string = "";
     isToggleOn: boolean;
  -->
-<div class="flex-col w-full overflow-y-hidden pl-1 pr-1">
-    <div class="flex flex-grow w-full justify-between">
-        <button
-            matTooltip="Indicadores Adicionais"
-            class="mr-4"
-            style="visibility: visible !important"
-            disabled
-        >
-            <mat-icon
-                class="pt-2 pb-1"
-                aria-hidden="false"
-                fontIcon="settings"
-            ></mat-icon>
-        </button>
-        <mat-slide-toggle class="pt-1" [(ngModel)]="isToggleOn">
-            {{ isToggleOn ? "Ocultar filtros" : "Mostrar filtros" }}
-        </mat-slide-toggle>
-    </div>
-    <div class="w-full">
+ <!-- <div class="box-content component-container h-full w-full mt-0 mr-2 mb-0 ml-2 p-0" id="painelAnaliseMarca" > -->
+    <!-- <div class="flex flex-col h-full w-full pl-1 pr-1"> -->
+<div class="component-container h-full w-full pl-1 pr-1 ">
+
+    <div class="flex flex-col w-full">
+        <div class="flex flex-grow w-full justify-between">
+            <button
+                matTooltip="Indicadores Adicionais"
+                class="mr-4"
+                style="visibility: visible !important"
+                disabled
+            >
+                <mat-icon
+                    class="pt-2 pb-1"
+                    aria-hidden="false"
+                    fontIcon="settings"
+                ></mat-icon>
+            </button>
+            <mat-slide-toggle class="pt-1" [(ngModel)]="isToggleOn">
+                {{ isToggleOn ? "Ocultar filtros" : "Mostrar filtros" }}
+            </mat-slide-toggle>
+        </div>
         <div
-            class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
+            class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-col items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
             [class.hidden]="!isToggleOn"
         >
             <div class="flex flex-auto">
@@ -49,7 +52,7 @@
                 <!-- FILTROS VVVVV -->
 
                 <app-selectfilial #filial ></app-selectfilial>
-
+                <app-listafornecedor #forn></app-listafornecedor>
                 <app-listamarca #marca ></app-listamarca>
                 <mat-form-field
                     class="sm:inline-flex ml-3"
@@ -105,22 +108,22 @@
         </div>
     </div>
     <div
-        class="relative w-full h-full flex flex-col sm:flex-col md:flex-col lg:flex-col xl:flex-col 2xl:flex-col mt-1"
+        class="relative w-full h-full flex flex-col sm:flex-col md:flex-col lg:flex-col xl:flex-auto 2xl:flex-col mt-1"
     >
         <!-- COMPONENTES ABAIXO -->
         <!-- Colocar class="grid px-2 py-2 w-12/12 rounded-2xl bg-card shadow mb-1" em todos componentes-->
-        <div id="containerDash" [hidden]="false" style="height: 98%">
+        <div id="containerDash" [hidden]="false" class="flex flex-row" style="height: 94%">
             <div
                 id="divChart"
                 #divChart
-                class="w-full h-full p-0 mt-0 mr-0 mb-0 ml-0"
+                class="flex flex-col w-full h-full p-0 mt-0 mr-0 mb-0 ml-0"
                 [hidden]="false"
             >
                 <div
                     id="chart"
                     #chart
                     [ngClass]="_classChart"
-                    style="height: 98%"
+                    style="height: 94%"
                 >
                     <apx-chart
                         [ngClass]="_classChart"
@@ -141,4 +144,5 @@
             </div>
         </div>
     </div>
+
 </div>
