@@ -27,6 +27,7 @@ export class tipovendaComponent implements AfterViewInit {
     chartOptions1: ApexOptions;
     chartOptions2: ApexOptions;
     chartOptionsMixed: ApexOptions;
+    chartOptionsMixed2: ApexOptions;
     heatMap: ApexOptions;
     @ViewChild('chart') chart: ChartComponent;
     @ViewChild('chartPie') chartPie: ChartComponent;
@@ -34,6 +35,7 @@ export class tipovendaComponent implements AfterViewInit {
     @ViewChild('chartPie2') chartPie2: ChartComponent;
     @ViewChild('chartheat') chartheat: ChartComponent;
     @ViewChild('chartMixed') chartMixed: ChartComponent;
+    @ViewChild('chartMixed2') chartMixed2: ChartComponent;
     titulo: string = 'Tipos de Vendas';
     subTitulo: string = 'Mensal e totais';
     isChecked: boolean;
@@ -47,6 +49,7 @@ export class tipovendaComponent implements AfterViewInit {
     series4 = { columns: [], rows: [] };
     seriesHeat = { columns: [], rows: [] };
     seriesMixed: any = [];
+    seriesMixed2: any = [];
     seriesPie: any = [];
     seriesM1: any = [];
     seriesM2: any = [];
@@ -142,6 +145,9 @@ export class tipovendaComponent implements AfterViewInit {
          this._tipovendaService.getSeriesMixed().subscribe((dataresponse) => {
              this.setDataMixed(dataresponse.rows);
          });
+         this._tipovendaService.getSeriesMixed2().subscribe((dataresponse) => {
+            this.setDataMixed2(dataresponse.rows);
+        });
     }
 
     setDataHeat() {
@@ -357,7 +363,7 @@ export class tipovendaComponent implements AfterViewInit {
 
         this.seriesMixed = [];
         var sysdate = new Date();
-        var years = Array.from({ length: 3 }, (_, i) => sysdate.getFullYear() - i);
+        var years = Array.from({ length: 3 }, (_, i) => sysdate.getFullYear() - i).reverse();
 
         for (let type of types) {
             let dataForType = [];
@@ -378,13 +384,45 @@ export class tipovendaComponent implements AfterViewInit {
         );
     }
 
+    setDataMixed2(dataRow) {
+        let rawData: { [type: string]: { [year: number]: number } } = {};
+        let types = new Set<string>();
 
+        for (let row of dataRow) {
+            let [date, type, value] = row;
+            let [month, year] = date.split('/').map((part) => parseInt(part));
 
+            if (!rawData[type]) rawData[type] = {};
+            if (!rawData[type][year]) rawData[type][year] = 0;
 
+            // Incrementa o valor para o tipo/ano específico
+            rawData[type][year] += parseFloat(value);
 
+            types.add(type);
+        }
 
+        this.seriesMixed2 = [];
+        var sysdate = new Date();
+        var years = Array.from({ length: 3 }, (_, i) => sysdate.getFullYear() - i).reverse();
 
+        for (let type of types) {
+            let dataForType = [];
+            for (let year of years) {
+                dataForType.push(rawData[type][year] || 0);
+            }
+            this.seriesMixed2.push({
+                name: type,
+                data: dataForType
+            });
+        }
 
+        this.chartOptionsMixed2.xaxis.categories = years.map(y => y.toString());
+        this.chartOptionsMixed2.series = this.seriesMixed2;
+        var chartMixed = new ApexCharts(
+            this.chartMixed2,
+            this.chartOptionsMixed2
+        );
+    }
 
     limpar() {
         this.anos = [];
@@ -398,6 +436,7 @@ export class tipovendaComponent implements AfterViewInit {
         this.seriesHeat = { columns: [], rows: [] };
         this.seriesData = [];
         this.seriesMixed = [];
+        this.seriesMixed2 = [];
         this.seriesM1 = [
             {
                 name: '',
@@ -460,6 +499,73 @@ export class tipovendaComponent implements AfterViewInit {
 
     constructor(private _tipovendaService: tipovendaService) {
         this.chartOptionsMixed = {
+            series: this.seriesMixed,
+            chart: {
+                type: 'bar',
+                height: 220,
+                width: '100%',
+                stacked: false,
+            },
+            dataLabels: {
+                offsetY: -20,
+                enabled: true,
+                formatter: (val) => {
+                    return this.formatadorUnidade(val);
+                },
+                style:{
+                    colors: ['#000000']
+                }
+            },
+            plotOptions: {
+                bar: {
+                    dataLabels:{
+                        position: "top"
+                    },
+                    horizontal: false, // ou true, dependendo da orientação das barras // ajustar conforme necessário
+                },
+            },
+            stroke: {
+                curve: 'smooth',
+                width: 2,
+            },
+            title: {
+                text: 'Anos anteriores',
+                align: 'left',
+                offsetX: 110,
+            },
+            xaxis: {
+                // categories: ['2021','2022','2023'], // Este array deve conter os nomes dos meses
+                type: 'category', // Força o eixo X a ser tratado como categorias
+            },
+            yaxis: {
+                show: true,
+                showAlways: true,
+                labels: {
+                    show: true,
+                    formatter: (val) => {
+                        return this.formatadorPts(val);
+                    },
+                },
+            },
+            tooltip: {
+                followCursor: true,
+                theme: 'dark',
+                x: {
+                    format: 'dd MMM, yyyy',
+                },
+                y: {
+                    formatter: (val) => {
+                        return this.formatadorPts(val);
+                    },
+                },
+            },
+            legend: {
+                horizontalAlign: 'left',
+                position: 'top',
+                offsetX: 40,
+            },
+        };
+        this.chartOptionsMixed2 = {
             series: this.seriesMixed,
             chart: {
                 type: 'bar',
@@ -618,6 +724,7 @@ export class tipovendaComponent implements AfterViewInit {
                     fontFamily: 'Helvetica, Arial, sans-serif',
                     fontWeight: 'bold',
                     colors: ['black'],
+
                 },
                 dropShadow: {
                     enabled: true,
@@ -802,9 +909,6 @@ export class tipovendaComponent implements AfterViewInit {
                         return this.formatadorPts(val);
                     },
                 },
-                marker: {
-                    show: true,
-                },
             },
             stroke: {
                 width: 0.1,
@@ -814,25 +918,6 @@ export class tipovendaComponent implements AfterViewInit {
                 heatmap: {
                     radius: 0,
                     enableShades: false,
-                    // colorScale: {
-                    //     ranges: [
-                    //         {
-                    //             from: -999999999,
-                    //             to: -1,
-                    //             color: '#FF4560',
-                    //         },
-                    //         {
-                    //             from: 0,
-                    //             to: 0,
-                    //             color: '#c3c3c3',
-                    //         },
-                    //         {
-                    //             from: 1,
-                    //             to: 9999999999,
-                    //             color: '#00E396',
-                    //         },
-                    //     ],
-                    // },
                 },
             },
             dataLabels: {
@@ -851,7 +936,8 @@ export class tipovendaComponent implements AfterViewInit {
                 labels:{
                     rotate: 0,
                     style:{
-                        fontSize: '9px'
+                        fontSize: '10px',
+                        cssClass: 'overflow'
                     }
                 },
                 categories: [

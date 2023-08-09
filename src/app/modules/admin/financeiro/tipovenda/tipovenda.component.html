@@ -163,26 +163,37 @@
                         </div>
 
                         <div
-                            class="grid px-2 py-2 w-full rounded-2xl bg-card shadow mb-1 overflow-hidden justify-center center"
+                            class="grid px-2 py-2 w-full rounded-t-2xl bg-card shadow overflow-hidden center"
                         >
+                        <div style="font-weight: bold" class="p-2 justify-start">
+                            Totais por filiais - Parcelas
+                        </div>
                             <mat-button-toggle-group
-                            class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row"
+                                class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-row justify-center"
                                 name="TP"
                                 aria-label="TP"
                                 multiple
                             >
-                                <mat-button-toggle class="pl-1" (click)="av = !av"
-                                    >A vista</mat-button-toggle
-                                >
-                                <mat-button-toggle (click)="bol = !bol"
-                                    >Boleto</mat-button-toggle
-                                >
-                                <mat-button-toggle (click)="cc = !cc"
-                                    >Cartão de Crédito</mat-button-toggle
-                                >
-                                <mat-button-toggle (click)="cd = !cd"
-                                    >Cartão de Débito</mat-button-toggle
-                                >
+                                <div class="flex border-2 border-solid rounded-full">
+                                    <mat-button-toggle (click)="av = !av"
+                                        >A vista</mat-button-toggle
+                                    >
+                                </div>
+                                <div class="flex border-2 border-solid rounded-full">
+                                    <mat-button-toggle (click)="bol = !bol"
+                                        >Boleto</mat-button-toggle
+                                    >
+                                </div>
+                                <div class="flex border-2 border-solid rounded-full">
+                                    <mat-button-toggle (click)="cc = !cc"
+                                        >Cartão de Crédito</mat-button-toggle
+                                    >
+                                </div>
+                                <div class="flex border-2 border-solid rounded-full">
+                                    <mat-button-toggle (click)="cd = !cd"
+                                        >Cartão de Débito</mat-button-toggle
+                                    >
+                                </div>
                                 <button
                                     class="ml-5 apply-button"
                                     style="width: 120px"
@@ -194,11 +205,9 @@
                             </mat-button-toggle-group>
                         </div>
                         <div
-                            class="grid px-2 py-2 w-full rounded-2xl bg-card shadow mb-1 overflow-hidden"
+                            class="grid px-2 py-2 w-full rounded-b-2xl bg-card shadow mb-1 overflow-hidden"
                         >
-                            <div style="font-weight: bold" class="p-2">
-                                Totais por filiais - Parcelas
-                            </div>
+
                             <div id="chartheat">
                                 <apx-chart
                                     [series]="heatMap.series"
@@ -222,7 +231,7 @@
                         <div
                             class="grid px-2 py-2 w-full center rounded-2xl bg-card shadow mb-1 overflow-hidden"
                         >
-                            <div style="font-weight: bold">Comparativo</div>
+                            <div style="font-weight: bold">Últimos 3 anos - PRAZO</div>
                             <div id="chartMixed">
                                 <apx-chart
                                     [series]="chartOptionsMixed.series"
@@ -233,10 +242,36 @@
                                         chartOptionsMixed.plotOptions
                                     "
                                     [xaxis]="chartOptionsMixed.xaxis"
+                                    [yaxis]="chartOptionsMixed.xaxis"
                                     [colors]="chartOptionsMixed.colors"
                                     [fill]="chartOptionsMixed.fill"
+                                    [tooltip]="chartOptionsMixed.tooltip"
                                     [yaxis]="chartOptionsMixed.yaxis"
                                     [legend]="chartOptionsMixed.legend"
+                                ></apx-chart>
+                            </div>
+                        </div>
+
+                        <div
+                            class="grid px-2 py-2 w-full center rounded-2xl bg-card shadow mb-1 overflow-hidden"
+                        >
+                            <div style="font-weight: bold">Últimos 3 anos - TIPO</div>
+                            <div id="chartMixed2">
+                                <apx-chart
+                                    [series]="chartOptionsMixed2.series"
+                                    [chart]="chartOptionsMixed2.chart"
+                                    [stroke]="chartOptionsMixed2.stroke"
+                                    [dataLabels]="chartOptionsMixed2.dataLabels"
+                                    [plotOptions]="
+                                        chartOptionsMixed2.plotOptions
+                                    "
+                                    [xaxis]="chartOptionsMixed2.xaxis"
+                                    [yaxis]="chartOptionsMixed2.xaxis"
+                                    [colors]="chartOptionsMixed2.colors"
+                                    [fill]="chartOptionsMixed2.fill"
+                                    [tooltip]="chartOptionsMixed2.tooltip"
+                                    [yaxis]="chartOptionsMixed2.yaxis"
+                                    [legend]="chartOptionsMixed2.legend"
                                 ></apx-chart>
                             </div>
                         </div>

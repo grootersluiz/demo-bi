@@ -152,5 +152,13 @@ export class tipovendaService {
                 filiais
         );
     }
+    getSeriesMixed2(): Observable<any> {
+        var filiais = this.param.filial;
+        return this._httpClient.get<{ columns: []; rows: [] }>(
+            'http://api.portal.jspecas.com.br/v1/views/525/data?' +
+                'filiais=' +
+                filiais
+        );
+    }
     constructor(private _httpClient: HttpClient) {}
 }
