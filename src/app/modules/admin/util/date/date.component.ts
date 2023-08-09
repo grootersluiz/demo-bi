@@ -53,7 +53,7 @@ export class dateComponent {
         this.dataInicio = { year: evMY.year(), month: evMY.month(), date: 1 };
         this.start.setValue(
             new Date(this.dataInicio.year, this.dataInicio.month, 1)
-        );
+        );console.log(this.dataInicio.year);
         datepicker.close();
     }
 

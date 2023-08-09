@@ -14,8 +14,8 @@ export class tipovendaService {
     param = {
         mes: null,
         ano: null,
-        dtIni: '',
-        dtFin: '',
+        dtIni: null,
+        dtFin: null,
         filial: 99,
         descFilial: 'REDE',
         marca: 'null',
@@ -24,6 +24,7 @@ export class tipovendaService {
     seriesPie = [];
 
     formatDateIni(date) {
+
         if (date === '' || date === null ||date === undefined) {
             const day = '1';
             const month = '1';
@@ -132,7 +133,6 @@ export class tipovendaService {
         var filiais = this.param.filial;
         var dtIni = this.param.dtIni;
         var dtFin = this.param.dtFin;
-
         return this._httpClient.get<{ columns: []; rows: [] }>(
             'http://api.portal.jspecas.com.br/v1/views/520/data?' +
                 'filiais=' +
@@ -143,8 +143,6 @@ export class tipovendaService {
                 this.formatDateFin(dtFin)
 
         );
-
-
     }
     getSeriesMixed(): Observable<any> {
         var filiais = this.param.filial;
