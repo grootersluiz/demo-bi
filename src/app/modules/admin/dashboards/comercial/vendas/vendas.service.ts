@@ -14,6 +14,9 @@ export class VendasDashService {
     readonly REPORT_CC = '357';
     readonly REPORT_CCvsROL = '358';
     readonly REPORT_CCPROJECAO = '360';
+    readonly REPORT_LBvsCC = '361';
+    readonly REPORT_MBvsCC = '362';
+    readonly REPORT_COBERTURA = '363';
     readonly REPORT_FILTRO_FILIAIS = '101';
     readonly REPORT_FILTRO_VENDEDORES = '121';
 
@@ -52,7 +55,11 @@ export class VendasDashService {
             this.REPORT_CC
         }&reportId=${this.REPORT_CCvsROL}&reportId=${
             this.REPORT_CCPROJECAO
-        }&reportId=${this.REPORT_FILTRO_FILIAIS}&dtini=
+        }&reportId=${this.REPORT_LBvsCC}&reportId=${
+            this.REPORT_MBvsCC
+        }&reportId=${this.REPORT_COBERTURA}&reportId=${
+            this.REPORT_FILTRO_FILIAIS
+        }&dtini=
         ${this.formatDate(dtIni)}
         &codvend=${sellersIds.join(',')}&codemp=${companiesIds.join(',')}&dtfin=
         ${this.formatDate(dtFin)}`;
@@ -150,6 +157,70 @@ export class VendasDashService {
 
                 //---------------------------------------------------
 
+                //----------------------------------------------
+
+                //Tratamento Gráfico "LB vs CC"
+
+                let lb = response[this.REPORT_LBvsCC].LB;
+                let lbdc = response[this.REPORT_LBvsCC].LBDC;
+                let lbfc = response[this.REPORT_LBvsCC].LBFC;
+                let metaLB = response[this.REPORT_LBvsCC].META;
+                let gapLB = response[this.REPORT_LBvsCC].GAP;
+
+                let indCCvsLB = [lb, lbdc, lbfc, metaLB, gapLB];
+
+                indCCvsLB.forEach((element, index) => {
+                    if (element == null) {
+                        response[this.REPORT_LBvsCC][index] = 0;
+                    }
+                });
+
+                const chartLBvsCC = response[this.REPORT_LBvsCC];
+
+                //---------------------------------------------------
+
+                //----------------------------------------------
+
+                //Tratamento Gráfico "MB vs CC"
+
+                let mb = response[this.REPORT_MBvsCC].MB;
+                let mbdc = response[this.REPORT_MBvsCC].MBDC;
+                let mbfc = response[this.REPORT_MBvsCC].MBFC;
+                let metaMB = response[this.REPORT_MBvsCC].META;
+                let gapMB = response[this.REPORT_MBvsCC].GAP;
+
+                let indCCvsMB = [mb, mbdc, mbfc, metaMB, gapMB];
+
+                indCCvsMB.forEach((element, index) => {
+                    if (element == null) {
+                        response[this.REPORT_MBvsCC][index] = 0;
+                    }
+                });
+
+                const chartMBvsCC = response[this.REPORT_MBvsCC];
+
+                //---------------------------------------------------
+
+                //----------------------------------------------
+
+                //Tratamento Gráfico "Cobertura"
+
+                let cob = response[this.REPORT_COBERTURA].COB;
+                let cobpj = response[this.REPORT_COBERTURA].COBPJ;
+                let cobpf = response[this.REPORT_COBERTURA].COBPF;
+
+                let indCobertura = [cob, cobpj, cobpf];
+
+                indCobertura.forEach((element, index) => {
+                    if (element == null) {
+                        response[this.REPORT_COBERTURA][index] = 0;
+                    }
+                });
+
+                const chartCobertura = response[this.REPORT_COBERTURA];
+
+                //---------------------------------------------------
+
                 //---------------------------------------------------
 
                 const dashData = {
@@ -157,6 +228,9 @@ export class VendasDashService {
                     cc: chartCC,
                     ccVsRol: chartCCvsROL,
                     ccProj: chartCCprojecao,
+                    ccLB: chartLBvsCC,
+                    ccMB: chartMBvsCC,
+                    ccCob: chartCobertura,
                 };
                 this._data.next(dashData);
             })
