@@ -151,6 +151,13 @@ export class AnalisemarcaService {
       //       cssClass: 'apexcharts-yaxis-title',
       //     }
       //   },
+       tickAmount: 10,
+        // min: function(min) {
+        //     return min
+        // },
+        max: function(max) {
+            return max + (max/2)
+        },
         labels: {
           show: true,
           minWidth: 0,
@@ -167,7 +174,7 @@ export class AnalisemarcaService {
       },
       {
         show: false,
-        seriesName:  this.exibirAxis[1].showYAxis, //'LB',
+        seriesName: this.exibirAxis[1].showYAxis, //'LB',
       //   title: {
       //     text: 'LB',
       //     style: {
@@ -192,6 +199,11 @@ export class AnalisemarcaService {
       {
         show: true,
         seriesName:  this.exibirAxis[2].showYAxis, //'MB',
+        tickAmount: 10,
+        min: 20,
+        max: function(max) {
+            return max + (max/2) + (max/3)
+        },
       //   title: {
       //     text: 'MB',
       //     style: {
@@ -216,6 +228,11 @@ export class AnalisemarcaService {
       {
         show: false,
         seriesName:  this.exibirAxis[3].showYAxis, //'DIAS',
+        tickAmount: 10,
+        // min: 20,
+        max: function(max) {
+            return max + (max)
+        },
       //   title: {
       //     text: 'DIAS',
       //     style: {
@@ -418,10 +435,11 @@ export class AnalisemarcaService {
         ultDia:null,
         filial: 99,
         descFilial: 'REDE',
-        marca: 'null'
+        marca: 'null',
+        fornecedor: 'null'
       };
 
-    setParam(ultDia,mes, ano, filial,descFilial,marca){
+    setParam(ultDia,mes, ano, filial,descFilial,marca,fornecedor){
 
         this.param.ultDia       = ultDia;
         this.param.mes          = mes;
@@ -429,6 +447,7 @@ export class AnalisemarcaService {
         this.param.filial       = filial;
         this.param.descFilial   = descFilial;
         this.param.marca        = marca;
+        this.param.fornecedor   = fornecedor;
 
     }
     formatadorUnidade(val){
