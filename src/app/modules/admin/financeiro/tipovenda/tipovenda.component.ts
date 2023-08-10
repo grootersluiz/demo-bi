@@ -11,6 +11,18 @@ import { ApexOptions } from 'apexcharts';
 import _, { isNumber, toNumber } from 'lodash';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
+
+// export interface PeriodicElement {
+//     name: string[];
+//     position: number;
+//     weight: number;
+//     symbol: string;
+//   }
+
+// const ELEMENT_DATA: PeriodicElement[] = [
+//     {position: 1, name: ['Hydrogen','ta'], weight: 1.0079, symbol: 'H'},
+//   ];
+
 @Component({
     selector: 'tipovenda',
     templateUrl: './tipovenda.component.html',
@@ -22,6 +34,9 @@ import { ChangeDetectorRef } from '@angular/core';
     ],
 })
 export class tipovendaComponent implements AfterViewInit {
+    displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+    // dataSource = ELEMENT_DATA;
+
     chartOptionsPie: ApexOptions;
     chartOptionsPie2: ApexOptions;
     chartOptions1: ApexOptions;
@@ -63,6 +78,8 @@ export class tipovendaComponent implements AfterViewInit {
     auxMes2: string;
     anos: any[];
     HeatFiliais: any[] = [];
+    tiposBool: boolean[] = new Array(4).fill(true);
+    tipos: any[];
     av: boolean = false;
     bol: boolean = false;
     cc: boolean = false;
@@ -114,6 +131,53 @@ export class tipovendaComponent implements AfterViewInit {
     ngAfterViewInit() {
         this.limpar();
         this.SetGeral();
+        console.log(this._tipovendaService.tipos);
+    }
+
+    setFiltroHeat() {
+        this._tipovendaService.getSeriesHeat().subscribe((dataresponse) => {
+            this.seriesHeat.columns = dataresponse.columns;
+            this.seriesHeat.rows = dataresponse.rows;
+            this.setDataHeat();
+        });
+    }
+
+    consultaHeat() {
+        if (this.av) {
+            this.tiposBool[0] = true;
+        } else {
+            this.tiposBool[0] = false;
+        }
+        if (this.bol) {
+            this.tiposBool[1] = true;
+        } else {
+            this.tiposBool[1] = false;
+        }
+        if (this.cc) {
+            this.tiposBool[2] = true;
+        } else {
+            this.tiposBool[2] = false;
+        }
+        if (this.cd) {
+            this.tiposBool[3] = true;
+        } else {
+            this.tiposBool[3] = false;
+        }
+        if (!this.av && !this.bol && !this.cc && !this.cd) {
+            for (let i = 0; i < this.tiposBool.length; i++) {
+                this.tiposBool[i] = true;
+            }
+        }
+
+        var tiposSelect: String[] = new Array();
+        for (let i2 = 0; i2 < this.tiposBool.length; i2++) {
+            if (this.tiposBool[i2]) {
+                tiposSelect.push(this.tipos[i2]);
+            }
+        }
+        this._tipovendaService.setTipos(tiposSelect);
+        this.limparHeat(); // viewSerie, categorias, series
+        this.setFiltroHeat();
     }
 
     SetGeral() {
@@ -142,24 +206,30 @@ export class tipovendaComponent implements AfterViewInit {
             this.seriesHeat.rows = dataresponse.rows;
             this.setDataHeat();
         });
-         this._tipovendaService.getSeriesMixed().subscribe((dataresponse) => {
-             this.setDataMixed(dataresponse.rows);
-         });
-         this._tipovendaService.getSeriesMixed2().subscribe((dataresponse) => {
+        this._tipovendaService.getSeriesMixed().subscribe((dataresponse) => {
+            this.setDataMixed(dataresponse.rows);
+        });
+        this._tipovendaService.getSeriesMixed2().subscribe((dataresponse) => {
             this.setDataMixed2(dataresponse.rows);
         });
     }
 
     setDataHeat() {
         var filial: String;
-        var nextExpected = 1;
-        this.HeatFiliais.push(this.seriesHeat.rows[0][2]);
-        nextExpected = this.seriesHeat.rows[0][1] + 1; // Atualiza o valor esperado para o próximo
-        var aux = 1;
-        while (aux < this.seriesHeat.rows.length) {
+        var nextExpected = 0;
+         // Atualiza o valor esperado para o próximo
+        var aux = 0;
+        while (aux < this.seriesHeat.rows.length)
+        {
+            var auxArray;
+            if(aux === 0){
+                auxArray = 0;
+            }else{
+                auxArray = aux-1;
+            }
+
             if (
-                aux > 0 &&
-                this.seriesHeat.rows[aux][0] != this.seriesHeat.rows[aux - 1][0]
+                this.seriesHeat.rows[aux][0] != this.seriesHeat.rows[auxArray][0]
             ) {
                 // Preenche o resto com zeros até 12
                 while (nextExpected <= 12) {
@@ -177,18 +247,23 @@ export class tipovendaComponent implements AfterViewInit {
                     }
                 }
 
+                this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][5]);
+                this.HeatFiliais.push(String(this.seriesHeat.rows[aux - 1][6]));
                 this.seriesData.push({ name: filial, data: this.HeatFiliais });
                 // this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][3]);
                 // this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][4]);
-                this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][5]);
                 this.HeatFiliais = [];
 
                 // Reinicia o valor esperado para a próxima filial e adiciona a primeira parcela da nova filial
 
-                this.HeatFiliais.push(this.seriesHeat.rows[aux][2]);
+
                 nextExpected = this.seriesHeat.rows[aux][1] + 1;
+                if(nextExpected != 1){
+                    this.HeatFiliais.push(0);
+                }
+                this.HeatFiliais.push(this.seriesHeat.rows[aux][2]);
             } else if (
-                this.seriesHeat.rows[aux][0] == this.seriesHeat.rows[aux - 1][0]
+                this.seriesHeat.rows[aux][0] == this.seriesHeat.rows[auxArray][0]
             ) {
                 // Verifica se a parcela atual é a esperada
                 while (
@@ -201,12 +276,14 @@ export class tipovendaComponent implements AfterViewInit {
 
                 this.HeatFiliais.push(this.seriesHeat.rows[aux][2]);
                 nextExpected = this.seriesHeat.rows[aux][1] + 1;
+
             }
             aux++;
         }
         // this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][3]);
         // this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][4]);
         this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][5]);
+        this.HeatFiliais.push(String(this.seriesHeat.rows[aux - 1][6]));
         // Preenche o resto com zeros até 12 para a última filial
         while (nextExpected <= 12) {
             this.HeatFiliais.push(0);
@@ -223,13 +300,16 @@ export class tipovendaComponent implements AfterViewInit {
         this.seriesData.push({ name: filial, data: this.HeatFiliais });
 
         // Inicie cada total como 0.
-        let totals = new Array(15).fill(0);
+        let totals = new Array(filial.length-1).fill(0);
 
         for (let series of this.seriesData) {
-            for (let index = 0; index < series.data.length; index++) {
+            for (let index = 0; index < series.data.length-1; index++) {
                 totals[index] += series.data[index];
             }
         }
+
+
+        // totals[15]=;
 
         let totalSeries = {
             name: 'TOTAL',
@@ -319,8 +399,8 @@ export class tipovendaComponent implements AfterViewInit {
             indexdata++
         ) {
             let total = 0;
-            for (let index1 = 0; index1 < 5; index1++, index++) {
-                if (index < 5)
+            for (let index1 = 0; index1 < 4; index1++, index++) {
+                if (index < 4)
                     this.seriesM2[index1].name = this.series4.rows[index][1];
                 let value = this.series4.rows[index][2];
                 this.seriesM2[index1].data.push(value);
@@ -363,7 +443,10 @@ export class tipovendaComponent implements AfterViewInit {
 
         this.seriesMixed = [];
         var sysdate = new Date();
-        var years = Array.from({ length: 3 }, (_, i) => sysdate.getFullYear() - i).reverse();
+        var years = Array.from(
+            { length: 3 },
+            (_, i) => sysdate.getFullYear() - i
+        ).reverse();
 
         for (let type of types) {
             let dataForType = [];
@@ -372,11 +455,13 @@ export class tipovendaComponent implements AfterViewInit {
             }
             this.seriesMixed.push({
                 name: type,
-                data: dataForType
+                data: dataForType,
             });
         }
 
-        this.chartOptionsMixed.xaxis.categories = years.map(y => y.toString());
+        this.chartOptionsMixed.xaxis.categories = years.map((y) =>
+            y.toString()
+        );
         this.chartOptionsMixed.series = this.seriesMixed;
         var chartMixed = new ApexCharts(
             this.chartMixed,
@@ -403,7 +488,10 @@ export class tipovendaComponent implements AfterViewInit {
 
         this.seriesMixed2 = [];
         var sysdate = new Date();
-        var years = Array.from({ length: 3 }, (_, i) => sysdate.getFullYear() - i).reverse();
+        var years = Array.from(
+            { length: 3 },
+            (_, i) => sysdate.getFullYear() - i
+        ).reverse();
 
         for (let type of types) {
             let dataForType = [];
@@ -412,11 +500,13 @@ export class tipovendaComponent implements AfterViewInit {
             }
             this.seriesMixed2.push({
                 name: type,
-                data: dataForType
+                data: dataForType,
             });
         }
 
-        this.chartOptionsMixed2.xaxis.categories = years.map(y => y.toString());
+        this.chartOptionsMixed2.xaxis.categories = years.map((y) =>
+            y.toString()
+        );
         this.chartOptionsMixed2.series = this.seriesMixed2;
         var chartMixed = new ApexCharts(
             this.chartMixed2,
@@ -424,7 +514,14 @@ export class tipovendaComponent implements AfterViewInit {
         );
     }
 
+    limparHeat() {
+        this.HeatFiliais = [];
+        this.seriesHeat = { columns: [], rows: [] };
+        this.seriesData = [];
+    }
+
     limpar() {
+        this.tipos = ['1,10', '2,3', '7', '8'];
         this.anos = [];
         this.HeatFiliais = [];
         this.series = { columns: [], rows: [] };
@@ -512,14 +609,14 @@ export class tipovendaComponent implements AfterViewInit {
                 formatter: (val) => {
                     return this.formatadorUnidade(val);
                 },
-                style:{
-                    colors: ['#000000']
-                }
+                style: {
+                    colors: ['#000000'],
+                },
             },
             plotOptions: {
                 bar: {
-                    dataLabels:{
-                        position: "top"
+                    dataLabels: {
+                        position: 'top',
                     },
                     horizontal: false, // ou true, dependendo da orientação das barras // ajustar conforme necessário
                 },
@@ -579,14 +676,14 @@ export class tipovendaComponent implements AfterViewInit {
                 formatter: (val) => {
                     return this.formatadorUnidade(val);
                 },
-                style:{
-                    colors: ['#000000']
-                }
+                style: {
+                    colors: ['#000000'],
+                },
             },
             plotOptions: {
                 bar: {
-                    dataLabels:{
-                        position: "top"
+                    dataLabels: {
+                        position: 'top',
                     },
                     horizontal: false, // ou true, dependendo da orientação das barras // ajustar conforme necessário
                 },
@@ -724,7 +821,6 @@ export class tipovendaComponent implements AfterViewInit {
                     fontFamily: 'Helvetica, Arial, sans-serif',
                     fontWeight: 'bold',
                     colors: ['black'],
-
                 },
                 dropShadow: {
                     enabled: true,
@@ -906,14 +1002,20 @@ export class tipovendaComponent implements AfterViewInit {
                 },
                 y: {
                     formatter: (val) => {
-                        return this.formatadorPts(val);
+                        if (val < 0 || val > 150) {
+                            return this.formatadorPts(val);
+                        } else if (val != 0) {
+                            return val + ' Dias';
+                        } else {
+                            return val;
+                        }
                     },
                 },
             },
             stroke: {
                 width: 0.1,
             },
-            colors:['#ed7b00', '#6e7a8a'],
+            colors: ['#ed7b00', '#6e7a8a'],
             plotOptions: {
                 heatmap: {
                     radius: 0,
@@ -924,7 +1026,7 @@ export class tipovendaComponent implements AfterViewInit {
                 enabled: true,
                 style: {
                     fontSize: '10px',
-                    colors: ['#000000','#ffffff'],
+                    colors: ['#000000', '#ffffff'],
                 },
                 formatter: (val) => {
                     return this.formatadorUnidade(val);
@@ -933,12 +1035,12 @@ export class tipovendaComponent implements AfterViewInit {
             xaxis: {
                 type: 'category',
                 position: 'top',
-                labels:{
+                labels: {
                     rotate: 0,
-                    style:{
+                    style: {
                         fontSize: '10px',
-                        cssClass: 'overflow'
-                    }
+                        cssClass: 'overflow',
+                    },
                 },
                 categories: [
                     'A Vista',
@@ -954,8 +1056,9 @@ export class tipovendaComponent implements AfterViewInit {
                     '10x',
                     '11x',
                     '12x',
-                    'TOTAL FIN',
-                    'TOTAL ROL',
+                    'TOT. FIN',
+                    'TOT. ROL',
+                    'PMV',
                 ],
             },
             yaxis: {
@@ -1102,10 +1205,12 @@ export class tipovendaComponent implements AfterViewInit {
             if (!val) {
                 val = 0;
             }
-            return String(val.toLocaleString('pt-BR', {
-                style: 'currency',
-                currency: 'BRL',
-            })).slice(0,-3);
+            return String(
+                val.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL',
+                })
+            ).slice(0, -3);
         }
         return val;
     }

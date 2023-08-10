@@ -11,6 +11,7 @@ export class tipovendaService {
     readonly INITIAL_FINAL_DATE = this.getCurrentDate();
     series = { columns: [], rows: [] };
     sysdate = new Date();
+    tipos: []= null;
     param = {
         mes: null,
         ano: null,
@@ -19,9 +20,14 @@ export class tipovendaService {
         filial: 99,
         descFilial: 'REDE',
         marca: 'null',
+
     };
 
     seriesPie = [];
+
+    setTipos(tipo){
+        this.tipos = tipo;
+    }
 
     formatDateIni(date) {
 
@@ -133,6 +139,7 @@ export class tipovendaService {
         var filiais = this.param.filial;
         var dtIni = this.param.dtIni;
         var dtFin = this.param.dtFin;
+        var tipo = this.tipos;
         return this._httpClient.get<{ columns: []; rows: [] }>(
             'http://api.portal.jspecas.com.br/v1/views/520/data?' +
                 'filiais=' +
@@ -140,7 +147,9 @@ export class tipovendaService {
                 '&dtIni=' +
                 this.formatDateIni(dtIni) +
                 '&dtFin=' +
-                this.formatDateFin(dtFin)
+                this.formatDateFin(dtFin)+
+                '&tipo=' +
+                tipo
 
         );
     }
