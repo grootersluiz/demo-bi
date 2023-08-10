@@ -13,7 +13,7 @@ export class VendasDashService {
 
     readonly REPORT_CC = '357';
     readonly REPORT_CCvsROL = '358';
-    readonly REPORT_COMPANUAL = '359';
+    readonly REPORT_COMPANUAL = '381';
     readonly REPORT_CCPROJECAO = '360';
     readonly REPORT_LBvsCC = '361';
     readonly REPORT_MBvsCC = '362';
