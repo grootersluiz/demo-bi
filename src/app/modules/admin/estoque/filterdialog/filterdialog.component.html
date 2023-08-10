@@ -1,0 +1,18 @@
+<h1 mat-dialog-title>{{ data.headerLabel }}</h1>
+<div mat-dialog-content>
+    <div *ngFor="let row of data.columnData">
+        <input
+            type="checkbox"
+            (change)="onCheckboxChange($event.target.checked, row)"
+        />
+        {{
+             row
+        }}
+    </div>
+</div>
+<div mat-dialog-actions>
+    <button mat-button mat-dialog-close>Cancelar</button>
+    <!--button mat-button [mat-dialog-close]="selectedItems" cdkFocusInitial>
+        Aplicar
+    </button-->
+</div>

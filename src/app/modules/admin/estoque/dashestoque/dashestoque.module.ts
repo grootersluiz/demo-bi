@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe, NgIf } from '@angular/common';
 import { MatChipsModule } from '@angular/material/chips';
-import { tipovendaComponent } from './tipovenda.component';
 import { RouterModule } from '@angular/router';
-import { tipovendaRoutes } from './tipovenda.routing';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 // import { MAT_DATE_LOCALE} from '@angular/material/core';
@@ -16,30 +14,37 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import localePt from '@angular/common/locales/pt';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgApexchartsModule } from 'ng-apexcharts';
+ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgApexchartsModule } from "ng-apexcharts";
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SelectfilialModule } from '../../util/selectfilial/selectfilial.module';
-import { MatTabsModule } from '@angular/material/tabs';
-import { dateModule } from '../../util/date/date.module';
+import { DashestoqueComponent } from './dashestoque.component';
+import { dashEstoqueRoutes } from './dashestoque.routing';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
+
+
 @NgModule({
-    declarations: [tipovendaComponent],
+    declarations: [DashestoqueComponent],
     imports: [
-        RouterModule.forChild(tipovendaRoutes),
+        RouterModule.forChild(dashEstoqueRoutes),
         CommonModule,
         MatButtonModule,
         MatButtonToggleModule,
-        MatTableModule,
         MatToolbarModule,
         MatTooltipModule,
         MatIconModule,
         MatTableModule,
         MatCardModule,
+        MatFormFieldModule,
         MatInputModule,
         FormsModule,
         MatDatepickerModule,
@@ -49,8 +54,12 @@ import { dateModule } from '../../util/date/date.module';
         MatSlideToggleModule,
         ReactiveFormsModule,
         SelectfilialModule,
-        MatTabsModule,
-        dateModule
+        MatPaginatorModule,
+        MatTableModule,
+        MatSortModule
+
     ],
 })
-export class tipovendaModule {}
+export class DashEstoqueModule {}
+
+

@@ -1,0 +1,295 @@
+<!-- Div Geral, é necessário criar estas variáveis no export component:
+    titulo: string = "";
+    subTitulo: string = "";
+    isToggleOn: boolean;
+ -->
+
+<div class=" flex-col w-full pl-1 pr-1 ">
+    <div class="flex flex-grow w-full justify-end">
+        <mat-slide-toggle class="pt-1" [(ngModel)]="isToggleOn">
+            {{ isToggleOn ? "Ocultar filtros" : "Mostrar filtros" }}
+        </mat-slide-toggle>
+    </div>
+    <div class="w-full">
+        <div class="flex flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
+            *ngIf="isToggleOn">
+            <div class="flex flex-auto ">
+                <img class="mr-3 logo-filter lg:block" src="assets/images/logo/Logo-Rede-JS-Pecas_7.png" alt="" />
+                <div class="flex flex-col">
+                    <div class="text-3xl font-semibold tracking-tight leading-8" style="color: #fff">
+                        {{titulo}}
+                    </div>
+
+                    <div class="font-medium tracking-tight" style="color: #fff">
+                        {{subTitulo}}
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-wrap justify-end">
+                <!-- FILTROS VVVVV -->
+                <app-selectfilial></app-selectfilial>
+                <!-- FILTROS ^^^^^ -->
+            </div>
+            <!-- Botão de confirmar filtro, adicionar evento de (click) -->
+            <button class="sm:inline-flex ml-5 apply-button" style="width: 120px" mat-flat-button [color]="'primary'">
+                <span style="font-size: 12px">Aplicar</span>
+            </button>
+        </div>
+    </div>
+    <div class="relative flex flex-wrap max-w-full max-w-screen-xl mx-auto p-1 md:p-1 gap-1 justify-center">
+        <!-- COMPONENTES ABAIXO -->
+        <!-- Colocar class="grid px-2 py-2 w-12/12 rounded-2xl bg-card shadow mb-1" em todos componentes-->
+        <!--div class="grid px-2 py-2 w-12/12 rounded-2xl bg-card shadow mb-1">
+            <apx-chart
+            [series]="chartOptions.series"
+            [chart]="chartOptions.chart"
+            [dataLabels]="chartOptions.dataLabels"
+            [plotOptions]="chartOptions.plotOptions"
+            [xaxis]="chartOptions.xaxis"
+          ></apx-chart>
+        </div-->
+        <div>
+            <div style=" text-align: center; ">
+                <b><mat-label>Dias de Estoque</mat-label></b>
+
+            </div>
+            <div   class="flex flex-row w-full gap-2 ">
+                <div id="chart" style="text-align: center;"
+                    class="relative flex flex-col flex-direction bg-card shadow rounded-2xl overflow-hidden"
+                    (click)="atualizarTabela(1)">
+                    <br>
+                    <mat-label  style="text-align: center;"> Até 30 Dias </mat-label>
+                    <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart"
+                        [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
+                        [fill]="chartOptions.fill">
+
+                    </apx-chart>
+                </div>
+
+
+                <div id="chart2" style="text-align: center;"
+                    class="relative flex flex-col flex-direction bg-card shadow rounded-2xl overflow-hidden"
+                    (click)="atualizarTabela(2)">
+                    <br>
+                    <mat-label style="text-align: center;">De 31 à 60 Dias </mat-label>
+                    <apx-chart [series]="chartOptions2.series" [chart]="chartOptions2.chart"
+                        [plotOptions]="chartOptions2.plotOptions" [labels]="chartOptions2.labels"
+                        [fill]="chartOptions2.fill">
+                    </apx-chart>
+                </div>
+
+
+                <div id="chart3" style="text-align: center;"
+                    class="relative flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden"
+                    (click)="atualizarTabela(3)">
+                    <br>
+                    <mat-label style="text-align: center;">De 61 à 90 Dias </mat-label>
+                    <apx-chart [series]="chartOptions3.series" [chart]="chartOptions3.chart"
+                        [plotOptions]="chartOptions3.plotOptions" [labels]="chartOptions3.labels"
+                        [fill]="chartOptions3.fill"></apx-chart>
+
+
+                </div>
+
+
+                <div id="chart4" style="text-align: center;"
+                    class="relative flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden"
+                    (click)="atualizarTabela(4)">
+                    <br>
+                    <mat-label style="text-align: center;"> Mais de 90 Dias </mat-label>
+                    <apx-chart [series]="chartOptions4.series" [chart]="chartOptions4.chart"
+                        [plotOptions]="chartOptions4.plotOptions" [labels]="chartOptions4.labels"
+                        [fill]="chartOptions4.fill"></apx-chart>
+                </div>
+            </div>
+            <div  style="text-align: left;" class="flex flex-col h-80 bg-card shadow rounded-2xl mt-2">
+
+                <div style=" display: flex">
+                    <b> <mat-label>{{tituloTable}}</mat-label></b>
+                </div>
+
+
+
+                <div>
+                    <table
+                            class="w-full bg-transparent"
+                            mat-table
+                            matSort
+                            [dataSource]="dataSource"
+                            [trackBy]="trackByFn"
+                            #recentTransactionsTable
+                        >
+                            <!-- Dynamic column -->
+                            <ng-container
+                                *ngFor="
+                                    let column of recentTransactionsTableColumns;
+                                    let i = index
+                                "
+                                [matColumnDef]="column"
+                            >
+                                <th
+                                    class="sticky-header"
+                                    mat-header-cell
+                                    *matHeaderCellDef
+                                    mat-sort-header
+                                    style="font-size: 12px"
+                                >
+                                    {{ displayedColumns[i] }}
+
+                                    <mat-icon
+                                    class="pl-2 text-lg"
+                                    style="opacity: 0.4"
+                                    aria-hidden="false"
+                                    aria-label="Filter Icon"
+                                    fontIcon="menu"
+                                    (click)="
+                                        filterDialog(
+                                            $event,
+                                            column,
+                                            displayedColumns[i]
+                                        )
+                                    "
+                                ></mat-icon>
+
+                                    <!--button mat-button (click)="openFilterDialog(displayedColumns[i])">Open Filter Dialog</button-->
+                                </th>
+
+                                <td
+                                    style="font-size: 12px"
+                                    mat-cell
+                                    *matCellDef="let transaction"
+                                >
+                                    <span class="pr-2 whitespace-nowrap">
+                                        <!-- Conditional formatting for BRL currency -->
+                                        {{
+                                            transaction[column]
+                                        }}
+                                    </span>
+                                </td>
+                            </ng-container>
+
+                            <!-- Footer -->
+                            <ng-container matColumnDef="recentOrdersTableFooter">
+                                <td
+                                    class="py-6 px-0 border-0"
+                                    mat-footer-cell
+                                    *matFooterCellDef
+                                    colspan="6"
+                                >
+                                    <!-- <button mat-stroked-button>
+                                        See all transactions
+                                    </button> -->
+                                </td>
+                            </ng-container>
+
+                            <tr
+                                class="order-row h-6"
+                                mat-header-row
+                                *matHeaderRowDef="recentTransactionsTableColumns"
+                            ></tr>
+                            <tr
+                                class="order-row h-6"
+                                mat-row
+                                *matRowDef="
+                                    let row;
+                                    columns: recentTransactionsTableColumns
+                                "
+                            ></tr>
+                            <!--tr
+                                class="h-1 border-0"
+                                mat-footer-row
+                                *matFooterRowDef="['recentOrdersTableFooter']"
+                            ></tr-->
+                        </table>
+                    <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons
+                        aria-label="Select page of periodic elements">
+                    </mat-paginator>
+
+
+                </div>
+            </div>
+
+            <div class="mt-10 " style=" text-align: center; font-size: 14px;">
+                <b><mat-label>SKUs Disponíveis</mat-label></b>
+
+            </div>
+
+            <div class="flex flex-row gap-4">
+
+                <div class="mt-2 bg-card  rounded-2xl ">
+                    <div>
+                        <b> <mat-label> SKUs por Empresa</mat-label></b>
+                    </div>
+
+                    <div  id= "chartSku" class="flex flex-row w-full gap-4 ">
+                        <div>
+                            <apx-chart [series]="chartOptionsSku.series"
+                                [chart]="chartOptionsSku.chart"
+                                [dataLabels]="chartOptionsSku.dataLabels"
+                                [plotOptions]="chartOptionsSku.plotOptions"
+                                [yaxis]="chartOptionsSku.yaxis"
+                                [xaxis]="chartOptionsSku.xaxis"
+                                [stroke]="chartOptionsSku.stroke"
+                                [grid]="chartOptionsSku.grid"
+                                [fill]="chartOptionsSku.fill"></apx-chart>
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+                <!--div class="relative flex flex-direction bg-card rounded-2xl shadow  mt-10 gap-4">
+                    <div class=" bg-card justify-center,">
+                        <b> <mat-label> Total SKUs</mat-label></b>
+                    </div>
+
+                    <div>
+
+                    </div>
+                    <div >
+
+                    </div>
+
+                </div -->
+                <div class="relative flex flex-col bg-card  w-full shadow rounded-2xl  mt-2 gap-2 ">
+
+                    <div class="">
+                        <b> <mat-label> SKUs por Curva</mat-label></b>
+                    </div>
+                    <!--div id="chart">
+                        <apx-chart [series]="chartOptionsCurvSKU.series"
+                                    [chart]="chartOptionsCurvSKU.chart"
+                                     [labels]="chartOptionsCurvSKU.labels"
+                                    [responsive]="chartOptionsCurvSKU.responsive"></apx-chart>
+                    </div-->
+
+                    <apx-chart
+                    class="flex flex-auto items-center justify-center w-full h-full"
+                    [chart]="chartOptionsCurvSKU.chart"
+                    [colors]="chartOptionsCurvSKU.colors"
+                    [labels]="chartOptionsCurvSKU.labels"
+                    [plotOptions]="chartOptionsCurvSKU.plotOptions"
+                    [series]="chartOptionsCurvSKU.series"
+                    [states]="chartOptionsCurvSKU.states"
+                    [tooltip]="chartOptionsCurvSKU.tooltip"
+                ></apx-chart>
+
+                </div>
+
+
+            </div>
+
+            <div class="relative  mt-5 " style=" text-align: center; font-size: 14px;">
+                <b><mat-label>Estoque por Fornecedores</mat-label></b>
+
+
+            </div>
+            <div class="relative flex flex-col bg-card w-full shadow rounded-2xl mt-2 gap-4">
+                <apx-chart [series]="chartOptionsFor.seriesFor" [chart]="chartOptionsFor.chartFor"
+                    [dataLabels]="chartOptionsFor.dataLabelsFor" [plotOptions]="chartOptionsFor.plotOptionsFor"
+                    [xaxis]="chartOptionsFor.xaxisFor"></apx-chart>
+
+            </div>
+        </div>
+    </div>

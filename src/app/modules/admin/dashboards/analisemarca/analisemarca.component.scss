@@ -58,3 +58,7 @@ tr.mat-mdc-row {
     // height: 120px;
     padding-bottom: 1rem;
 }
+
+.custom-dialog-container .mat-dialog-container {
+    overflow-y: hidden;
+  }

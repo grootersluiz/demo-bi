@@ -3,7 +3,7 @@
     subTitulo: string = "";
     isToggleOn: boolean;
  -->
-<div class="flex-col w-full pl-1 pr-1">
+<div class="flex-col w-full overflow-y-hidden pl-1 pr-1">
     <div class="flex flex-grow w-full justify-end">
         <mat-slide-toggle class="pt-1" [(ngModel)]="isToggleOn">
             {{ isToggleOn ? "Ocultar filtros" : "Mostrar filtros" }}
@@ -11,7 +11,7 @@
     </div>
     <div class="w-full">
         <div
-            class="flex flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
+            class="flex flex-col md:flex-row lg:flex-row xl:flex-row 2xl:flex-auto items-center pt-6 pl-6 pr-6 justify-center w-full cabecalho-filtro h-full"
             [class.hidden]="!isToggleOn"
         >
             <div class="flex flex-auto">
@@ -46,23 +46,25 @@
                 style="width: 120px"
                 mat-flat-button
                 [color]="'primary'"
-                (click)="consultavendafilial(filial.filiais.value,dtmes.dataInicio,dtmes.dataFinal)"
+                (click)="
+                    consultavendafilial(
+                        filial.filiais.value,
+                        dtmes.dataInicio,
+                        dtmes.dataFinal
+                    )
+                "
             >
                 <span style="font-size: 12px">Aplicar</span>
             </button>
         </div>
     </div>
     <div
-        class="relative flex flex-wrap max-w-full max-w-screen-xl mx-auto p-1 md:p-1"
+        class="relative w-full h-full flex flex-col sm:flex-col md:flex-col lg:flex-col xl:flex-auto 2xl:flex-col mt-1"
     >
         <!-- COMPONENTES ABAIXO -->
         <!-- Colocar class="grid px-2 py-2 w-12/12 rounded-2xl bg-card shadow mb-1" em todos componentes-->
-        <div class="relative w-full max-w-screen-xl mx-auto">
-            <mat-tab-group
-                class="sm:px-2"
-                mat-stretch-tabs="false"
-                [animationDuration]="'0'"
-            >
+        <div class="flex-grow w-full max-w-screen-xl mx-auto">
+            <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0'">
                 <mat-tab label="Relatórios tipos de Vendas">
                     <ng-template matTabContent>
                         <div
@@ -74,7 +76,10 @@
                                 <div style="font-weight: bold" class="p-2">
                                     Prazo - TOTAL
                                 </div>
+                                <div class="inline-flex justify-between">
                                 <div class="p-2">Total: {{ totalPie1 }}</div>
+                                <div class="p-2">PMV: {{ PMVGeral }}</div>
+                            </div>
                                 <div id="chartPie">
                                     <apx-chart
                                         [series]="chartOptionsPie.series"
@@ -159,12 +164,74 @@
                                 </div>
                             </div>
                         </div>
+
                         <div
-                            class="grid px-2 py-2 w-full rounded-2xl bg-card shadow mb-1 overflow-hidden"
+                            class="grid px-2 py-2 w-full rounded-t-2xl bg-card shadow overflow-hidden center"
                         >
-                            <div style="font-weight: bold" class="p-2">
+                            <div
+                                style="font-weight: bold"
+                                class="p-2 justify-start"
+                            >
                                 Totais por filiais - Parcelas
                             </div>
+                            <mat-button-toggle-group
+                                class="flex flex-wrap md:flex-row lg:flex-row xl:flex-row w-full 2xl:flex-row justify-center"
+                                name="TP"
+                                aria-label="TP"
+                                multiple
+                            >
+                                <div
+                                    id = "AV"
+                                    class="flex justify-center border-2 border-solid rounded-full max-w-24"
+                                >
+                                    <mat-button-toggle (click)="av = !av"
+                                        >A vista</mat-button-toggle
+                                    >
+                                </div>
+                                <div
+                                    id="BOL"
+                                    class="flex justify-center border-2 border-solid rounded-full max-w-24"
+                                >
+                                    <mat-button-toggle (click)="bol = !bol"
+                                        >Boleto</mat-button-toggle
+                                    >
+                                </div>
+                                <div
+                                    id="CC"
+                                    class="flex justify-center border-2 border-solid rounded-full max-w-40"
+                                >
+                                    <mat-button-toggle (click)="cc = !cc"
+                                        >Cartão de Crédito</mat-button-toggle
+                                    >
+                                </div>
+                                <div
+                                    id="CD"
+                                    class="flex justify-center border-2 border-solid rounded-full max-w-40"
+                                >
+                                    <mat-button-toggle (click)="cd = !cd"
+                                        >Cartão de Débito</mat-button-toggle
+                                    >
+                                </div>
+                                <div
+                                    class="flex justify-center border-2 border-solid rounded-full max-w-24"
+                                >
+                                    <button
+                                        class="apply-button"
+                                        style="width: 120px"
+                                        mat-flat-button
+                                        [color]="'primary'"
+                                        (click)="consultaHeat()"
+                                    >
+                                        <span style="font-size: 12px"
+                                            >Aplicar</span
+                                        >
+                                    </button>
+                                </div>
+                            </mat-button-toggle-group>
+                        </div>
+                        <div
+                            class="grid px-2 py-2 w-full rounded-b-2xl bg-card shadow mb-1 overflow-hidden"
+                        >
                             <div id="chartheat">
                                 <apx-chart
                                     [series]="heatMap.series"
@@ -186,27 +253,90 @@
                 <mat-tab label="Comparativo anual">
                     <ng-template matTabContent>
                         <div
-                            class="grid px-2 py-2 w-full center rounded-2xl bg-card shadow mb-1 overflow-hidden"
+                            class="grid px-2 pr-2 py-2 w-full center rounded-2xl bg-card shadow mb-1 overflow-hidden"
                         >
-                            <div style="font-weight: bold">Comparativo</div>
+                            <div style="font-weight: bold">
+                                Últimos 3 anos - PRAZO
+                            </div>
                             <div id="chartMixed">
                                 <apx-chart
                                     [series]="chartOptionsMixed.series"
                                     [chart]="chartOptionsMixed.chart"
                                     [stroke]="chartOptionsMixed.stroke"
                                     [dataLabels]="chartOptionsMixed.dataLabels"
-                                    [plotOptions]="chartOptionsMixed.plotOptions"
+                                    [plotOptions]="
+                                        chartOptionsMixed.plotOptions
+                                    "
                                     [xaxis]="chartOptionsMixed.xaxis"
+                                    [yaxis]="chartOptionsMixed.xaxis"
                                     [colors]="chartOptionsMixed.colors"
                                     [fill]="chartOptionsMixed.fill"
+                                    [tooltip]="chartOptionsMixed.tooltip"
                                     [yaxis]="chartOptionsMixed.yaxis"
                                     [legend]="chartOptionsMixed.legend"
                                 ></apx-chart>
                             </div>
                         </div>
+
+                        <div
+                            class="grid px-2 py-2 w-full center rounded-2xl bg-card shadow mb-1 overflow-hidden"
+                        >
+                            <div style="font-weight: bold">
+                                Últimos 3 anos - TIPO
+                            </div>
+                            <div id="chartMixed2">
+                                <apx-chart
+                                    [series]="chartOptionsMixed2.series"
+                                    [chart]="chartOptionsMixed2.chart"
+                                    [stroke]="chartOptionsMixed2.stroke"
+                                    [dataLabels]="chartOptionsMixed2.dataLabels"
+                                    [plotOptions]="
+                                        chartOptionsMixed2.plotOptions
+                                    "
+                                    [xaxis]="chartOptionsMixed2.xaxis"
+                                    [yaxis]="chartOptionsMixed2.xaxis"
+                                    [colors]="chartOptionsMixed2.colors"
+                                    [fill]="chartOptionsMixed2.fill"
+                                    [tooltip]="chartOptionsMixed2.tooltip"
+                                    [yaxis]="chartOptionsMixed2.yaxis"
+                                    [legend]="chartOptionsMixed2.legend"
+                                ></apx-chart>
+                            </div>
+                        </div>
+                        <!-- <div
+                        class="grid px-2 py-2 w-full h-full center rounded-2xl bg-card shadow mb-1 overflow-hidden"
+                    >
+                    <table mat-table [dataSource]="dataSource">
+                        <ng-container matColumnDef="position">
+                          <th mat-header-cell *matHeaderCellDef> No. </th>
+                          <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="name">
+                          <th mat-header-cell *matHeaderCellDef> Name </th>
+                          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="weight">
+                          <th mat-header-cell *matHeaderCellDef> Weight </th>
+                          <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="symbol">
+                          <th mat-header-cell *matHeaderCellDef> Symbol </th>
+                          <td mat-cell *matCellDef="let element"> {{element.symbol}} </td>
+                        </ng-container>
+
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                      </table>
+
+
+                    </div> -->
                     </ng-template>
                 </mat-tab>
             </mat-tab-group>
         </div>
+        iv>
     </div>
 </div>

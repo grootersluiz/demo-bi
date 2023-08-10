@@ -16,7 +16,7 @@ import * as _moment from 'moment';
   styleUrls: ['./date.component.scss','../css/css.component.scss']
 })
 export class dateComponent {
-    isChecked: boolean;
+    isChecked: boolean = true;
     isToggleOn: boolean;
     dataInicio = this._dateService.INITIAL_INITIAL_DATE;
     dataFinal = this._dateService.INITIAL_FINAL_DATE;
@@ -49,16 +49,6 @@ export class dateComponent {
             this.dataFinal = event.value['_i'];
         }
     }
-
-
-    formatDate(date) {
-        const day = date.date.toString();
-        const month = (date.month + 1).toString();
-        const year = date.year.toString();
-        return `${day}/${month}/${year}`;
-    }
-
-
     setInitialMY(evMY: Moment, datepicker: MatDatepicker<Moment>) {
         this.dataInicio = { year: evMY.year(), month: evMY.month(), date: 1 };
         this.start.setValue(

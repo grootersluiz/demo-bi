@@ -207,6 +207,7 @@ export class VendafilialComponent {
 
       const sysDate = new Date();
       this.param.ultDia = ("00" + (sysDate.getDate()-1)).slice(-2); // dia atual -1
+      this.param.ultDia = this.param.ultDia == '00'? '01': this.param.ultDia ;
       this.param.mes    = ("00" + (sysDate.getMonth()+1)).slice(-2);
       this.param.ano    = sysDate.getFullYear();
       this.param.filial = 99;

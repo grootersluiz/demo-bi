@@ -109,6 +109,22 @@ export const navigationData: Navigation = {
                         },
                     ],
                 },
+                {
+                    id: 'estoque',
+                    title: 'Estoque',
+                    type: 'collapsable',
+                    icon: 'material_outline:inventory_2',
+                    link: '/analiseindicadores/estoque',
+                    children: [
+                        {
+                            id: '251',
+                            title: 'Análise de Estoque',
+                            type: 'basic',
+                            icon: 'material_outline:bar_chart',
+                            link: '/estoque/dashestoque',
+                        },
+                    ],
+                },
             ],
         },
 

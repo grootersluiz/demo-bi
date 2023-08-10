@@ -147,7 +147,8 @@ export class AnalisemarcaComponent {
             ultDia:null,
             filial:null,
             descFilial: null,
-            marca: null
+            marca: null,
+            fornecedor: null
           };
 
   validaParam(){
@@ -158,6 +159,7 @@ export class AnalisemarcaComponent {
     this.param.filial     = this.analisemarcaService.param.filial;
     this.param.descFilial = this.analisemarcaService.param.descFilial;
     this.param.marca      = this.analisemarcaService.param.marca;
+    this.param.fornecedor = this.analisemarcaService.param.fornecedor;
 
     if(!this.param.ano){
 
@@ -176,16 +178,21 @@ export class AnalisemarcaComponent {
   series = {columns: [], rows: [], viewSerie: []};
   getSeries(){
 
-    var dia     = this.param.ultDia;
-    var mes     = this.param.mes;
-    var ano     = this.param.ano;
-    var filiais = this.param.filial;
-    var marcas  = this.param.marca;
+    var dia          = this.param.ultDia;
+    var mes          = this.param.mes;
+    var ano          = this.param.ano;
+    var filiais      = this.param.filial;
+    var marcas       = this.param.marca;
+    var fornecedores = this.param.fornecedor;
 
-    this._httpClient.get<{columns: [], rows: []}>('http://api.portal.jspecas.com.br/v1/views/429/data?ano='+ano+'&mes='+mes
+    var link = 'http://api.portal.jspecas.com.br/v1/views/429/data?'; // Produção
+    // var link = 'http://api.portal.jspecas.com.br/v1/views/516/data?';   // Teste
+
+    this._httpClient.get<{columns: [], rows: []}>(link+'ano='+ano+'&mes='+mes
                                                     +'&dtref1=01'+mes+ano+'&dtref2='+dia+mes+ano
                                                     +'&filiais='+filiais
                                                     +'&marca='+marcas
+                                                    +'&fornecedor='+fornecedores
                                                  )
                             .subscribe(dataresponse => {
                                  this.series.columns  = dataresponse.columns;
@@ -314,7 +321,7 @@ export class AnalisemarcaComponent {
     this.param.filial     = el.srcElement.attributes[1].value ;
     this.param.descFilial = el.srcElement.innerText ;
 
-    this.analisemarcaService.setParam(this.param.ultDia,this.param.mes, this.param.ano, this.param.filial, this.param.descFilial,this.param.marca );
+    this.analisemarcaService.setParam(this.param.ultDia,this.param.mes, this.param.ano, this.param.filial, this.param.descFilial,this.param.marca,this.param.fornecedor);
 
     this.viewSerie = new Array();
 
@@ -597,7 +604,6 @@ export class AnalisemarcaComponent {
       ]
     };
 
-
   }
 
   ngAfterViewInit(): void {
@@ -606,6 +612,7 @@ export class AnalisemarcaComponent {
 
         chart: {
             events: {
+
               click: (event: any, chartContext?: any, config? :any): void => {
 
                 switch (event.srcElement.className) {
@@ -664,10 +671,15 @@ export class AnalisemarcaComponent {
 
   }
 
-  consultavendafilial(_dtref,filial,marca ){
+  consultavendafilial(_dtref,filial,marca,fornecedor ){
+
+    console.log(fornecedor);
 
     if(!marca){
         marca = 'null';
+    }
+    if(!fornecedor){
+        fornecedor = 'null';
     }
 
     if(filial.length == 1){
@@ -705,7 +717,7 @@ export class AnalisemarcaComponent {
         this.analisemarcaService.dt_ref = dataref;
     }
 
-    this.analisemarcaService.setParam(dia,mes,ano,filial,'REDE',marca);
+    this.analisemarcaService.setParam(dia,mes,ano,filial,'REDE',marca,fornecedor);
     this.limpar(); // viewSerie, categorias, series
     this.validaParam();
 

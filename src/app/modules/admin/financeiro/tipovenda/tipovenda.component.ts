@@ -1,5 +1,3 @@
-import { AuthService } from '../../../../core/auth/auth.service';
-import { Navigation } from 'app/core/navigation/navigation.types';
 import { tipovendaService } from './tipovenda.service';
 import {
     AfterViewInit,
@@ -10,15 +8,22 @@ import {
 } from '@angular/core';
 import { ChartComponent } from 'ng-apexcharts';
 import { ApexOptions } from 'apexcharts';
-import _, { isNumber } from 'lodash';
+import _, { isNumber, slice, toNumber } from 'lodash';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
-import { categories } from '../../../../mock-api/apps/ecommerce/inventory/data';
-import { items } from 'app/mock-api/apps/file-manager/data';
-import { FormControl } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDatepickerToggle, MatDatepickerInputEvent,MatDatepicker } from '@angular/material/datepicker';
-import { Moment } from 'moment';
+import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
+
+// export interface PeriodicElement {
+//     name: string[];
+//     position: number;
+//     weight: number;
+//     symbol: string;
+//   }
+
+// const ELEMENT_DATA: PeriodicElement[] = [
+//     {position: 1, name: ['Hydrogen','ta'], weight: 1.0079, symbol: 'H'},
+//   ];
+
 @Component({
     selector: 'tipovenda',
     templateUrl: './tipovenda.component.html',
@@ -30,11 +35,15 @@ import { Moment } from 'moment';
     ],
 })
 export class tipovendaComponent implements AfterViewInit {
+    displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+    // dataSource = ELEMENT_DATA;
+    public trigger: number = 0;
     chartOptionsPie: ApexOptions;
     chartOptionsPie2: ApexOptions;
     chartOptions1: ApexOptions;
     chartOptions2: ApexOptions;
     chartOptionsMixed: ApexOptions;
+    chartOptionsMixed2: ApexOptions;
     heatMap: ApexOptions;
     @ViewChild('chart') chart: ChartComponent;
     @ViewChild('chartPie') chartPie: ChartComponent;
@@ -42,6 +51,7 @@ export class tipovendaComponent implements AfterViewInit {
     @ViewChild('chartPie2') chartPie2: ChartComponent;
     @ViewChild('chartheat') chartheat: ChartComponent;
     @ViewChild('chartMixed') chartMixed: ChartComponent;
+    @ViewChild('chartMixed2') chartMixed2: ChartComponent;
     titulo: string = 'Tipos de Vendas';
     subTitulo: string = 'Mensal e totais';
     isChecked: boolean;
@@ -55,7 +65,10 @@ export class tipovendaComponent implements AfterViewInit {
     series4 = { columns: [], rows: [] };
     seriesHeat = { columns: [], rows: [] };
     seriesMixed: any = [];
+    seriesMixed2: any = [];
     seriesPie: any = [];
+    seriesM1: any = [];
+    seriesM2: any = [];
     labelsPie: any = [];
     seriesPie2: any = [];
     labelsPie2: any = [];
@@ -64,13 +77,15 @@ export class tipovendaComponent implements AfterViewInit {
     categories2 = [];
     auxMes1: string;
     auxMes2: string;
+    anos: any[];
     HeatFiliais: any[] = [];
-    param = {
-        filial: null,
-        descFilial: null,
-        dtIni: null,
-        dtFin: null
-    };
+    tiposBool: boolean[] = new Array(4).fill(true);
+    PMVGeral: any = 0;
+    tipos: any[];
+    av: boolean = false;
+    bol: boolean = false;
+    cc: boolean = false;
+    cd: boolean = false;
 
     meses = [
         ['Jan', '01'],
@@ -85,20 +100,6 @@ export class tipovendaComponent implements AfterViewInit {
         ['Out', '10'],
         ['Nov', '11'],
         ['Dez', '12'],
-    ];
-    DataMixed = [
-        ['Jan'],
-        ['Fev'],
-        ['Mar'],
-        ['Abr'],
-        ['Mai'],
-        ['Jun'],
-        ['Jul'],
-        ['Ago'],
-        ['Set'],
-        ['Out'],
-        ['Nov'],
-        ['Dez'],
     ];
 
     filiais = [
@@ -129,54 +130,55 @@ export class tipovendaComponent implements AfterViewInit {
         ['Cuiabá - EXP - 28', '28'],
     ];
 
-    seriesM1 = [
-        {
-            name: '',
-            data: [],
-        },
-        {
-            name: '',
-            data: [],
-        },
-        {
-            name: '',
-            data: [],
-        },
-        {
-            name: '',
-            data: [],
-        },
-        {
-            name: '',
-            data: [],
-        },
-    ];
-    seriesM2 = [
-        {
-            name: '',
-            data: [],
-        },
-        {
-            name: '',
-            data: [],
-        },
-        {
-            name: '',
-            data: [],
-        },
-        {
-            name: '',
-            data: [],
-        },
-        {
-            name: '',
-            data: [],
-        },
-    ];
-
     ngAfterViewInit() {
         this.limpar();
         this.SetGeral();
+    }
+
+    setFiltroHeat() {
+        this._tipovendaService.getSeriesHeat().subscribe((dataresponse) => {
+            this.seriesHeat.columns = dataresponse.columns;
+            this.seriesHeat.rows = dataresponse.rows;
+            this.setDataHeat();
+        });
+    }
+
+    consultaHeat() {
+        if (this.av) {
+            this.tiposBool[0] = true;
+        } else {
+            this.tiposBool[0] = false;
+        }
+        if (this.bol) {
+            this.tiposBool[1] = true;
+        } else {
+            this.tiposBool[1] = false;
+        }
+        if (this.cc) {
+            this.tiposBool[2] = true;
+        } else {
+            this.tiposBool[2] = false;
+        }
+        if (this.cd) {
+            this.tiposBool[3] = true;
+        } else {
+            this.tiposBool[3] = false;
+        }
+        if (!this.av && !this.bol && !this.cc && !this.cd) {
+            for (let i = 0; i < this.tiposBool.length; i++) {
+                this.tiposBool[i] = true;
+            }
+        }
+
+        var tiposSelect: String[] = new Array();
+        for (let i2 = 0; i2 < this.tiposBool.length; i2++) {
+            if (this.tiposBool[i2]) {
+                tiposSelect.push(this.tipos[i2]);
+            }
+        }
+        this._tipovendaService.setTipos(tiposSelect);
+        this.limparHeat(); // viewSerie, categorias, series
+        this.setFiltroHeat();
     }
 
     SetGeral() {
@@ -205,22 +207,33 @@ export class tipovendaComponent implements AfterViewInit {
             this.seriesHeat.rows = dataresponse.rows;
             this.setDataHeat();
         });
+
         this._tipovendaService.getSeriesMixed().subscribe((dataresponse) => {
             this.setDataMixed(dataresponse.rows);
+        });
+        this._tipovendaService.getSeriesMixed2().subscribe((dataresponse) => {
+            this.setDataMixed2(dataresponse.rows);
         });
     }
 
     setDataHeat() {
+        var PMV = 0;
+        var auxMedia = 0;
         var filial: String;
-        var nextExpected = 1; // Inicia o esperado em 1
-        this.HeatFiliais.push(this.seriesHeat.rows[0][2]);
-        nextExpected = this.seriesHeat.rows[0][1] + 1; // Atualiza o valor esperado para o próximo
-        var aux = 1;
+        var nextExpected = 0;
+        // Atualiza o valor esperado para o próximo
+        var aux = 0;
         while (aux < this.seriesHeat.rows.length) {
-            // Ajusta a condição do loop para evitar acessar um índice não existente
+            var auxArray;
+            if (aux === 0) {
+                auxArray = 0;
+            } else {
+                auxArray = aux - 1;
+            }
+
             if (
-                aux > 0 &&
-                this.seriesHeat.rows[aux][0] != this.seriesHeat.rows[aux - 1][0]
+                this.seriesHeat.rows[aux][0] !=
+                this.seriesHeat.rows[auxArray][0]
             ) {
                 // Preenche o resto com zeros até 12
                 while (nextExpected <= 12) {
@@ -238,18 +251,25 @@ export class tipovendaComponent implements AfterViewInit {
                     }
                 }
 
-                this.seriesData.push({ name: filial, data: this.HeatFiliais });
-                this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][3]);
-                // this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][4]);
                 this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][5]);
+                this.HeatFiliais.push(String(this.seriesHeat.rows[aux - 1][6]));
+                PMV += this.seriesHeat.rows[aux - 1][6];
+                auxMedia++;
+                this.seriesData.push({ name: filial, data: this.HeatFiliais });
+                // this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][3]);
+                // this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][4]);
                 this.HeatFiliais = [];
 
                 // Reinicia o valor esperado para a próxima filial e adiciona a primeira parcela da nova filial
 
-                this.HeatFiliais.push(this.seriesHeat.rows[aux][2]);
                 nextExpected = this.seriesHeat.rows[aux][1] + 1;
+                if (nextExpected != 1) {
+                    this.HeatFiliais.push(0);
+                }
+                this.HeatFiliais.push(this.seriesHeat.rows[aux][2]);
             } else if (
-                this.seriesHeat.rows[aux][0] == this.seriesHeat.rows[aux - 1][0]
+                this.seriesHeat.rows[aux][0] ==
+                this.seriesHeat.rows[auxArray][0]
             ) {
                 // Verifica se a parcela atual é a esperada
                 while (
@@ -265,9 +285,12 @@ export class tipovendaComponent implements AfterViewInit {
             }
             aux++;
         }
-        this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][3]);
+        // this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][3]);
         // this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][4]);
         this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][5]);
+        this.HeatFiliais.push(String(this.seriesHeat.rows[aux - 1][6]));
+        PMV += this.seriesHeat.rows[aux - 1][6];
+        auxMedia++;
         // Preenche o resto com zeros até 12 para a última filial
         while (nextExpected <= 12) {
             this.HeatFiliais.push(0);
@@ -283,18 +306,19 @@ export class tipovendaComponent implements AfterViewInit {
 
         this.seriesData.push({ name: filial, data: this.HeatFiliais });
 
-        // Primeiro, inicialize um array para armazenar os totais de cada parcela.
         // Inicie cada total como 0.
         let totals = new Array(16).fill(0);
 
-        // Em seguida, faça um loop através do conjunto de dados e some os valores de cada parcela.
         for (let series of this.seriesData) {
-            for (let index = 0; index < series.data.length; index++) {
+            for (let index = 0; index < series.data.length - 1; index++) {
                 totals[index] += series.data[index];
             }
         }
+        totals[15] = PMV / auxMedia;
+        if (this.PMVGeral === 0) {
+            this.PMVGeral = String(this.formatadorPtsPMV(totals[15]));
+        }
 
-        // Depois disso, crie uma nova série com os totais e adicione-a ao conjunto de dados.
         let totalSeries = {
             name: 'TOTAL',
             data: totals,
@@ -344,7 +368,6 @@ export class tipovendaComponent implements AfterViewInit {
                 total += value;
             }
             this.seriesM1[this.seriesM1.length - 1].data.push(total);
-
             this.auxMes1 = this.series2.rows[index - 1][0];
             for (let aux = 0; aux < this.meses.length; aux++) {
                 if (this.meses[aux][1] === this.auxMes1.substring(0, 2)) {
@@ -356,6 +379,9 @@ export class tipovendaComponent implements AfterViewInit {
 
         this.chartOptions1.series = this.seriesM1;
         this.chartOptions1.xaxis.categories = this.categories;
+        if (this.categories.length === 1) {
+            this.chartOptions1.chart.type = 'bar';
+        }
         var reflow = new ApexCharts(this.chart, this.chartOptions1);
     }
 
@@ -381,8 +407,8 @@ export class tipovendaComponent implements AfterViewInit {
             indexdata++
         ) {
             let total = 0;
-            for (let index1 = 0; index1 < 5; index1++, index++) {
-                if (index < 5)
+            for (let index1 = 0; index1 < 4; index1++, index++) {
+                if (index < 4)
                     this.seriesM2[index1].name = this.series4.rows[index][1];
                 let value = this.series4.rows[index][2];
                 this.seriesM2[index1].data.push(value);
@@ -399,42 +425,51 @@ export class tipovendaComponent implements AfterViewInit {
         }
         this.chartOptions2.series = this.seriesM2;
         this.chartOptions2.xaxis.categories = this.categories2;
+        if (this.categories2.length === 1) {
+            this.chartOptions2.chart.type = 'bar';
+        }
 
         var reflow = new ApexCharts(this.chart2, this.chartOptions2);
     }
 
     setDataMixed(dataRow) {
-        let rawData = {};
-        let types = new Set<string>(); // Vamos manter o controle de quais anos temos
+        let rawData: { [type: string]: { [year: number]: number } } = {};
+        let types = new Set<string>();
 
         for (let row of dataRow) {
             let [date, type, value] = row;
             let [month, year] = date.split('/').map((part) => parseInt(part));
-            let monthIndex = month - 1; // Converte o mês para um índice (0-11)
 
-            let key = `${type}-${year}`; // Usamos uma chave composta para identificar cada série
+            if (!rawData[type]) rawData[type] = {};
+            if (!rawData[type][year]) rawData[type][year] = 0;
 
-            if (!rawData[key]) rawData[key] = Array(12).fill(0); // Inicializa os dados para este tipo/ano, se necessário
-
-            // Adiciona o valor ao total para este mês/tipo/ano
-            rawData[key][monthIndex] += parseFloat(value);
+            // Incrementa o valor para o tipo/ano específico
+            rawData[type][year] += parseFloat(value);
 
             types.add(type);
         }
 
         this.seriesMixed = [];
+        var sysdate = new Date();
+        var years = Array.from(
+            { length: 3 },
+            (_, i) => sysdate.getFullYear() - i
+        ).reverse();
 
-        // Converte os dados brutos para o formato de série do ApexCharts
         for (let type of types) {
-            for (let year of [2021, 2022, 2023]) { // Presumindo que você tem dados para esses anos
-                let key = `${type}-${year}`;
-                this.seriesMixed.push({
-                    name: year.toString() + ' - ' + type,
-                    group: year.toString(),
-                    data: rawData[key] || Array(12).fill(0),
-                });
+            let dataForType = [];
+            for (let year of years) {
+                dataForType.push(rawData[type][year] || 0);
             }
+            this.seriesMixed.push({
+                name: type,
+                data: dataForType,
+            });
         }
+
+        this.chartOptionsMixed.xaxis.categories = years.map((y) =>
+            y.toString()
+        );
         this.chartOptionsMixed.series = this.seriesMixed;
         var chartMixed = new ApexCharts(
             this.chartMixed,
@@ -442,7 +477,70 @@ export class tipovendaComponent implements AfterViewInit {
         );
     }
 
+    setDataMixed2(dataRow) {
+        let rawData: { [type: string]: { [year: number]: number } } = {};
+        let types = new Set<string>();
+
+        for (let row of dataRow) {
+            let [date, type, value] = row;
+            let [month, year] = date.split('/').map((part) => parseInt(part));
+
+            if (!rawData[type]) rawData[type] = {};
+            if (!rawData[type][year]) rawData[type][year] = 0;
+
+            // Incrementa o valor para o tipo/ano específico
+            rawData[type][year] += parseFloat(value);
+
+            types.add(type);
+        }
+
+        this.seriesMixed2 = [];
+        var sysdate = new Date();
+        var years = Array.from(
+            { length: 3 },
+            (_, i) => sysdate.getFullYear() - i
+        ).reverse();
+
+        for (let type of types) {
+            let dataForType = [];
+            for (let year of years) {
+                dataForType.push(rawData[type][year] || 0);
+            }
+            this.seriesMixed2.push({
+                name: type,
+                data: dataForType,
+            });
+        }
+
+        this.chartOptionsMixed2.xaxis.categories = years.map((y) =>
+            y.toString()
+        );
+        this.chartOptionsMixed2.series = this.seriesMixed2;
+        var chartMixed = new ApexCharts(
+            this.chartMixed2,
+            this.chartOptionsMixed2
+        );
+    }
+
+    limparHeat() {
+        this.HeatFiliais = [];
+        this.seriesHeat = { columns: [], rows: [] };
+        this.seriesData = [];
+    }
+
     limpar() {
+        if (
+            this.tiposBool[0] &&
+            this.tiposBool[1] &&
+            this.tiposBool[2] &&
+            this.tiposBool[3]
+        ) {
+            this.PMVGeral = 0;
+        }
+
+
+        this.tipos = ['1,10', '2,3', '7', '8'];
+        this.anos = [];
         this.HeatFiliais = [];
         this.series = { columns: [], rows: [] };
         this.totalPie1 = 0;
@@ -453,6 +551,7 @@ export class tipovendaComponent implements AfterViewInit {
         this.seriesHeat = { columns: [], rows: [] };
         this.seriesData = [];
         this.seriesMixed = [];
+        this.seriesMixed2 = [];
         this.seriesM1 = [
             {
                 name: '',
@@ -501,49 +600,47 @@ export class tipovendaComponent implements AfterViewInit {
         this.categories = new Array();
         this.categories2 = new Array();
     }
-    validaParam() {
-        this.param.filial = this._tipovendaService.param.filial;
-        this.param.descFilial = this._tipovendaService.param.descFilial;
-    }
 
-    consultavendafilial(filial,dtini,dtfin) {
-        console.log(dtini,dtfin)
+    consultavendafilial(filial, dtini, dtfin) {
+        this.trigger++;
         if (filial.length == 1) {
             if (filial[0] == 'null') {
                 filial = 99;
             }
         }
-        this._tipovendaService.setParam(dtini,dtfin,filial, 'REDE');
+        this._tipovendaService.setParam(dtini, dtfin, filial, 'REDE');
         this.limpar(); // viewSerie, categorias, series
-        this.validaParam();
         this.SetGeral();
+        this.trigger++;
     }
 
-    constructor(
-        private _tipovendaService: tipovendaService,
-        private _httpClient: HttpClient,
-        private cdr: ChangeDetectorRef
-    ) {
+    constructor(private _tipovendaService: tipovendaService) {
         this.chartOptionsMixed = {
             series: this.seriesMixed,
             chart: {
                 type: 'bar',
-                height: 3500,
+                height: 440,
                 width: '100%',
                 stacked: false,
             },
             dataLabels: {
+                offsetY: -20,
                 enabled: true,
                 formatter: (val) => {
                     return this.formatadorUnidade(val);
                 },
+                style: {
+                    colors: ['#000000'],
+                },
             },
             plotOptions: {
                 bar: {
-                    horizontal: true, // ou true, dependendo da orientação das barras // ajustar conforme necessário
+                    dataLabels: {
+                        position: 'top',
+                    },
+                    horizontal: false, // ou true, dependendo da orientação das barras // ajustar conforme necessário
                 },
             },
-            colors:['#FF8C00','#FF8C00','#FF8C00', '#585858','#585858','#585858', '#FF4500','#FF4500','#FF4500','#FF4560','#FF4560','#FF4560','#FF1111','#FF1111','#FF1111'],
             stroke: {
                 curve: 'smooth',
                 width: 2,
@@ -554,7 +651,74 @@ export class tipovendaComponent implements AfterViewInit {
                 offsetX: 110,
             },
             xaxis: {
-                categories: this.DataMixed, // Este array deve conter os nomes dos meses
+                // categories: ['2021','2022','2023'], // Este array deve conter os nomes dos meses
+                type: 'category', // Força o eixo X a ser tratado como categorias
+            },
+            yaxis: {
+                show: true,
+                showAlways: true,
+                labels: {
+                    show: true,
+                    formatter: (val) => {
+                        return this.formatadorPts(val);
+                    },
+                },
+            },
+            tooltip: {
+                followCursor: true,
+                theme: 'dark',
+                x: {
+                    format: 'dd MMM, yyyy',
+                },
+                y: {
+                    formatter: (val) => {
+                        return this.formatadorPts(val);
+                    },
+                },
+            },
+            legend: {
+                horizontalAlign: 'left',
+                position: 'top',
+                offsetX: 40,
+            },
+        };
+        this.chartOptionsMixed2 = {
+            series: this.seriesMixed,
+            chart: {
+                type: 'bar',
+                height: 440,
+                width: '100%',
+                stacked: false,
+            },
+            dataLabels: {
+                offsetY: -20,
+                enabled: true,
+                formatter: (val) => {
+                    return this.formatadorUnidade(val);
+                },
+                style: {
+                    colors: ['#000000'],
+                },
+            },
+            plotOptions: {
+                bar: {
+                    dataLabels: {
+                        position: 'top',
+                    },
+                    horizontal: false, // ou true, dependendo da orientação das barras // ajustar conforme necessário
+                },
+            },
+            stroke: {
+                curve: 'smooth',
+                width: 2,
+            },
+            title: {
+                text: 'Anos anteriores',
+                align: 'left',
+                offsetX: 110,
+            },
+            xaxis: {
+                // categories: ['2021','2022','2023'], // Este array deve conter os nomes dos meses
                 type: 'category', // Força o eixo X a ser tratado como categorias
             },
             yaxis: {
@@ -858,153 +1022,52 @@ export class tipovendaComponent implements AfterViewInit {
                 },
                 y: {
                     formatter: (val) => {
-                        return this.formatadorPts(val);
+                        if (val < 0 || val > 150) {
+                            return this.formatadorPts(val);
+                        } else if (val != 0) {
+                            return this.formatadorPtsPMV(val);
+                        } else {
+                            return val;
+                        }
                     },
-                },
-                marker: {
-                    show: true,
                 },
             },
             stroke: {
                 width: 0.1,
             },
+            colors: ['#ed7b00', '#6e7a8a'],
             plotOptions: {
                 heatmap: {
                     radius: 0,
                     enableShades: false,
-                    colorScale: {
-                        ranges: [
-                            {
-                                from: -999999999,
-                                to: -1,
-                                color: '#ff0000',
-                            },
-                            {
-                                from: 0,
-                                to: 0,
-                                color: '#c3c3c3',
-                            },
-                            {
-                                from: 1,
-                                to: 50000,
-                                color: '#ff0000',
-                            },
-                            {
-                                from: 50001,
-                                to: 100000,
-                                color: '#ff1a00',
-                            },
-                            {
-                                from: 100001,
-                                to: 150000,
-                                color: '#ff3300',
-                            },
-                            {
-                                from: 150001,
-                                to: 200000,
-                                color: '#ff4d00',
-                            },
-                            {
-                                from: 200001,
-                                to: 250000,
-                                color: '#ff6600',
-                            },
-                            {
-                                from: 250001,
-                                to: 300000,
-                                color: '#ff8000',
-                            },
-                            {
-                                from: 300001,
-                                to: 350000,
-                                color: '#ff9900',
-                            },
-                            {
-                                from: 350001,
-                                to: 400000,
-                                color: '#ffb200',
-                            },
-                            {
-                                from: 400001,
-                                to: 450000,
-                                color: '#ffcc00',
-                            },
-                            {
-                                from: 450001,
-                                to: 500000,
-                                color: '#ffe500',
-                            },
-                            {
-                                from: 500001,
-                                to: 550000,
-                                color: '#ffff00',
-                            },
-                            {
-                                from: 550001,
-                                to: 600000,
-                                color: '#e5ff00',
-                            },
-                            {
-                                from: 600001,
-                                to: 650000,
-                                color: '#ccff00',
-                            },
-                            {
-                                from: 650001,
-                                to: 700000,
-                                color: '#b2ff00',
-                            },
-                            {
-                                from: 700001,
-                                to: 750000,
-                                color: '#99ff00',
-                            },
-                            {
-                                from: 750001,
-                                to: 800000,
-                                color: '#80ff00',
-                            },
-                            {
-                                from: 800001,
-                                to: 850000,
-                                color: '#66ff00',
-                            },
-                            {
-                                from: 850001,
-                                to: 900000,
-                                color: '#4dff00',
-                            },
-                            {
-                                from: 900001,
-                                to: 950000,
-                                color: '#33ff00',
-                            },
-                            {
-                                from: 950001,
-                                to: 1000000,
-                                color: '#1aff00',
-                            },
-                            {
-                                from: 1000001,
-                                to: 99999999999,
-                                color: '#00ff00',
-                            },
-                        ],
-                    },
                 },
             },
             dataLabels: {
                 enabled: true,
                 style: {
-                    colors: ['#fff'],
+                    fontSize: '10px',
+                    colors: ['#000000', '#ffffff'],
                 },
                 formatter: (val) => {
-                    return this.formatadorUnidade(val);
+                    if (Number(val) < 0 || Number(val) > 150) {
+                        return this.formatadorUnidade(val);
+                    } else if (val != 0) {
+                        return this.formatadorPtsPMV(val);
+                    } else {
+                        return val;
+                    }
                 },
             },
             xaxis: {
                 type: 'category',
                 position: 'top',
+                labels: {
+                    rotate: 0,
+                    style: {
+                        fontSize: '10px',
+                        cssClass: 'overflow',
+                    },
+                },
                 categories: [
                     'A Vista',
                     '1x',
@@ -1019,9 +1082,9 @@ export class tipovendaComponent implements AfterViewInit {
                     '10x',
                     '11x',
                     '12x',
-                    'TOTAL FIN',
-                    'Impostos',
-                    'TOTAL ROL',
+                    'TOT. FIN',
+                    'TOT. ROL',
+                    'PMV',
                 ],
             },
             yaxis: {
@@ -1100,53 +1163,53 @@ export class tipovendaComponent implements AfterViewInit {
                     }
                 }
             }
-        }else{
+        } else {
             if (String(numero).length < 4) {
                 valor = numero;
             } else {
-                if (String(numero).length-1 < 5) {
+                if (String(numero).length - 1 < 5) {
                     valor =
                         numero.substring(0, 2) +
                         ',' +
                         numero.substring(2, 3) +
                         'K';
                 } else {
-                    if (String(numero).length-1 < 6) {
+                    if (String(numero).length - 1 < 6) {
                         valor =
                             numero.substring(0, 3) +
                             ',' +
                             numero.substring(3, 4) +
                             'K';
                     } else {
-                        if (String(numero).length-1 < 7) {
+                        if (String(numero).length - 1 < 7) {
                             valor =
                                 numero.substring(0, 4) +
                                 ',' +
                                 numero.substring(5, 5) +
                                 'K';
                         } else {
-                            if (String(numero).length-1 < 8) {
+                            if (String(numero).length - 1 < 8) {
                                 valor =
                                     numero.substring(0, 2) +
                                     ',' +
                                     numero.substring(2, 3) +
                                     'M';
                             } else {
-                                if (String(numero).length-1 < 9) {
+                                if (String(numero).length - 1 < 9) {
                                     valor =
                                         numero.substring(0, 3) +
                                         ',' +
                                         numero.substring(3, 4) +
                                         'M';
                                 } else {
-                                    if (String(numero).length-1 < 10) {
+                                    if (String(numero).length - 1 < 10) {
                                         valor =
                                             numero.substring(0, 4) +
                                             ',' +
                                             numero.substring(4, 5) +
                                             'M';
                                     } else {
-                                        if (String(numero).length-1 < 17) {
+                                        if (String(numero).length - 1 < 17) {
                                             valor =
                                                 numero.substring(0, 2) +
                                                 ',' +
@@ -1160,7 +1223,6 @@ export class tipovendaComponent implements AfterViewInit {
                     }
                 }
             }
-
         }
         return valor;
     }
@@ -1169,10 +1231,26 @@ export class tipovendaComponent implements AfterViewInit {
             if (!val) {
                 val = 0;
             }
-            return val.toLocaleString('pt-BR', {
-                style: 'currency',
-                currency: 'BRL',
-            });
+            return String(
+                val.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL',
+                })
+            ).slice(0, -3);
+        }
+        return val;
+    }
+    formatadorPtsPMV(val) {
+        if (isNumber(val)) {
+            if (!val) {
+                val = 0;
+            }
+            return String(
+                val.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL',
+                })
+            ).slice(3);
         }
         return val;
     }
