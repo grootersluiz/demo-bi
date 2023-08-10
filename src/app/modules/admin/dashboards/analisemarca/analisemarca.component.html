@@ -95,13 +95,7 @@
                 style="width: 120px"
                 mat-flat-button
                 [color]="'primary'"
-                (click)="
-                    consultavendafilial(
-                        dataref.value,
-                        filial.filiais.value,
-                        marca.marcas.value
-                    )
-                "
+                (click)="consultavendafilial( dataref.value,filial.filiais.value,marca.marcas.value,forn.fornecedores.value)"
             >
                 <span style="font-size: 12px">Aplicar</span>
             </button>
