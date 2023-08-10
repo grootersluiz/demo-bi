@@ -13,6 +13,7 @@ export class DreDashService {
 
     readonly REPORT_FILTRO_FILIAIS = '101';
     readonly REPORT_FILTRO_VENDEDORES = '121';
+    readonly REPORT_COMPANUAL = '359';
 
     readonly INITIAL_INITIAL_DATE = this.getCurrentDate();
     readonly INITIAL_FINAL_DATE = this.getCurrentDate();
@@ -47,6 +48,8 @@ export class DreDashService {
     getData(dtIni, dtFin, companiesIds, sellersIds): Observable<any> {
         let url = `http://10.2.1.108/v1/dashboards/data?reportId=${
             this.REPORT_FILTRO_FILIAIS
+        }&reportId=${
+            this.REPORT_COMPANUAL
         }&dtini=
         ${this.formatDate(dtIni)}
         &codvend=${sellersIds.join(',')}&codemp=${companiesIds.join(',')}&dtfin=
@@ -73,8 +76,12 @@ export class DreDashService {
                     };
                 });
 
+
+                const chartCompAnual = response[this.REPORT_COMPANUAL];
+
                 const dashData = {
                     filiaisLista: companyFilter,
+                    ccCompAnual: chartCompAnual,
                 };
                 this._data.next(dashData);
             })

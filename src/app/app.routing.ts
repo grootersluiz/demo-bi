@@ -230,7 +230,7 @@ export const appRoutes: Route[] = [
                             ).then((m) => m.VendasDashModule),
                     },
                     {
-                        path: 'contabil/259',
+                        path: 'controladoria/259',
                         loadChildren: () =>
                             import(
                                 'app/modules/admin/dashboards/contabil/dre/dre.module'

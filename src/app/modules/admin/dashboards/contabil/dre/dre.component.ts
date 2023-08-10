@@ -33,12 +33,16 @@ export class DreDashComponent implements OnInit {
     // Grafico Comparativo (Esquerda)
 
     chartAcumulado: ApexOptions;
+    companiesLabels: string[] = [];
+    comparativoSeries: { name: string; data: number[] }[] = [
+        { name: '', data: [] },
+        { name: '', data: [] },
+        { name: '', data: [] },
+    ];
     selectedIntel: string = 'ROL';
     intelOptions: string[] = ['ROL', 'LB', 'MB', 'EBITDA'];
     selectedSortOption: string = 'Por filial';
-    currentYear: any = '2023';
-    lastYear: any = '2022';
-    secondToLastYear: any = '2021';
+
     sortOptions: string[] = [
         `Ascendente`,
         `Descendente`,
@@ -48,29 +52,6 @@ export class DreDashComponent implements OnInit {
         // `Descendente (${this.secondToLastYear})`,
         'Nome',
     ];
-    currentYearData: any = [
-        580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540, 580, 690, 1100,
-        1200, 1380, 400, 430, 448, 470, 540,
-    ];
-    lastYearData: any = [
-        1380, 400, 430, 448, 470, 540, 580, 690, 1100, 1200, 580, 690, 1100,
-        1200, 1380, 400, 430, 448, 470, 540,
-    ];
-    secondToLastYearData: any = [
-        580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540, 1380, 400, 430,
-        448, 470, 540, 580, 690, 1100, 1200,
-    ];
-
-    dataObjectsArray = this.currentYearData.map((value, index) => {
-        const label = `Filial ${index + 1}`;
-        return {
-            label,
-            currentYear: value,
-            lastYear: this.lastYearData[index],
-            secondToLastYear: this.secondToLastYearData[index],
-        };
-    });
-    sortedDataObjectsArray = [...this.dataObjectsArray];
     data: any;
 
     // Filtros principais do dashboard
@@ -129,6 +110,7 @@ export class DreDashComponent implements OnInit {
             .subscribe((data) => {
                 // Store the data
                 this.data = data;
+
                 // Prepare the chart data
                 this._prepareChartData();
                 this.filiaisObjects = this.data.filiaisLista;
@@ -152,6 +134,31 @@ export class DreDashComponent implements OnInit {
                 this.filteredVendedoresStringList = this.vendedoresStringList;
                 this._cdr.markForCheck();
             });
+
+        // Tratamento Chart "Comparativo Anual"
+        Object.keys(this.data.ccCompAnual).forEach((key) => {
+            if (key != 'report') {
+                this.companiesLabels.push(key);
+
+                if (this.comparativoSeries[0].name == '') {
+                    this.data.ccCompAnual[key].labels.forEach((year, index) => {
+                        this.comparativoSeries[index].name = year;
+                    });
+                }
+
+                this.data.ccCompAnual[key].series[0].data.forEach(
+                    (value, index) => {
+                        this.comparativoSeries[index].data.push(value);
+                    }
+                );
+            }
+        });
+
+        console.log(this.data.ccCompAnual);
+
+
+        // Prepare the chart data
+        this._prepareChartData();
 
         // Attach SVG fill fixer to all ApexCharts
         window['Apex'] = {
@@ -181,42 +188,55 @@ export class DreDashComponent implements OnInit {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
-    onSort(sortOption: string) {
-        this.selectedSortOption = sortOption;
+    onSort(sortOption: string) {   
+        let temp = [];
         switch (sortOption) {
-            case 'Nome':
-                this.sortedDataObjectsArray = [...this.dataObjectsArray];
-                break;
             case `Ascendente`:
-                this.sortedDataObjectsArray.sort(
-                    (a, b) => a.currentYear - b.currentYear
-                );
+                temp = this.comparativoSeries[0].data.map((_, index) => {
+                    return {
+                        company: this.companiesLabels[index],
+                        currentYear: this.comparativoSeries[0].data[index],
+                        lastYear: this.comparativoSeries[1].data[index],
+                        secondToLastYear: this.comparativoSeries[2].data[index]
+                    }
+                });
+                temp.sort((a, b) => a.currentYear - b.currentYear);
+                this.comparativoSeries[0].data = temp.map((item) => item.currentYear);
+                this.comparativoSeries[1].data = temp.map((item) => item.lastYear);
+                this.comparativoSeries[2].data = temp.map((item) => item.secondToLastYear);
+                this.companiesLabels = temp.map((item) => item.company);
                 break;
+
             case `Descendente`:
-                this.sortedDataObjectsArray.sort(
-                    (a, b) => b.currentYear - a.currentYear
-                );
+                temp = this.comparativoSeries[0].data.map((_, index) => {
+                    return {
+                        company: this.companiesLabels[index],
+                        currentYear: this.comparativoSeries[0].data[index],
+                        lastYear: this.comparativoSeries[1].data[index],
+                        secondToLastYear: this.comparativoSeries[2].data[index]
+                    }
+                });
+                temp.sort((a, b) => b.currentYear - a.currentYear);
+                this.comparativoSeries[0].data = temp.map((item) => item.currentYear);
+                this.comparativoSeries[1].data = temp.map((item) => item.lastYear);
+                this.comparativoSeries[2].data = temp.map((item) => item.secondToLastYear);
+                this.companiesLabels = temp.map((item) => item.company);
                 break;
-            // case `Ascendente (${this.lastYear})`:
-            //     this.sortedDataObjectsArray.sort(
-            //         (a, b) => a.lastYear - b.lastYear
-            //     );
-            //     break;
-            // case `Descendente (${this.lastYear})`:
-            //     this.sortedDataObjectsArray.sort(
-            //         (a, b) => b.lastYear - a.lastYear
-            //     );
-            //     break;
-            // case `Ascendente (${this.secondToLastYear})`:
-            //     this.sortedDataObjectsArray.sort(
-            //         (a, b) => a.secondToLastYear - b.secondToLastYear
-            //     );
-            //     break;
-            // case `Descendente (${this.secondToLastYear})`:
-            //     this.sortedDataObjectsArray.sort(
-            //         (a, b) => b.secondToLastYear - a.secondToLastYear
-            //     );
-            //     break;
+            case 'Nome':
+                temp = this.comparativoSeries[0].data.map((_, index) => {
+                    return {
+                        company: this.companiesLabels[index],
+                        currentYear: this.comparativoSeries[0].data[index],
+                        lastYear: this.comparativoSeries[1].data[index],
+                        secondToLastYear: this.comparativoSeries[2].data[index]
+                    }
+                });
+                temp.sort((a, b) => a.company.toLowerCase().localeCompare(b.company.toLowerCase()));
+                this.comparativoSeries[0].data = temp.map((item) => item.currentYear);
+                this.comparativoSeries[1].data = temp.map((item) => item.lastYear);
+                this.comparativoSeries[2].data = temp.map((item) => item.secondToLastYear);
+                this.companiesLabels = temp.map((item) => item.company);
+                break;
         }
 
         this._prepareChartAcumulado();
@@ -224,6 +244,35 @@ export class DreDashComponent implements OnInit {
 
     onMenuIntelSelected(intel: string) {
         this.selectedIntel = intel;
+        const index = this.intelOptions.indexOf(intel);
+        this.companiesLabels = [];
+        this.comparativoSeries = [
+            { name: '', data: [] },
+            { name: '', data: [] },
+            { name: '', data: [] },
+        ];
+   
+        Object.keys(this.data.ccCompAnual).forEach((key) => {
+            if (key != 'report') {
+                this.companiesLabels.push(key);
+
+                if (this.comparativoSeries[0].name == '') {
+                    this.data.ccCompAnual[key].labels.forEach((year, index) => {
+                        this.comparativoSeries[index].name = year;
+                    });
+                }
+
+                this.data.ccCompAnual[key].series[index].data.forEach(
+                    (value, index) => {
+                        this.comparativoSeries[index].data.push(value);
+                    }
+                );
+            }
+        });
+
+
+        // Prepare the chart data
+        this._prepareChartAcumulado();
     }
 
     setInitialMY(evMY: Moment, datepicker: MatDatepicker<Moment>) {
@@ -461,29 +510,10 @@ export class DreDashComponent implements OnInit {
 
     private _prepareChartAcumulado(): void {
         this.chartAcumulado = {
-            series: [
-                {
-                    name: this.currentYear,
-                    data: this.sortedDataObjectsArray.map(
-                        (item) => item.currentYear
-                    ),
-                },
-                {
-                    name: this.lastYear,
-                    data: this.sortedDataObjectsArray.map(
-                        (item) => item.lastYear
-                    ),
-                },
-                {
-                    name: this.secondToLastYear,
-                    data: this.sortedDataObjectsArray.map(
-                        (item) => item.secondToLastYear
-                    ),
-                },
-            ],
+            series: this.comparativoSeries,
             chart: {
                 type: 'bar',
-                height: 80 * this.sortedDataObjectsArray.length, //800
+                height: 80 * this.companiesLabels.length, //800
                 toolbar: {
                     show: false,
                 },
@@ -502,9 +532,7 @@ export class DreDashComponent implements OnInit {
                 enabled: false,
             },
             xaxis: {
-                categories: this.sortedDataObjectsArray.map(
-                    (item) => item.label
-                ),
+                categories: this.companiesLabels,
             },
             yaxis: {
                 title: {
@@ -528,6 +556,10 @@ export class DreDashComponent implements OnInit {
                     data: [76, 85, 101],
                 },
                 {
+                    name: 'Margem Bruta',
+                    data: [66, 80, 90],
+                },
+                {
                     name: 'EBITDA',
                     data: [63, 60, 66],
                 },
@@ -539,7 +571,7 @@ export class DreDashComponent implements OnInit {
                     show: false,
                 },
             },
-            colors: ['#ed7b00', '#6e7a8a', '#edca00'],
+            colors: ['#ed7b00', '#6e7a8a', '#edca00', '#016901'],
             plotOptions: {
                 bar: {
                     horizontal: false,
