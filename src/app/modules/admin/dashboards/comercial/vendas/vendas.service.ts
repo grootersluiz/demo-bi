@@ -11,9 +11,9 @@ export class VendasDashService {
 
     //reports
 
-    readonly REPORT_TKM = '261';
-    readonly REPORT_ROL = '3';
-    readonly CC_META_YEAR = '2023';
+    readonly REPORT_CC = '357';
+    readonly REPORT_CCvsROL = '358';
+    readonly REPORT_CCPROJECAO = '360';
     readonly REPORT_FILTRO_FILIAIS = '101';
     readonly REPORT_FILTRO_VENDEDORES = '121';
 
@@ -49,66 +49,16 @@ export class VendasDashService {
      */
     getData(dtIni, dtFin, companiesIds, sellersIds): Observable<any> {
         let url = `http://10.2.1.108/v1/dashboards/data?reportId=${
-            this.REPORT_TKM
-        }&reportId=${this.REPORT_ROL}&reportId=${
-            this.REPORT_FILTRO_FILIAIS
-        }&dtini=
+            this.REPORT_CC
+        }&reportId=${this.REPORT_CCvsROL}&reportId=${
+            this.REPORT_CCPROJECAO
+        }&reportId=${this.REPORT_FILTRO_FILIAIS}&dtini=
         ${this.formatDate(dtIni)}
         &codvend=${sellersIds.join(',')}&codemp=${companiesIds.join(',')}&dtfin=
         ${this.formatDate(dtFin)}`;
 
         return this._httpClient.get(url).pipe(
             tap((response: any) => {
-                //----------------------------------------------------------------
-
-                // Tratamento do CC Meta
-                let ccMeta = {
-                    labels: [],
-                    series: {
-                        'this-year': [],
-                    },
-                };
-                try {
-                    ccMeta.labels = response[this.REPORT_ROL][this.CC_META_YEAR]
-                        ? response[this.REPORT_ROL][this.CC_META_YEAR].labels
-                        : [];
-                    ccMeta.series = {
-                        'this-year': response[this.REPORT_ROL][
-                            this.CC_META_YEAR
-                        ]
-                            ? response[this.REPORT_ROL][this.CC_META_YEAR]
-                                  .series
-                            : [],
-                    };
-                } catch {
-                    ccMeta = {
-                        labels: [],
-                        series: {
-                            'this-year': [],
-                        },
-                    };
-                }
-                //--------------------------------------------------
-
-                //----------------------------------------------
-
-                //Tratamento Gráfico "TKM"
-
-                response[this.REPORT_TKM].series.forEach((element, index) => {
-                    if (element == null) {
-                        response[this.REPORT_TKM].series[index] = 0;
-                    }
-                });
-
-                const chartTKM = {
-                    ...response[this.REPORT_TKM],
-                    uniqueVisitors: response[this.REPORT_TKM].series['0'],
-                };
-
-                //---------------------------------------------------
-
-                //---------------------------------------------------
-
                 //Filtro Filiais
 
                 const COD_EMPRESA = 0;
@@ -126,10 +76,87 @@ export class VendasDashService {
                     };
                 });
 
+                //----------------------------------------------
+
+                //Tratamento Gráfico "CC"
+
+                let totalCC = response[this.REPORT_CC].TOTALCC;
+                let ccRealDC = response[this.REPORT_CC].CCREALIZADODC;
+                let ccRealFC = response[this.REPORT_CC].CCREALIZADOFC;
+                let totalCCReal = response[this.REPORT_CC].TOTALCCREALIZADO;
+                let meta = response[this.REPORT_CC].META;
+                let gap = response[this.REPORT_CC].GAP;
+
+                let indCC = [
+                    totalCC,
+                    ccRealDC,
+                    ccRealFC,
+                    totalCCReal,
+                    meta,
+                    gap,
+                ];
+
+                indCC.forEach((element, index) => {
+                    if (element == null) {
+                        response[this.REPORT_CC][index] = 0;
+                    }
+                });
+
+                const chartCC = response[this.REPORT_CC];
+
+                //---------------------------------------------------
+
+                //----------------------------------------------
+
+                //Tratamento Gráfico "CC vs ROL"
+
+                let rol = response[this.REPORT_CCvsROL].ROL;
+                let rolDC = response[this.REPORT_CCvsROL].ROLDC;
+                let rolFC = response[this.REPORT_CCvsROL].ROLFC;
+                let metaRol = response[this.REPORT_CCvsROL].META;
+                let gapRol = response[this.REPORT_CCvsROL].GAP;
+
+                let indCCvsROL = [rol, rolDC, rolFC, metaRol, gapRol];
+
+                indCCvsROL.forEach((element, index) => {
+                    if (element == null) {
+                        response[this.REPORT_CCvsROL][index] = 0;
+                    }
+                });
+
+                const chartCCvsROL = response[this.REPORT_CCvsROL];
+
+                //---------------------------------------------------
+
+                //----------------------------------------------
+
+                //Tratamento Gráfico "CC Projeção"
+
+                let potencial = response[this.REPORT_CCPROJECAO].POTENCIAL;
+                let proj = response[this.REPORT_CCPROJECAO].PROJ;
+                let gapProj = response[this.REPORT_CCPROJECAO].GAP;
+                let projPF = response[this.REPORT_CCPROJECAO].PROJPF;
+                let projPJ = response[this.REPORT_CCPROJECAO].PROJPJ;
+
+                let indCCProjecao = [potencial, proj, gapProj, projPF, projPJ];
+
+                indCCProjecao.forEach((element, index) => {
+                    if (element == null) {
+                        response[this.REPORT_CCPROJECAO][index] = 0;
+                    }
+                });
+
+                const chartCCprojecao = response[this.REPORT_CCPROJECAO];
+
+                //---------------------------------------------------
+
+                //---------------------------------------------------
+
                 const dashData = {
-                    ccXMeta: ccMeta,
-                    tkm: chartTKM,
                     filiaisLista: companyFilter,
+                    cc: chartCC,
+                    ccVsRol: chartCCvsROL,
+                    ccProj: chartCCprojecao,
                 };
                 this._data.next(dashData);
             })
