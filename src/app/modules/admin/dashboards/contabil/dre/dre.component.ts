@@ -483,7 +483,7 @@ export class DreDashComponent implements OnInit {
             ],
             chart: {
                 type: 'bar',
-                height: 50 * this.sortedDataObjectsArray.length, //800
+                height: 80 * this.sortedDataObjectsArray.length, //800
                 toolbar: {
                     show: false,
                 },

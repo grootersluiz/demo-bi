@@ -27,6 +27,12 @@ import * as _moment from 'moment';
 })
 export class VendasDashComponent implements OnInit {
     chartAcumulado: ApexOptions;
+    companiesLabels: string[] = [];
+    comparativoSeries: { name: string; data: number[] }[] = [
+        { name: '', data: [] },
+        { name: '', data: [] },
+        { name: '', data: [] },
+    ];
     chartGlobal: ApexOptions;
     data: any;
     selectedCurve: string = 'Todas';
@@ -122,8 +128,7 @@ export class VendasDashComponent implements OnInit {
             .subscribe((data) => {
                 // Store the data
                 this.data = data;
-                // Prepare the chart data
-                this._prepareChartData();
+
                 this.filiaisObjects = this.data.filiaisLista;
                 this.filiaisStringList = this.filiaisObjects.map(
                     (item) => item.string
@@ -147,6 +152,29 @@ export class VendasDashComponent implements OnInit {
 
                 this._cdr.markForCheck();
             });
+
+        // Tratamento Chart "Comparativo Anual"
+
+        Object.keys(this.data.ccCompAnual).forEach((key) => {
+            if (key != 'report') {
+                this.companiesLabels.push(key);
+
+                if (this.comparativoSeries[0].name == '') {
+                    this.data.ccCompAnual[key].labels.forEach((year, index) => {
+                        this.comparativoSeries[index].name = year;
+                    });
+                }
+
+                this.data.ccCompAnual[key].series[0].data.forEach(
+                    (value, index) => {
+                        this.comparativoSeries[index].data.push(value);
+                    }
+                );
+            }
+        });
+
+        // Prepare the chart data
+        this._prepareChartData();
 
         // Attach SVG fill fixer to all ApexCharts
         window['Apex'] = {
@@ -454,32 +482,10 @@ export class VendasDashComponent implements OnInit {
     private _prepareChartData(): void {
         // CC Comparativo Acumulado
         this.chartAcumulado = {
-            series: [
-                {
-                    name: '2023',
-                    data: [
-                        580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
-                        580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
-                    ],
-                },
-                {
-                    name: '2022',
-                    data: [
-                        1380, 400, 430, 448, 470, 540, 580, 690, 1100, 1200,
-                        580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
-                    ],
-                },
-                {
-                    name: '2021',
-                    data: [
-                        580, 690, 1100, 1200, 1380, 400, 430, 448, 470, 540,
-                        1380, 400, 430, 448, 470, 540, 580, 690, 1100, 1200,
-                    ],
-                },
-            ],
+            series: this.comparativoSeries,
             chart: {
                 type: 'bar',
-                height: 800,
+                height: 80 * this.companiesLabels.length,
                 toolbar: {
                     show: false,
                 },
@@ -498,28 +504,7 @@ export class VendasDashComponent implements OnInit {
                 enabled: false,
             },
             xaxis: {
-                categories: [
-                    'Filial 1',
-                    'Filial 2',
-                    'Filial 3',
-                    'Filial 4',
-                    'Filial 5',
-                    'Filial 6',
-                    'Filial 7',
-                    'Filial 8',
-                    'Filial 9',
-                    'Filial 10',
-                    'Filial 11',
-                    'Filial 12',
-                    'Filial 13',
-                    'Filial 14',
-                    'Filial 15',
-                    'Filial 16',
-                    'Filial 17',
-                    'Filial 18',
-                    'Filial 19',
-                    'Filial 20',
-                ],
+                categories: this.companiesLabels,
             },
             yaxis: {
                 title: {

@@ -147,7 +147,6 @@ export class VendasDashService {
                 // });
 
                 const chartCompAnual = response[this.REPORT_COMPANUAL];
-                console.log(chartCompAnual);
 
                 //---------------------------------------------------
 
@@ -247,6 +246,7 @@ export class VendasDashService {
                     ccLB: chartLBvsCC,
                     ccMB: chartMBvsCC,
                     ccCob: chartCobertura,
+                    ccCompAnual: chartCompAnual,
                 };
                 this._data.next(dashData);
             })
