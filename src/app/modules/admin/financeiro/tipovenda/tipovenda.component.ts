@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { ChartComponent } from 'ng-apexcharts';
 import { ApexOptions } from 'apexcharts';
-import _, { isNumber, toNumber } from 'lodash';
+import _, { isNumber, slice, toNumber } from 'lodash';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
 
@@ -215,21 +215,23 @@ export class tipovendaComponent implements AfterViewInit {
     }
 
     setDataHeat() {
+        var PMV = 0;
+        var auxMedia = 0;
         var filial: String;
         var nextExpected = 0;
-         // Atualiza o valor esperado para o próximo
+        // Atualiza o valor esperado para o próximo
         var aux = 0;
-        while (aux < this.seriesHeat.rows.length)
-        {
+        while (aux < this.seriesHeat.rows.length) {
             var auxArray;
-            if(aux === 0){
+            if (aux === 0) {
                 auxArray = 0;
-            }else{
-                auxArray = aux-1;
+            } else {
+                auxArray = aux - 1;
             }
 
             if (
-                this.seriesHeat.rows[aux][0] != this.seriesHeat.rows[auxArray][0]
+                this.seriesHeat.rows[aux][0] !=
+                this.seriesHeat.rows[auxArray][0]
             ) {
                 // Preenche o resto com zeros até 12
                 while (nextExpected <= 12) {
@@ -249,6 +251,8 @@ export class tipovendaComponent implements AfterViewInit {
 
                 this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][5]);
                 this.HeatFiliais.push(String(this.seriesHeat.rows[aux - 1][6]));
+                PMV += this.seriesHeat.rows[aux - 1][6];
+                auxMedia++;
                 this.seriesData.push({ name: filial, data: this.HeatFiliais });
                 // this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][3]);
                 // this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][4]);
@@ -256,14 +260,14 @@ export class tipovendaComponent implements AfterViewInit {
 
                 // Reinicia o valor esperado para a próxima filial e adiciona a primeira parcela da nova filial
 
-
                 nextExpected = this.seriesHeat.rows[aux][1] + 1;
-                if(nextExpected != 1){
+                if (nextExpected != 1) {
                     this.HeatFiliais.push(0);
                 }
                 this.HeatFiliais.push(this.seriesHeat.rows[aux][2]);
             } else if (
-                this.seriesHeat.rows[aux][0] == this.seriesHeat.rows[auxArray][0]
+                this.seriesHeat.rows[aux][0] ==
+                this.seriesHeat.rows[auxArray][0]
             ) {
                 // Verifica se a parcela atual é a esperada
                 while (
@@ -276,7 +280,6 @@ export class tipovendaComponent implements AfterViewInit {
 
                 this.HeatFiliais.push(this.seriesHeat.rows[aux][2]);
                 nextExpected = this.seriesHeat.rows[aux][1] + 1;
-
             }
             aux++;
         }
@@ -284,6 +287,8 @@ export class tipovendaComponent implements AfterViewInit {
         // this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][4]);
         this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][5]);
         this.HeatFiliais.push(String(this.seriesHeat.rows[aux - 1][6]));
+        PMV += this.seriesHeat.rows[aux - 1][6];
+        auxMedia++;
         // Preenche o resto com zeros até 12 para a última filial
         while (nextExpected <= 12) {
             this.HeatFiliais.push(0);
@@ -300,14 +305,14 @@ export class tipovendaComponent implements AfterViewInit {
         this.seriesData.push({ name: filial, data: this.HeatFiliais });
 
         // Inicie cada total como 0.
-        let totals = new Array(filial.length-1).fill(0);
+        let totals = new Array(filial.length - 1).fill(0);
 
         for (let series of this.seriesData) {
-            for (let index = 0; index < series.data.length-1; index++) {
+            for (let index = 0; index < series.data.length - 1; index++) {
                 totals[index] += series.data[index];
             }
         }
-
+        totals[filial.length - 2] = PMV / auxMedia;
 
         // totals[15]=;
 
@@ -1005,7 +1010,7 @@ export class tipovendaComponent implements AfterViewInit {
                         if (val < 0 || val > 150) {
                             return this.formatadorPts(val);
                         } else if (val != 0) {
-                            return val + ' Dias';
+                            return this.formatadorPtsPMV(val);
                         } else {
                             return val;
                         }
@@ -1029,7 +1034,13 @@ export class tipovendaComponent implements AfterViewInit {
                     colors: ['#000000', '#ffffff'],
                 },
                 formatter: (val) => {
-                    return this.formatadorUnidade(val);
+                    if (Number(val) < 0 || Number(val) > 150) {
+                        return this.formatadorUnidade(val);
+                    } else if (val != 0) {
+                        return this.formatadorPtsPMV(val);
+                    } else {
+                        return val;
+                    }
                 },
             },
             xaxis: {
@@ -1211,6 +1222,20 @@ export class tipovendaComponent implements AfterViewInit {
                     currency: 'BRL',
                 })
             ).slice(0, -3);
+        }
+        return val;
+    }
+    formatadorPtsPMV(val) {
+        if (isNumber(val)) {
+            if (!val) {
+                val = 0;
+            }
+            return String(
+                val.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL',
+                })
+            ).slice(3);
         }
         return val;
     }
