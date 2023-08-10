@@ -13,6 +13,7 @@ export class VendasDashService {
 
     readonly REPORT_CC = '357';
     readonly REPORT_CCvsROL = '358';
+    readonly REPORT_COMPANUAL = '359';
     readonly REPORT_CCPROJECAO = '360';
     readonly REPORT_LBvsCC = '361';
     readonly REPORT_MBvsCC = '362';
@@ -54,12 +55,12 @@ export class VendasDashService {
         let url = `http://10.2.1.108/v1/dashboards/data?reportId=${
             this.REPORT_CC
         }&reportId=${this.REPORT_CCvsROL}&reportId=${
-            this.REPORT_CCPROJECAO
-        }&reportId=${this.REPORT_LBvsCC}&reportId=${
-            this.REPORT_MBvsCC
-        }&reportId=${this.REPORT_COBERTURA}&reportId=${
-            this.REPORT_FILTRO_FILIAIS
-        }&dtini=
+            this.REPORT_COMPANUAL
+        }&reportId=${this.REPORT_CCPROJECAO}&reportId=${
+            this.REPORT_LBvsCC
+        }&reportId=${this.REPORT_MBvsCC}&reportId=${
+            this.REPORT_COBERTURA
+        }&reportId=${this.REPORT_FILTRO_FILIAIS}&dtini=
         ${this.formatDate(dtIni)}
         &codvend=${sellersIds.join(',')}&codemp=${companiesIds.join(',')}&dtfin=
         ${this.formatDate(dtFin)}`;
@@ -132,6 +133,21 @@ export class VendasDashService {
                 });
 
                 const chartCCvsROL = response[this.REPORT_CCvsROL];
+
+                //---------------------------------------------------
+
+                //----------------------------------------------
+
+                //Tratamento Gráfico "Comparativo Anual"
+
+                // indCCvsROL.forEach((element, index) => {
+                //     if (element == null) {
+                //         response[this.REPORT_CCvsROL][index] = 0;
+                //     }
+                // });
+
+                const chartCompAnual = response[this.REPORT_COMPANUAL];
+                console.log(chartCompAnual);
 
                 //---------------------------------------------------
 
