@@ -11,6 +11,7 @@ import { ApexOptions } from 'apexcharts';
 import _, { isNumber, slice, toNumber } from 'lodash';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
+import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
 
 // export interface PeriodicElement {
 //     name: string[];
@@ -36,7 +37,7 @@ import { ChangeDetectorRef } from '@angular/core';
 export class tipovendaComponent implements AfterViewInit {
     displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
     // dataSource = ELEMENT_DATA;
-
+    public trigger: number = 0;
     chartOptionsPie: ApexOptions;
     chartOptionsPie2: ApexOptions;
     chartOptions1: ApexOptions;
@@ -51,6 +52,10 @@ export class tipovendaComponent implements AfterViewInit {
     @ViewChild('chartheat') chartheat: ChartComponent;
     @ViewChild('chartMixed') chartMixed: ChartComponent;
     @ViewChild('chartMixed2') chartMixed2: ChartComponent;
+    @ViewChild('AV') AV: MatButtonToggle;
+    @ViewChild('BOL') BOL: MatButtonToggle;
+    @ViewChild('CC') CC: MatButtonToggle;
+    @ViewChild('CD') CD: MatButtonToggle;
     titulo: string = 'Tipos de Vendas';
     subTitulo: string = 'Mensal e totais';
     isChecked: boolean;
@@ -79,6 +84,7 @@ export class tipovendaComponent implements AfterViewInit {
     anos: any[];
     HeatFiliais: any[] = [];
     tiposBool: boolean[] = new Array(4).fill(true);
+    PMVGeral: any = 0;
     tipos: any[];
     av: boolean = false;
     bol: boolean = false;
@@ -206,6 +212,7 @@ export class tipovendaComponent implements AfterViewInit {
             this.seriesHeat.rows = dataresponse.rows;
             this.setDataHeat();
         });
+
         this._tipovendaService.getSeriesMixed().subscribe((dataresponse) => {
             this.setDataMixed(dataresponse.rows);
         });
@@ -305,16 +312,17 @@ export class tipovendaComponent implements AfterViewInit {
         this.seriesData.push({ name: filial, data: this.HeatFiliais });
 
         // Inicie cada total como 0.
-        let totals = new Array(filial.length - 1).fill(0);
+        let totals = new Array(16).fill(0);
 
         for (let series of this.seriesData) {
             for (let index = 0; index < series.data.length - 1; index++) {
                 totals[index] += series.data[index];
             }
         }
-        totals[filial.length - 2] = PMV / auxMedia;
-
-        // totals[15]=;
+        totals[15] = PMV / auxMedia;
+        if (this.PMVGeral === 0) {
+            this.PMVGeral = String(this.formatadorPtsPMV(totals[15]));
+        }
 
         let totalSeries = {
             name: 'TOTAL',
@@ -526,6 +534,16 @@ export class tipovendaComponent implements AfterViewInit {
     }
 
     limpar() {
+        if (
+            this.tiposBool[0] &&
+            this.tiposBool[1] &&
+            this.tiposBool[2] &&
+            this.tiposBool[3]
+        ) {
+            this.PMVGeral = 0;
+        }
+
+
         this.tipos = ['1,10', '2,3', '7', '8'];
         this.anos = [];
         this.HeatFiliais = [];
@@ -589,6 +607,7 @@ export class tipovendaComponent implements AfterViewInit {
     }
 
     consultavendafilial(filial, dtini, dtfin) {
+        this.trigger++;
         if (filial.length == 1) {
             if (filial[0] == 'null') {
                 filial = 99;
@@ -597,6 +616,7 @@ export class tipovendaComponent implements AfterViewInit {
         this._tipovendaService.setParam(dtini, dtfin, filial, 'REDE');
         this.limpar(); // viewSerie, categorias, series
         this.SetGeral();
+        this.trigger++;
     }
 
     constructor(private _tipovendaService: tipovendaService) {
@@ -604,7 +624,7 @@ export class tipovendaComponent implements AfterViewInit {
             series: this.seriesMixed,
             chart: {
                 type: 'bar',
-                height: 220,
+                height: 440,
                 width: '100%',
                 stacked: false,
             },
@@ -671,7 +691,7 @@ export class tipovendaComponent implements AfterViewInit {
             series: this.seriesMixed,
             chart: {
                 type: 'bar',
-                height: 220,
+                height: 440,
                 width: '100%',
                 stacked: false,
             },

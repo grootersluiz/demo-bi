@@ -76,7 +76,10 @@
                                 <div style="font-weight: bold" class="p-2">
                                     Prazo - TOTAL
                                 </div>
+                                <div class="inline-flex justify-between">
                                 <div class="p-2">Total: {{ totalPie1 }}</div>
+                                <div class="p-2">PMV: {{ PMVGeral }}</div>
+                            </div>
                                 <div id="chartPie">
                                     <apx-chart
                                         [series]="chartOptionsPie.series"
@@ -178,6 +181,7 @@
                                 multiple
                             >
                                 <div
+                                    id = "AV"
                                     class="flex justify-center border-2 border-solid rounded-full max-w-24"
                                 >
                                     <mat-button-toggle (click)="av = !av"
@@ -185,6 +189,7 @@
                                     >
                                 </div>
                                 <div
+                                    id="BOL"
                                     class="flex justify-center border-2 border-solid rounded-full max-w-24"
                                 >
                                     <mat-button-toggle (click)="bol = !bol"
@@ -192,6 +197,7 @@
                                     >
                                 </div>
                                 <div
+                                    id="CC"
                                     class="flex justify-center border-2 border-solid rounded-full max-w-40"
                                 >
                                     <mat-button-toggle (click)="cc = !cc"
@@ -199,6 +205,7 @@
                                     >
                                 </div>
                                 <div
+                                    id="CD"
                                     class="flex justify-center border-2 border-solid rounded-full max-w-40"
                                 >
                                     <mat-button-toggle (click)="cd = !cd"
