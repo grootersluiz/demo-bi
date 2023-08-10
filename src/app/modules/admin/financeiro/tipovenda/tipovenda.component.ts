@@ -52,10 +52,6 @@ export class tipovendaComponent implements AfterViewInit {
     @ViewChild('chartheat') chartheat: ChartComponent;
     @ViewChild('chartMixed') chartMixed: ChartComponent;
     @ViewChild('chartMixed2') chartMixed2: ChartComponent;
-    @ViewChild('AV') AV: MatButtonToggle;
-    @ViewChild('BOL') BOL: MatButtonToggle;
-    @ViewChild('CC') CC: MatButtonToggle;
-    @ViewChild('CD') CD: MatButtonToggle;
     titulo: string = 'Tipos de Vendas';
     subTitulo: string = 'Mensal e totais';
     isChecked: boolean;
@@ -137,7 +133,6 @@ export class tipovendaComponent implements AfterViewInit {
     ngAfterViewInit() {
         this.limpar();
         this.SetGeral();
-        console.log(this._tipovendaService.tipos);
     }
 
     setFiltroHeat() {
