@@ -63,7 +63,7 @@
     >
         <!-- COMPONENTES ABAIXO -->
         <!-- Colocar class="grid px-2 py-2 w-12/12 rounded-2xl bg-card shadow mb-1" em todos componentes-->
-        <div class="flex-grow w-full max-w-screen-xl mx-auto">
+        <div class="flex-grow w-full  mx-auto">
             <mat-tab-group mat-stretch-tabs="false" [animationDuration]="'0'">
                 <mat-tab label="Relatórios tipos de Vendas">
                     <ng-template matTabContent>
@@ -84,6 +84,7 @@
                                     <apx-chart
                                         [series]="chartOptionsPie.series"
                                         [chart]="chartOptionsPie.chart"
+                                        [colors]="chartOptionsPie.colors"
                                         [yaxis]="chartOptionsPie.yaxis"
                                         [labels]="chartOptionsPie.labels"
                                         [responsive]="
@@ -111,6 +112,7 @@
                                         [responsive]="chartOptions1.responsive"
                                         [xaxis]="chartOptions1.xaxis"
                                         [yaxis]="chartOptions1.yaxis"
+                                        [colors]="chartOptions1.colors"
                                         [legend]="chartOptions1.legend"
                                         [fill]="chartOptions1.fill"
                                     ></apx-chart>
@@ -132,6 +134,7 @@
                                         [series]="chartOptionsPie2.series"
                                         [chart]="chartOptionsPie2.chart"
                                         [yaxis]="chartOptionsPie2.yaxis"
+                                        [colors]="chartOptionsPie2.colors"
                                         [labels]="chartOptionsPie2.labels"
                                         [responsive]="
                                             chartOptionsPie2.responsive
@@ -158,6 +161,7 @@
                                         [responsive]="chartOptions2.responsive"
                                         [xaxis]="chartOptions2.xaxis"
                                         [yaxis]="chartOptions2.yaxis"
+                                        [colors]="chartOptions2.colors"
                                         [legend]="chartOptions2.legend"
                                         [fill]="chartOptions2.fill"
                                     ></apx-chart>
@@ -185,7 +189,7 @@
                                     class="flex justify-center border-2 border-solid rounded-full max-w-24"
                                 >
                                     <mat-button-toggle (click)="av = !av"
-                                        >A vista</mat-button-toggle
+                                        >À vista</mat-button-toggle
                                     >
                                 </div>
                                 <div

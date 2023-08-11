@@ -27,6 +27,8 @@ export class dateComponent {
     resetDateInputs(): void {
         this.start.setValue(null);
         this.end.setValue(null);
+        this.dataInicio = this._dateService.INITIAL_INITIAL_DATE;
+        this.dataFinal = this._dateService.INITIAL_FINAL_DATE;
     }
     handleDatePickerClick(
         event: Event,

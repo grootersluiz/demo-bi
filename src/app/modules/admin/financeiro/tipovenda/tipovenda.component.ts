@@ -12,6 +12,7 @@ import _, { isNumber, slice, toNumber } from 'lodash';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
 import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
+import { ColorsComponent } from '../../util/colors/colors.component';
 
 // export interface PeriodicElement {
 //     name: string[];
@@ -400,7 +401,7 @@ export class tipovendaComponent implements AfterViewInit {
         var reflow = new ApexCharts(this.chartPie2, this.chartOptionsPie2);
     }
     setDataM2() {
-        this.seriesM2 = this.seriesM2.concat({ name: 'Total', data: [] });
+        this.seriesM2 = this.seriesM2.concat({ name: 'Total',type: '', data: [] });
         for (
             let index = 0, indexdata = 0;
             index < this.series4.rows.length;
@@ -438,6 +439,7 @@ export class tipovendaComponent implements AfterViewInit {
 
         for (let row of dataRow) {
             let [date, type, value] = row;
+            if(type === 'A vista') type = 'À vista'
             let [month, year] = date.split('/').map((part) => parseInt(part));
 
             if (!rawData[type]) rawData[type] = {};
@@ -492,6 +494,7 @@ export class tipovendaComponent implements AfterViewInit {
             rawData[type][year] += parseFloat(value);
 
             types.add(type);
+
         }
 
         this.seriesMixed2 = [];
@@ -538,7 +541,8 @@ export class tipovendaComponent implements AfterViewInit {
             this.PMVGeral = 0;
         }
 
-
+        this.chartOptions2.chart.type = 'area';
+        this.chartOptions1.chart.type = 'area';
         this.tipos = ['1,10', '2,3', '7', '8'];
         this.anos = [];
         this.HeatFiliais = [];
@@ -591,10 +595,6 @@ export class tipovendaComponent implements AfterViewInit {
                 name: '',
                 data: [],
             },
-            {
-                name: '',
-                data: [],
-            },
         ];
 
         this.categories = new Array();
@@ -614,9 +614,11 @@ export class tipovendaComponent implements AfterViewInit {
         this.trigger++;
     }
 
-    constructor(private _tipovendaService: tipovendaService) {
+    constructor(private _tipovendaService: tipovendaService,
+                private _colors: ColorsComponent) {
         this.chartOptionsMixed = {
             series: this.seriesMixed,
+            colors: this._colors.colors,
             chart: {
                 type: 'bar',
                 height: 440,
@@ -684,6 +686,7 @@ export class tipovendaComponent implements AfterViewInit {
         };
         this.chartOptionsMixed2 = {
             series: this.seriesMixed,
+            colors: this._colors.colors,
             chart: {
                 type: 'bar',
                 height: 440,
@@ -752,6 +755,7 @@ export class tipovendaComponent implements AfterViewInit {
 
         this.chartOptionsPie = {
             series: this.seriesPie,
+            colors: this._colors.colors,
             chart: {
                 width: 380,
                 height: 400,
@@ -786,6 +790,7 @@ export class tipovendaComponent implements AfterViewInit {
 
         this.chartOptions1 = {
             series: this.seriesM1,
+            colors: this._colors.colors,
             chart: {
                 type: 'area',
                 height: 220,
@@ -879,6 +884,7 @@ export class tipovendaComponent implements AfterViewInit {
 
         this.chartOptionsPie2 = {
             series: this.seriesPie2,
+            colors: this._colors.colors,
             chart: {
                 width: 380,
                 height: 400,
@@ -909,10 +915,13 @@ export class tipovendaComponent implements AfterViewInit {
                     },
                 },
             },
+
         };
+
 
         this.chartOptions2 = {
             series: this.seriesM2,
+            colors: this._colors.colors,
             chart: {
                 type: 'area',
                 height: 220,

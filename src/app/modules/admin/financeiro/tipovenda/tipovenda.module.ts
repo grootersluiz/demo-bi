@@ -27,6 +27,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SelectfilialModule } from '../../util/selectfilial/selectfilial.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { dateModule } from '../../util/date/date.module';
+import { ColorsComponent } from '../../util/colors/colors.component';
+
 @NgModule({
     declarations: [tipovendaComponent],
     imports: [
@@ -50,7 +52,8 @@ import { dateModule } from '../../util/date/date.module';
         ReactiveFormsModule,
         SelectfilialModule,
         MatTabsModule,
-        dateModule
+        dateModule,
     ],
+    providers: [ColorsComponent]
 })
 export class tipovendaModule {}

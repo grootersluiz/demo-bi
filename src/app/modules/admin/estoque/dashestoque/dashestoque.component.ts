@@ -32,56 +32,9 @@ import { FilterDialogComponent } from "../../dashboards/rol/filterdialog/filterd
 import { DashEstoqueService } from "./dashestoque.service";
 import { Subject, takeUntil } from "rxjs";
 import { style } from "@angular/animations";
+import { isNumber } from "lodash";
+import { labels } from "app/mock-api/apps/mailbox/data";
 
-export type ChartOptions = {
-    series: ApexNonAxisChartSeries;
-    chart: ApexChart;
-    labels: string[];
-    plotOptions: ApexPlotOptions;
-    fill: ApexFill;
-    seriesSku: ApexAxisChartSeries;
-    chartSku: ApexChart;
-    dataLabelsSku: ApexDataLabels;
-    plotOptionsSku: ApexPlotOptions;
-    yaxisSku: ApexYAxis;
-    xaxisSku: any; //ApexXAxis;
-    annotationsSku: ApexAnnotations;
-    fillSku: ApexFill;
-    strokeSku: ApexStroke;
-    gridSku: ApexGrid;
-    seriesCurSku: ApexNonAxisChartSeries;
-    chartCurSku: ApexChart;
-    responsiveCurSku: ApexResponsive[];
-    labelsCurSku: any;
-    seriesFor: ApexAxisChartSeries;
-    chartFor: ApexChart;
-    dataLabelsFor: ApexDataLabels;
-    plotOptionsFor: ApexPlotOptions;
-    xaxisFor: ApexXAxis;
-
-};
-
-export type ChartOptionsSku = {
-    series: ApexAxisChartSeries;
-    chart: ApexChart;
-    labels: string[];
-    plotOptions: ApexPlotOptions;
-    fill: ApexFill;
-    dataLabels: ApexDataLabels;
-    annotationsSku: ApexAnnotations;
-    yaxis: ApexYAxis;
-    stroke: ApexStroke;
-    grid: ApexGrid;
-    xaxis: ApexXAxis;
-
-};
-
-export type chartOptionsCurvSKU = {
-    series: ApexNonAxisChartSeries;
-    chart: ApexChart;
-    responsive: ApexResponsive[];
-    labels: any;
-};
 
 @Component({
     selector: 'app-dashestoque',
@@ -95,7 +48,7 @@ export type chartOptionsCurvSKU = {
 
 
 })
-export class DashestoqueComponent implements AfterViewInit {
+export class DashestoqueComponent {
     @ViewChild("chart") chart: ChartComponent;
     @ViewChild("chart2") chart2: ChartComponent;
     @ViewChild("chart3") chart3: ChartComponent;
@@ -103,15 +56,18 @@ export class DashestoqueComponent implements AfterViewInit {
     @ViewChild("chatTable") chatTable: ChartComponent;
     @ViewChild("chartSku") chartSku: ChartComponent;
     @ViewChild("chartCurvSku") chartCurvSku: ChartComponent;
+    @ViewChild("chartGiro") chartGiro: ChartComponent;
 
 
-    public chartOptions: Partial<ChartOptions>;
-    public chartOptions2: Partial<ChartOptions>;
-    public chartOptions3: Partial<ChartOptions>;
-    public chartOptions4: Partial<ChartOptions>;
-    public chartOptionsSku: Partial<ChartOptionsSku>;
-    public chartOptionsCurvSKU: ApexOptions;
-    public chartOptionsFor: Partial<ChartOptions>;
+    public chartOptions: ApexOptions;
+    public chartOptions2: ApexOptions;
+    public chartOptions3: ApexOptions;
+    public chartOptions4: ApexOptions;
+    public chartOptionsDisponibilidadeEmpresa: ApexOptions;
+    public chartOptionsDisponibilidadeSKU: ApexOptions;
+    public chartOptionsDisponibilidadeAgrupador: ApexOptions;
+    public chartOptionsFor: ApexOptions;
+    public chartOptionsGiro: ApexOptions;
     recentTransactionsDataSource: MatTableDataSource<any> =
         new MatTableDataSource([]);
 
@@ -131,11 +87,21 @@ export class DashestoqueComponent implements AfterViewInit {
     diasEstoque91d: String[] = [];
     diasEstoquetot91d: number = 1;
     filteredRnkRolTable: any;
-    skusEmpresa: SkusEmp[] = [];
-    skusCurva: SkusCurva[] = [];
+    DisponibilidadeEmpresa: Disponibilidade = { serie: [], categoria: [] };
+    disponibilidadeAgrupador: Disponibilidade = { serie: [], categoria: [] };
+    disponibilidadeSku: Disponibilidade = { serie: [], categoria: [] };
+
     data: any;
     recentTransactionsTableColumns: string[] = [];
 
+    estoquePorFornecedor: EstoqueFornecedor = { nomeParc: [], SaldoEstoque: [] };
+    //resumoEstoque ={giro:[], diasEstoque:[]}
+    giroEstoque: GiroDiasEstoque = { giro: [] };
+    giroVazio:GiroDias[]=[];
+
+    estNomeFornecedor: string[] = [];
+    estSaldoEstoque: number[] = [];
+    param:String[]=[];
 
 
     //dataSource = [];
@@ -156,33 +122,24 @@ export class DashestoqueComponent implements AfterViewInit {
         return item.id || index;
     }
 
-    ngAfterViewInit(): void {
+   /* ngAfterViewInit(): void {
+        var reflow = new ApexCharts(this.chartGiro, this.chartOptionsGiro);
 
-    }
+    }*/
 
 
 
 
     constructor(public dashEstoqueServico: DashEstoqueService, private _httpClient: HttpClient,
         private _liveAnnouncer: LiveAnnouncer, private _dialog: MatDialog, private _router: Router) {
-
+this.param.push("99");
 
         this.recentTransactionsTableColumns = [
             "codprod", "produto", "codemp", "empresa", "qtdDias"
         ];
 
 
-        for (let index = 0; index < 23; index++) {
-            const element: SkusEmp = {
-                codemp: index,
-                codprod: [1],
-                empresa: ""
 
-            };
-            this.skusEmpresa.push(element);
-
-
-        }
         //  this.iniciarComponentesDiasEstoque;
 
 
@@ -192,8 +149,12 @@ export class DashestoqueComponent implements AfterViewInit {
 
         // this.getDiasEstoque();
 
-        this.getDiasEstoque();
+        this.getDiasEstoque(this.param);
+        this.getEstoquePorFornecedor();
+        this.getGiroEstoque(this.param);
 
+        this.getDisponibilidadeCurva();
+        this.getDisponibilidadeEmpresa();
 
         this.chartOptions = {
             series: [this.diasEstoquetot30d],
@@ -452,62 +413,18 @@ export class DashestoqueComponent implements AfterViewInit {
 
         /*grafico SKU por Empresa*/
 
-
-        this.chartOptionsSku = {
+        this.chartOptionsDisponibilidadeEmpresa = {
 
             series: [
                 {
                     name: "Qtd. SKUs",
-                    data: [this.skusEmpresa[0].codprod.length,
-                    this.skusEmpresa[1].codprod.length,
-                    this.skusEmpresa[2].codprod.length,
-                    this.skusEmpresa[3].codprod.length,
-                    this.skusEmpresa[4].codprod.length,
-                    this.skusEmpresa[5].codprod.length,
-                    this.skusEmpresa[6].codprod.length,
-                    this.skusEmpresa[7].codprod.length,
-                    this.skusEmpresa[8].codprod.length,
-                    this.skusEmpresa[9].codprod.length,
-                    this.skusEmpresa[10].codprod.length,
-                    this.skusEmpresa[11].codprod.length,
-                    this.skusEmpresa[12].codprod.length,
-                    this.skusEmpresa[13].codprod.length,
-                    this.skusEmpresa[14].codprod.length,
-                    this.skusEmpresa[15].codprod.length,
-                    this.skusEmpresa[16].codprod.length,
-                    this.skusEmpresa[17].codprod.length,
-                    this.skusEmpresa[18].codprod.length,
-                    this.skusEmpresa[19].codprod.length,
-                    this.skusEmpresa[20].codprod.length,
-                    this.skusEmpresa[21].codprod.length,
-                    this.skusEmpresa[22].codprod.length,
-
-
-
-
-                    ]
+                    data: []
                 }
             ],
-            annotationsSku: {
-                points: [
-                    {
-                        x: "Bananas",
-                        seriesIndex: 0,
-                        label: {
-                            borderColor: "#FF8C00",
-                            offsetY: 0,
-                            style: {
-                                color: "#FF8C00",
-                                background: "#FF8C00"
-                            },
-                            text: "Bananas are good"
-                        }
-                    }
-                ]
-            },
+
             chart: {
                 height: 250,
-                width: 600,
+                width: 500,
                 type: "bar"
             },
             plotOptions: {
@@ -554,34 +471,7 @@ export class DashestoqueComponent implements AfterViewInit {
                         fontSize: '11px'
                     }
                 },
-                categories: [
-                    this.skusEmpresa[0].empresa,
-                    this.skusEmpresa[1].empresa,
-                    this.skusEmpresa[2].empresa,
-                    this.skusEmpresa[3].empresa,
-                    this.skusEmpresa[4].empresa,
-                    this.skusEmpresa[5].empresa,
-                    this.skusEmpresa[6].empresa,
-                    this.skusEmpresa[7].empresa,
-                    this.skusEmpresa[8].empresa,
-                    this.skusEmpresa[9].empresa,
-                    this.skusEmpresa[10].empresa,
-                    this.skusEmpresa[11].empresa,
-                    this.skusEmpresa[12].empresa,
-                    this.skusEmpresa[13].empresa,
-                    this.skusEmpresa[14].empresa,
-                    this.skusEmpresa[15].empresa,
-                    this.skusEmpresa[16].empresa,
-                    this.skusEmpresa[17].empresa,
-                    this.skusEmpresa[18].empresa,
-                    this.skusEmpresa[19].empresa,
-                    this.skusEmpresa[20].empresa,
-                    this.skusEmpresa[21].empresa,
-                    this.skusEmpresa[22].empresa,
-
-
-
-                ],
+                categories: [],
                 tickPlacement: "on"
             },
             yaxis: {
@@ -608,13 +498,13 @@ export class DashestoqueComponent implements AfterViewInit {
 
         // Curva por SKU
 
-        this.chartOptionsCurvSKU = {
-            series: [0,0,0,0,0,0 ],
+        this.chartOptionsDisponibilidadeSKU = {
+            series: [0, 0, 0, 0, 0, 0],
 
             chart: {
                 type: "donut",
                 height: 200, // Altere a altura do gráfico aqui
-                width: 300,  // Altere a largura do gráfico aqui
+                width: 100,  // Altere a largura do gráfico aqui
 
             },
             labels: ["Curva A", "Curva B", "Curva C", "Curva F", "Curva J", "Curva N"],
@@ -638,40 +528,164 @@ export class DashestoqueComponent implements AfterViewInit {
         // Estoque Por fornecedor
 
         this.chartOptionsFor = {
-            seriesFor: [
+            series: [
                 {
                     name: "Estoque",
-                    data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
+                    data: []
                 }
             ],
-            chartFor: {
+            chart: {
                 type: "bar",
                 height: 300,
-                width: 580
+                width: "100%"
             },
-            plotOptionsFor: {
+            tooltip: {
+                theme: 'dark',
+            },
+            plotOptions: {
                 bar: {
-                    horizontal: true
+                    horizontal: false
                 }
             },
-            dataLabelsFor: {
+            dataLabels: {
                 enabled: false
             },
-            xaxisFor: {
+            xaxis: {
                 categories: [
-                    "BELLARUBBER LTDA",
-                    "REI AUTO PARTS",
-                    "BELLARUBBER LTDA",
-                    "CERCENA S/A IND METALURGICA",
-                    "METALURGICA RIVERTEC LT",
-                    "BORGWARNER BRASIL LTDA.",
-                    "EURORICAMBI",
-                    "CONIMEL EMPRESA DE MATERIAL ELETRICO LTDA",
-                    "ZL BRASIL",
-                    "JAHU BORRACHAS E AUTOPECAS LTDA"
+                    ""
+
                 ]
             }
         };
+
+        // Giro de Estoque
+
+        this.chartOptionsGiro = {
+            series: [
+                {
+                    name: "Dias de Estoque",
+                    data: []
+                },
+                {
+                    name: "Giro de Estoque",
+                    data: []
+                },
+
+                /* {
+                   name: "Ruptura de Estoque",
+                   data: [35, 41, 36, 26, 45,16]
+                 },*/
+            ],
+            chart: {
+                type: "bar",
+                height: 350
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: "55%",
+                    //  endingShape: "rounded"
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                show: true,
+                width: 2,
+                colors: ["transparent"]
+            },
+            xaxis: {
+                categories: [
+                    "Curva A",
+                    "Curva B",
+                    "Curva C",
+                    "Curva F",
+                    "Curva J",
+                    "Curva N"
+                ]
+            },
+            yaxis: {
+                title: {
+                    text: "$ (thousands)"
+                }
+            },
+            fill: {
+                opacity: 1
+            },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return "$ " + val + " thousands";
+                    }
+                }
+            }
+        };
+
+        // Disponibilidade Por Agrupador
+
+
+
+
+        this.chartOptionsDisponibilidadeAgrupador = {
+            series: [],
+
+
+            chart: {
+                foreColor: '#696969',
+                animations: {
+                    speed: 100,
+                    animateGradually: {
+                        enabled: false,
+                    },
+                },
+                // height: 200, // Altere a altura do gráfico aqui
+                width: "100%",  // Altere a largura do gráfico aqui
+                fontFamily: 'inherit',
+
+
+                // height: '40%',
+                type: 'donut',
+                /*sparkline: {
+                    enabled: true,
+                    color: "#696969",
+                },*/
+
+
+
+            },
+            colors: ['#FF8C00', '#DDA0DD', '#ADD8E6', '#006400', '#FF0000', '#00BFFF'],
+
+
+            labels: [],
+
+            dataLabels: {
+                style: {
+                    fontSize: '13px',
+                    //fontWeight: 'bold',
+                    colors: ['#0a0a0a'],
+                },
+
+            },
+
+            plotOptions: {
+                pie: {
+                    customScale: 0.9,
+                    expandOnClick: true,
+                    donut: {
+                        size: '75%',
+
+                    },
+
+                },
+
+
+            },
+
+
+        };
+
+
 
     }
 
@@ -758,22 +772,104 @@ export class DashestoqueComponent implements AfterViewInit {
         // this.dataSource.paginator.length = this.dataSource.data.length;
     };
 
+    getGeral(codemp:String[]){
+       
+      
+       if  (codemp[0]==='null'){
+        codemp[0] = '99'
+       }
+       this.getDiasEstoque(codemp);
+       this.getGiroEstoque(codemp)
+
+    }
 
 
-    getDiasEstoque() {
-        this._httpClient.get<{ columns: [], rows: [] }>('http://api.portal.jspecas.com.br/v1/views/519/data?')
+    getDiasEstoque(param:String[]) {
+        this.limparDiasEstoque();
+
+
+        this.dashEstoqueServico.getDiasEstoque(param).subscribe((dataresponse) => {
+            this.diasEstoque = dataresponse.rows;
+            this.formatarDiasEstoque();
+            this.atualizarTabela(1);
+        });
+    }
+
+
+
+    getEstoquePorFornecedor() {
+        this._httpClient.get<{ columns: [], rows: [] }>('http://api.portal.jspecas.com.br/v1/views/512/data?')
             .subscribe(dataresponse => {
-                this.diasEstoque = dataresponse.rows;
+                //this.estoquePorFornecedor = ;
 
-                // console.log(dataresponse.rows);
-                this.formatarDiasEstoque();
-                this.formatarSkusPorEmpresa();
-                this.atualizarTabela(1);
-                this.formatarSkusPorCurva();
+                this.formatarEstoqueFornecedor(dataresponse.rows);
 
 
             });
     }
+
+
+    getGiroEstoque(param:String[]) {
+
+        this.limparGiroEstoque();
+        this.dashEstoqueServico.getGiroEstoque(param).subscribe((dataresponse) => {
+            this.formatarGiroDiasEstoque(dataresponse.rows);
+
+
+            });
+    }
+
+
+    getDisponibilidadeCurva() {
+        this._httpClient.get<{ columns: [], rows: [] }>('http://api.portal.jspecas.com.br/v1/views/526/data?')
+            .subscribe(dataresponse => {
+                this.formatarDisponibilidade(dataresponse.rows);
+
+
+
+
+            });
+
+    }
+
+
+    getDisponibilidadeEmpresa() {
+        this._httpClient.get<{ columns: [], rows: [] }>('http://api.portal.jspecas.com.br/v1/views/536/data?')
+            .subscribe(dataresponse => {
+                this.formatarDisponibilidadeEmpresa(dataresponse.rows);
+
+
+
+
+            });
+
+    }
+
+    limparDiasEstoque(){
+        this.diasEstoque = [];
+        this.diasEstoquetot30d =1;
+        this.diasEstoquetot60d =1;
+        this.diasEstoquetot90d =1;
+        this.diasEstoquetot91d =1;
+        this.diasEstoque30d = [];
+        this.diasEstoque60d = [];
+        this.diasEstoque90d = [];
+        this.diasEstoque91d = [];
+
+
+    }
+
+    limparGiroEstoque(){
+       // const emptyArray: GiroDiasEstoque[] = [];
+      console.log('aqui',this.giroEstoque.giro);
+    this.giroEstoque.giro=[];
+    console.log(this.giroEstoque);
+ 
+
+    }
+
+
+
 
 
     formatarDiasEstoque() {
@@ -801,7 +897,7 @@ export class DashestoqueComponent implements AfterViewInit {
         this.diasEstoquetot90d = Math.round((this.diasEstoque90d.length / this.diasEstoque.length) * 100);
         this.diasEstoquetot91d = Math.round((this.diasEstoque91d.length / this.diasEstoque.length) * 100);
 
-        //    console.log(this.diasEstoque30d);
+
 
         // Porcentagem = (Parte / Total) * 100
 
@@ -832,106 +928,19 @@ export class DashestoqueComponent implements AfterViewInit {
 
 
 
-
-    formatarSkusPorEmpresa() {
-        const empresas: number[] = [2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 28];
-        this.skusEmpresa = [];
-
-
-        for (let index = 0; index < empresas.length; index++) {
-            let elemento: SkusEmp = {
-                codemp: empresas[index],
-                empresa: "",
-                codprod: [],
-            }
-
-
-            for (let i = 0; i < this.diasEstoque.length; i++) {
-
-                if (this.diasEstoque[i][8] === 'N') {
-
-
-
-                    if (Number(this.diasEstoque[i][2]) === elemento.codemp) {
-                        elemento.empresa = this.diasEstoque[i][3];
-                        elemento.codprod.push(Number(this.diasEstoque[i][0]));
-                        //  const skusAux: skus = {
-                        //    codprod: Number(this.diasEstoque[i][0]),
-                        // codemp: Number(this.diasEstoque[i][2])
-
-                    }
-
-                }
-
-            }
-            this.skusEmpresa.push(elemento);
-
-
-
-        }
-        this.atualizarSkuEmpresa();
-        //this.atualizarSkuEmpresa();
-        // this.iniciarComponentesDiasEstoque();
-        var reflow = new ApexCharts(this.chartSku, this.chartOptionsSku);
-    }
-
-
-    atualizarSkuEmpresa() {
-        this.chartOptionsSku = {
+    atualizarDisponibilidadeEmpresa() {
+        this.chartOptionsDisponibilidadeEmpresa = {
 
             series: [
                 {
                     name: "Qtd. SKUs",
-                    data: [this.skusEmpresa[0].codprod.length,
-                    this.skusEmpresa[1].codprod.length,
-                    this.skusEmpresa[2].codprod.length,
-                    this.skusEmpresa[3].codprod.length,
-                    this.skusEmpresa[4].codprod.length,
-                    this.skusEmpresa[5].codprod.length,
-                    this.skusEmpresa[6].codprod.length,
-                    this.skusEmpresa[7].codprod.length,
-                    this.skusEmpresa[8].codprod.length,
-                    this.skusEmpresa[9].codprod.length,
-                    this.skusEmpresa[10].codprod.length,
-                    this.skusEmpresa[11].codprod.length,
-                    this.skusEmpresa[12].codprod.length,
-                    this.skusEmpresa[13].codprod.length,
-                    this.skusEmpresa[14].codprod.length,
-                    this.skusEmpresa[15].codprod.length,
-                    this.skusEmpresa[16].codprod.length,
-                    this.skusEmpresa[17].codprod.length,
-                    this.skusEmpresa[18].codprod.length,
-                    this.skusEmpresa[19].codprod.length,
-                    this.skusEmpresa[20].codprod.length,
-                    this.skusEmpresa[21].codprod.length,
-                    this.skusEmpresa[22].codprod.length,
-
-
-
-
-                    ]
+                    data: this.DisponibilidadeEmpresa.serie
                 }
             ],
-            annotationsSku: {
-                points: [
-                    {
-                        x: "Bananas",
-                        seriesIndex: 0,
-                        label: {
-                            borderColor: "#FF8C00",
-                            offsetY: 0,
-                            style: {
-                                color: "#FF8C00",
-                                background: "#FF8C00"
-                            },
-                            text: "Bananas are good"
-                        }
-                    }
-                ]
-            },
+
             chart: {
                 height: 250,
-                width: 600,
+                width: 500,
                 type: "bar"
             },
             plotOptions: {
@@ -978,34 +987,7 @@ export class DashestoqueComponent implements AfterViewInit {
                         fontSize: '11px'
                     }
                 },
-                categories: [
-                    this.skusEmpresa[0].empresa,
-                    this.skusEmpresa[1].empresa,
-                    this.skusEmpresa[2].empresa,
-                    this.skusEmpresa[3].empresa,
-                    this.skusEmpresa[4].empresa,
-                    this.skusEmpresa[5].empresa,
-                    this.skusEmpresa[6].empresa,
-                    this.skusEmpresa[7].empresa,
-                    this.skusEmpresa[8].empresa,
-                    this.skusEmpresa[9].empresa,
-                    this.skusEmpresa[10].empresa,
-                    this.skusEmpresa[11].empresa,
-                    this.skusEmpresa[12].empresa,
-                    this.skusEmpresa[13].empresa,
-                    this.skusEmpresa[14].empresa,
-                    this.skusEmpresa[15].empresa,
-                    this.skusEmpresa[16].empresa,
-                    this.skusEmpresa[17].empresa,
-                    this.skusEmpresa[18].empresa,
-                    this.skusEmpresa[19].empresa,
-                    this.skusEmpresa[20].empresa,
-                    this.skusEmpresa[21].empresa,
-                    this.skusEmpresa[22].empresa,
-
-
-
-                ],
+                categories: this.DisponibilidadeEmpresa.categoria,
                 tickPlacement: "on"
             },
             yaxis: {
@@ -1036,264 +1018,742 @@ export class DashestoqueComponent implements AfterViewInit {
 
 
 
-    formatarSkusPorCurva() {
-        //const curvas: String[] = ["A","B","C","F","J","N"];
-        //this.skusCurva = [];
-        // console.log(empresas.length)
+    formatarEstoqueFornecedor(param: string[]) {
 
-        const curvaA: SkusCurva = {
-            curva: "A",
-            skus: [],
+        let fornecedor: string[] = [];
+        let saldo: number[] = [];
+        for (let i = 0; i < param.length; i++) {
 
-        }
-        const curvaB: SkusCurva = {
-            curva: "B",
-            skus: [],
-
-        }
-        const curvaC: SkusCurva = {
-            curva: "C",
-            skus: [],
-
-        }
-        const curvaF: SkusCurva = {
-            curva: "F",
-            skus: [],
-
-        }
-        const curvaJ: SkusCurva = {
-            curva: "J",
-            skus: [],
-
-        }
-        const curvaN: SkusCurva = {
-            curva: "N",
-            skus: [],
+            this.estoquePorFornecedor.nomeParc.push(param[i][1]);
+            this.estoquePorFornecedor.SaldoEstoque.push(Number(param[i][4]));
 
         }
 
 
-        for (let i = 0; i < this.diasEstoque.length; i++) {
 
-
-            let sku : Skus ={
-                codprod: Number(this.diasEstoque[i][0]),
-                codemp: Number(this.diasEstoque[i][2])
-              }
-              console.log( this.diasEstoque[i][9]);
-
-            if (this.diasEstoque[i][9] === 'A') {
-
-              curvaA.skus.push(sku);
-
-            } else if (this.diasEstoque[i][9] === 'B'){
-
-
-                  curvaB.skus.push(sku);
-            }
-            else if (this.diasEstoque[i][9] === 'C'){
-
-
-                  curvaC.skus.push(sku);
-            }
-            else if (this.diasEstoque[i][9] === 'F'){
-
-
-                  curvaF.skus.push(sku);
-            }
-            else if (this.diasEstoque[i][9] === 'J'){
-
-                  curvaJ.skus.push(sku);
-            }
-            else {
-
-
-                  curvaN.skus.push(sku);
-            }
-
-        }
-
-    this.skusCurva.push(curvaA);
-    this.skusCurva.push(curvaB);
-    this.skusCurva.push(curvaC);
-    this.skusCurva.push(curvaF);
-    this.skusCurva.push(curvaJ);
-    this.skusCurva.push(curvaN);
-this.atualizarSkuCurva();
-   // console.log( this.skusCurva);
+        this.atualizarFornecedor();
     }
-    // this.skusEmpresa.push(elemento);
+
+
+    formatarDisponibilidade(param: string[]) {
+
+
+        for (let i = 0; i < param.length; i++) {
+
+
+
+            this.disponibilidadeAgrupador.categoria.push(param[i][0]);
+            this.disponibilidadeAgrupador.serie.push(Number(param[i][1]));
+            this.disponibilidadeSku.categoria.push(param[i][0]);
+            this.disponibilidadeSku.serie.push(Number(param[i][2]));
+
+        }
+
+
+
+        this.atualizarDisponibilidadeAgrupador();
+        this.atualizarDisponibilidadeSku();
+
+
+    }
+
+
+    formatarDisponibilidadeEmpresa(param: string[]) {
+
+        console.log("empresa", param);
+
+        for (let i = 0; i < param.length; i++) {
+
+
+
+            this.DisponibilidadeEmpresa.categoria.push(param[i][1]);
+            this.DisponibilidadeEmpresa.serie.push(Number(param[i][2]));
+
+
+        }
+
+
+        this.atualizarDisponibilidadeEmpresa();
+
+
+    }
+
+
+
+    formatarGiroDiasEstoque(param: string[]) {
+
+
+        for (let i = 0; i < param.length; i++) {
+
+            let giro: GiroDias = {
+                curva: param[i][0],
+                giro: Number(param[i][1]),
+                dias: Number(param[i][2])
+            }
+            console.log(giro);
+            this.giroEstoque.giro.push(giro);
+        }
+
+
+
+        this.atualizarResumoEstoque();
+    }
 
 
 
 
 
-    // var reflow= new ApexCharts(this.chartSku, this.chartOptionsSku);
-
-
-    atualizarSkuCurva(){
-         // Curva por SKU
 
 
 
+    atualizarResumoEstoque() {
 
-         this.chartOptionsCurvSKU = {
-            series: [this.skusCurva[0].skus.length,
-                    this.skusCurva[1].skus.length,
-                    this.skusCurva[2].skus.length,
-                    this.skusCurva[3].skus.length,
-                    this.skusCurva[4].skus.length,
-                    this.skusCurva[5].skus.length],
+
+        // Giro de Estoque
+
+        this.chartOptionsGiro = {
+            series: [
+                /* {
+                     name: "Dias de Estoque",
+                     data: this..giro
+                 },*/
+                {
+                    color: "#ed7b00",
+                    name: "Giro de Estoque",
+                    type: "line",
+                    data: [Math.round(this.giroEstoque.giro[0].giro * 100) / 100,
+                    Math.round(this.giroEstoque.giro[1].giro * 100) / 100,
+                    Math.round(this.giroEstoque.giro[2].giro * 100) / 100,
+                    Math.round(this.giroEstoque.giro[3].giro * 100) / 100,
+                    Math.round(this.giroEstoque.giro[4].giro * 100) / 100,
+                    Math.round(this.giroEstoque.giro[5].giro * 100) / 100,
+                    Math.round(this.giroEstoque.giro[6].giro * 100) / 100]
+                },
+
+                {
+                    color: "#6e7a8a",
+                    name: "Dias de Estoque",
+                    type: "line",
+                    data: [this.giroEstoque.giro[0].dias,
+                    this.giroEstoque.giro[1].dias,
+                    this.giroEstoque.giro[2].dias,
+                    this.giroEstoque.giro[3].dias,
+                    this.giroEstoque.giro[4].dias,
+                    this.giroEstoque.giro[5].dias,
+                    this.giroEstoque.giro[6].dias]
+                },
+            ],
+            chart: {
+                type: "line",
+                height: 350,
+                width: "100%"
+            },
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: "55%",
+                    //  endingShape: "rounded"
+                    dataLabels: {
+                        position: 'top',
+
+
+                    }
+                }
+            },
+            dataLabels: {
+                enabled: true,
+                // offsetY: -20,
+                style: {
+                    colors: ['#ed7b00', '#6e7a8a'],
+
+                }
+
+            },
+
+            stroke: {
+                show: true,
+                width: [2, 2],
+                colors: ['#ed7b00', '#6e7a8a']
+            },
+            xaxis: {
+                categories: [this.giroEstoque.giro[0].curva,
+                this.giroEstoque.giro[1].curva,
+                this.giroEstoque.giro[2].curva,
+                this.giroEstoque.giro[3].curva,
+                this.giroEstoque.giro[4].curva,
+                this.giroEstoque.giro[5].curva,
+                this.giroEstoque.giro[6].curva]
+            },
+            yaxis: [
+                {
+                    axisTicks: {
+                        show: true
+                    },
+                    /*axisBorder: {
+                      show: true,
+                      color: "#ed7b00"
+                    },*/
+                    labels: {
+                        style: {
+                            // color: "#008FFB"
+                        }
+                    },
+                    title: {
+                        text: "Giro de Estoque",
+                        style: {
+                            color: "#ed7b00"
+                        }
+                    },
+                    tooltip: {
+                        enabled: true
+                    }
+                },
+                {
+                    seriesName: "Income",
+                    opposite: true,
+                    axisTicks: {
+                        show: true
+                    },
+                    /* axisBorder: {
+                       show: true,
+                       color: "#ed7b00"
+                     },*/
+                    labels: {
+                        style: {
+                            // color: "#00E396"
+                        }
+                    },
+                    title: {
+                        text: "Dias de Estoque",
+                        style: {
+                            color: "#6e7a8a"
+                        }
+                    }
+                },
+
+            ],
+            fill: {
+                opacity: 1
+            },
+
+        };
+
+
+
+    }
+
+
+    atualizarFornecedor() {
+        this.chartOptionsFor = {
+            series: [
+                {
+                    name: "Estoque",
+                    data: this.estoquePorFornecedor.SaldoEstoque
+                }
+            ],
+            annotations: {
+                points: [
+                    {
+                        x: "Bananas",
+                        seriesIndex: 0,
+                        label: {
+                            borderColor: "#FF8C00",
+                            offsetY: 0,
+                            style: {
+                                color: "#FF8C00",
+                                background: "#FF8C00"
+                            },
+                            text: "Bananas are good"
+                        }
+                    }
+                ]
+            },
+            chart: {
+                type: "bar",
+                height: 4500,
+                width: 1200,
+            },
+
+            tooltip: {
+                followCursor: true,
+                theme: 'dark',
+                y: {
+                    formatter: (val) => {
+                        return (this.formatadorPts(val));
+                    }
+                },
+            },
+
+            plotOptions: {
+
+                bar: {
+                    horizontal: true
+                }
+            },
+
+            dataLabels: {
+                formatter: (val) => {
+                    return (this.formatadorPts(val));
+                },
+                enabled: true,
+                style: {
+
+                    colors: ["#0a0a0a"],
+                    fontSize: "10px",
+                    fontWeight: "bold"
+
+
+                }
+            },
+            /*
+                        stroke: {
+                            width: 1,
+                            colors: ['#94A3B8']
+
+
+                        },*/
+            xaxis: {
+                labels: {
+                    rotate: -45,
+                    //  with: 1
+                    style: {
+                        fontSize: '11px',
+
+
+                    },
+                    formatter: (val) => {
+                        return (this.formatadorPts(val));
+                    }
+
+                },
+                categories: this.estoquePorFornecedor.nomeParc,
+                tickPlacement: "on"
+            },
+            yaxis: {
+                title: {
+                    text: "SKUs"
+                },
+
+            },
+            fill: {
+                type: "gradient",
+                gradient: {
+                    shade: "light",
+                    type: "horizontal",
+                    shadeIntensity: 0.25,
+                    gradientToColors: undefined,
+                    inverseColors: true,
+                    opacityFrom: 0.85,
+                    opacityTo: 0.85,
+                    stops: [50, 0, 100]
+                }
+
+
+            }
+        };
+
+    }
+
+
+
+
+
+
+    atualizarDisponibilidadeSku() {
+        // Curva por SKU
+
+
+
+
+        this.chartOptionsDisponibilidadeSKU = {
+            series: this.disponibilidadeSku.serie,
 
 
             chart: {
-
+                foreColor: '#696969',
                 animations: {
                     speed: 100,
                     animateGradually: {
                         enabled: false,
                     },
                 },
-               // height: 200, // Altere a altura do gráfico aqui
-                width: 400,  // Altere a largura do gráfico aqui
+                height: 200, // Altere a altura do gráfico aqui
+                width: "100%",  // Altere a largura do gráfico aqui
                 fontFamily: 'inherit',
-                foreColor: 'inherit',
-               // height: '40%',
+
+
+                // height: '40%',
                 type: 'donut',
-               /* sparkline: {
+                /*sparkline: {
                     enabled: true,
+                    color: "#696969",
                 },*/
 
 
 
             },
-            colors: ['#FF8C00', '#DDA0DD', '#ADD8E6', '#006400', '#FF0000', '#00BFFF'],
+            colors: ['#de1d37', '#FF8C00', '#477bff', '#006400', '#FF0000', '#00BFFF'],
 
 
-            labels: ["Curva A", "Curva B", "Curva C", "Curva F", "Curva J", "Curva N"],
+            labels: this.disponibilidadeSku.categoria,
+
+            dataLabels: {
+                style: {
+                    fontSize: '13px',
+                    //fontWeight: 'bold',
+                    colors: ['#0a0a0a'],
+                },
+
+            },
+
             plotOptions: {
                 pie: {
                     customScale: 0.9,
-                    expandOnClick: false,
+                    expandOnClick: true,
                     donut: {
                         size: '75%',
+
                     },
+
                 },
+
+
+
             },
-            states: {
-                hover: {
-                    filter: {
-                        type: 'none',
-                    },
-                },
-                active: {
-                    filter: {
-                        type: 'none',
-                    },
-                },
-            },
-          /*  tooltip: {
-                enabled: true,
-                fillSeriesColor: false,
-                theme: 'dark',
-                custom: ({
-                    seriesIndex,
-                    w,
-                }): string => `<div class="flex items-center h-8 min-h-8 max-h-8 px-3">
-                                                    <div class="w-3 h-3 rounded-full" style="background-color: ${
-                                                        w.config.colors[
-                                                           0
-                                                        ]
-                                                    };"></div>
-                                                    <div class="ml-2 text-md leading-none">${
-                                                        w.config.labels[
-                                                          "teste"
-                                                        ]
-                                                    }:</div>
-                                                    <div class="ml-2 text-md font-bold leading-none">${(
-                                                        (w.config.series[
-                                                            seriesIndex
-                                                        ] *
-                                                            100) /
-                                                        w.config.series[0]
-                                                    ).toFixed(2)}%</div>
-                                                </div>`,
+            legend: { position: 'bottom' }
+
+
+
+
+
+            /*tooltip:{
+   enabled: true,
+   fillSeriesColor: true,
             },*/
+            /*  tooltip: {
+                  enabled: true,
+                  fillSeriesColor: false,
+                  theme: 'dark',
+                  custom: ({
+                      seriesIndex,
+                      w,
+                  }): string => `<div class="flex items-center h-8 min-h-8 max-h-8 px-3">
+                                                      <div class="w-3 h-3 rounded-full" style="background-color: ${
+                                                          w.config.colors[
+                                                             0
+                                                          ]
+                                                      };"></div>
+                                                      <div class="ml-2 text-md leading-none">${
+                                                          w.config.labels[
+                                                            "teste"
+                                                          ]
+                                                      }:</div>
+                                                      <div class="ml-2 text-md font-bold leading-none">${(
+                                                          (w.config.series[
+                                                              seriesIndex
+                                                          ] *
+                                                              100) /
+                                                          w.config.series[0]
+                                                      ).toFixed(2)}%</div>
+                                                  </div>`,
+              },*/
 
-            /*responsive: [
-                {
-                    breakpoint: 500,
-                    options: {
-                        chart: {
-                            width: 100
-                        },
-                        legend: {
-                            position: "right"
+            /* responsive: [
+                 {
+                     breakpoint: 500,
+
+                     options: {
+                         chart: {
+                             width: 100
+                         },
+                         legend: {
+                             position: "center"
+                         }
+
+                     }
+                 }
+             ]*/
+
+
+        };
+
+
+
+    }
+
+
+
+
+
+
+    atualizarDisponibilidadeAgrupador() {
+        // Disponibilidade Por Agrupador
+
+
+
+
+        this.chartOptionsDisponibilidadeAgrupador = {
+            series: this.disponibilidadeAgrupador.serie,
+
+
+            chart: {
+                foreColor: '#696969',
+                animations: {
+                    speed: 100,
+                    animateGradually: {
+                        enabled: false,
+                    },
+                },
+                height: 200, // Altere a altura do gráfico aqui
+                width: "100%",  // Altere a largura do gráfico aqui
+                fontFamily: 'inherit',
+
+
+                // height: '40%',
+                type: 'donut',
+                /*sparkline: {
+                    enabled: true,
+                    color: "#696969",
+                },*/
+
+
+
+            },
+            colors: ['#FF8C00', '#477bff', '#de1d37', '#006400', '#FF0000', '#00BFFF'],
+
+
+            labels: this.disponibilidadeAgrupador.categoria,
+
+            dataLabels: {
+                style: {
+                    fontSize: '13px',
+                    //fontWeight: 'bold',
+                    colors: ['#0a0a0a'],
+                },
+
+            },
+
+            plotOptions: {
+                pie: {
+                    customScale: 0.9,
+                    expandOnClick: true,
+                    donut: {
+                        size: '75%',
+
+                    },
+
+                },
+
+
+            },
+            legend: { position: 'bottom' }
+
+
+        };
+
+
+
+    }
+
+
+
+
+    carregarTable(param: String[]): PeriodicElement[] {
+
+
+        let ELEMENT_DATA: PeriodicElement[] = [];
+        for (let i = 0; i < param.length; i++) {
+            let elemento: PeriodicElement = {
+                codprod: Number(param[i][0]),
+                produto: param[i][1],
+                codemp: Number(param[i][2]),
+                empresa: param[i][3],
+                qtdDias: Number(param[i][7])
+            };
+            ELEMENT_DATA.push(elemento);
+
+
+
+        }
+
+        /*
+        let  ELEMENT_DATA: PeriodicElement[] = [
+            { position: 1998, name: 'CALCO PINHAO SEPARADOR ROLAM 13130 0001990', weight: 7, symbol: 'SA', symbol2: 35 },
+            { position: 1564, name: 'RETENTOR TRS VIRABREQUIM 0002040', weight: 10, symbol: 'BH', symbol2: 50 },
+            { position: 184, name: 'LONA FREIO DT 0002041', weight: 3, symbol: 'MT', symbol2: 30 },
+            { position: 4861, name: 'JG ARRUELAS ENCOSTO 0,25MM MOTOR HS2.5T 0002045', weight: 9.0122, symbol: 'Be', symbol2: 10 },
+            { position: 1846, name: 'PORCA M10 X 1,50 0002044', weight: 2, symbol: 'BL', symbol2: 37 },
+            { position: 452, name: 'JG  PISTAO, PINO E TRAVAS 0002047', weight: 5, symbol: 'SL', symbol2: 52 },
+            { position: 1578, name: 'JG  PISTAO, PINO E TRAVAS 0002047', weight: 7, symbol: 'SA', symbol2: 59 },
+            { position: 5682, name: 'JG BRONZINA BIELA 0,25 0002053', weight: 23, symbol: 'RJ', symbol2: 46 },
+            { position: 142, name: 'JG  PISTAO, PINO E TRAVAS 0002047', weight: 11, symbol: 'JP', symbol2: 35 },
+            { position: 4562, name: 'PORCA AUTO-TRAVANTE, 3/8" UNF 0002054', weight: 17, symbol: 'IM', symbol2: 10 },
+        ];*/
+
+        return ELEMENT_DATA;
+    }
+
+
+    /** Announce the change in sort state for assistive technology. */
+    announceSortChange(sortState: Sort) {
+        // This example uses English messages. If your application supports
+        // multiple language, you would internationalize these strings.
+        // Furthermore, you can customize the message to add additional
+        // details about the values being sorted.
+        if (sortState.direction) {
+            this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+        } else {
+            this._liveAnnouncer.announce('Sorting cleared');
+        }
+    }
+
+
+
+    formatadorUnidade(val) {
+        var numero = val ? Number(val).toFixed(0) : '0';
+        var valor = numero;
+
+        if (val >= 0) {
+            if (String(numero).length < 4) {
+                valor = numero;
+            } else {
+                if (String(numero).length < 5) {
+                    valor =
+                        numero.substring(0, 1) +
+                        ',' +
+                        numero.substring(1, 2) +
+                        'K';
+                } else {
+                    if (String(numero).length < 6) {
+                        valor =
+                            numero.substring(0, 2) +
+                            ',' +
+                            numero.substring(2, 3) +
+                            'K';
+                    } else {
+                        if (String(numero).length < 7) {
+                            valor =
+                                numero.substring(0, 3) +
+                                ',' +
+                                numero.substring(3, 4) +
+                                'K';
+                        } else {
+                            if (String(numero).length < 8) {
+                                valor =
+                                    numero.substring(0, 1) +
+                                    ',' +
+                                    numero.substring(1, 2) +
+                                    'M';
+                            } else {
+                                if (String(numero).length < 9) {
+                                    valor =
+                                        numero.substring(0, 2) +
+                                        ',' +
+                                        numero.substring(2, 3) +
+                                        'M';
+                                } else {
+                                    if (String(numero).length < 10) {
+                                        valor =
+                                            numero.substring(0, 3) +
+                                            ',' +
+                                            numero.substring(3, 4) +
+                                            'M';
+                                    } else {
+                                        if (String(numero).length < 17) {
+                                            valor =
+                                                numero.substring(0, 1) +
+                                                ',' +
+                                                numero.substring(1, 2) +
+                                                'B';
+                                        }
+                                    }
+                                }
+                            }
                         }
-
                     }
                 }
-            ]*/
+            }
+        } else {
+            if (String(numero).length < 4) {
+                valor = numero;
+            } else {
+                if (String(numero).length - 1 < 5) {
+                    valor =
+                        numero.substring(0, 2) +
+                        ',' +
+                        numero.substring(2, 3) +
+                        'K';
+                } else {
+                    if (String(numero).length - 1 < 6) {
+                        valor =
+                            numero.substring(0, 3) +
+                            ',' +
+                            numero.substring(3, 4) +
+                            'K';
+                    } else {
+                        if (String(numero).length - 1 < 7) {
+                            valor =
+                                numero.substring(0, 4) +
+                                ',' +
+                                numero.substring(5, 5) +
+                                'K';
+                        } else {
+                            if (String(numero).length - 1 < 8) {
+                                valor =
+                                    numero.substring(0, 2) +
+                                    ',' +
+                                    numero.substring(2, 3) +
+                                    'M';
+                            } else {
+                                if (String(numero).length - 1 < 9) {
+                                    valor =
+                                        numero.substring(0, 3) +
+                                        ',' +
+                                        numero.substring(3, 4) +
+                                        'M';
+                                } else {
+                                    if (String(numero).length - 1 < 10) {
+                                        valor =
+                                            numero.substring(0, 4) +
+                                            ',' +
+                                            numero.substring(4, 5) +
+                                            'M';
+                                    } else {
+                                        if (String(numero).length - 1 < 17) {
+                                            valor =
+                                                numero.substring(0, 2) +
+                                                ',' +
+                                                numero.substring(2, 3) +
+                                                'B';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
-
-        };
+        }
+        return valor;
     }
+    formatadorPts(val) {
+        if (isNumber(val)) {
+            if (!val) {
+                val = 0;
+            }
+            return String(val.toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+            })).slice(3);
+        }
 
-
-
-carregarTable(param: String[]): PeriodicElement[] {
-
-
-    let ELEMENT_DATA: PeriodicElement[] = [];
-    for (let i = 0; i < param.length; i++) {
-        let elemento: PeriodicElement = {
-            codprod: Number(param[i][0]),
-            produto: param[i][1],
-            codemp: Number(param[i][2]),
-            empresa: param[i][3],
-            qtdDias: Number(param[i][7])
-        };
-        ELEMENT_DATA.push(elemento);
-
-
-
+        return val;
     }
-
-    /*
-    let  ELEMENT_DATA: PeriodicElement[] = [
-        { position: 1998, name: 'CALCO PINHAO SEPARADOR ROLAM 13130 0001990', weight: 7, symbol: 'SA', symbol2: 35 },
-        { position: 1564, name: 'RETENTOR TRS VIRABREQUIM 0002040', weight: 10, symbol: 'BH', symbol2: 50 },
-        { position: 184, name: 'LONA FREIO DT 0002041', weight: 3, symbol: 'MT', symbol2: 30 },
-        { position: 4861, name: 'JG ARRUELAS ENCOSTO 0,25MM MOTOR HS2.5T 0002045', weight: 9.0122, symbol: 'Be', symbol2: 10 },
-        { position: 1846, name: 'PORCA M10 X 1,50 0002044', weight: 2, symbol: 'BL', symbol2: 37 },
-        { position: 452, name: 'JG  PISTAO, PINO E TRAVAS 0002047', weight: 5, symbol: 'SL', symbol2: 52 },
-        { position: 1578, name: 'JG  PISTAO, PINO E TRAVAS 0002047', weight: 7, symbol: 'SA', symbol2: 59 },
-        { position: 5682, name: 'JG BRONZINA BIELA 0,25 0002053', weight: 23, symbol: 'RJ', symbol2: 46 },
-        { position: 142, name: 'JG  PISTAO, PINO E TRAVAS 0002047', weight: 11, symbol: 'JP', symbol2: 35 },
-        { position: 4562, name: 'PORCA AUTO-TRAVANTE, 3/8" UNF 0002054', weight: 17, symbol: 'IM', symbol2: 10 },
-    ];*/
-
-    return ELEMENT_DATA;
 }
 
 
-/** Announce the change in sort state for assistive technology. */
-announceSortChange(sortState: Sort) {
-    // This example uses English messages. If your application supports
-    // multiple language, you would internationalize these strings.
-    // Furthermore, you can customize the message to add additional
-    // details about the values being sorted.
-    if (sortState.direction) {
-        this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
-    } else {
-        this._liveAnnouncer.announce('Sorting cleared');
-    }
-}
 
-
-
-
-}
 
 
 
@@ -1309,24 +1769,35 @@ export interface PeriodicElement {
 
 }
 
-export interface SkusEmp {
-    codemp: number;
-    empresa: String;
-    codprod: number[];
+
+export interface GiroDias {
+    curva: string;
+    giro: number;
+    dias: number;
+}
+
+export interface GiroDiasEstoque {
+    giro: any[];
 
 }
 
-export interface Skus {
-    codemp: number;
-    codprod: number;
+export interface EstoqueFornecedor {
 
+    nomeParc: string[];
+    SaldoEstoque: number[];
 }
 
+export interface EstoqueDiasGiro {
 
-export interface SkusCurva {
-    curva: String;
-    skus: Skus[];
+    curva: string;
+    giro: number;
+    dias: number;
+}
 
+export interface Disponibilidade {
+
+    serie: number[];
+    categoria: string[];
 }
 
 
@@ -1339,6 +1810,7 @@ export interface DiasEstoque {
     media3m: string;
     symbol2: number;
 }*/
+
 
 
 

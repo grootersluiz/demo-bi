@@ -26,14 +26,22 @@
                 </div>
             </div>
             <div class="flex flex-wrap justify-end">
-                <!-- FILTROS VVVVV -->
-                <app-selectfilial></app-selectfilial>
-                <!-- FILTROS ^^^^^ -->
-            </div>
-            <!-- Botão de confirmar filtro, adicionar evento de (click) -->
-            <button class="sm:inline-flex ml-5 apply-button" style="width: 120px" mat-flat-button [color]="'primary'">
-                <span style="font-size: 12px">Aplicar</span>
-            </button>
+               <!-- FILTROS VVVVV -->
+               <app-selectfilial #filial></app-selectfilial>
+
+
+               <!-- FILTROS ^^^^^ -->
+           </div>
+           <!-- Botão de confirmar filtro, adicionar evento de (click) -->
+           <button
+               class="sm:inline-flex ml-5 apply-button"
+               style="width: 120px"
+               mat-flat-button
+               [color]="'primary'"
+               (click)="getGeral(filial.filiais.value)"
+           >
+               <span style="font-size: 12px">Aplicar</span>
+           </button>
         </div>
     </div>
     <div class="relative flex flex-wrap max-w-full max-w-screen-xl mx-auto p-1 md:p-1 gap-1 justify-center">
@@ -48,17 +56,18 @@
             [xaxis]="chartOptions.xaxis"
           ></apx-chart>
         </div-->
-        <div>
+        <div class="w-full">
+            <div class="fex justify-center">
             <div style=" text-align: center; ">
                 <b><mat-label>Dias de Estoque</mat-label></b>
-
             </div>
+
             <div   class="flex flex-row w-full gap-2 ">
-                <div id="chart" style="text-align: center;"
-                    class="relative flex flex-col flex-direction bg-card shadow rounded-2xl overflow-hidden"
+                <div id="chart"
+                    class="relative flex flex-col w-1/4 flex-direction bg-card shadow rounded-2xl overflow-hidden"
                     (click)="atualizarTabela(1)">
                     <br>
-                    <mat-label  style="text-align: center;"> Até 30 Dias </mat-label>
+                    <mat-label style="text-align: center;"> Até 30 Dias </mat-label>
                     <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart"
                         [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
                         [fill]="chartOptions.fill">
@@ -68,7 +77,7 @@
 
 
                 <div id="chart2" style="text-align: center;"
-                    class="relative flex flex-col flex-direction bg-card shadow rounded-2xl overflow-hidden"
+                    class="relative flex flex-col w-1/4 flex-direction bg-card shadow rounded-2xl overflow-hidden"
                     (click)="atualizarTabela(2)">
                     <br>
                     <mat-label style="text-align: center;">De 31 à 60 Dias </mat-label>
@@ -80,7 +89,7 @@
 
 
                 <div id="chart3" style="text-align: center;"
-                    class="relative flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden"
+                    class="relative flex flex-col w-1/4 flex-auto bg-card shadow rounded-2xl overflow-hidden"
                     (click)="atualizarTabela(3)">
                     <br>
                     <mat-label style="text-align: center;">De 61 à 90 Dias </mat-label>
@@ -93,7 +102,7 @@
 
 
                 <div id="chart4" style="text-align: center;"
-                    class="relative flex flex-col flex-auto bg-card shadow rounded-2xl overflow-hidden"
+                    class="relative flex flex-col w-1/4 flex-auto bg-card shadow rounded-2xl overflow-hidden"
                     (click)="atualizarTabela(4)">
                     <br>
                     <mat-label style="text-align: center;"> Mais de 90 Dias </mat-label>
@@ -101,7 +110,8 @@
                         [plotOptions]="chartOptions4.plotOptions" [labels]="chartOptions4.labels"
                         [fill]="chartOptions4.fill"></apx-chart>
                 </div>
-            </div>
+
+        </div>
             <div  style="text-align: left;" class="flex flex-col h-80 bg-card shadow rounded-2xl mt-2">
 
                 <div style=" display: flex">
@@ -134,7 +144,7 @@
                                     mat-sort-header
                                     style="font-size: 12px"
                                 >
-                                    {{ displayedColumns[i] }}
+                                    {{ displayedColumns[i]}}
 
                                     <mat-icon
                                     class="pl-2 text-lg"
@@ -209,29 +219,58 @@
                 </div>
             </div>
 
-            <div class="mt-10 " style=" text-align: center; font-size: 14px;">
-                <b><mat-label>SKUs Disponíveis</mat-label></b>
+            <!--div class="mt-10 " style=" text-align: center; font-size: 14px;">
+                <b><mat-label>Disponibilidade de Estoque</mat-label></b>
+
+            </div-->
+
+            <div id="chartGiro" class="relative flex flex-col bg-card  w-full shadow rounded-2xl mt-10 gap-1 ">
+
+                <div class="">
+                    <b> <mat-label> Dias de Estoque / Giro</mat-label></b>
+                </div>
+                <!--div id="chart">
+                    <apx-chart [series]="chartOptionsCurvSKU.series"
+                                [chart]="chartOptionsCurvSKU.chart"
+                                 [labels]="chartOptionsCurvSKU.labels"
+                                [responsive]="chartOptionsCurvSKU.responsive"></apx-chart>
+                </div-->
+
+                <apx-chart
+                [series]="chartOptionsGiro.series"
+                [chart]="chartOptionsGiro.chart"
+                [dataLabels]="chartOptionsGiro.dataLabels"
+                [plotOptions]="chartOptionsGiro.plotOptions"
+                [yaxis]="chartOptionsGiro.yaxis"
+                [legend]="chartOptionsGiro.legend"
+                [fill]="chartOptionsGiro.fill"
+                [stroke]="chartOptionsGiro.stroke"
+                [tooltip]="chartOptionsGiro.tooltip"
+                [xaxis]="chartOptionsGiro.xaxis"
+                [colors]="chartOptionsGiro.colors"
+              ></apx-chart>
 
             </div>
 
-            <div class="flex flex-row gap-4">
 
-                <div class="mt-2 bg-card  rounded-2xl ">
+            <div class="flex flex-row gap-4 max-w-full mt-1 ">
+
+                <div class="mt-2 bg-card  rounded-2xl gap-1  w-full" >
                     <div>
-                        <b> <mat-label> SKUs por Empresa</mat-label></b>
+                        <b> <mat-label> Disponibilidade por Empresa</mat-label></b>
                     </div>
 
-                    <div  id= "chartSku" class="flex flex-row w-full gap-4 ">
+                    <div  id= "chartSku">
                         <div>
-                            <apx-chart [series]="chartOptionsSku.series"
-                                [chart]="chartOptionsSku.chart"
-                                [dataLabels]="chartOptionsSku.dataLabels"
-                                [plotOptions]="chartOptionsSku.plotOptions"
-                                [yaxis]="chartOptionsSku.yaxis"
-                                [xaxis]="chartOptionsSku.xaxis"
-                                [stroke]="chartOptionsSku.stroke"
-                                [grid]="chartOptionsSku.grid"
-                                [fill]="chartOptionsSku.fill"></apx-chart>
+                            <apx-chart [series]="chartOptionsDisponibilidadeEmpresa.series"
+                                [chart]="chartOptionsDisponibilidadeEmpresa.chart"
+                                [dataLabels]="chartOptionsDisponibilidadeEmpresa.dataLabels"
+                                [plotOptions]="chartOptionsDisponibilidadeEmpresa.plotOptions"
+                                [yaxis]="chartOptionsDisponibilidadeEmpresa.yaxis"
+                                [xaxis]="chartOptionsDisponibilidadeEmpresa.xaxis"
+                                [stroke]="chartOptionsDisponibilidadeEmpresa.stroke"
+                                [grid]="chartOptionsDisponibilidadeEmpresa.grid"
+                                [fill]="chartOptionsDisponibilidadeEmpresa.fill"></apx-chart>
 
 
 
@@ -239,23 +278,11 @@
                         </div>
                     </div>
                 </div>
-                <!--div class="relative flex flex-direction bg-card rounded-2xl shadow  mt-10 gap-4">
-                    <div class=" bg-card justify-center,">
-                        <b> <mat-label> Total SKUs</mat-label></b>
-                    </div>
 
-                    <div>
-
-                    </div>
-                    <div >
-
-                    </div>
-
-                </div -->
-                <div class="relative flex flex-col bg-card  w-full shadow rounded-2xl  mt-2 gap-2 ">
+                <div class="relative flex flex-col bg-card  w-full shadow rounded-2xl  mt-1 gap-1 " >
 
                     <div class="">
-                        <b> <mat-label> SKUs por Curva</mat-label></b>
+                        <b> <mat-label> Disponibilidade de SKU</mat-label></b>
                     </div>
                     <!--div id="chart">
                         <apx-chart [series]="chartOptionsCurvSKU.series"
@@ -266,30 +293,84 @@
 
                     <apx-chart
                     class="flex flex-auto items-center justify-center w-full h-full"
-                    [chart]="chartOptionsCurvSKU.chart"
-                    [colors]="chartOptionsCurvSKU.colors"
-                    [labels]="chartOptionsCurvSKU.labels"
-                    [plotOptions]="chartOptionsCurvSKU.plotOptions"
-                    [series]="chartOptionsCurvSKU.series"
-                    [states]="chartOptionsCurvSKU.states"
-                    [tooltip]="chartOptionsCurvSKU.tooltip"
+                    [chart]="chartOptionsDisponibilidadeSKU.chart"
+                    [colors]="chartOptionsDisponibilidadeSKU.colors"
+                    [labels]="chartOptionsDisponibilidadeSKU.labels"
+                    [plotOptions]="chartOptionsDisponibilidadeSKU.plotOptions"
+                    [series]="chartOptionsDisponibilidadeSKU.series"
+                    [states]="chartOptionsDisponibilidadeSKU.states"
+                    [tooltip]="chartOptionsDisponibilidadeSKU.tooltip"
+                    [dataLabels]="chartOptionsDisponibilidadeSKU.dataLabels"
+                    [legend]="chartOptionsDisponibilidadeSKU.legend"
+                ></apx-chart>
+
+                </div>
+
+                <div class="relative flex flex-col bg-card  w-full shadow rounded-2xl  mt-1 gap-1">
+
+                    <div class="">
+                        <b> <mat-label> Disponibilidade Cód Agrupador</mat-label></b>
+                    </div>
+
+
+                    <apx-chart
+                    class="flex flex-auto items-center justify-center w-full h-full"
+                    [chart]="chartOptionsDisponibilidadeAgrupador.chart"
+                    [colors]="chartOptionsDisponibilidadeAgrupador.colors"
+                    [labels]="chartOptionsDisponibilidadeAgrupador.labels"
+                    [plotOptions]="chartOptionsDisponibilidadeAgrupador.plotOptions"
+                    [series]="chartOptionsDisponibilidadeAgrupador.series"
+                    [states]="chartOptionsDisponibilidadeAgrupador.states"
+                    [tooltip]="chartOptionsDisponibilidadeAgrupador.tooltip"
+                    [dataLabels]="chartOptionsDisponibilidadeAgrupador.dataLabels"
+                    [legend]="chartOptionsDisponibilidadeSKU.legend"
                 ></apx-chart>
 
                 </div>
 
 
-            </div>
-
-            <div class="relative  mt-5 " style=" text-align: center; font-size: 14px;">
-                <b><mat-label>Estoque por Fornecedores</mat-label></b>
 
 
             </div>
-            <div class="relative flex flex-col bg-card w-full shadow rounded-2xl mt-2 gap-4">
-                <apx-chart [series]="chartOptionsFor.seriesFor" [chart]="chartOptionsFor.chartFor"
-                    [dataLabels]="chartOptionsFor.dataLabelsFor" [plotOptions]="chartOptionsFor.plotOptionsFor"
-                    [xaxis]="chartOptionsFor.xaxisFor"></apx-chart>
 
+
+
+
+
+
+            <div class= "">
+
+            <div class="relative flex flex-col bg-card  w-full shadow rounded-2xl  mt-2 overflow-y-auto h-100">
+                <div class="relative">
+                    <b><mat-label>Estoque por Fornecedores</mat-label></b>
+
+
+                </div >
+                <div>
+                    <apx-chart [series]="chartOptionsFor.series"
+                        [chart]="chartOptionsFor.chart"
+                        [dataLabels]="chartOptionsFor.dataLabels"
+                        [plotOptions]="chartOptionsFor.plotOptions"
+                        [yaxis]="chartOptionsFor.yaxis"
+                        [xaxis]="chartOptionsFor.xaxis"
+                        [stroke]="chartOptionsFor.stroke"
+                        [grid]="chartOptionsFor.grid"
+                        [fill]="chartOptionsFor.fill"
+                        [tooltip]="chartOptionsFor.tooltip"
+                        ></apx-chart>
+
+
+                    </div>
+
+                </div>
+                <div class="relative flex bg-card mt-25">
+
+                </div>
             </div>
+
+
+
+
+
         </div>
     </div>
