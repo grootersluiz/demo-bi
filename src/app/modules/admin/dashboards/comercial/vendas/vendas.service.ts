@@ -86,21 +86,21 @@ export class VendasDashService {
 
                 //----------------------------------------------
 
-                //Tratamento Gráfico "CC"
+                //Tratamento Gráfico "Análise Positivação das Carteiras"
 
-                let totalCC = response[this.REPORT_CC].TOTALCC;
-                let ccRealDC = response[this.REPORT_CC].CCREALIZADODC;
-                let ccRealFC = response[this.REPORT_CC].CCREALIZADOFC;
-                let totalCCReal = response[this.REPORT_CC].TOTALCCREALIZADO;
-                let meta = response[this.REPORT_CC].META;
-                let gap = response[this.REPORT_CC].GAP;
+                let totalCC = response[this.REPORT_CC].TOTAL_CARTEIRA;
+                let meta = response[this.REPORT_CC].META_POSITIVACAO;
+                let totalCCReal = response[this.REPORT_CC].REALIZADO;
+                let ccRealDC = response[this.REPORT_CC].REALIZADO_DC;
+                let ccRealFC = response[this.REPORT_CC].REALIZADO_FC;
+                let gap = response[this.REPORT_CC].PERC_GAP_CC;
 
                 let indCC = [
                     totalCC,
+                    meta,
+                    totalCCReal,
                     ccRealDC,
                     ccRealFC,
-                    totalCCReal,
-                    meta,
                     gap,
                 ];
 
