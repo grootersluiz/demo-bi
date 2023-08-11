@@ -13,7 +13,7 @@ export class dateService {
         let date = new Date();
         return {
             year: date.getFullYear(),
-            month: 0,
+            month: date.getMonth(),
             date: 1,
         };
     }

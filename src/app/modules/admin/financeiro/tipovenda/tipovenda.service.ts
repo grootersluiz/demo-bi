@@ -33,7 +33,7 @@ export class tipovendaService {
 
         if (date === '' || date === null ||date === undefined) {
             const day = '1';
-            const month = '1';
+            const month = (this.sysdate.getMonth()+1).toString();
             const year = this.sysdate.getFullYear().toString();
             this.param.dtIni = `${day}/${month}/${year}`;
             return `${day}/${month}/${year}`;
