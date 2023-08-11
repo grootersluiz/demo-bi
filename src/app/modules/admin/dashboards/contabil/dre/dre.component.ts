@@ -146,8 +146,6 @@ export class DreDashComponent implements OnInit {
             }
         });
 
-        console.log(this.data.ccCompAnual);
-
         // Prepare the chart data
         this._prepareChartData();
 
