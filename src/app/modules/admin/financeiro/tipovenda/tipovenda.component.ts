@@ -362,7 +362,6 @@ export class tipovendaComponent implements AfterViewInit {
                 let value = this.series2.rows[index][2];
                 if (this.series2.rows[index][1] === 'PMV') {
                     this.PMVGeral += this.series2.rows[index][2];
-                    console.log(this.PMVGeral);
                     this.PMVIndex++;
                 } else {
                     total += value;
@@ -385,7 +384,6 @@ export class tipovendaComponent implements AfterViewInit {
         if (this.categories.length === 1) {
             this.chartOptions1.chart.type = 'bar';
         }
-        console.log(this.PMVGeral, this.PMVIndex);
         this.PMVGeral = this.formatadorPtsPMV(this.PMVGeral / this.PMVIndex);
         var reflow = new ApexCharts(this.chart, this.chartOptions1);
     }
