@@ -116,7 +116,7 @@ export class VendasDashService {
 
                 //----------------------------------------------
 
-                //Tratamento Gráfico "CC vs ROL"
+                //Tratamento Gráfico "ROL Carteira"
 
                 let rol = response[this.REPORT_CCvsROL].REALIZADO_ROL;
                 let rolDC = response[this.REPORT_CCvsROL].ROL_DC;
@@ -154,17 +154,16 @@ export class VendasDashService {
 
                 //Tratamento Gráfico "CC Projeção"
 
-                let potencial = response[this.REPORT_CCPROJECAO].POTENCIAL_CARTEIRA;
+                let potencial =
+                    response[this.REPORT_CCPROJECAO].POTENCIAL_CARTEIRA;
                 let proj = response[this.REPORT_CCPROJECAO].PROJECAO_CARTEIRA;
                 let gapProj = response[this.REPORT_CCPROJECAO].PERC_GAP;
-                let projPF = response[this.REPORT_CCPROJECAO].PROJECAO_DC_CARTEIRA;
-                let projPJ = response[this.REPORT_CCPROJECAO].PROJECAO_FC_CARTEIRA;
+                let projPF =
+                    response[this.REPORT_CCPROJECAO].PROJECAO_DC_CARTEIRA;
+                let projPJ =
+                    response[this.REPORT_CCPROJECAO].PROJECAO_FC_CARTEIRA;
                 // PROJECAO_DC_CARTEIRA
                 // PROJECAO_FC_CARTEIRA
-
-                
-
-
 
                 let indCCProjecao = [potencial, proj, gapProj, projPF, projPJ];
 
@@ -188,7 +187,6 @@ export class VendasDashService {
                 let metaLB = response[this.REPORT_LBvsCC].LB_META_CARTEIRA;
                 let gapLB = response[this.REPORT_LBvsCC].PERC_GAP_META;
 
-
                 let indCCvsLB = [lb, lbdc, lbfc, metaLB, gapLB];
 
                 indCCvsLB.forEach((element, index) => {
@@ -211,11 +209,11 @@ export class VendasDashService {
                 let metaMB = response[this.REPORT_MBvsCC].MB_META_CARTEIRA;
                 let gapMB = response[this.REPORT_MBvsCC].PERC_GAP_META;
 
-//                 REALIZADO_MB
-// MB_META_CARTEIRA
-// MB_DC
-// MB_FC
-// PERC_GAP_META
+                //                 REALIZADO_MB
+                // MB_META_CARTEIRA
+                // MB_DC
+                // MB_FC
+                // PERC_GAP_META
 
                 let indCCvsMB = [mb, mbdc, mbfc, metaMB, gapMB];
 

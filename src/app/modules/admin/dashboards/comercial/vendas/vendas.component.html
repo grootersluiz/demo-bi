@@ -330,7 +330,7 @@
                                             <div
                                                 class="text-sm font-medium leading-none text-secondary"
                                             >
-                                                % GAP
+                                                % Atingido Meta
                                             </div>
                                             <div
                                                 class="mt-2 font-medium text-lg leading-none"
@@ -433,7 +433,8 @@
                                                 class="mt-2 font-medium text-lg leading-none"
                                             >
                                                 {{
-                                                    data.ccVsRol.ROL_META_CARTEIRA
+                                                    data.ccVsRol
+                                                        .ROL_META_CARTEIRA
                                                         | currency : "BRL"
                                                 }}
                                             </div>
@@ -442,14 +443,15 @@
                                             <div
                                                 class="text-sm font-medium leading-none text-secondary"
                                             >
-                                                % Gap
+                                                % Atingido Meta
                                             </div>
                                             <div
                                                 class="mt-2 font-medium text-lg leading-none"
                                             >
                                                 {{
-                                                    data.ccVsRol.PERC_GAP_META.toFixed(2)
-                                                       
+                                                    data.ccVsRol.PERC_GAP_META.toFixed(
+                                                        2
+                                                    )
                                                 }}%
                                             </div>
                                         </div>
@@ -568,7 +570,8 @@
                                                 class="mt-2 font-medium text-lg leading-none tooltip"
                                             >
                                                 {{
-                                                    data.ccProj.POTENCIAL_CARTEIRA
+                                                    data.ccProj
+                                                        .POTENCIAL_CARTEIRA
                                                         | currency : "BRL"
                                                 }}
                                             </div>
@@ -583,7 +586,8 @@
                                                 class="mt-2 font-medium text-lg leading-none tooltip"
                                             >
                                                 {{
-                                                    data.ccProj.PROJECAO_CARTEIRA
+                                                    data.ccProj
+                                                        .PROJECAO_CARTEIRA
                                                         | currency : "BRL"
                                                 }}
                                             </div>
@@ -598,8 +602,9 @@
                                                 class="mt-2 font-medium text-lg leading-none"
                                             >
                                                 {{
-                                                    data.ccProj.PERC_GAP.toFixed(2)
-                                                       
+                                                    data.ccProj.PERC_GAP.toFixed(
+                                                        2
+                                                    )
                                                 }}%
                                             </div>
                                         </div>
@@ -613,7 +618,8 @@
                                                 class="mt-2 font-medium text-lg leading-none"
                                             >
                                                 {{
-                                                    data.ccProj.PROJECAO_DC_CARTEIRA
+                                                    data.ccProj
+                                                        .PROJECAO_DC_CARTEIRA
                                                         | currency : "BRL"
                                                 }}
                                             </div>
@@ -628,7 +634,8 @@
                                                 class="mt-2 font-medium text-lg leading-none"
                                             >
                                                 {{
-                                                    data.ccProj.PROJECAO_FC_CARTEIRA
+                                                    data.ccProj
+                                                        .PROJECAO_FC_CARTEIRA
                                                         | currency : "BRL"
                                                 }}
                                             </div>
@@ -724,14 +731,15 @@
                                             <div
                                                 class="text-sm font-medium leading-none text-secondary"
                                             >
-                                                % Atingido da Meta
+                                                % Atingido Meta
                                             </div>
                                             <div
                                                 class="mt-2 font-medium text-lg leading-none"
                                             >
                                                 {{
-                                                    data.ccLB.PERC_GAP_META.toFixed(2)
-                                                       
+                                                    data.ccLB.PERC_GAP_META.toFixed(
+                                                        2
+                                                    )
                                                 }}%
                                             </div>
                                         </div>
@@ -838,8 +846,9 @@
                                                 class="mt-1 font-medium text-sm leading-none"
                                             >
                                                 {{
-                                                    data.ccMB.PERC_GAP_META.toFixed(2)
-                                                       
+                                                    data.ccMB.PERC_GAP_META.toFixed(
+                                                        2
+                                                    )
                                                 }}%
                                             </div>
                                         </div>
