@@ -438,6 +438,7 @@ export class tipovendaComponent implements AfterViewInit {
 
         for (let row of dataRow) {
             let [date, type, value] = row;
+            if(type === 'A vista') type = 'À vista'
             let [month, year] = date.split('/').map((part) => parseInt(part));
 
             if (!rawData[type]) rawData[type] = {};
@@ -447,6 +448,7 @@ export class tipovendaComponent implements AfterViewInit {
             rawData[type][year] += parseFloat(value);
 
             types.add(type);
+            console.log(type)
         }
 
         this.seriesMixed = [];
@@ -492,6 +494,7 @@ export class tipovendaComponent implements AfterViewInit {
             rawData[type][year] += parseFloat(value);
 
             types.add(type);
+
         }
 
         this.seriesMixed2 = [];
@@ -538,7 +541,8 @@ export class tipovendaComponent implements AfterViewInit {
             this.PMVGeral = 0;
         }
 
-
+        this.chartOptions2.chart.type = 'area';
+        this.chartOptions1.chart.type = 'area';
         this.tipos = ['1,10', '2,3', '7', '8'];
         this.anos = [];
         this.HeatFiliais = [];
@@ -575,10 +579,6 @@ export class tipovendaComponent implements AfterViewInit {
             },
         ];
         this.seriesM2 = [
-            {
-                name: '',
-                data: [],
-            },
             {
                 name: '',
                 data: [],
