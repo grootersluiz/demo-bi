@@ -38,10 +38,12 @@ export class VendasDashComponent implements OnInit {
     selectedCurve: string = 'Todas';
     selectedStates: string[] = ['Todos'];
     selectedIntel: string = 'Positivação';
+    selectedPerson: string = 'PF/PJ';
     anualIntel: string = 'Positivação';
     selectedSortOption: string = 'Por filial';
     sortOptions: string[] = ['Ascendente', 'Descendente', 'Nome'];
     intelOptions: string[] = ['Positivação', 'ROL', 'LB', 'MB'];
+    personOptions: string[] = ['PF/PJ', 'PF', 'PJ'];
     curveOptions: string[] = ['Todas', 'A', 'B', 'C', 'N', 'Vazio'];
     stateOptions: string[] = [
         'Todos',
@@ -204,6 +206,10 @@ export class VendasDashComponent implements OnInit {
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
+
+    onMenuPersonSelected(person: string) {
+        this.selectedPerson = person;
+    }
 
     onMenuCurveSelected(curve: string) {
         this.selectedCurve = curve;

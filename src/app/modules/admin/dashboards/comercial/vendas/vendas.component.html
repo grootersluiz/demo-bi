@@ -739,11 +739,9 @@
                             </div>
                         </div>
                         <div
-                            class="flex w-full max-w-screen-xl mx-auto md: pb-1"
+                            class="flex h-100 w-full max-w-screen-xl mx-auto md: pb-1"
                         >
-                            <div
-                                class="grid h-100 w-48 grid-rows-2 flex-auto gap-1"
-                            >
+                            <div class="grid w-48 grid-rows-2 flex-auto gap-1">
                                 <div
                                     class="relative flex w-48 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
                                 >
@@ -914,7 +912,7 @@
                                 class="relative w-full bg-card shadow rounded-2xl overflow-hidden ml-1"
                             >
                                 <div
-                                    class="flex items-start justify-between m-6 mb-0"
+                                    class="flex items-start justify-between m-3 mb-0"
                                 >
                                     <div
                                         class="text-lg font-bold tracking-tight leading-6 truncate"
@@ -946,6 +944,33 @@
                                                     "
                                                 >
                                                     {{ intel }}
+                                                </button>
+                                            </mat-menu>
+                                        </div>
+                                        <div class="m-1">
+                                            <button
+                                                class="h-6 min-h-6 px-2 rounded-full bg-hover"
+                                                mat-button
+                                                [matMenuTriggerFor]="personMenu"
+                                            >
+                                                <span
+                                                    class="font-medium text-sm text-secondary"
+                                                    >{{ selectedPerson }}</span
+                                                >
+                                            </button>
+                                            <mat-menu #personMenu="matMenu">
+                                                <button
+                                                    mat-menu-item
+                                                    *ngFor="
+                                                        let person of personOptions
+                                                    "
+                                                    (click)="
+                                                        onMenuPersonSelected(
+                                                            person
+                                                        )
+                                                    "
+                                                >
+                                                    {{ person }}
                                                 </button>
                                             </mat-menu>
                                         </div>
@@ -1025,7 +1050,7 @@
                                     </div>
                                 </div>
 
-                                <div class="flex flex-col flex-auto mt-3">
+                                <div class="flex flex-col flex-auto mt-1">
                                     <apx-chart
                                         [series]="chartGlobal.series"
                                         [chart]="chartGlobal.chart"
