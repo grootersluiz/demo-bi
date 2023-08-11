@@ -39,6 +39,8 @@ export class VendasDashComponent implements OnInit {
     selectedStates: string[] = ['Todos'];
     selectedIntel: string = 'Positivação';
     anualIntel: string = 'Positivação';
+    selectedSortOption: string = 'Por filial';
+    sortOptions: string[] = ['Ascendente', 'Descendente', 'Nome'];
     intelOptions: string[] = ['Positivação', 'ROL', 'LB', 'MB'];
     curveOptions: string[] = ['Todas', 'A', 'B', 'C', 'N', 'Vazio'];
     stateOptions: string[] = [
@@ -154,7 +156,6 @@ export class VendasDashComponent implements OnInit {
             });
 
         // Tratamento Chart "Comparativo Anual"
-
         Object.keys(this.data.ccCompAnual).forEach((key) => {
             if (key != 'report') {
                 this.companiesLabels.push(key);
@@ -245,8 +246,112 @@ export class VendasDashComponent implements OnInit {
         this.selectedIntel = intel;
     }
 
+    onSort(sortOption: string) {
+        let temp = [];
+        switch (sortOption) {
+            case `Ascendente`:
+                temp = this.comparativoSeries[0].data.map((_, index) => {
+                    return {
+                        company: this.companiesLabels[index],
+                        currentYear: this.comparativoSeries[0].data[index],
+                        lastYear: this.comparativoSeries[1].data[index],
+                        secondToLastYear: this.comparativoSeries[2].data[index],
+                    };
+                });
+                temp.sort((a, b) => a.currentYear - b.currentYear);
+                this.comparativoSeries[0].data = temp.map(
+                    (item) => item.currentYear
+                );
+                this.comparativoSeries[1].data = temp.map(
+                    (item) => item.lastYear
+                );
+                this.comparativoSeries[2].data = temp.map(
+                    (item) => item.secondToLastYear
+                );
+                this.companiesLabels = temp.map((item) => item.company);
+                break;
+
+            case `Descendente`:
+                temp = this.comparativoSeries[0].data.map((_, index) => {
+                    return {
+                        company: this.companiesLabels[index],
+                        currentYear: this.comparativoSeries[0].data[index],
+                        lastYear: this.comparativoSeries[1].data[index],
+                        secondToLastYear: this.comparativoSeries[2].data[index],
+                    };
+                });
+                temp.sort((a, b) => b.currentYear - a.currentYear);
+                this.comparativoSeries[0].data = temp.map(
+                    (item) => item.currentYear
+                );
+                this.comparativoSeries[1].data = temp.map(
+                    (item) => item.lastYear
+                );
+                this.comparativoSeries[2].data = temp.map(
+                    (item) => item.secondToLastYear
+                );
+                this.companiesLabels = temp.map((item) => item.company);
+                break;
+            case 'Nome':
+                temp = this.comparativoSeries[0].data.map((_, index) => {
+                    return {
+                        company: this.companiesLabels[index],
+                        currentYear: this.comparativoSeries[0].data[index],
+                        lastYear: this.comparativoSeries[1].data[index],
+                        secondToLastYear: this.comparativoSeries[2].data[index],
+                    };
+                });
+                temp.sort((a, b) =>
+                    a.company
+                        .toLowerCase()
+                        .localeCompare(b.company.toLowerCase())
+                );
+                this.comparativoSeries[0].data = temp.map(
+                    (item) => item.currentYear
+                );
+                this.comparativoSeries[1].data = temp.map(
+                    (item) => item.lastYear
+                );
+                this.comparativoSeries[2].data = temp.map(
+                    (item) => item.secondToLastYear
+                );
+                this.companiesLabels = temp.map((item) => item.company);
+                break;
+        }
+
+        this._prepareChartAcumulado();
+    }
+
     onAnualIntelSelected(intel: string) {
         this.anualIntel = intel;
+        const index = this.intelOptions.indexOf(intel);
+        this.companiesLabels = [];
+        this.comparativoSeries = [
+            { name: '', data: [] },
+            { name: '', data: [] },
+            { name: '', data: [] },
+        ];
+
+        Object.keys(this.data.ccCompAnual).forEach((key) => {
+            if (key != 'report') {
+                this.companiesLabels.push(key);
+
+                if (this.comparativoSeries[0].name == '') {
+                    this.data.ccCompAnual[key].labels.forEach((year, index) => {
+                        this.comparativoSeries[index].name = year;
+                    });
+                }
+
+                this.data.ccCompAnual[key].series[index].data.forEach(
+                    (value, index) => {
+                        this.comparativoSeries[index].data.push(value);
+                    }
+                );
+            }
+        });
+
+        // Prepare the chart data
+        this._prepareChartAcumulado();
     }
 
     setInitialMY(evMY: Moment, datepicker: MatDatepicker<Moment>) {
@@ -481,7 +586,8 @@ export class VendasDashComponent implements OnInit {
      *
      * @private
      */
-    private _prepareChartData(): void {
+
+    private _prepareChartAcumulado(): void {
         // CC Comparativo Acumulado
         this.chartAcumulado = {
             series: this.comparativoSeries,
@@ -514,7 +620,13 @@ export class VendasDashComponent implements OnInit {
                 },
             },
         };
+    }
 
+    private _prepareChartData(): void {
+        //Acumulado Anual
+        this._prepareChartAcumulado();
+
+        //Chart Global
         this.chartGlobal = {
             series: [
                 {

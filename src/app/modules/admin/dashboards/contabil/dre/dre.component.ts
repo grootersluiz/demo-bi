@@ -43,15 +43,7 @@ export class DreDashComponent implements OnInit {
     intelOptions: string[] = ['ROL', 'LB', 'MB', 'EBITDA'];
     selectedSortOption: string = 'Por filial';
 
-    sortOptions: string[] = [
-        `Ascendente`,
-        `Descendente`,
-        // `Ascendente (${this.lastYear})`,
-        // `Descendente (${this.lastYear})`,
-        // `Ascendente (${this.secondToLastYear})`,
-        // `Descendente (${this.secondToLastYear})`,
-        'Nome',
-    ];
+    sortOptions: string[] = ['Ascendente', 'Descendente', 'Nome'];
     data: any;
 
     // Filtros principais do dashboard
@@ -156,7 +148,6 @@ export class DreDashComponent implements OnInit {
 
         console.log(this.data.ccCompAnual);
 
-
         // Prepare the chart data
         this._prepareChartData();
 
@@ -188,7 +179,7 @@ export class DreDashComponent implements OnInit {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
-    onSort(sortOption: string) {   
+    onSort(sortOption: string) {
         let temp = [];
         switch (sortOption) {
             case `Ascendente`:
@@ -197,13 +188,19 @@ export class DreDashComponent implements OnInit {
                         company: this.companiesLabels[index],
                         currentYear: this.comparativoSeries[0].data[index],
                         lastYear: this.comparativoSeries[1].data[index],
-                        secondToLastYear: this.comparativoSeries[2].data[index]
-                    }
+                        secondToLastYear: this.comparativoSeries[2].data[index],
+                    };
                 });
                 temp.sort((a, b) => a.currentYear - b.currentYear);
-                this.comparativoSeries[0].data = temp.map((item) => item.currentYear);
-                this.comparativoSeries[1].data = temp.map((item) => item.lastYear);
-                this.comparativoSeries[2].data = temp.map((item) => item.secondToLastYear);
+                this.comparativoSeries[0].data = temp.map(
+                    (item) => item.currentYear
+                );
+                this.comparativoSeries[1].data = temp.map(
+                    (item) => item.lastYear
+                );
+                this.comparativoSeries[2].data = temp.map(
+                    (item) => item.secondToLastYear
+                );
                 this.companiesLabels = temp.map((item) => item.company);
                 break;
 
@@ -213,13 +210,19 @@ export class DreDashComponent implements OnInit {
                         company: this.companiesLabels[index],
                         currentYear: this.comparativoSeries[0].data[index],
                         lastYear: this.comparativoSeries[1].data[index],
-                        secondToLastYear: this.comparativoSeries[2].data[index]
-                    }
+                        secondToLastYear: this.comparativoSeries[2].data[index],
+                    };
                 });
                 temp.sort((a, b) => b.currentYear - a.currentYear);
-                this.comparativoSeries[0].data = temp.map((item) => item.currentYear);
-                this.comparativoSeries[1].data = temp.map((item) => item.lastYear);
-                this.comparativoSeries[2].data = temp.map((item) => item.secondToLastYear);
+                this.comparativoSeries[0].data = temp.map(
+                    (item) => item.currentYear
+                );
+                this.comparativoSeries[1].data = temp.map(
+                    (item) => item.lastYear
+                );
+                this.comparativoSeries[2].data = temp.map(
+                    (item) => item.secondToLastYear
+                );
                 this.companiesLabels = temp.map((item) => item.company);
                 break;
             case 'Nome':
@@ -228,13 +231,23 @@ export class DreDashComponent implements OnInit {
                         company: this.companiesLabels[index],
                         currentYear: this.comparativoSeries[0].data[index],
                         lastYear: this.comparativoSeries[1].data[index],
-                        secondToLastYear: this.comparativoSeries[2].data[index]
-                    }
+                        secondToLastYear: this.comparativoSeries[2].data[index],
+                    };
                 });
-                temp.sort((a, b) => a.company.toLowerCase().localeCompare(b.company.toLowerCase()));
-                this.comparativoSeries[0].data = temp.map((item) => item.currentYear);
-                this.comparativoSeries[1].data = temp.map((item) => item.lastYear);
-                this.comparativoSeries[2].data = temp.map((item) => item.secondToLastYear);
+                temp.sort((a, b) =>
+                    a.company
+                        .toLowerCase()
+                        .localeCompare(b.company.toLowerCase())
+                );
+                this.comparativoSeries[0].data = temp.map(
+                    (item) => item.currentYear
+                );
+                this.comparativoSeries[1].data = temp.map(
+                    (item) => item.lastYear
+                );
+                this.comparativoSeries[2].data = temp.map(
+                    (item) => item.secondToLastYear
+                );
                 this.companiesLabels = temp.map((item) => item.company);
                 break;
         }
@@ -251,7 +264,7 @@ export class DreDashComponent implements OnInit {
             { name: '', data: [] },
             { name: '', data: [] },
         ];
-   
+
         Object.keys(this.data.ccCompAnual).forEach((key) => {
             if (key != 'report') {
                 this.companiesLabels.push(key);
@@ -269,7 +282,6 @@ export class DreDashComponent implements OnInit {
                 );
             }
         });
-
 
         // Prepare the chart data
         this._prepareChartAcumulado();
