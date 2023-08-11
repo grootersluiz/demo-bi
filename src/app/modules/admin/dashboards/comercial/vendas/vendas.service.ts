@@ -118,11 +118,11 @@ export class VendasDashService {
 
                 //Tratamento Gráfico "CC vs ROL"
 
-                let rol = response[this.REPORT_CCvsROL].ROL;
-                let rolDC = response[this.REPORT_CCvsROL].ROLDC;
-                let rolFC = response[this.REPORT_CCvsROL].ROLFC;
-                let metaRol = response[this.REPORT_CCvsROL].META;
-                let gapRol = response[this.REPORT_CCvsROL].GAP;
+                let rol = response[this.REPORT_CCvsROL].REALIZADO_ROL;
+                let rolDC = response[this.REPORT_CCvsROL].ROL_DC;
+                let rolFC = response[this.REPORT_CCvsROL].ROL_FC;
+                let metaRol = response[this.REPORT_CCvsROL].ROL_META_CARTEIRA;
+                let gapRol = response[this.REPORT_CCvsROL].PERC_GAP_META;
 
                 let indCCvsROL = [rol, rolDC, rolFC, metaRol, gapRol];
 
@@ -154,11 +154,17 @@ export class VendasDashService {
 
                 //Tratamento Gráfico "CC Projeção"
 
-                let potencial = response[this.REPORT_CCPROJECAO].POTENCIAL;
-                let proj = response[this.REPORT_CCPROJECAO].PROJ;
-                let gapProj = response[this.REPORT_CCPROJECAO].GAP;
-                let projPF = response[this.REPORT_CCPROJECAO].PROJPF;
-                let projPJ = response[this.REPORT_CCPROJECAO].PROJPJ;
+                let potencial = response[this.REPORT_CCPROJECAO].POTENCIAL_CARTEIRA;
+                let proj = response[this.REPORT_CCPROJECAO].PROJECAO_CARTEIRA;
+                let gapProj = response[this.REPORT_CCPROJECAO].PERC_GAP;
+                let projPF = response[this.REPORT_CCPROJECAO].PROJECAO_DC_CARTEIRA;
+                let projPJ = response[this.REPORT_CCPROJECAO].PROJECAO_FC_CARTEIRA;
+                // PROJECAO_DC_CARTEIRA
+                // PROJECAO_FC_CARTEIRA
+
+                
+
+
 
                 let indCCProjecao = [potencial, proj, gapProj, projPF, projPJ];
 
@@ -176,11 +182,12 @@ export class VendasDashService {
 
                 //Tratamento Gráfico "LB vs CC"
 
-                let lb = response[this.REPORT_LBvsCC].LB;
-                let lbdc = response[this.REPORT_LBvsCC].LBDC;
-                let lbfc = response[this.REPORT_LBvsCC].LBFC;
-                let metaLB = response[this.REPORT_LBvsCC].META;
-                let gapLB = response[this.REPORT_LBvsCC].GAP;
+                let lb = response[this.REPORT_LBvsCC].REALIZADO_LB;
+                let lbdc = response[this.REPORT_LBvsCC].LB_DC;
+                let lbfc = response[this.REPORT_LBvsCC].LB_FC;
+                let metaLB = response[this.REPORT_LBvsCC].LB_META_CARTEIRA;
+                let gapLB = response[this.REPORT_LBvsCC].PERC_GAP_META;
+
 
                 let indCCvsLB = [lb, lbdc, lbfc, metaLB, gapLB];
 
@@ -198,11 +205,17 @@ export class VendasDashService {
 
                 //Tratamento Gráfico "MB vs CC"
 
-                let mb = response[this.REPORT_MBvsCC].MB;
-                let mbdc = response[this.REPORT_MBvsCC].MBDC;
-                let mbfc = response[this.REPORT_MBvsCC].MBFC;
-                let metaMB = response[this.REPORT_MBvsCC].META;
-                let gapMB = response[this.REPORT_MBvsCC].GAP;
+                let mb = response[this.REPORT_MBvsCC].REALIZADO_MB;
+                let mbdc = response[this.REPORT_MBvsCC].MB_DC;
+                let mbfc = response[this.REPORT_MBvsCC].MB_FC;
+                let metaMB = response[this.REPORT_MBvsCC].MB_META_CARTEIRA;
+                let gapMB = response[this.REPORT_MBvsCC].PERC_GAP_META;
+
+//                 REALIZADO_MB
+// MB_META_CARTEIRA
+// MB_DC
+// MB_FC
+// PERC_GAP_META
 
                 let indCCvsMB = [mb, mbdc, mbfc, metaMB, gapMB];
 

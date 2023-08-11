@@ -170,7 +170,7 @@ export class VendasDashComponent implements OnInit {
 
                 this.data.ccCompAnual[key].series[0].data.forEach(
                     (value, index) => {
-                        this.comparativoSeries[index].data.push(value);
+                        this.comparativoSeries[index].data.push(value.toFixed(2));
                     }
                 );
             }
@@ -348,7 +348,7 @@ export class VendasDashComponent implements OnInit {
 
                 this.data.ccCompAnual[key].series[index].data.forEach(
                     (value, index) => {
-                        this.comparativoSeries[index].data.push(value);
+                        this.comparativoSeries[index].data.push(value.toFixed(2));
                     }
                 );
             }

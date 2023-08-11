@@ -370,7 +370,7 @@
                                             <div
                                                 class="text-lg font-bold tracking-tight leading-6 truncate"
                                             >
-                                                CC vs. Rol
+                                                ROL Carteira
                                             </div>
                                         </div>
                                     </div>
@@ -381,13 +381,13 @@
                                             <div
                                                 class="text-sm font-medium leading-none text-secondary"
                                             >
-                                                ROL
+                                                Realizado ROL
                                             </div>
                                             <div
                                                 class="mt-2 font-medium text-lg leading-none tooltip"
                                             >
                                                 {{
-                                                    data.ccVsRol.ROL
+                                                    data.ccVsRol.REALIZADO_ROL
                                                         | currency : "BRL"
                                                 }}
                                             </div>
@@ -402,7 +402,7 @@
                                                 class="mt-2 font-medium text-lg leading-none tooltip"
                                             >
                                                 {{
-                                                    data.ccVsRol.ROLDC
+                                                    data.ccVsRol.ROL_DC
                                                         | currency : "BRL"
                                                 }}
                                             </div>
@@ -417,7 +417,7 @@
                                                 class="mt-2 font-medium text-lg leading-none"
                                             >
                                                 {{
-                                                    data.ccVsRol.ROLFC
+                                                    data.ccVsRol.ROL_FC
                                                         | currency : "BRL"
                                                 }}
                                             </div>
@@ -427,13 +427,13 @@
                                             <div
                                                 class="text-sm font-medium leading-none text-secondary"
                                             >
-                                                Meta
+                                                ROL Meta Carteira
                                             </div>
                                             <div
                                                 class="mt-2 font-medium text-lg leading-none"
                                             >
                                                 {{
-                                                    data.ccVsRol.META
+                                                    data.ccVsRol.ROL_META_CARTEIRA
                                                         | currency : "BRL"
                                                 }}
                                             </div>
@@ -442,15 +442,15 @@
                                             <div
                                                 class="text-sm font-medium leading-none text-secondary"
                                             >
-                                                GAP
+                                                % Gap
                                             </div>
                                             <div
                                                 class="mt-2 font-medium text-lg leading-none"
                                             >
                                                 {{
-                                                    data.ccVsRol.GAP
-                                                        | currency : "BRL"
-                                                }}
+                                                    data.ccVsRol.PERC_GAP_META.toFixed(2)
+                                                       
+                                                }}%
                                             </div>
                                         </div>
                                     </div>
@@ -551,7 +551,7 @@
                                             <div
                                                 class="text-lg font-bold tracking-tight leading-6 truncate"
                                             >
-                                                Projeção CC
+                                                Potencial vs. Projeção Carteira
                                             </div>
                                         </div>
                                     </div>
@@ -568,7 +568,7 @@
                                                 class="mt-2 font-medium text-lg leading-none tooltip"
                                             >
                                                 {{
-                                                    data.ccProj.POTENCIAL
+                                                    data.ccProj.POTENCIAL_CARTEIRA
                                                         | currency : "BRL"
                                                 }}
                                             </div>
@@ -583,7 +583,7 @@
                                                 class="mt-2 font-medium text-lg leading-none tooltip"
                                             >
                                                 {{
-                                                    data.ccProj.PROJ
+                                                    data.ccProj.PROJECAO_CARTEIRA
                                                         | currency : "BRL"
                                                 }}
                                             </div>
@@ -598,9 +598,9 @@
                                                 class="mt-2 font-medium text-lg leading-none"
                                             >
                                                 {{
-                                                    data.ccProj.GAP
-                                                        | currency : "BRL"
-                                                }}
+                                                    data.ccProj.PERC_GAP.toFixed(2)
+                                                       
+                                                }}%
                                             </div>
                                         </div>
                                         <div class="flex flex-col mx-1 my-3">
@@ -613,7 +613,7 @@
                                                 class="mt-2 font-medium text-lg leading-none"
                                             >
                                                 {{
-                                                    data.ccProj.PROJPF
+                                                    data.ccProj.PROJECAO_DC_CARTEIRA
                                                         | currency : "BRL"
                                                 }}
                                             </div>
@@ -628,7 +628,7 @@
                                                 class="mt-2 font-medium text-lg leading-none"
                                             >
                                                 {{
-                                                    data.ccProj.PROJPJ
+                                                    data.ccProj.PROJECAO_FC_CARTEIRA
                                                         | currency : "BRL"
                                                 }}
                                             </div>
@@ -653,7 +653,7 @@
                                             <div
                                                 class="text-lg font-bold tracking-tight leading-6 truncate"
                                             >
-                                                Lucro Bruto vs. CC
+                                                Lucro Bruto Carteira
                                             </div>
                                         </div>
                                     </div>
@@ -664,13 +664,13 @@
                                             <div
                                                 class="text-sm font-medium leading-none text-secondary"
                                             >
-                                                Lucro Bruto
+                                                LB Realizado
                                             </div>
                                             <div
                                                 class="mt-2 font-medium text-lg leading-none tooltip"
                                             >
                                                 {{
-                                                    data.ccLB.LB
+                                                    data.ccLB.REALIZADO_LB
                                                         | currency : "BRL"
                                                 }}
                                             </div>
@@ -679,13 +679,13 @@
                                             <div
                                                 class="text-sm font-medium leading-none text-secondary"
                                             >
-                                                Lucro Bruto DC
+                                                LB DC
                                             </div>
                                             <div
                                                 class="mt-2 font-medium text-lg leading-none tooltip"
                                             >
                                                 {{
-                                                    data.ccLB.LBDC
+                                                    data.ccLB.LB_DC
                                                         | currency : "BRL"
                                                 }}
                                             </div>
@@ -694,13 +694,13 @@
                                             <div
                                                 class="text-sm font-medium leading-none text-secondary"
                                             >
-                                                Lucro Bruto FC
+                                                LB FC
                                             </div>
                                             <div
                                                 class="mt-2 font-medium text-lg leading-none"
                                             >
                                                 {{
-                                                    data.ccLB.LBFC
+                                                    data.ccLB.LB_FC
                                                         | currency : "BRL"
                                                 }}
                                             </div>
@@ -715,7 +715,7 @@
                                                 class="mt-2 font-medium text-lg leading-none"
                                             >
                                                 {{
-                                                    data.ccLB.META
+                                                    data.ccLB.LB_META_CARTEIRA
                                                         | currency : "BRL"
                                                 }}
                                             </div>
@@ -724,15 +724,15 @@
                                             <div
                                                 class="text-sm font-medium leading-none text-secondary"
                                             >
-                                                GAP
+                                                % Atingido da Meta
                                             </div>
                                             <div
                                                 class="mt-2 font-medium text-lg leading-none"
                                             >
                                                 {{
-                                                    data.ccLB.GAP
-                                                        | currency : "BRL"
-                                                }}
+                                                    data.ccLB.PERC_GAP_META.toFixed(2)
+                                                       
+                                                }}%
                                             </div>
                                         </div>
                                     </div>
@@ -742,9 +742,9 @@
                         <div
                             class="flex h-100 w-full max-w-screen-xl mx-auto md: pb-1"
                         >
-                            <div class="grid w-48 grid-rows-2 flex-auto gap-1">
+                            <div class="grid w-60 grid-rows-2 flex-auto gap-1">
                                 <div
-                                    class="relative flex w-48 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
+                                    class="relative flex w-60 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
                                 >
                                     <div
                                         class="absolute bottom-0 right-0 w-24 h-24 -m-6"
@@ -761,7 +761,7 @@
                                             <div
                                                 class="text-lg font-bold tracking-tight leading-6 truncate"
                                             >
-                                                Margem Bruta vs. CC
+                                                Margem Bruta Carteira
                                             </div>
                                         </div>
                                     </div>
@@ -772,13 +772,13 @@
                                             <div
                                                 class="text-sm font-medium leading-none text-secondary"
                                             >
-                                                MB
+                                                MB Realizada
                                             </div>
                                             <div
                                                 class="mt-1 font-medium text-sm leading-none tooltip"
                                             >
                                                 {{
-                                                    data.ccMB.MB
+                                                    data.ccMB.REALIZADO_MB
                                                         | currency : "BRL"
                                                 }}
                                             </div>
@@ -793,7 +793,7 @@
                                                 class="mt-1 font-medium text-sm leading-none tooltip"
                                             >
                                                 {{
-                                                    data.ccMB.MBDC
+                                                    data.ccMB.MB_DC
                                                         | currency : "BRL"
                                                 }}
                                             </div>
@@ -808,7 +808,7 @@
                                                 class="mt-1 font-medium text-sm leading-none"
                                             >
                                                 {{
-                                                    data.ccMB.MBFC
+                                                    data.ccMB.MB_FC
                                                         | currency : "BRL"
                                                 }}
                                             </div>
@@ -817,13 +817,13 @@
                                             <div
                                                 class="text-sm font-medium leading-none text-secondary"
                                             >
-                                                Meta
+                                                Meta MB
                                             </div>
                                             <div
                                                 class="mt-1 font-medium text-sm leading-none"
                                             >
                                                 {{
-                                                    data.ccMB.META
+                                                    data.ccMB.MB_META_CARTEIRA
                                                         | currency : "BRL"
                                                 }}
                                             </div>
@@ -832,21 +832,21 @@
                                             <div
                                                 class="text-sm font-medium leading-none text-secondary"
                                             >
-                                                GAP
+                                                % Atingido Meta
                                             </div>
                                             <div
                                                 class="mt-1 font-medium text-sm leading-none"
                                             >
                                                 {{
-                                                    data.ccMB.GAP
-                                                        | currency : "BRL"
-                                                }}
+                                                    data.ccMB.PERC_GAP_META.toFixed(2)
+                                                       
+                                                }}%
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div
-                                    class="relative flex w-48 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
+                                    class="relative flex w-60 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
                                 >
                                     <div
                                         class="absolute bottom-0 right-0 w-24 h-24 -m-6"
