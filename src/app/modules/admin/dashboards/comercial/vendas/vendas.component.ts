@@ -30,8 +30,7 @@ export class VendasDashComponent implements OnInit {
     companiesLabels: string[] = [];
     comparativoSeries: { name: string; data: number[] }[] = [
         { name: '', data: [] },
-        { name: '', data: [] },
-        { name: '', data: [] },
+        { name: '', data: [] }
     ];
     chartGlobal: ApexOptions;
     data: any;
@@ -259,7 +258,6 @@ export class VendasDashComponent implements OnInit {
                         company: this.companiesLabels[index],
                         currentYear: this.comparativoSeries[0].data[index],
                         lastYear: this.comparativoSeries[1].data[index],
-                        secondToLastYear: this.comparativoSeries[2].data[index],
                     };
                 });
                 temp.sort((a, b) => a.currentYear - b.currentYear);
@@ -268,9 +266,6 @@ export class VendasDashComponent implements OnInit {
                 );
                 this.comparativoSeries[1].data = temp.map(
                     (item) => item.lastYear
-                );
-                this.comparativoSeries[2].data = temp.map(
-                    (item) => item.secondToLastYear
                 );
                 this.companiesLabels = temp.map((item) => item.company);
                 break;
@@ -281,7 +276,6 @@ export class VendasDashComponent implements OnInit {
                         company: this.companiesLabels[index],
                         currentYear: this.comparativoSeries[0].data[index],
                         lastYear: this.comparativoSeries[1].data[index],
-                        secondToLastYear: this.comparativoSeries[2].data[index],
                     };
                 });
                 temp.sort((a, b) => b.currentYear - a.currentYear);
@@ -291,9 +285,6 @@ export class VendasDashComponent implements OnInit {
                 this.comparativoSeries[1].data = temp.map(
                     (item) => item.lastYear
                 );
-                this.comparativoSeries[2].data = temp.map(
-                    (item) => item.secondToLastYear
-                );
                 this.companiesLabels = temp.map((item) => item.company);
                 break;
             case 'Nome':
@@ -302,7 +293,6 @@ export class VendasDashComponent implements OnInit {
                         company: this.companiesLabels[index],
                         currentYear: this.comparativoSeries[0].data[index],
                         lastYear: this.comparativoSeries[1].data[index],
-                        secondToLastYear: this.comparativoSeries[2].data[index],
                     };
                 });
                 temp.sort((a, b) =>
@@ -316,9 +306,7 @@ export class VendasDashComponent implements OnInit {
                 this.comparativoSeries[1].data = temp.map(
                     (item) => item.lastYear
                 );
-                this.comparativoSeries[2].data = temp.map(
-                    (item) => item.secondToLastYear
-                );
+                
                 this.companiesLabels = temp.map((item) => item.company);
                 break;
         }
@@ -332,8 +320,7 @@ export class VendasDashComponent implements OnInit {
         this.companiesLabels = [];
         this.comparativoSeries = [
             { name: '', data: [] },
-            { name: '', data: [] },
-            { name: '', data: [] },
+            { name: '', data: [] }
         ];
 
         Object.keys(this.data.ccCompAnual).forEach((key) => {
@@ -597,7 +584,7 @@ export class VendasDashComponent implements OnInit {
             series: this.comparativoSeries,
             chart: {
                 type: 'bar',
-                height: 80 * this.companiesLabels.length,
+                height: 60 * this.companiesLabels.length,
                 toolbar: {
                     show: false,
                 },
@@ -605,7 +592,8 @@ export class VendasDashComponent implements OnInit {
             legend: {
                 position: 'top',
             },
-            colors: ['#ed7b00', '#6e7a8a', '#edca00'],
+            colors: ['#ed7b00', '#6e7a8a'],
+            // '#edca00'
             plotOptions: {
                 bar: {
                     borderRadius: 1,
