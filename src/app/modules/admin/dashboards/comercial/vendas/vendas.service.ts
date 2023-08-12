@@ -187,6 +187,8 @@ export class VendasDashService {
 
                 //Tratamento Gráfico "Indicadores Mensais (CC)"
 
+                //Ajustanto vetor de indicadores
+
                 const tempIndicadores = response[this.REPORT_INDICADORES];
 
                 Object.keys(tempIndicadores).forEach((key) => {
@@ -199,7 +201,7 @@ export class VendasDashService {
                     }
                 });
 
-                console.log(tempIndicadores);
+                // Formatando e Ordenando Datas
 
                 const chartIndicadores = [];
                 Object.keys(tempIndicadores).forEach((key) => {
@@ -224,7 +226,16 @@ export class VendasDashService {
                         });
                     }
                 });
-                console.log(chartIndicadores);
+
+                //Preparando vetor de labels
+
+                const chartIndLabels = chartIndicadores.map((item) => {
+                    return Object.keys(item)[0];
+                });
+
+                //Preparando vetor de series
+
+                // const chartIndSeries = chartIndicadores.map((item) => {
 
                 //---------------------------------------------------
 
@@ -240,6 +251,7 @@ export class VendasDashService {
                     ccCob: chartCobertura,
                     ccCompAnual: chartCompAnual,
                     ccInd: chartIndicadores,
+                    ccIndLabels: chartIndLabels,
                 };
                 this._data.next(dashData);
             })

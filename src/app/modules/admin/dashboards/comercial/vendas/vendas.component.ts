@@ -30,6 +30,7 @@ export class VendasDashComponent implements OnInit {
     companiesLabels: string[] = [];
     comparativoSeries: { name: string; data: number[] }[] = [];
     chartGlobal: ApexOptions;
+    indLabels: string[] = [];
     data: any;
     selectedCurve: string = 'Todas';
     selectedStates: string[] = ['Todos'];
@@ -152,6 +153,10 @@ export class VendasDashComponent implements OnInit {
 
                 this._cdr.markForCheck();
             });
+
+        //Tratamento Chart "Indicadores"
+
+        this.prepareIndicatorsData();
 
         // Tratamento Chart "Comparativo Anual"
         this._chartAcumuladoFormat(0);
@@ -494,9 +499,14 @@ export class VendasDashComponent implements OnInit {
         if (dtIni && dtFin) {
             this._vendasService
                 .getData(dtIni, dtFin, filiaisIds, vendedoresIds)
-                .subscribe();
+                .subscribe(() => {
+                    console.log(this.data.ccInd);
+                });
         }
     }
+
+    // Tratamento Chart "Indicadores Mensais"
+    prepareIndicatorsData() {}
 
     onInput(value: string) {
         const filteredSellers = this.vendedoresObjects.filter((seller) =>
