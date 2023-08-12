@@ -153,11 +153,9 @@ export class VendasDashService {
                 let proj = response[this.REPORT_CCPROJECAO].PROJECAO_CARTEIRA;
                 let gapProj = response[this.REPORT_CCPROJECAO].PERC_GAP;
                 let projPF =
-                    response[this.REPORT_CCPROJECAO].PROJECAO_DC_CARTEIRA;
+                    response[this.REPORT_CCPROJECAO].PROJECAO_PF_CARTEIRA;
                 let projPJ =
-                    response[this.REPORT_CCPROJECAO].PROJECAO_FC_CARTEIRA;
-                // PROJECAO_DC_CARTEIRA
-                // PROJECAO_FC_CARTEIRA
+                    response[this.REPORT_CCPROJECAO].PROJECAO_PJ_CARTEIRA;
 
                 let indCCProjecao = [potencial, proj, gapProj, projPF, projPJ];
 
@@ -202,12 +200,6 @@ export class VendasDashService {
                 let mbfc = response[this.REPORT_MBvsCC].MB_FC;
                 let metaMB = response[this.REPORT_MBvsCC].MB_META_CARTEIRA;
                 let gapMB = response[this.REPORT_MBvsCC].PERC_GAP_META;
-
-                //                 REALIZADO_MB
-                // MB_META_CARTEIRA
-                // MB_DC
-                // MB_FC
-                // PERC_GAP_META
 
                 let indCCvsMB = [mb, mbdc, mbfc, metaMB, gapMB];
 
