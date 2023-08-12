@@ -233,10 +233,6 @@ export class VendasDashService {
                     return Object.keys(item)[0];
                 });
 
-                //Preparando vetor de series
-
-                // const chartIndSeries = chartIndicadores.map((item) => {
-
                 //---------------------------------------------------
 
                 //---------------------------------------------------

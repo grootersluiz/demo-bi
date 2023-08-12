@@ -30,7 +30,13 @@ export class VendasDashComponent implements OnInit {
     companiesLabels: string[] = [];
     comparativoSeries: { name: string; data: number[] }[] = [];
     chartGlobal: ApexOptions;
-    indLabels: string[] = [];
+    globalSeries = [
+        { name: 'Meta', type: 'area', data: [] },
+        { name: 'Total CC', type: 'line', data: [] },
+        { name: 'Dentro da Carteira', type: 'column', data: [] },
+        { name: 'Fora da Carteira', type: 'column', data: [] },
+    ];
+    initialInd: string = 'POSITIVACAO';
     data: any;
     selectedCurve: string = 'Todas';
     selectedStates: string[] = ['Todos'];
@@ -156,7 +162,7 @@ export class VendasDashComponent implements OnInit {
 
         //Tratamento Chart "Indicadores"
 
-        this.prepareIndicatorsData();
+        this.prepareIndicatorsData(this.initialInd);
 
         // Tratamento Chart "Comparativo Anual"
         this._chartAcumuladoFormat(0);
@@ -250,6 +256,8 @@ export class VendasDashComponent implements OnInit {
 
     onMenuIntelSelected(intel: string) {
         this.selectedIntel = intel;
+        this.initialInd = intel == 'Positivação' ? 'POSITIVACAO' : intel;
+        this.prepareIndicatorsData(this.initialInd);
     }
 
     onSort(sortOption: string) {
@@ -500,13 +508,51 @@ export class VendasDashComponent implements OnInit {
             this._vendasService
                 .getData(dtIni, dtFin, filiaisIds, vendedoresIds)
                 .subscribe(() => {
-                    console.log(this.data.ccInd);
+                    this.prepareIndicatorsData(this.initialInd);
                 });
         }
     }
 
     // Tratamento Chart "Indicadores Mensais"
-    prepareIndicatorsData() {}
+    prepareIndicatorsData(indicator: string) {
+        this.globalSeries = [
+            { name: 'Meta', type: 'area', data: [] },
+            { name: 'Total CC', type: 'line', data: [] },
+            { name: 'Dentro da Carteira', type: 'column', data: [] },
+            { name: 'Fora da Carteira', type: 'column', data: [] },
+        ];
+        this.data.ccInd.forEach((item) => {
+            const key = Object.keys(item)[0];
+
+            item[key].series.forEach((serie) => {
+                if (
+                    serie.name.includes(indicator) &&
+                    serie.name.includes('META')
+                ) {
+                    this.globalSeries[0].data.push(serie.data[0]);
+                }
+                if (
+                    serie.name.includes(indicator) &&
+                    serie.name.includes('TOTAL')
+                ) {
+                    this.globalSeries[1].data.push(serie.data[0]);
+                }
+                if (
+                    serie.name.includes(indicator) &&
+                    serie.name.includes('DC')
+                ) {
+                    this.globalSeries[2].data.push(serie.data[0]);
+                }
+                if (
+                    serie.name.includes(indicator) &&
+                    serie.name.includes('FC')
+                ) {
+                    this.globalSeries[3].data.push(serie.data[0]);
+                }
+            });
+        });
+        this._prepareChartGlobal();
+    }
 
     onInput(value: string) {
         const filteredSellers = this.vendedoresObjects.filter((seller) =>
@@ -628,34 +674,16 @@ export class VendasDashComponent implements OnInit {
         };
     }
 
-    private _prepareChartData(): void {
-        //Acumulado Anual
-        this._prepareChartAcumulado();
+    /**
+     * Prepare the chart data from the data
+     *
+     * @private
+     */
 
+    private _prepareChartGlobal(): void {
         //Chart Global
         this.chartGlobal = {
-            series: [
-                {
-                    name: 'Meta',
-                    type: 'area',
-                    data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
-                },
-                {
-                    name: 'Total CC',
-                    type: 'line',
-                    data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
-                },
-                {
-                    name: 'Dentro da Carteira',
-                    type: 'column',
-                    data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
-                },
-                {
-                    name: 'Fora da Carteira',
-                    type: 'column',
-                    data: [7, 14, 14, 3, 32, 13, 27, 31, 15, 14, 9],
-                },
-            ],
+            series: this.globalSeries,
             chart: {
                 height: 300,
                 type: 'line',
@@ -752,19 +780,7 @@ export class VendasDashComponent implements OnInit {
                     stops: [0, 100, 100, 100],
                 },
             },
-            labels: [
-                '01/01/2003',
-                '02/01/2003',
-                '03/01/2003',
-                '04/01/2003',
-                '05/01/2003',
-                '06/01/2003',
-                '07/01/2003',
-                '08/01/2003',
-                '09/01/2003',
-                '10/01/2003',
-                '11/01/2003',
-            ],
+            labels: this.data.ccIndLabels,
             markers: {
                 size: 0,
             },
@@ -780,12 +796,20 @@ export class VendasDashComponent implements OnInit {
                 y: {
                     formatter: function (y) {
                         if (typeof y !== 'undefined') {
-                            return y.toFixed(0);
+                            return y.toFixed(2);
                         }
                         return y;
                     },
                 },
             },
         };
+    }
+
+    private _prepareChartData(): void {
+        //Acumulado Anual
+        this._prepareChartAcumulado();
+
+        //Indicadores Mensais
+        this._prepareChartGlobal();
     }
 }
