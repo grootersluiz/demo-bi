@@ -153,16 +153,6 @@ export class VendasDashComponent implements OnInit {
                 this._cdr.markForCheck();
             });
 
-        // Reversão Chart "Comparativo Anual"
-        Object.keys(this.data.ccCompAnual).forEach((key) => {
-            if (key != 'report') {
-                this.data.ccCompAnual[key].labels.reverse();
-                this.data.ccCompAnual[key].series.forEach((serie) => {
-                    serie.data.reverse();
-                });
-            }
-        });
-
         // Tratamento Chart "Comparativo Anual"
         this._chartAcumuladoFormat(0);
 

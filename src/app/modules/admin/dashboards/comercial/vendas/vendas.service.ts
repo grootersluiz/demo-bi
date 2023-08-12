@@ -116,6 +116,16 @@ export class VendasDashService {
 
                 const chartCompAnual = response[this.REPORT_COMPANUAL];
 
+                // Reversão Chart "Comparativo Anual"
+                Object.keys(chartCompAnual).forEach((key) => {
+                    if (key != 'report') {
+                        chartCompAnual[key].labels.reverse();
+                        chartCompAnual[key].series.forEach((serie) => {
+                            serie.data.reverse();
+                        });
+                    }
+                });
+
                 //---------------------------------------------------
 
                 //----------------------------------------------
