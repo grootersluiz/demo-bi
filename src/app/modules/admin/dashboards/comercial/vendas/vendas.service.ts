@@ -140,12 +140,6 @@ export class VendasDashService {
 
                 //Tratamento Gráfico "Comparativo Anual"
 
-                // indCCvsROL.forEach((element, index) => {
-                //     if (element == null) {
-                //         response[this.REPORT_CCvsROL][index] = 0;
-                //     }
-                // });
-
                 const chartCompAnual = response[this.REPORT_COMPANUAL];
 
                 //---------------------------------------------------

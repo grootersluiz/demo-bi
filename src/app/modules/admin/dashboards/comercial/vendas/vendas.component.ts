@@ -28,10 +28,7 @@ import * as _moment from 'moment';
 export class VendasDashComponent implements OnInit {
     chartAcumulado: ApexOptions;
     companiesLabels: string[] = [];
-    comparativoSeries: { name: string; data: number[] }[] = [
-        { name: '', data: [] },
-        { name: '', data: [] }
-    ];
+    comparativoSeries: { name: string; data: number[] }[] = [];
     chartGlobal: ApexOptions;
     data: any;
     selectedCurve: string = 'Todas';
@@ -156,24 +153,18 @@ export class VendasDashComponent implements OnInit {
                 this._cdr.markForCheck();
             });
 
-        // Tratamento Chart "Comparativo Anual"
+        // Reversão Chart "Comparativo Anual"
         Object.keys(this.data.ccCompAnual).forEach((key) => {
             if (key != 'report') {
-                this.companiesLabels.push(key);
-
-                if (this.comparativoSeries[0].name == '') {
-                    this.data.ccCompAnual[key].labels.forEach((year, index) => {
-                        this.comparativoSeries[index].name = year;
-                    });
-                }
-
-                this.data.ccCompAnual[key].series[0].data.forEach(
-                    (value, index) => {
-                        this.comparativoSeries[index].data.push(value.toFixed(2));
-                    }
-                );
+                this.data.ccCompAnual[key].labels.reverse();
+                this.data.ccCompAnual[key].series.forEach((serie) => {
+                    serie.data.reverse();
+                });
             }
         });
+
+        // Tratamento Chart "Comparativo Anual"
+        this._chartAcumuladoFormat(0);
 
         // Prepare the chart data
         this._prepareChartData();
@@ -306,7 +297,7 @@ export class VendasDashComponent implements OnInit {
                 this.comparativoSeries[1].data = temp.map(
                     (item) => item.lastYear
                 );
-                
+
                 this.companiesLabels = temp.map((item) => item.company);
                 break;
         }
@@ -317,29 +308,8 @@ export class VendasDashComponent implements OnInit {
     onAnualIntelSelected(intel: string) {
         this.anualIntel = intel;
         const index = this.intelOptions.indexOf(intel);
-        this.companiesLabels = [];
-        this.comparativoSeries = [
-            { name: '', data: [] },
-            { name: '', data: [] }
-        ];
 
-        Object.keys(this.data.ccCompAnual).forEach((key) => {
-            if (key != 'report') {
-                this.companiesLabels.push(key);
-
-                if (this.comparativoSeries[0].name == '') {
-                    this.data.ccCompAnual[key].labels.forEach((year, index) => {
-                        this.comparativoSeries[index].name = year;
-                    });
-                }
-
-                this.data.ccCompAnual[key].series[index].data.forEach(
-                    (value, index) => {
-                        this.comparativoSeries[index].data.push(value.toFixed(2));
-                    }
-                );
-            }
-        });
+        this._chartAcumuladoFormat(index);
 
         // Prepare the chart data
         this._prepareChartAcumulado();
@@ -570,6 +540,31 @@ export class VendasDashComponent implements OnInit {
                     `url(${currentURL}${attrVal.slice(attrVal.indexOf('#'))}`
                 );
             });
+    }
+
+    private _chartAcumuladoFormat(indicator: number) {
+        this.companiesLabels = [];
+        this.comparativoSeries = [];
+
+        Object.keys(this.data.ccCompAnual).forEach((key) => {
+            if (key != 'report') {
+                this.companiesLabels.push(key);
+
+                if (this.comparativoSeries.length == 0) {
+                    this.data.ccCompAnual[key].labels.forEach((year) => {
+                        this.comparativoSeries.push({ name: year, data: [] });
+                    });
+                }
+
+                this.data.ccCompAnual[key].series[indicator].data.forEach(
+                    (value, index) => {
+                        this.comparativoSeries[index].data.push(
+                            value.toFixed(2)
+                        );
+                    }
+                );
+            }
+        });
     }
 
     /**
