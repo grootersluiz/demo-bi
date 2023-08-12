@@ -8,10 +8,7 @@ import {
 } from '@angular/core';
 import { ChartComponent } from 'ng-apexcharts';
 import { ApexOptions } from 'apexcharts';
-import _, { isNumber, slice, toNumber } from 'lodash';
-import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef } from '@angular/core';
-import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
+import _, { isNumber } from 'lodash';
 import { ColorsComponent } from '../../util/colors/colors.component';
 
 // export interface PeriodicElement {
@@ -82,6 +79,7 @@ export class tipovendaComponent implements AfterViewInit {
     HeatFiliais: any[] = [];
     tiposBool: boolean[] = new Array(4).fill(true);
     PMVGeral: any = 0;
+    PMVIndex: number = 0;
     tipos: any[];
     av: boolean = false;
     bol: boolean = false;
@@ -316,9 +314,6 @@ export class tipovendaComponent implements AfterViewInit {
             }
         }
         totals[15] = PMV / auxMedia;
-        if (this.PMVGeral === 0) {
-            this.PMVGeral = String(this.formatadorPtsPMV(totals[15]));
-        }
 
         let totalSeries = {
             name: 'TOTAL',
@@ -355,8 +350,8 @@ export class tipovendaComponent implements AfterViewInit {
             indexdata++
         ) {
             let total = 0;
-            for (let index1 = 0; index1 < 5; index1++, index++) {
-                if (index < 5) {
+            for (let index1 = 0; index1 < 6; index1++, index++) {
+                if (index < 6) {
                     if (this.series2.rows[index][1] === 'A vista') {
                         this.seriesM1[index1].name = 'Até 1 dia';
                     } else {
@@ -365,14 +360,20 @@ export class tipovendaComponent implements AfterViewInit {
                     }
                 }
                 let value = this.series2.rows[index][2];
+                if (this.series2.rows[index][1] === 'PMV') {
+                    this.PMVGeral += this.series2.rows[index][2];
+                    this.PMVIndex++;
+                } else {
+                    total += value;
+                }
                 this.seriesM1[index1].data.push(value);
-                total += value;
             }
             this.seriesM1[this.seriesM1.length - 1].data.push(total);
             this.auxMes1 = this.series2.rows[index - 1][0];
             for (let aux = 0; aux < this.meses.length; aux++) {
                 if (this.meses[aux][1] === this.auxMes1.substring(0, 2)) {
-                    this.categories[indexdata] = this.meses[aux][0];
+                    this.categories[indexdata] =
+                        this.meses[aux][0] + '/' + this.auxMes1.slice(5);
                     break;
                 }
             }
@@ -383,6 +384,7 @@ export class tipovendaComponent implements AfterViewInit {
         if (this.categories.length === 1) {
             this.chartOptions1.chart.type = 'bar';
         }
+        this.PMVGeral = this.formatadorPtsPMV(this.PMVGeral / this.PMVIndex);
         var reflow = new ApexCharts(this.chart, this.chartOptions1);
     }
 
@@ -401,7 +403,11 @@ export class tipovendaComponent implements AfterViewInit {
         var reflow = new ApexCharts(this.chartPie2, this.chartOptionsPie2);
     }
     setDataM2() {
-        this.seriesM2 = this.seriesM2.concat({ name: 'Total',type: '', data: [] });
+        this.seriesM2 = this.seriesM2.concat({
+            name: 'Total',
+            type: '',
+            data: [],
+        });
         for (
             let index = 0, indexdata = 0;
             index < this.series4.rows.length;
@@ -419,7 +425,8 @@ export class tipovendaComponent implements AfterViewInit {
             this.auxMes2 = this.series4.rows[index - 1][0];
             for (let aux = 0; aux < this.meses.length; aux++) {
                 if (this.meses[aux][1] === this.auxMes2.substring(0, 2)) {
-                    this.categories2[indexdata] = this.meses[aux][0];
+                    this.categories2[indexdata] =
+                        this.meses[aux][0] + '/' + this.auxMes2.slice(5);
                     break;
                 }
             }
@@ -439,7 +446,7 @@ export class tipovendaComponent implements AfterViewInit {
 
         for (let row of dataRow) {
             let [date, type, value] = row;
-            if(type === 'A vista') type = 'À vista'
+            if (type === 'A vista') type = 'À vista';
             let [month, year] = date.split('/').map((part) => parseInt(part));
 
             if (!rawData[type]) rawData[type] = {};
@@ -494,7 +501,6 @@ export class tipovendaComponent implements AfterViewInit {
             rawData[type][year] += parseFloat(value);
 
             types.add(type);
-
         }
 
         this.seriesMixed2 = [];
@@ -532,15 +538,8 @@ export class tipovendaComponent implements AfterViewInit {
     }
 
     limpar() {
-        if (
-            this.tiposBool[0] &&
-            this.tiposBool[1] &&
-            this.tiposBool[2] &&
-            this.tiposBool[3]
-        ) {
-            this.PMVGeral = 0;
-        }
-
+        this.PMVGeral = 0;
+        this.PMVIndex = 0;
         this.chartOptions2.chart.type = 'area';
         this.chartOptions1.chart.type = 'area';
         this.tipos = ['1,10', '2,3', '7', '8'];
@@ -557,6 +556,10 @@ export class tipovendaComponent implements AfterViewInit {
         this.seriesMixed = [];
         this.seriesMixed2 = [];
         this.seriesM1 = [
+            {
+                name: '',
+                data: [],
+            },
             {
                 name: '',
                 data: [],
@@ -611,11 +614,12 @@ export class tipovendaComponent implements AfterViewInit {
         this._tipovendaService.setParam(dtini, dtfin, filial, 'REDE');
         this.limpar(); // viewSerie, categorias, series
         this.SetGeral();
-        this.trigger++;
     }
 
-    constructor(private _tipovendaService: tipovendaService,
-                private _colors: ColorsComponent) {
+    constructor(
+        private _tipovendaService: tipovendaService,
+        private _colors: ColorsComponent
+    ) {
         this.chartOptionsMixed = {
             series: this.seriesMixed,
             colors: this._colors.colors,
@@ -873,7 +877,13 @@ export class tipovendaComponent implements AfterViewInit {
                 },
                 y: {
                     formatter: (val) => {
-                        return this.formatadorPts(val);
+                        if (val < 0 || val > 150) {
+                            return this.formatadorPts(val);
+                        } else if (val != 0) {
+                            return this.formatadorPtsPMV(val);
+                        } else {
+                            return val;
+                        }
                     },
                 },
             },
@@ -915,9 +925,7 @@ export class tipovendaComponent implements AfterViewInit {
                     },
                 },
             },
-
         };
-
 
         this.chartOptions2 = {
             series: this.seriesM2,
@@ -1090,7 +1098,7 @@ export class tipovendaComponent implements AfterViewInit {
                     '9x',
                     '10x',
                     '11x',
-                    '12x',
+                    '12x+',
                     'TOT. FIN',
                     'TOT. ROL',
                     'PMV',
