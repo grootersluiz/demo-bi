@@ -1,6 +1,6 @@
 import { LiveAnnouncer } from "@angular/cdk/a11y";
 import { HttpClient } from "@angular/common/http";
-import { AfterViewInit, Component, ViewChild, Inject, ViewEncapsulation, ChangeDetectionStrategy } from "@angular/core";
+import { AfterViewInit, Component, ViewChild, Inject, ViewEncapsulation, ChangeDetectionStrategy, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
 import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
 import { MatSort, Sort } from "@angular/material/sort";
@@ -30,10 +30,12 @@ import {
 } from "ng-apexcharts";
 import { FilterDialogComponent } from "../../dashboards/rol/filterdialog/filterdialog.component";
 import { DashEstoqueService } from "./dashestoque.service";
-import { Subject, takeUntil } from "rxjs";
+import { map, Observable, startWith, Subject, takeUntil } from "rxjs";
 import { style } from "@angular/animations";
 import { isNumber } from "lodash";
 import { labels } from "app/mock-api/apps/mailbox/data";
+import { FormControl } from "@angular/forms";
+import { ColorsComponent } from "../../util/colors/colors.component";
 
 
 @Component({
@@ -48,7 +50,7 @@ import { labels } from "app/mock-api/apps/mailbox/data";
 
 
 })
-export class DashestoqueComponent {
+export class DashestoqueComponent  {
     @ViewChild("chart") chart: ChartComponent;
     @ViewChild("chart2") chart2: ChartComponent;
     @ViewChild("chart3") chart3: ChartComponent;
@@ -70,11 +72,14 @@ export class DashestoqueComponent {
     public chartOptionsGiro: ApexOptions;
     recentTransactionsDataSource: MatTableDataSource<any> =
         new MatTableDataSource([]);
+        myControl = new FormControl('');
+        options: string[] = ['One', 'Two', 'Three'];
+        filteredOptions: Observable<string[]>;
 
 
 
     titulo: string = "Indicadores de Estoque";
-    subTitulo: string = "Análise por Marcas";
+    subTitulo: string = "Análise de Estoque";
     isToggleOn: boolean;
     displayedColumns: string[] = ["Cód. Prod", "Produto", "Cód Emp", "Empresa", "Qtd. Dias"];
     diasEstoque: String[] = [];
@@ -96,8 +101,8 @@ export class DashestoqueComponent {
 
     estoquePorFornecedor: EstoqueFornecedor = { nomeParc: [], SaldoEstoque: [] };
     //resumoEstoque ={giro:[], diasEstoque:[]}
-    giroEstoque: GiroDiasEstoque = { giro: [] };
-    giroVazio:GiroDias[]=[];
+    giroEstoque: GiroDiasEstoque = { serieGiro: [], SerieDias:[], categoria:[] };
+    //giroVazio:GiroDias[]=[];
 
     estNomeFornecedor: string[] = [];
     estSaldoEstoque: number[] = [];
@@ -122,21 +127,20 @@ export class DashestoqueComponent {
         return item.id || index;
     }
 
-   /* ngAfterViewInit(): void {
-        var reflow = new ApexCharts(this.chartGiro, this.chartOptionsGiro);
-
-    }*/
 
 
 
 
     constructor(public dashEstoqueServico: DashEstoqueService, private _httpClient: HttpClient,
-        private _liveAnnouncer: LiveAnnouncer, private _dialog: MatDialog, private _router: Router) {
+        private _liveAnnouncer: LiveAnnouncer, private _dialog: MatDialog, private _router: Router, private _colors: ColorsComponent) {
 this.param.push("99");
 
         this.recentTransactionsTableColumns = [
             "codprod", "produto", "codemp", "empresa", "qtdDias"
         ];
+
+
+
 
 
 
@@ -153,7 +157,7 @@ this.param.push("99");
         this.getEstoquePorFornecedor();
         this.getGiroEstoque(this.param);
 
-        this.getDisponibilidadeCurva();
+        this.getDisponibilidadeCurva(this.param);
         this.getDisponibilidadeEmpresa();
 
         this.chartOptions = {
@@ -423,7 +427,7 @@ this.param.push("99");
             ],
 
             chart: {
-                height: 250,
+                height: 200,
                 width: 500,
                 type: "bar"
             },
@@ -431,6 +435,85 @@ this.param.push("99");
 
                 bar: {
                     columnWidth: "50%",
+
+
+
+
+                    //endingShape: "rounded"
+                }
+
+            },
+            colors: this._colors.colors,
+            dataLabels: {
+                enabled: false
+            },
+
+            stroke: {
+                width: 1,
+                colors: ['#94A3B8']
+
+
+            },
+            /*
+                        gridSku: {
+                            row: {
+                                colors: ["#fff", "#f2f2f2"]
+                            }
+                        },*/
+            xaxis: {
+                labels: {
+                    rotate: -45,
+                    //  with: 1
+                    style: {
+                        fontSize: '10px'
+                    }
+                },
+                categories: [],
+                tickPlacement: "on"
+            },
+            yaxis: {
+                title: {
+                    text: "SKUs"
+                }
+            },
+            fill: {
+                type: "gradient",
+                gradient: {
+                    shade: "light",
+                    type: "horizontal",
+                    shadeIntensity: 0.25,
+                    gradientToColors: undefined,
+                    inverseColors: true,
+                    opacityFrom: 0.85,
+                    opacityTo: 0.85,
+                    stops: [50, 0, 100]
+                }
+            }
+
+        };
+
+
+        // Curva por SKU
+
+
+        this.chartOptionsDisponibilidadeSKU = {
+
+            series: [
+                {
+                    name: "Qtd. SKUs",
+                    data: []
+                }
+            ],
+
+            chart: {
+                height: 200,
+                width: 200,
+                type: "bar"
+            },
+            plotOptions: {
+
+                bar: {
+                    columnWidth: "30%",
 
                     colors: {
                         ranges: [
@@ -496,7 +579,8 @@ this.param.push("99");
         };
 
 
-        // Curva por SKU
+
+        /*
 
         this.chartOptionsDisponibilidadeSKU = {
             series: [0, 0, 0, 0, 0, 0],
@@ -507,6 +591,7 @@ this.param.push("99");
                 width: 100,  // Altere a largura do gráfico aqui
 
             },
+
             labels: ["Curva A", "Curva B", "Curva C", "Curva F", "Curva J", "Curva N"],
 
             responsive: [
@@ -523,7 +608,7 @@ this.param.push("99");
                 }
             ]
 
-        };
+        };*/
 
         // Estoque Por fornecedor
 
@@ -534,6 +619,7 @@ this.param.push("99");
                     data: []
                 }
             ],
+            colors:[this._colors.colors[1]],
             chart: {
                 type: "bar",
                 height: 300,
@@ -626,8 +712,89 @@ this.param.push("99");
 
 
 
-
         this.chartOptionsDisponibilidadeAgrupador = {
+
+            series: [
+                {
+                    name: "Qtd. SKUs",
+                    data: this.disponibilidadeAgrupador.serie
+                }
+            ],
+            colors:[this._colors.colors[0]],
+
+            chart: {
+                height: 200,
+                width: 250,
+                type: "bar"
+            },
+            plotOptions: {
+
+                bar: {
+                    columnWidth: "50%",
+
+                  /*  colors: {
+                        ranges: [
+                            {
+                                from: 0,
+                                to: 999999999999999,
+                            //    color: '#FF8C00', // Cor para valores entre 0 e 50
+                            },
+                        ],
+                    }*/
+
+
+                    //endingShape: "rounded"
+                }
+
+            },
+            dataLabels: {
+                enabled: false
+            },
+
+            stroke: {
+                width: 1,
+                colors: ['#94A3B8']
+
+
+            },
+            /*
+                        gridSku: {
+                            row: {
+                                colors: ["#fff", "#f2f2f2"]
+                            }
+                        },*/
+            xaxis: {
+                labels: {
+                    rotate: -45,
+                    //  with: 1
+                    style: {
+                        fontSize: '11px'
+                    }
+                },
+              categories:this.disponibilidadeAgrupador.categoria,
+                tickPlacement: "on"
+            },
+            yaxis: {
+                title: {
+                    text: "SKUs"
+                }
+            },
+            fill: {
+                type: "gradient",
+                gradient: {
+                    shade: "light",
+                    type: "horizontal",
+                    shadeIntensity: 0.25,
+                    gradientToColors: undefined,
+                    inverseColors: true,
+                    opacityFrom: 0.85,
+                    opacityTo: 0.85,
+                    stops: [50, 0, 100]
+                }
+            }
+
+
+    /*    this.chartOptionsDisponibilidadeAgrupador = {
             series: [],
 
 
@@ -646,10 +813,7 @@ this.param.push("99");
 
                 // height: '40%',
                 type: 'donut',
-                /*sparkline: {
-                    enabled: true,
-                    color: "#696969",
-                },*/
+
 
 
 
@@ -683,9 +847,9 @@ this.param.push("99");
             },
 
 
-        };
+        };*/
 
-
+    }
 
     }
 
@@ -773,13 +937,14 @@ this.param.push("99");
     };
 
     getGeral(codemp:String[]){
-       
-      
+
+
        if  (codemp[0]==='null'){
         codemp[0] = '99'
        }
        this.getDiasEstoque(codemp);
-       this.getGiroEstoque(codemp)
+       this.getGiroEstoque(codemp);
+       this.getDisponibilidadeCurva(codemp);
 
     }
 
@@ -797,16 +962,8 @@ this.param.push("99");
 
 
 
-    getEstoquePorFornecedor() {
-        this._httpClient.get<{ columns: [], rows: [] }>('http://api.portal.jspecas.com.br/v1/views/512/data?')
-            .subscribe(dataresponse => {
-                //this.estoquePorFornecedor = ;
-
-                this.formatarEstoqueFornecedor(dataresponse.rows);
 
 
-            });
-    }
 
 
     getGiroEstoque(param:String[]) {
@@ -820,17 +977,35 @@ this.param.push("99");
     }
 
 
-    getDisponibilidadeCurva() {
-        this._httpClient.get<{ columns: [], rows: [] }>('http://api.portal.jspecas.com.br/v1/views/526/data?')
-            .subscribe(dataresponse => {
-                this.formatarDisponibilidade(dataresponse.rows);
+    getDisponibilidadeCurva(param:String[]) {
 
 
+       this.limparDisponibilidadeCurva();
+        this.dashEstoqueServico.getDisponibilidadeCurva(param).subscribe((dataresponse) => {
+            this.formatarDisponibilidade(dataresponse.rows);
 
 
             });
 
+
+
+
     }
+
+    getEstoquePorFornecedor() {
+
+       // this.limparDisponibilidadeCurva();
+         this.dashEstoqueServico.getEstoquePorFornecedor().subscribe((dataresponse) => {
+
+            this.formatarEstoqueFornecedor(dataresponse.rows);
+
+
+             });
+
+
+
+
+     }
 
 
     getDisponibilidadeEmpresa() {
@@ -860,13 +1035,36 @@ this.param.push("99");
     }
 
     limparGiroEstoque(){
-       // const emptyArray: GiroDiasEstoque[] = [];
-      console.log('aqui',this.giroEstoque.giro);
-    this.giroEstoque.giro=[];
-    console.log(this.giroEstoque);
- 
+
+
+    this.giroEstoque.serieGiro=[];
+    this.giroEstoque.SerieDias=[];
+    this.giroEstoque.categoria=[];
+
+
 
     }
+    limparDisponibilidadeCurva(){
+
+     this.disponibilidadeAgrupador.categoria =[];
+     this.disponibilidadeAgrupador.serie =[];
+     this.disponibilidadeSku.categoria =[];
+     this.disponibilidadeSku.serie =[];
+
+
+
+
+     }
+     limparEstoqueFornecedor(){
+
+
+        this.estoquePorFornecedor.nomeParc =[];
+        this.estoquePorFornecedor.SaldoEstoque =[];
+
+
+
+
+        }
 
 
 
@@ -939,8 +1137,8 @@ this.param.push("99");
             ],
 
             chart: {
-                height: 250,
-                width: 500,
+                height: 225,
+                width: "100%",
                 type: "bar"
             },
             plotOptions: {
@@ -1043,9 +1241,9 @@ this.param.push("99");
 
 
             this.disponibilidadeAgrupador.categoria.push(param[i][0]);
-            this.disponibilidadeAgrupador.serie.push(Number(param[i][1]));
+            this.disponibilidadeAgrupador.serie.push(Math.round(Number(param[i][4])* 100) / 100);
             this.disponibilidadeSku.categoria.push(param[i][0]);
-            this.disponibilidadeSku.serie.push(Number(param[i][2]));
+            this.disponibilidadeSku.serie.push(Math.round(Number(param[i][3])* 100) / 100);
 
         }
 
@@ -1060,14 +1258,13 @@ this.param.push("99");
 
     formatarDisponibilidadeEmpresa(param: string[]) {
 
-        console.log("empresa", param);
 
         for (let i = 0; i < param.length; i++) {
 
 
 
             this.DisponibilidadeEmpresa.categoria.push(param[i][1]);
-            this.DisponibilidadeEmpresa.serie.push(Number(param[i][2]));
+            this.DisponibilidadeEmpresa.serie.push(Math.round(Number(param[i][4]) * 100) / 100);
 
 
         }
@@ -1085,13 +1282,12 @@ this.param.push("99");
 
         for (let i = 0; i < param.length; i++) {
 
-            let giro: GiroDias = {
-                curva: param[i][0],
-                giro: Number(param[i][1]),
-                dias: Number(param[i][2])
-            }
-            console.log(giro);
-            this.giroEstoque.giro.push(giro);
+            this.giroEstoque.serieGiro.push(Math.round(Number(param[i][1]) * 100) / 100);
+            this.giroEstoque.SerieDias.push(Math.round(Number(param[i][2]) * 100) / 100);
+            this.giroEstoque.categoria.push(param[i][0]);
+
+
+
         }
 
 
@@ -1121,26 +1317,14 @@ this.param.push("99");
                     color: "#ed7b00",
                     name: "Giro de Estoque",
                     type: "line",
-                    data: [Math.round(this.giroEstoque.giro[0].giro * 100) / 100,
-                    Math.round(this.giroEstoque.giro[1].giro * 100) / 100,
-                    Math.round(this.giroEstoque.giro[2].giro * 100) / 100,
-                    Math.round(this.giroEstoque.giro[3].giro * 100) / 100,
-                    Math.round(this.giroEstoque.giro[4].giro * 100) / 100,
-                    Math.round(this.giroEstoque.giro[5].giro * 100) / 100,
-                    Math.round(this.giroEstoque.giro[6].giro * 100) / 100]
+                    data: this.giroEstoque.serieGiro
                 },
 
                 {
                     color: "#6e7a8a",
                     name: "Dias de Estoque",
                     type: "line",
-                    data: [this.giroEstoque.giro[0].dias,
-                    this.giroEstoque.giro[1].dias,
-                    this.giroEstoque.giro[2].dias,
-                    this.giroEstoque.giro[3].dias,
-                    this.giroEstoque.giro[4].dias,
-                    this.giroEstoque.giro[5].dias,
-                    this.giroEstoque.giro[6].dias]
+                    data:this.giroEstoque.SerieDias
                 },
             ],
             chart: {
@@ -1176,13 +1360,7 @@ this.param.push("99");
                 colors: ['#ed7b00', '#6e7a8a']
             },
             xaxis: {
-                categories: [this.giroEstoque.giro[0].curva,
-                this.giroEstoque.giro[1].curva,
-                this.giroEstoque.giro[2].curva,
-                this.giroEstoque.giro[3].curva,
-                this.giroEstoque.giro[4].curva,
-                this.giroEstoque.giro[5].curva,
-                this.giroEstoque.giro[6].curva]
+                categories: this.giroEstoque.categoria
             },
             yaxis: [
                 {
@@ -1251,6 +1429,7 @@ this.param.push("99");
                     data: this.estoquePorFornecedor.SaldoEstoque
                 }
             ],
+            colors:[this._colors.colors[1]],
             annotations: {
                 points: [
                     {
@@ -1363,7 +1542,93 @@ this.param.push("99");
         // Curva por SKU
 
 
+        this.chartOptionsDisponibilidadeSKU = {
 
+            series: [
+                {
+                    name: "% SKUs",
+                    data: this.disponibilidadeSku.serie
+                }
+            ],
+
+            chart: {
+                height: 200,
+                width: "100%",
+                type: "bar"
+            },
+            plotOptions: {
+
+                bar: {
+                    columnWidth: "40%",
+
+                  /*  colors: {
+                        ranges: [
+                            {
+                                from: 0,
+                                to: 999999999999999,
+                            //    color: '#FF8C00', // Cor para valores entre 0 e 50
+                            },
+                        ],
+                    }*/
+
+
+                    //endingShape: "rounded"
+                }
+
+            },
+            colors: [this._colors.colors[1]],
+            dataLabels: {
+                enabled: false
+            },
+
+            stroke: {
+                width: 1,
+                colors: ['#94A3B8']
+
+
+            },
+            /*
+                        gridSku: {
+                            row: {
+                                colors: ["#fff", "#f2f2f2"]
+                            }
+                        },*/
+            xaxis: {
+                labels: {
+                    rotate: -45,
+                    //  with: 1
+                    style: {
+                        fontSize: '11px'
+                    }
+                },
+              categories:this.disponibilidadeSku.categoria,
+                tickPlacement: "on"
+            },
+            yaxis: {
+                title: {
+                    text: "SKUs"
+                }
+            },
+            fill: {
+                type: "gradient",
+                gradient: {
+                    shade: "light",
+                    type: "horizontal",
+                    shadeIntensity: 0.25,
+                    gradientToColors: undefined,
+                    inverseColors: true,
+                    opacityFrom: 0.85,
+                    opacityTo: 0.85,
+                    stops: [50, 0, 100]
+                }
+            }
+
+        };
+
+
+
+
+/*
 
         this.chartOptionsDisponibilidadeSKU = {
             series: this.disponibilidadeSku.serie,
@@ -1383,11 +1648,7 @@ this.param.push("99");
 
 
                 // height: '40%',
-                type: 'donut',
-                /*sparkline: {
-                    enabled: true,
-                    color: "#696969",
-                },*/
+                type: "bar",
 
 
 
@@ -1423,63 +1684,12 @@ this.param.push("99");
             legend: { position: 'bottom' }
 
 
-
-
-
-            /*tooltip:{
-   enabled: true,
-   fillSeriesColor: true,
-            },*/
-            /*  tooltip: {
-                  enabled: true,
-                  fillSeriesColor: false,
-                  theme: 'dark',
-                  custom: ({
-                      seriesIndex,
-                      w,
-                  }): string => `<div class="flex items-center h-8 min-h-8 max-h-8 px-3">
-                                                      <div class="w-3 h-3 rounded-full" style="background-color: ${
-                                                          w.config.colors[
-                                                             0
-                                                          ]
-                                                      };"></div>
-                                                      <div class="ml-2 text-md leading-none">${
-                                                          w.config.labels[
-                                                            "teste"
-                                                          ]
-                                                      }:</div>
-                                                      <div class="ml-2 text-md font-bold leading-none">${(
-                                                          (w.config.series[
-                                                              seriesIndex
-                                                          ] *
-                                                              100) /
-                                                          w.config.series[0]
-                                                      ).toFixed(2)}%</div>
-                                                  </div>`,
-              },*/
-
-            /* responsive: [
-                 {
-                     breakpoint: 500,
-
-                     options: {
-                         chart: {
-                             width: 100
-                         },
-                         legend: {
-                             position: "center"
-                         }
-
-                     }
-                 }
-             ]*/
-
-
         };
-
+*/
 
 
     }
+
 
 
 
@@ -1492,64 +1702,90 @@ this.param.push("99");
 
 
 
+        //this.chartOptionsDisponibilidadeAgrupador = {
+
         this.chartOptionsDisponibilidadeAgrupador = {
-            series: this.disponibilidadeAgrupador.serie,
 
-
+            series: [
+                {
+                    name: "% Agrupador",
+                    data: this.disponibilidadeAgrupador.serie
+                }
+            ],
+            colors:[this._colors.colors[0]],
             chart: {
-                foreColor: '#696969',
-                animations: {
-                    speed: 100,
-                    animateGradually: {
-                        enabled: false,
-                    },
-                },
-                height: 200, // Altere a altura do gráfico aqui
-                width: "100%",  // Altere a largura do gráfico aqui
-                fontFamily: 'inherit',
-
-
-                // height: '40%',
-                type: 'donut',
-                /*sparkline: {
-                    enabled: true,
-                    color: "#696969",
-                },*/
-
-
-
+                height: 200,
+                width: 250,
+                type: "bar"
             },
-            colors: ['#FF8C00', '#477bff', '#de1d37', '#006400', '#FF0000', '#00BFFF'],
-
-
-            labels: this.disponibilidadeAgrupador.categoria,
-
-            dataLabels: {
-                style: {
-                    fontSize: '13px',
-                    //fontWeight: 'bold',
-                    colors: ['#0a0a0a'],
-                },
-
-            },
-
             plotOptions: {
-                pie: {
-                    customScale: 0.9,
-                    expandOnClick: true,
-                    donut: {
-                        size: '75%',
 
-                    },
+                bar: {
+                    columnWidth: "40%",
 
-                },
+                  /*  colors: {
+                        ranges: [
+                            {
+                                from: 0,
+                                to: 999999999999999,
+                            //    color: '#FF8C00', // Cor para valores entre 0 e 50
+                            },
+                        ],
+                    }*/
+
+
+                    //endingShape: "rounded"
+                }
+
+            },
+            dataLabels: {
+                enabled: false
+            },
+
+            stroke: {
+                width: 1,
+                colors: ['#94A3B8']
 
 
             },
-            legend: { position: 'bottom' }
-
+            /*
+                        gridSku: {
+                            row: {
+                                colors: ["#fff", "#f2f2f2"]
+                            }
+                        },*/
+            xaxis: {
+                labels: {
+                    rotate: -45,
+                    //  with: 1
+                    style: {
+                        fontSize: '11px'
+                    }
+                },
+              categories:this.disponibilidadeAgrupador.categoria,
+                tickPlacement: "on"
+            },
+            yaxis: {
+                title: {
+                    text: "SKUs"
+                }
+            },
+            fill: {
+                type: "gradient",
+                gradient: {
+                    shade: "light",
+                    type: "horizontal",
+                    shadeIntensity: 0.25,
+                    gradientToColors: undefined,
+                    inverseColors: true,
+                    opacityFrom: 0.85,
+                    opacityTo: 0.85,
+                    stops: [50, 0, 100]
+                }
+            }
 
         };
+
 
 
 
@@ -1770,29 +2006,12 @@ export interface PeriodicElement {
 }
 
 
-export interface GiroDias {
-    curva: string;
-    giro: number;
-    dias: number;
-}
-
-export interface GiroDiasEstoque {
-    giro: any[];
-
-}
-
 export interface EstoqueFornecedor {
 
     nomeParc: string[];
     SaldoEstoque: number[];
 }
 
-export interface EstoqueDiasGiro {
-
-    curva: string;
-    giro: number;
-    dias: number;
-}
 
 export interface Disponibilidade {
 
@@ -1800,16 +2019,14 @@ export interface Disponibilidade {
     categoria: string[];
 }
 
+export interface GiroDiasEstoque {
+
+    serieGiro: number[];
+    SerieDias: number[];
+    categoria: string[];
+}
 
 
-/*
-export interface DiasEstoque {
-    codprod: number;
-    codemp: number;
-    qtdEstoque: number;
-    media3m: string;
-    symbol2: number;
-}*/
 
 
 

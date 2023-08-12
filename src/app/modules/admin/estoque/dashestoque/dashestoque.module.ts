@@ -29,6 +29,11 @@ import { dashEstoqueRoutes } from './dashestoque.routing';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ListamarcaModule } from '../../util/listamarca/listamarca.module';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatMenuModule } from '@angular/material/menu';
+import { ColorsComponent } from '../../util/colors/colors.component';
+
 
 
 
@@ -56,9 +61,19 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
         SelectfilialModule,
         MatPaginatorModule,
         MatTableModule,
-        MatSortModule
+        MatSortModule,
+        ListamarcaModule,
+        MatMenuModule,
+        MatAutocompleteModule,
+
+
+
+
+
 
     ],
+
+    providers:[ColorsComponent]
 })
 export class DashEstoqueModule {}
 
