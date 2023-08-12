@@ -35,6 +35,7 @@ import { analisemarcaRoutes } from 'app/modules/admin/dashboards/analisemarca/an
 import { SelectfilialModule } from '../../util/selectfilial/selectfilial.module';
 import { ListamarcaModule } from '../../util/listamarca/listamarca.module';
 import { ListafornecedorModule } from '../../util/listafornecedor/listafornecedor.module';
+import { ListacurvaModule } from '../../util/listacurva/listacurva.module';
 
 import {NgFor} from '@angular/common';
 import {MatSelectModule} from '@angular/material/select';
@@ -65,6 +66,7 @@ registerLocaleData(localePt);
         ,SelectfilialModule
         ,ListamarcaModule
         ,ListafornecedorModule
+        ,ListacurvaModule
     ],
     providers: [
         { provide: MAT_DATE_LOCALE, useValue: 'pt-BR' },

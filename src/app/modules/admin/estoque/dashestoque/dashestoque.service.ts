@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
     providedIn: 'root'
 })
 export class DashEstoqueService {
-   
+
 
     constructor(private _httpClient: HttpClient) {
 
@@ -15,7 +15,7 @@ export class DashEstoqueService {
 
 
     getDiasEstoque(codemp: String[]): Observable<any> {
-     
+
         return this._httpClient.get<{ columns: []; rows: [] }>(
             'http://api.portal.jspecas.com.br/v1/views/519/data?' +
             'codemp=' +
@@ -31,8 +31,29 @@ export class DashEstoqueService {
             'codemp=' +
             codemp
         );
-      
+
     }
+
+
+    getDisponibilidadeCurva(codemp: String[]): Observable<any> {
+
+
+        return this._httpClient.get<{ columns: []; rows: [] }>(
+            'http://api.portal.jspecas.com.br/v1/views/526/data?'+'codemp=' +codemp
+        );
+
+    }
+
+    getEstoquePorFornecedor(): Observable<any> {
+
+
+         return this._httpClient.get<{ columns: []; rows: [] }>(
+             'http://api.portal.jspecas.com.br/v1/views/512/data?'
+
+         );
+
+     }
+
 
 
 }
