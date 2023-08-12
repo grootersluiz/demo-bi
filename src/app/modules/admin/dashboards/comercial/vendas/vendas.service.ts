@@ -18,6 +18,7 @@ export class VendasDashService {
     readonly REPORT_LBvsCC = '361';
     readonly REPORT_MBvsCC = '362';
     readonly REPORT_COBERTURA = '363';
+    readonly REPORT_INDICADORES = '364';
     readonly REPORT_FILTRO_FILIAIS = '101';
     readonly REPORT_FILTRO_VENDEDORES = '121';
 
@@ -60,7 +61,9 @@ export class VendasDashService {
             this.REPORT_LBvsCC
         }&reportId=${this.REPORT_MBvsCC}&reportId=${
             this.REPORT_COBERTURA
-        }&reportId=${this.REPORT_FILTRO_FILIAIS}&dtini=
+        }&reportId=${this.REPORT_INDICADORES}&reportId=${
+            this.REPORT_FILTRO_FILIAIS
+        }&dtini=
         ${this.formatDate(dtIni)}
         &codvend=${sellersIds.join(',')}&codemp=${companiesIds.join(',')}&dtfin=
         ${this.formatDate(dtFin)}`;
@@ -180,6 +183,51 @@ export class VendasDashService {
 
                 //---------------------------------------------------
 
+                //----------------------------------------------
+
+                //Tratamento Gráfico "Indicadores Mensais (CC)"
+
+                const tempIndicadores = response[this.REPORT_INDICADORES];
+
+                Object.keys(tempIndicadores).forEach((key) => {
+                    if (key != 'report') {
+                        tempIndicadores[key].series.unshift({
+                            name: 'VLRROL_DC',
+                            data: tempIndicadores[key].labels,
+                            type: 'column',
+                        });
+                    }
+                });
+
+                console.log(tempIndicadores);
+
+                const chartIndicadores = [];
+                Object.keys(tempIndicadores).forEach((key) => {
+                    if (key != 'report') {
+                        // Create a Date object from the input date string
+                        const inputDate = new Date(key);
+
+                        // Get the UTC components of the date
+                        const year = inputDate.getUTCFullYear();
+                        const month = inputDate.getUTCMonth() + 1;
+                        const day = inputDate.getUTCDate();
+
+                        // Convert components to strings and add leading zeros if necessary
+                        const formattedMonth = String(month).padStart(2, '0');
+                        const formattedDay = String(day).padStart(2, '0');
+
+                        // Create the final formatted date string
+                        const formattedDateString = `${formattedMonth}/${formattedDay}/${year}`;
+
+                        chartIndicadores.push({
+                            [formattedDateString]: tempIndicadores[key],
+                        });
+                    }
+                });
+                console.log(chartIndicadores);
+
+                //---------------------------------------------------
+
                 //---------------------------------------------------
 
                 const dashData = {
@@ -191,6 +239,7 @@ export class VendasDashService {
                     ccMB: chartMBvsCC,
                     ccCob: chartCobertura,
                     ccCompAnual: chartCompAnual,
+                    ccInd: chartIndicadores,
                 };
                 this._data.next(dashData);
             })
