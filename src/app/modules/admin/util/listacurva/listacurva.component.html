@@ -1,0 +1,32 @@
+
+<mat-form-field class="sm:inline-flex ml-3" style="width: 186px">
+    <mat-label style="font-size: 11px; color: #fff">Curva</mat-label>
+    <mat-select
+    class="my-custom-class"
+    style="font-size: 12px"
+    [formControl]="curvas"
+    multiple >
+        <mat-option
+            class="select-all-companies"
+            style="font-size: 12px;"
+            [value]="'-1'"
+            (click)="selectAllCompanies()" >
+            {{
+                allCompaniesSelected
+                    ? "Desmarcar Todos"
+                    : "Marcar Todos"
+            }}
+        </mat-option>
+
+        <mat-option
+            style="font-size: 12px"
+            *ngFor="
+                let curva of curvasStringList;
+                let i = index
+            "
+            [value]="curvasObjects[i].id.toString()"
+            (click)=" handleCompanyFilterSelect(curvasObjects[i].id)"
+            >{{ curva }}
+        </mat-option>
+    </mat-select>
+</mat-form-field>
