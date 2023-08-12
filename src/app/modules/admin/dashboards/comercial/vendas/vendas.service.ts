@@ -88,26 +88,9 @@ export class VendasDashService {
 
                 //Tratamento Gráfico "Análise Positivação das Carteiras"
 
-                let totalCC = response[this.REPORT_CC].TOTAL_CARTEIRA;
-                let meta = response[this.REPORT_CC].META_POSITIVACAO;
-                let totalCCReal = response[this.REPORT_CC].REALIZADO;
-                let ccRealDC = response[this.REPORT_CC].REALIZADO_DC;
-                let ccRealFC = response[this.REPORT_CC].REALIZADO_FC;
-                let gap = response[this.REPORT_CC].PERC_GAP_CC;
-
-                let indCC = [
-                    totalCC,
-                    meta,
-                    totalCCReal,
-                    ccRealDC,
-                    ccRealFC,
-                    gap,
-                ];
-
-                indCC.forEach((element, index) => {
-                    if (element == null) {
-                        response[this.REPORT_CC][index] = 0;
-                    }
+                Object.keys(response[this.REPORT_CC]).forEach((key) => {
+                    response[this.REPORT_CC][key] =
+                        response[this.REPORT_CC][key] ?? 0;
                 });
 
                 const chartCC = response[this.REPORT_CC];
@@ -118,18 +101,9 @@ export class VendasDashService {
 
                 //Tratamento Gráfico "ROL Carteira"
 
-                let rol = response[this.REPORT_CCvsROL].REALIZADO_ROL;
-                let rolDC = response[this.REPORT_CCvsROL].ROL_DC;
-                let rolFC = response[this.REPORT_CCvsROL].ROL_FC;
-                let metaRol = response[this.REPORT_CCvsROL].ROL_META_CARTEIRA;
-                let gapRol = response[this.REPORT_CCvsROL].PERC_GAP_META;
-
-                let indCCvsROL = [rol, rolDC, rolFC, metaRol, gapRol];
-
-                indCCvsROL.forEach((element, index) => {
-                    if (element == null) {
-                        response[this.REPORT_CCvsROL][index] = 0;
-                    }
+                Object.keys(response[this.REPORT_CCvsROL]).forEach((key) => {
+                    response[this.REPORT_CCvsROL][key] =
+                        response[this.REPORT_CCvsROL][key] ?? 0;
                 });
 
                 const chartCCvsROL = response[this.REPORT_CCvsROL];
@@ -148,21 +122,9 @@ export class VendasDashService {
 
                 //Tratamento Gráfico "CC Projeção"
 
-                let potencial =
-                    response[this.REPORT_CCPROJECAO].POTENCIAL_CARTEIRA;
-                let proj = response[this.REPORT_CCPROJECAO].PROJECAO_CARTEIRA;
-                let gapProj = response[this.REPORT_CCPROJECAO].PERC_GAP;
-                let projPF =
-                    response[this.REPORT_CCPROJECAO].PROJECAO_PF_CARTEIRA;
-                let projPJ =
-                    response[this.REPORT_CCPROJECAO].PROJECAO_PJ_CARTEIRA;
-
-                let indCCProjecao = [potencial, proj, gapProj, projPF, projPJ];
-
-                indCCProjecao.forEach((element, index) => {
-                    if (element == null) {
-                        response[this.REPORT_CCPROJECAO][index] = 0;
-                    }
+                Object.keys(response[this.REPORT_CCPROJECAO]).forEach((key) => {
+                    response[this.REPORT_CCPROJECAO][key] =
+                        response[this.REPORT_CCPROJECAO][key] ?? 0;
                 });
 
                 const chartCCprojecao = response[this.REPORT_CCPROJECAO];
@@ -173,18 +135,9 @@ export class VendasDashService {
 
                 //Tratamento Gráfico "LB vs CC"
 
-                let lb = response[this.REPORT_LBvsCC].REALIZADO_LB;
-                let lbdc = response[this.REPORT_LBvsCC].LB_DC;
-                let lbfc = response[this.REPORT_LBvsCC].LB_FC;
-                let metaLB = response[this.REPORT_LBvsCC].LB_META_CARTEIRA;
-                let gapLB = response[this.REPORT_LBvsCC].PERC_GAP_META;
-
-                let indCCvsLB = [lb, lbdc, lbfc, metaLB, gapLB];
-
-                indCCvsLB.forEach((element, index) => {
-                    if (element == null) {
-                        response[this.REPORT_LBvsCC][index] = 0;
-                    }
+                Object.keys(response[this.REPORT_LBvsCC]).forEach((key) => {
+                    response[this.REPORT_LBvsCC][key] =
+                        response[this.REPORT_LBvsCC][key] ?? 0;
                 });
 
                 const chartLBvsCC = response[this.REPORT_LBvsCC];
@@ -195,18 +148,9 @@ export class VendasDashService {
 
                 //Tratamento Gráfico "MB vs CC"
 
-                let mb = response[this.REPORT_MBvsCC].REALIZADO_MB;
-                let mbdc = response[this.REPORT_MBvsCC].MB_DC;
-                let mbfc = response[this.REPORT_MBvsCC].MB_FC;
-                let metaMB = response[this.REPORT_MBvsCC].MB_META_CARTEIRA;
-                let gapMB = response[this.REPORT_MBvsCC].PERC_GAP_META;
-
-                let indCCvsMB = [mb, mbdc, mbfc, metaMB, gapMB];
-
-                indCCvsMB.forEach((element, index) => {
-                    if (element == null) {
-                        response[this.REPORT_MBvsCC][index] = 0;
-                    }
+                Object.keys(response[this.REPORT_MBvsCC]).forEach((key) => {
+                    response[this.REPORT_MBvsCC][key] =
+                        response[this.REPORT_MBvsCC][key] ?? 0;
                 });
 
                 const chartMBvsCC = response[this.REPORT_MBvsCC];
@@ -217,16 +161,9 @@ export class VendasDashService {
 
                 //Tratamento Gráfico "Cobertura"
 
-                let cob = response[this.REPORT_COBERTURA].COB;
-                let cobpj = response[this.REPORT_COBERTURA].COBPJ;
-                let cobpf = response[this.REPORT_COBERTURA].COBPF;
-
-                let indCobertura = [cob, cobpj, cobpf];
-
-                indCobertura.forEach((element, index) => {
-                    if (element == null) {
-                        response[this.REPORT_COBERTURA][index] = 0;
-                    }
+                Object.keys(response[this.REPORT_COBERTURA]).forEach((key) => {
+                    response[this.REPORT_COBERTURA][key] =
+                        response[this.REPORT_COBERTURA][key] ?? 0;
                 });
 
                 const chartCobertura = response[this.REPORT_COBERTURA];

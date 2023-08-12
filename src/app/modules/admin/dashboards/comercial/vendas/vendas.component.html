@@ -671,9 +671,9 @@
                 </div>
             </div>
             <div class="flex h-100 w-full max-w-screen-xl mx-auto md: pb-1">
-                <div class="grid w-60 grid-rows-2 flex-auto gap-1">
+                <div class="grid w-72 grid-rows-2 flex-auto gap-1">
                     <div
-                        class="relative flex w-60 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
+                        class="relative flex w-72 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
                     >
                         <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
                             <mat-icon
@@ -760,7 +760,7 @@
                         </div>
                     </div>
                     <div
-                        class="relative flex w-60 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
+                        class="relative flex w-72 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
                     >
                         <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
                             <mat-icon
@@ -773,7 +773,7 @@
                                 <div
                                     class="text-lg font-bold tracking-tight leading-6 truncate"
                                 >
-                                    Cobertura de Carteira
+                                    Cobertura Carteira
                                 </div>
                             </div>
                         </div>
@@ -782,36 +782,72 @@
                                 <div
                                     class="text-sm font-medium leading-none text-secondary"
                                 >
-                                    Cobertura Total
+                                    Carteira
                                 </div>
                                 <div
                                     class="mt-1 font-medium text-sm leading-none tooltip"
                                 >
-                                    {{ data.ccCob.COB }}
+                                    {{ data.ccCob.TOTAL_CARTEIRA }}
                                 </div>
                             </div>
                             <div class="flex flex-col mx-1 my-2">
                                 <div
                                     class="text-sm font-medium leading-none text-secondary"
                                 >
-                                    Cobertura PJ
-                                </div>
-                                <div
-                                    class="mt-1 font-medium text-sm leading-none tooltip"
-                                >
-                                    {{ data.ccCob.COBPJ }}
-                                </div>
-                            </div>
-                            <div class="flex flex-col mx-1 my-2">
-                                <div
-                                    class="text-sm font-medium leading-none text-secondary"
-                                >
-                                    Cobertura PF
+                                    Qtd. PJ DC
                                 </div>
                                 <div
                                     class="mt-1 font-medium text-sm leading-none"
                                 >
-                                    {{ data.ccCob.COBPF }}
+                                    {{ data.ccCob.QTD_PJ_DC }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-2">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    Qtd. Positivado DC
+                                </div>
+                                <div
+                                    class="mt-1 font-medium text-sm leading-none"
+                                >
+                                    {{ data.ccCob.QTD_POSITIVADO_DC }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-2">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    % Cobertura DC
+                                </div>
+                                <div
+                                    class="mt-1 font-medium text-sm leading-none tooltip"
+                                >
+                                    {{ data.ccCob.PERC_COBERTURA_DC }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-2">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    Qtd. PF DC
+                                </div>
+                                <div
+                                    class="mt-1 font-medium text-sm leading-none"
+                                >
+                                    {{ data.ccCob.QTD_PF_DC }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-2">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    Qtd. Positivado FC
+                                </div>
+                                <div
+                                    class="mt-1 font-medium text-sm leading-none"
+                                >
+                                    {{ data.ccCob.QTD_POSITIVADO_FC }}
                                 </div>
                             </div>
                         </div>

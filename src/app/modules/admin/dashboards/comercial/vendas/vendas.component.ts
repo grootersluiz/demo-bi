@@ -197,6 +197,23 @@ export class VendasDashComponent implements OnInit {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
+    // Function to generate dynamic colors
+    generateDynamicColors(numColors) {
+        const predefinedColors = [
+            '#ed7b00',
+            '#6e7a8a',
+            '#edca00',
+            '#016901',
+            '#191970',
+        ];
+        const colors = [];
+        for (let i = 0; i < numColors; i++) {
+            colors.push(predefinedColors[i % predefinedColors.length]);
+        }
+
+        return colors;
+    }
+
     onMenuPersonSelected(person: string) {
         this.selectedPerson = person;
     }
@@ -245,45 +262,49 @@ export class VendasDashComponent implements OnInit {
         switch (sortOption) {
             case `Ascendente`:
                 temp = this.comparativoSeries[0].data.map((_, index) => {
+                    const seriesData = this.comparativoSeries.map(
+                        (series) => series.data[index]
+                    );
                     return {
                         company: this.companiesLabels[index],
-                        currentYear: this.comparativoSeries[0].data[index],
-                        lastYear: this.comparativoSeries[1].data[index],
+                        seriesData: seriesData,
                     };
                 });
-                temp.sort((a, b) => a.currentYear - b.currentYear);
-                this.comparativoSeries[0].data = temp.map(
-                    (item) => item.currentYear
-                );
-                this.comparativoSeries[1].data = temp.map(
-                    (item) => item.lastYear
-                );
+                temp.sort((a, b) => a.seriesData[0] - b.seriesData[0]);
+                this.comparativoSeries.forEach((series, seriesIndex) => {
+                    series.data = temp.map(
+                        (item) => item.seriesData[seriesIndex]
+                    );
+                });
                 this.companiesLabels = temp.map((item) => item.company);
                 break;
 
             case `Descendente`:
                 temp = this.comparativoSeries[0].data.map((_, index) => {
+                    const seriesData = this.comparativoSeries.map(
+                        (series) => series.data[index]
+                    );
                     return {
                         company: this.companiesLabels[index],
-                        currentYear: this.comparativoSeries[0].data[index],
-                        lastYear: this.comparativoSeries[1].data[index],
+                        seriesData: seriesData,
                     };
                 });
-                temp.sort((a, b) => b.currentYear - a.currentYear);
-                this.comparativoSeries[0].data = temp.map(
-                    (item) => item.currentYear
-                );
-                this.comparativoSeries[1].data = temp.map(
-                    (item) => item.lastYear
-                );
+                temp.sort((a, b) => b.seriesData[0] - a.seriesData[0]);
+                this.comparativoSeries.forEach((series, seriesIndex) => {
+                    series.data = temp.map(
+                        (item) => item.seriesData[seriesIndex]
+                    );
+                });
                 this.companiesLabels = temp.map((item) => item.company);
                 break;
             case 'Nome':
                 temp = this.comparativoSeries[0].data.map((_, index) => {
+                    const seriesData = this.comparativoSeries.map(
+                        (series) => series.data[index]
+                    );
                     return {
                         company: this.companiesLabels[index],
-                        currentYear: this.comparativoSeries[0].data[index],
-                        lastYear: this.comparativoSeries[1].data[index],
+                        seriesData: seriesData,
                     };
                 });
                 temp.sort((a, b) =>
@@ -291,13 +312,11 @@ export class VendasDashComponent implements OnInit {
                         .toLowerCase()
                         .localeCompare(b.company.toLowerCase())
                 );
-                this.comparativoSeries[0].data = temp.map(
-                    (item) => item.currentYear
-                );
-                this.comparativoSeries[1].data = temp.map(
-                    (item) => item.lastYear
-                );
-
+                this.comparativoSeries.forEach((series, seriesIndex) => {
+                    series.data = temp.map(
+                        (item) => item.seriesData[seriesIndex]
+                    );
+                });
                 this.companiesLabels = temp.map((item) => item.company);
                 break;
         }
@@ -587,7 +606,7 @@ export class VendasDashComponent implements OnInit {
             legend: {
                 position: 'top',
             },
-            colors: ['#ed7b00', '#6e7a8a'],
+            colors: this.generateDynamicColors(this.comparativoSeries.length),
             // '#edca00'
             plotOptions: {
                 bar: {
