@@ -239,850 +239,713 @@
         </div>
 
         <div class="relative w-full max-w-screen-xl mx-auto">
-            <!-- Tabs -->
-            <mat-tab-group
-                class="sm:px-2"
-                mat-stretch-tabs="false"
-                [animationDuration]="'0'"
-            >
-                <!-- CC -->
-                <mat-tab label="Clientes Compradores">
-                    <ng-template matTabContent>
-                        <div
-                            class="flex w-full max-w-screen-xl mx-auto md:pt-1 pb-1"
-                        >
-                            <div class="grid h-120 grid-rows-2 flex-auto gap-1">
+            <div class="flex w-full max-w-screen-xl mx-auto md:pt-1 pb-1">
+                <div class="grid h-120 grid-rows-2 flex-auto gap-1">
+                    <div
+                        class="relative flex flex-auto bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
+                    >
+                        <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
+                            <mat-icon
+                                class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
+                                [svgIcon]="'heroicons_outline:check-circle'"
+                            ></mat-icon>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="absolute top-2 left-2">
                                 <div
-                                    class="relative flex flex-auto bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
+                                    class="text-lg font-bold tracking-tight leading-6 truncate"
                                 >
-                                    <div
-                                        class="absolute bottom-0 right-0 w-24 h-24 -m-6"
-                                    >
-                                        <mat-icon
-                                            class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
-                                            [svgIcon]="
-                                                'heroicons_outline:check-circle'
-                                            "
-                                        ></mat-icon>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <div class="absolute top-2 left-2">
-                                            <div
-                                                class="text-lg font-bold tracking-tight leading-6 truncate"
-                                            >
-                                                Análise Positivação das
-                                                Carteiras
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="flex flex-col flex-wrap mt-4 p-1"
-                                    >
-                                        <div class="flex flex-col mx-1 my-3">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                Total Clientes na Carteira
-                                            </div>
-                                            <div
-                                                class="mt-2 font-medium text-lg leading-none tooltip"
-                                            >
-                                                {{ data.cc.TOTAL_CARTEIRA }}
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col mx-1 my-3">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                Total Realizado
-                                            </div>
-                                            <div
-                                                class="mt-2 font-medium text-lg leading-none tooltip"
-                                            >
-                                                {{ data.cc.REALIZADO }}
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col mx-1 my-3">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                Total Realizado DC
-                                            </div>
-                                            <div
-                                                class="mt-2 font-medium text-lg leading-none"
-                                            >
-                                                {{ data.cc.REALIZADO_DC }}
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col mx-1 my-3">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                Meta de Positivação
-                                            </div>
-                                            <div
-                                                class="mt-2 font-medium text-lg leading-none"
-                                            >
-                                                {{ data.cc.META_POSITIVACAO }}
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col mx-1 my-3">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                % Atingido Meta
-                                            </div>
-                                            <div
-                                                class="mt-2 font-medium text-lg leading-none"
-                                            >
-                                                {{ data.cc.PERC_GAP_CC }}%
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col mx-1 my-3">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                Total Realizado FC
-                                            </div>
-                                            <div
-                                                class="mt-2 font-medium text-lg leading-none"
-                                            >
-                                                {{ data.cc.REALIZADO_FC }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    class="relative flex flex-auto bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
-                                >
-                                    <div
-                                        class="absolute bottom-0 right-0 w-24 h-24 -m-6"
-                                    >
-                                        <mat-icon
-                                            class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
-                                            [svgIcon]="
-                                                'heroicons_outline:check-circle'
-                                            "
-                                        ></mat-icon>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <div class="absolute top-2 left-2">
-                                            <div
-                                                class="text-lg font-bold tracking-tight leading-6 truncate"
-                                            >
-                                                ROL Carteira
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="flex flex-col flex-wrap mt-4 p-1"
-                                    >
-                                        <div class="flex flex-col mx-1 my-3">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                Realizado ROL
-                                            </div>
-                                            <div
-                                                class="mt-2 font-medium text-lg leading-none tooltip"
-                                            >
-                                                {{
-                                                    data.ccVsRol.REALIZADO_ROL
-                                                        | currency : "BRL"
-                                                }}
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col mx-1 my-3">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                ROL DC
-                                            </div>
-                                            <div
-                                                class="mt-2 font-medium text-lg leading-none tooltip"
-                                            >
-                                                {{
-                                                    data.ccVsRol.ROL_DC
-                                                        | currency : "BRL"
-                                                }}
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col mx-1 my-3">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                ROL FC
-                                            </div>
-                                            <div
-                                                class="mt-2 font-medium text-lg leading-none"
-                                            >
-                                                {{
-                                                    data.ccVsRol.ROL_FC
-                                                        | currency : "BRL"
-                                                }}
-                                            </div>
-                                        </div>
-
-                                        <div class="flex flex-col mx-1 my-3">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                ROL Meta Carteira
-                                            </div>
-                                            <div
-                                                class="mt-2 font-medium text-lg leading-none"
-                                            >
-                                                {{
-                                                    data.ccVsRol
-                                                        .ROL_META_CARTEIRA
-                                                        | currency : "BRL"
-                                                }}
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col mx-1 my-3">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                % Atingido Meta
-                                            </div>
-                                            <div
-                                                class="mt-2 font-medium text-lg leading-none"
-                                            >
-                                                {{
-                                                    data.ccVsRol.PERC_GAP_META.toFixed(
-                                                        2
-                                                    )
-                                                }}%
-                                            </div>
-                                        </div>
-                                    </div>
+                                    Análise Positivação das Carteiras
                                 </div>
                             </div>
-                            <div
-                                class="relative h-120 w-120 bg-card shadow rounded-2xl overflow-y-auto p-3"
-                            >
+                        </div>
+                        <div class="flex flex-col flex-wrap mt-4 p-1">
+                            <div class="flex flex-col mx-1 my-3">
                                 <div
-                                    class="flex items-start justify-between m-1 mb-0"
+                                    class="text-sm font-medium leading-none text-secondary"
                                 >
-                                    <div
-                                        class="text-lg font-bold tracking-tight leading-6 truncate"
-                                    >
-                                        Comparativo Anual
-                                    </div>
-                                    <div style="text-align: end">
-                                        <div class="m-1">
-                                            <button
-                                                class="h-6 min-h-6 px-2 rounded-full bg-hover mr-1"
-                                                mat-button
-                                                [matMenuTriggerFor]="sortMenu"
-                                            >
-                                                <span
-                                                    class="font-medium text-sm text-secondary"
-                                                    >{{ "Ordenar" }}</span
-                                                >
-                                            </button>
-                                            <mat-menu #sortMenu="matMenu">
-                                                <button
-                                                    mat-menu-item
-                                                    *ngFor="
-                                                        let option of sortOptions
-                                                    "
-                                                    (click)="onSort(option)"
-                                                >
-                                                    {{ option }}
-                                                </button>
-                                            </mat-menu>
-                                            <button
-                                                class="h-6 min-h-6 px-2 rounded-full bg-hover"
-                                                mat-button
-                                                [matMenuTriggerFor]="anualMenu"
-                                            >
-                                                <span
-                                                    class="font-medium text-sm text-secondary"
-                                                    >{{ anualIntel }}</span
-                                                >
-                                            </button>
-                                            <mat-menu #anualMenu="matMenu">
-                                                <button
-                                                    mat-menu-item
-                                                    *ngFor="
-                                                        let intel of intelOptions
-                                                    "
-                                                    (click)="
-                                                        onAnualIntelSelected(
-                                                            intel
-                                                        )
-                                                    "
-                                                >
-                                                    {{ intel }}
-                                                </button>
-                                            </mat-menu>
-                                        </div>
-                                    </div>
+                                    Total Clientes na Carteira
                                 </div>
-                                <div class="pt-8">
-                                    <apx-chart
-                                        [series]="chartAcumulado.series"
-                                        [chart]="chartAcumulado.chart"
-                                        [legend]="chartAcumulado.legend"
-                                        [colors]="chartAcumulado.colors"
-                                        [dataLabels]="chartAcumulado.dataLabels"
-                                        [plotOptions]="
-                                            chartAcumulado.plotOptions
+                                <div
+                                    class="mt-2 font-medium text-lg leading-none tooltip"
+                                >
+                                    {{ data.cc.TOTAL_CARTEIRA }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-3">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    Total Realizado
+                                </div>
+                                <div
+                                    class="mt-2 font-medium text-lg leading-none tooltip"
+                                >
+                                    {{ data.cc.REALIZADO }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-3">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    Total Realizado DC
+                                </div>
+                                <div
+                                    class="mt-2 font-medium text-lg leading-none"
+                                >
+                                    {{ data.cc.REALIZADO_DC }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-3">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    Meta de Positivação
+                                </div>
+                                <div
+                                    class="mt-2 font-medium text-lg leading-none"
+                                >
+                                    {{ data.cc.META_POSITIVACAO }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-3">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    % Atingido Meta
+                                </div>
+                                <div
+                                    class="mt-2 font-medium text-lg leading-none"
+                                >
+                                    {{ data.cc.PERC_GAP_CC }}%
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-3">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    Total Realizado FC
+                                </div>
+                                <div
+                                    class="mt-2 font-medium text-lg leading-none"
+                                >
+                                    {{ data.cc.REALIZADO_FC }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="relative flex flex-auto bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
+                    >
+                        <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
+                            <mat-icon
+                                class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
+                                [svgIcon]="'heroicons_outline:check-circle'"
+                            ></mat-icon>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="absolute top-2 left-2">
+                                <div
+                                    class="text-lg font-bold tracking-tight leading-6 truncate"
+                                >
+                                    ROL Carteira
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col flex-wrap mt-4 p-1">
+                            <div class="flex flex-col mx-1 my-3">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    Realizado ROL
+                                </div>
+                                <div
+                                    class="mt-2 font-medium text-lg leading-none tooltip"
+                                >
+                                    {{
+                                        data.ccVsRol.REALIZADO_ROL
+                                            | currency : "BRL"
+                                    }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-3">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    ROL DC
+                                </div>
+                                <div
+                                    class="mt-2 font-medium text-lg leading-none tooltip"
+                                >
+                                    {{ data.ccVsRol.ROL_DC | currency : "BRL" }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-3">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    ROL FC
+                                </div>
+                                <div
+                                    class="mt-2 font-medium text-lg leading-none"
+                                >
+                                    {{ data.ccVsRol.ROL_FC | currency : "BRL" }}
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col mx-1 my-3">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    ROL Meta Carteira
+                                </div>
+                                <div
+                                    class="mt-2 font-medium text-lg leading-none"
+                                >
+                                    {{
+                                        data.ccVsRol.ROL_META_CARTEIRA
+                                            | currency : "BRL"
+                                    }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-3">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    % Atingido Meta
+                                </div>
+                                <div
+                                    class="mt-2 font-medium text-lg leading-none"
+                                >
+                                    {{ data.ccVsRol.PERC_GAP_META.toFixed(2) }}%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="relative h-120 w-120 bg-card shadow rounded-2xl overflow-y-auto p-3"
+                >
+                    <div class="flex items-start justify-between m-1 mb-0">
+                        <div
+                            class="text-lg font-bold tracking-tight leading-6 truncate"
+                        >
+                            Comparativo Anual
+                        </div>
+                        <div style="text-align: end">
+                            <div class="m-1">
+                                <button
+                                    class="h-6 min-h-6 px-2 rounded-full bg-hover mr-1"
+                                    mat-button
+                                    [matMenuTriggerFor]="sortMenu"
+                                >
+                                    <span
+                                        class="font-medium text-sm text-secondary"
+                                        >{{ "Ordenar" }}</span
+                                    >
+                                </button>
+                                <mat-menu #sortMenu="matMenu">
+                                    <button
+                                        mat-menu-item
+                                        *ngFor="let option of sortOptions"
+                                        (click)="onSort(option)"
+                                    >
+                                        {{ option }}
+                                    </button>
+                                </mat-menu>
+                                <button
+                                    class="h-6 min-h-6 px-2 rounded-full bg-hover"
+                                    mat-button
+                                    [matMenuTriggerFor]="anualMenu"
+                                >
+                                    <span
+                                        class="font-medium text-sm text-secondary"
+                                        >{{ anualIntel }}</span
+                                    >
+                                </button>
+                                <mat-menu #anualMenu="matMenu">
+                                    <button
+                                        mat-menu-item
+                                        *ngFor="let intel of intelOptions"
+                                        (click)="onAnualIntelSelected(intel)"
+                                    >
+                                        {{ intel }}
+                                    </button>
+                                </mat-menu>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pt-8">
+                        <apx-chart
+                            [series]="chartAcumulado.series"
+                            [chart]="chartAcumulado.chart"
+                            [legend]="chartAcumulado.legend"
+                            [colors]="chartAcumulado.colors"
+                            [dataLabels]="chartAcumulado.dataLabels"
+                            [plotOptions]="chartAcumulado.plotOptions"
+                            [xaxis]="chartAcumulado.xaxis"
+                        ></apx-chart>
+                    </div>
+                </div>
+                <div class="grid h-120 grid-rows-2 flex-auto gap-1">
+                    <div
+                        class="relative flex flex-auto bg-card shadow rounded-2xl overflow-hidden p-3 ml-1"
+                    >
+                        <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
+                            <mat-icon
+                                class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
+                                [svgIcon]="'heroicons_outline:check-circle'"
+                            ></mat-icon>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="absolute top-2 left-2">
+                                <div
+                                    class="text-lg font-bold tracking-tight leading-6 truncate"
+                                >
+                                    Potencial vs. Projeção Carteira
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col flex-wrap mt-4 p-1">
+                            <div class="flex flex-col mx-1 my-3">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    Potencial
+                                </div>
+                                <div
+                                    class="mt-2 font-medium text-lg leading-none tooltip"
+                                >
+                                    {{
+                                        data.ccProj.POTENCIAL_CARTEIRA
+                                            | currency : "BRL"
+                                    }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-3">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    Projeção
+                                </div>
+                                <div
+                                    class="mt-2 font-medium text-lg leading-none tooltip"
+                                >
+                                    {{
+                                        data.ccProj.PROJECAO_CARTEIRA
+                                            | currency : "BRL"
+                                    }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-3">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    GAP
+                                </div>
+                                <div
+                                    class="mt-2 font-medium text-lg leading-none"
+                                >
+                                    {{ data.ccProj.PERC_GAP.toFixed(2) }}%
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-3">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    Projeção PF
+                                </div>
+                                <div
+                                    class="mt-2 font-medium text-lg leading-none"
+                                >
+                                    {{
+                                        data.ccProj.PROJECAO_PF_CARTEIRA
+                                            | currency : "BRL"
+                                    }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-3">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    Projeção PJ
+                                </div>
+                                <div
+                                    class="mt-2 font-medium text-lg leading-none"
+                                >
+                                    {{
+                                        data.ccProj.PROJECAO_PJ_CARTEIRA
+                                            | currency : "BRL"
+                                    }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="relative flex flex-auto bg-card shadow rounded-2xl overflow-hidden p-3 ml-1"
+                    >
+                        <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
+                            <mat-icon
+                                class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
+                                [svgIcon]="'heroicons_outline:check-circle'"
+                            ></mat-icon>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="absolute top-2 left-2">
+                                <div
+                                    class="text-lg font-bold tracking-tight leading-6 truncate"
+                                >
+                                    Lucro Bruto Carteira
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col flex-wrap mt-4 p-1">
+                            <div class="flex flex-col mx-1 my-3">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    LB Realizado
+                                </div>
+                                <div
+                                    class="mt-2 font-medium text-lg leading-none tooltip"
+                                >
+                                    {{
+                                        data.ccLB.REALIZADO_LB
+                                            | currency : "BRL"
+                                    }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-3">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    LB DC
+                                </div>
+                                <div
+                                    class="mt-2 font-medium text-lg leading-none tooltip"
+                                >
+                                    {{ data.ccLB.LB_DC | currency : "BRL" }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-3">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    LB FC
+                                </div>
+                                <div
+                                    class="mt-2 font-medium text-lg leading-none"
+                                >
+                                    {{ data.ccLB.LB_FC | currency : "BRL" }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-3">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    Meta
+                                </div>
+                                <div
+                                    class="mt-2 font-medium text-lg leading-none"
+                                >
+                                    {{
+                                        data.ccLB.LB_META_CARTEIRA
+                                            | currency : "BRL"
+                                    }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-3">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    % Atingido Meta
+                                </div>
+                                <div
+                                    class="mt-2 font-medium text-lg leading-none"
+                                >
+                                    {{ data.ccLB.PERC_GAP_META.toFixed(2) }}%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex h-100 w-full max-w-screen-xl mx-auto md: pb-1">
+                <div class="grid w-60 grid-rows-2 flex-auto gap-1">
+                    <div
+                        class="relative flex w-60 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
+                    >
+                        <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
+                            <mat-icon
+                                class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
+                                [svgIcon]="'heroicons_outline:check-circle'"
+                            ></mat-icon>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="absolute top-2 left-2">
+                                <div
+                                    class="text-lg font-bold tracking-tight leading-6 truncate"
+                                >
+                                    Margem Bruta Carteira
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col flex-wrap mt-4 p-1">
+                            <div class="flex flex-col mx-1 my-2">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    MB Realizada
+                                </div>
+                                <div
+                                    class="mt-1 font-medium text-sm leading-none tooltip"
+                                >
+                                    {{
+                                        data.ccMB.REALIZADO_MB
+                                            | currency : "BRL"
+                                    }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-2">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    MB DC
+                                </div>
+                                <div
+                                    class="mt-1 font-medium text-sm leading-none tooltip"
+                                >
+                                    {{ data.ccMB.MB_DC | currency : "BRL" }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-2">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    MB FC
+                                </div>
+                                <div
+                                    class="mt-1 font-medium text-sm leading-none"
+                                >
+                                    {{ data.ccMB.MB_FC | currency : "BRL" }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-2">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    Meta MB
+                                </div>
+                                <div
+                                    class="mt-1 font-medium text-sm leading-none"
+                                >
+                                    {{
+                                        data.ccMB.MB_META_CARTEIRA
+                                            | currency : "BRL"
+                                    }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-2">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    % Atingido Meta
+                                </div>
+                                <div
+                                    class="mt-1 font-medium text-sm leading-none"
+                                >
+                                    {{ data.ccMB.PERC_GAP_META.toFixed(2) }}%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="relative flex w-60 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
+                    >
+                        <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
+                            <mat-icon
+                                class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
+                                [svgIcon]="'heroicons_outline:check-circle'"
+                            ></mat-icon>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="absolute top-2 left-2">
+                                <div
+                                    class="text-lg font-bold tracking-tight leading-6 truncate"
+                                >
+                                    Cobertura de Carteira
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-col flex-wrap mt-4 p-1">
+                            <div class="flex flex-col mx-1 my-2">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    Cobertura Total
+                                </div>
+                                <div
+                                    class="mt-1 font-medium text-sm leading-none tooltip"
+                                >
+                                    {{ data.ccCob.COB }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-2">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    Cobertura PJ
+                                </div>
+                                <div
+                                    class="mt-1 font-medium text-sm leading-none tooltip"
+                                >
+                                    {{ data.ccCob.COBPJ }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col mx-1 my-2">
+                                <div
+                                    class="text-sm font-medium leading-none text-secondary"
+                                >
+                                    Cobertura PF
+                                </div>
+                                <div
+                                    class="mt-1 font-medium text-sm leading-none"
+                                >
+                                    {{ data.ccCob.COBPF }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div
+                    class="relative w-full bg-card shadow rounded-2xl overflow-hidden ml-1"
+                >
+                    <div class="flex items-start justify-between m-3 mb-0">
+                        <div
+                            class="text-lg font-bold tracking-tight leading-6 truncate"
+                        >
+                            Indicadores Mensais (CC)
+                        </div>
+                        <div style="text-align: end">
+                            <div class="m-1">
+                                <button
+                                    class="h-6 min-h-6 px-2 rounded-full bg-hover"
+                                    mat-button
+                                    [matMenuTriggerFor]="intelMenu"
+                                >
+                                    <span
+                                        class="font-medium text-sm text-secondary"
+                                        >{{ selectedIntel }}</span
+                                    >
+                                </button>
+                                <mat-menu #intelMenu="matMenu">
+                                    <button
+                                        mat-menu-item
+                                        *ngFor="let intel of intelOptions"
+                                        (click)="onMenuIntelSelected(intel)"
+                                    >
+                                        {{ intel }}
+                                    </button>
+                                </mat-menu>
+                            </div>
+                            <div class="m-1">
+                                <button
+                                    class="h-6 min-h-6 px-2 rounded-full bg-hover"
+                                    mat-button
+                                    [matMenuTriggerFor]="personMenu"
+                                >
+                                    <span
+                                        class="font-medium text-sm text-secondary"
+                                        >{{ selectedPerson }}</span
+                                    >
+                                </button>
+                                <mat-menu #personMenu="matMenu">
+                                    <button
+                                        mat-menu-item
+                                        *ngFor="let person of personOptions"
+                                        (click)="onMenuPersonSelected(person)"
+                                    >
+                                        {{ person }}
+                                    </button>
+                                </mat-menu>
+                            </div>
+                            <div class="m-1">
+                                <button
+                                    class="h-6 min-h-6 px-2 rounded-full bg-hover"
+                                    mat-button
+                                    [matMenuTriggerFor]="curveMenu"
+                                >
+                                    <span
+                                        class="font-medium text-sm text-secondary"
+                                        >{{ selectedCurve }}</span
+                                    >
+                                </button>
+                                <mat-menu #curveMenu="matMenu">
+                                    <button
+                                        mat-menu-item
+                                        *ngFor="let curve of curveOptions"
+                                        (click)="onMenuCurveSelected(curve)"
+                                    >
+                                        {{ curve }}
+                                    </button>
+                                </mat-menu>
+                            </div>
+                            <div class="m-1">
+                                <button
+                                    class="h-6 min-h-6 px-2 rounded-full bg-hover"
+                                    mat-button
+                                    [matMenuTriggerFor]="stateMenu"
+                                >
+                                    <span
+                                        class="font-medium text-sm text-secondary"
+                                        >{{ selectedStates }}</span
+                                    >
+                                </button>
+                                <mat-menu #stateMenu="matMenu">
+                                    <mat-menu-item
+                                        style="
+                                            min-height: 0;
+                                            line-height: 1;
+                                            padding: 0;
                                         "
-                                        [xaxis]="chartAcumulado.xaxis"
-                                    ></apx-chart>
-                                </div>
-                            </div>
-                            <div class="grid h-120 grid-rows-2 flex-auto gap-1">
-                                <div
-                                    class="relative flex flex-auto bg-card shadow rounded-2xl overflow-hidden p-3 ml-1"
-                                >
-                                    <div
-                                        class="absolute bottom-0 right-0 w-24 h-24 -m-6"
+                                        *ngFor="let state of stateOptions"
                                     >
-                                        <mat-icon
-                                            class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
-                                            [svgIcon]="
-                                                'heroicons_outline:check-circle'
-                                            "
-                                        ></mat-icon>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <div class="absolute top-2 left-2">
-                                            <div
-                                                class="text-lg font-bold tracking-tight leading-6 truncate"
-                                            >
-                                                Potencial vs. Projeção Carteira
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="flex flex-col flex-wrap mt-4 p-1"
-                                    >
-                                        <div class="flex flex-col mx-1 my-3">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                Potencial
-                                            </div>
-                                            <div
-                                                class="mt-2 font-medium text-lg leading-none tooltip"
-                                            >
-                                                {{
-                                                    data.ccProj
-                                                        .POTENCIAL_CARTEIRA
-                                                        | currency : "BRL"
-                                                }}
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col mx-1 my-3">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                Projeção
-                                            </div>
-                                            <div
-                                                class="mt-2 font-medium text-lg leading-none tooltip"
-                                            >
-                                                {{
-                                                    data.ccProj
-                                                        .PROJECAO_CARTEIRA
-                                                        | currency : "BRL"
-                                                }}
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col mx-1 my-3">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                GAP
-                                            </div>
-                                            <div
-                                                class="mt-2 font-medium text-lg leading-none"
-                                            >
-                                                {{
-                                                    data.ccProj.PERC_GAP.toFixed(
-                                                        2
-                                                    )
-                                                }}%
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col mx-1 my-3">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                Projeção PF
-                                            </div>
-                                            <div
-                                                class="mt-2 font-medium text-lg leading-none"
-                                            >
-                                                {{
-                                                    data.ccProj
-                                                        .PROJECAO_PF_CARTEIRA
-                                                        | currency : "BRL"
-                                                }}
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col mx-1 my-3">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                Projeção PJ
-                                            </div>
-                                            <div
-                                                class="mt-2 font-medium text-lg leading-none"
-                                            >
-                                                {{
-                                                    data.ccProj
-                                                        .PROJECAO_PJ_CARTEIRA
-                                                        | currency : "BRL"
-                                                }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    class="relative flex flex-auto bg-card shadow rounded-2xl overflow-hidden p-3 ml-1"
-                                >
-                                    <div
-                                        class="absolute bottom-0 right-0 w-24 h-24 -m-6"
-                                    >
-                                        <mat-icon
-                                            class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
-                                            [svgIcon]="
-                                                'heroicons_outline:check-circle'
-                                            "
-                                        ></mat-icon>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <div class="absolute top-2 left-2">
-                                            <div
-                                                class="text-lg font-bold tracking-tight leading-6 truncate"
-                                            >
-                                                Lucro Bruto Carteira
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="flex flex-col flex-wrap mt-4 p-1"
-                                    >
-                                        <div class="flex flex-col mx-1 my-3">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                LB Realizado
-                                            </div>
-                                            <div
-                                                class="mt-2 font-medium text-lg leading-none tooltip"
-                                            >
-                                                {{
-                                                    data.ccLB.REALIZADO_LB
-                                                        | currency : "BRL"
-                                                }}
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col mx-1 my-3">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                LB DC
-                                            </div>
-                                            <div
-                                                class="mt-2 font-medium text-lg leading-none tooltip"
-                                            >
-                                                {{
-                                                    data.ccLB.LB_DC
-                                                        | currency : "BRL"
-                                                }}
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col mx-1 my-3">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                LB FC
-                                            </div>
-                                            <div
-                                                class="mt-2 font-medium text-lg leading-none"
-                                            >
-                                                {{
-                                                    data.ccLB.LB_FC
-                                                        | currency : "BRL"
-                                                }}
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col mx-1 my-3">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                Meta
-                                            </div>
-                                            <div
-                                                class="mt-2 font-medium text-lg leading-none"
-                                            >
-                                                {{
-                                                    data.ccLB.LB_META_CARTEIRA
-                                                        | currency : "BRL"
-                                                }}
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col mx-1 my-3">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                % Atingido Meta
-                                            </div>
-                                            <div
-                                                class="mt-2 font-medium text-lg leading-none"
-                                            >
-                                                {{
-                                                    data.ccLB.PERC_GAP_META.toFixed(
-                                                        2
-                                                    )
-                                                }}%
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                        <button
+                                            class="h-6 min-h-6 px-2 rounded-full bg-hover"
+                                            [ngClass]="{
+                                                'bg-orange-400':
+                                                    isSelected(state),
+                                                'bg-gray-200':
+                                                    !isSelected(state)
+                                            }"
+                                            mat-button
+                                            (click)="onMenuStateSelected(state)"
+                                        >
+                                            {{ state }}
+                                        </button>
+                                    </mat-menu-item>
+                                </mat-menu>
                             </div>
                         </div>
-                        <div
-                            class="flex h-100 w-full max-w-screen-xl mx-auto md: pb-1"
-                        >
-                            <div class="grid w-60 grid-rows-2 flex-auto gap-1">
-                                <div
-                                    class="relative flex w-60 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
-                                >
-                                    <div
-                                        class="absolute bottom-0 right-0 w-24 h-24 -m-6"
-                                    >
-                                        <mat-icon
-                                            class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
-                                            [svgIcon]="
-                                                'heroicons_outline:check-circle'
-                                            "
-                                        ></mat-icon>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <div class="absolute top-2 left-2">
-                                            <div
-                                                class="text-lg font-bold tracking-tight leading-6 truncate"
-                                            >
-                                                Margem Bruta Carteira
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="flex flex-col flex-wrap mt-4 p-1"
-                                    >
-                                        <div class="flex flex-col mx-1 my-2">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                MB Realizada
-                                            </div>
-                                            <div
-                                                class="mt-1 font-medium text-sm leading-none tooltip"
-                                            >
-                                                {{
-                                                    data.ccMB.REALIZADO_MB
-                                                        | currency : "BRL"
-                                                }}
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col mx-1 my-2">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                MB DC
-                                            </div>
-                                            <div
-                                                class="mt-1 font-medium text-sm leading-none tooltip"
-                                            >
-                                                {{
-                                                    data.ccMB.MB_DC
-                                                        | currency : "BRL"
-                                                }}
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col mx-1 my-2">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                MB FC
-                                            </div>
-                                            <div
-                                                class="mt-1 font-medium text-sm leading-none"
-                                            >
-                                                {{
-                                                    data.ccMB.MB_FC
-                                                        | currency : "BRL"
-                                                }}
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col mx-1 my-2">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                Meta MB
-                                            </div>
-                                            <div
-                                                class="mt-1 font-medium text-sm leading-none"
-                                            >
-                                                {{
-                                                    data.ccMB.MB_META_CARTEIRA
-                                                        | currency : "BRL"
-                                                }}
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col mx-1 my-2">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                % Atingido Meta
-                                            </div>
-                                            <div
-                                                class="mt-1 font-medium text-sm leading-none"
-                                            >
-                                                {{
-                                                    data.ccMB.PERC_GAP_META.toFixed(
-                                                        2
-                                                    )
-                                                }}%
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div
-                                    class="relative flex w-60 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
-                                >
-                                    <div
-                                        class="absolute bottom-0 right-0 w-24 h-24 -m-6"
-                                    >
-                                        <mat-icon
-                                            class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
-                                            [svgIcon]="
-                                                'heroicons_outline:check-circle'
-                                            "
-                                        ></mat-icon>
-                                    </div>
-                                    <div class="flex items-center">
-                                        <div class="absolute top-2 left-2">
-                                            <div
-                                                class="text-lg font-bold tracking-tight leading-6 truncate"
-                                            >
-                                                Cobertura de Carteira
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div
-                                        class="flex flex-col flex-wrap mt-4 p-1"
-                                    >
-                                        <div class="flex flex-col mx-1 my-2">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                Cobertura Total
-                                            </div>
-                                            <div
-                                                class="mt-1 font-medium text-sm leading-none tooltip"
-                                            >
-                                                {{ data.ccCob.COB }}
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col mx-1 my-2">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                Cobertura PJ
-                                            </div>
-                                            <div
-                                                class="mt-1 font-medium text-sm leading-none tooltip"
-                                            >
-                                                {{ data.ccCob.COBPJ }}
-                                            </div>
-                                        </div>
-                                        <div class="flex flex-col mx-1 my-2">
-                                            <div
-                                                class="text-sm font-medium leading-none text-secondary"
-                                            >
-                                                Cobertura PF
-                                            </div>
-                                            <div
-                                                class="mt-1 font-medium text-sm leading-none"
-                                            >
-                                                {{ data.ccCob.COBPF }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div
-                                class="relative w-full bg-card shadow rounded-2xl overflow-hidden ml-1"
-                            >
-                                <div
-                                    class="flex items-start justify-between m-3 mb-0"
-                                >
-                                    <div
-                                        class="text-lg font-bold tracking-tight leading-6 truncate"
-                                    >
-                                        Indicadores Mensais (CC)
-                                    </div>
-                                    <div style="text-align: end">
-                                        <div class="m-1">
-                                            <button
-                                                class="h-6 min-h-6 px-2 rounded-full bg-hover"
-                                                mat-button
-                                                [matMenuTriggerFor]="intelMenu"
-                                            >
-                                                <span
-                                                    class="font-medium text-sm text-secondary"
-                                                    >{{ selectedIntel }}</span
-                                                >
-                                            </button>
-                                            <mat-menu #intelMenu="matMenu">
-                                                <button
-                                                    mat-menu-item
-                                                    *ngFor="
-                                                        let intel of intelOptions
-                                                    "
-                                                    (click)="
-                                                        onMenuIntelSelected(
-                                                            intel
-                                                        )
-                                                    "
-                                                >
-                                                    {{ intel }}
-                                                </button>
-                                            </mat-menu>
-                                        </div>
-                                        <div class="m-1">
-                                            <button
-                                                class="h-6 min-h-6 px-2 rounded-full bg-hover"
-                                                mat-button
-                                                [matMenuTriggerFor]="personMenu"
-                                            >
-                                                <span
-                                                    class="font-medium text-sm text-secondary"
-                                                    >{{ selectedPerson }}</span
-                                                >
-                                            </button>
-                                            <mat-menu #personMenu="matMenu">
-                                                <button
-                                                    mat-menu-item
-                                                    *ngFor="
-                                                        let person of personOptions
-                                                    "
-                                                    (click)="
-                                                        onMenuPersonSelected(
-                                                            person
-                                                        )
-                                                    "
-                                                >
-                                                    {{ person }}
-                                                </button>
-                                            </mat-menu>
-                                        </div>
-                                        <div class="m-1">
-                                            <button
-                                                class="h-6 min-h-6 px-2 rounded-full bg-hover"
-                                                mat-button
-                                                [matMenuTriggerFor]="curveMenu"
-                                            >
-                                                <span
-                                                    class="font-medium text-sm text-secondary"
-                                                    >{{ selectedCurve }}</span
-                                                >
-                                            </button>
-                                            <mat-menu #curveMenu="matMenu">
-                                                <button
-                                                    mat-menu-item
-                                                    *ngFor="
-                                                        let curve of curveOptions
-                                                    "
-                                                    (click)="
-                                                        onMenuCurveSelected(
-                                                            curve
-                                                        )
-                                                    "
-                                                >
-                                                    {{ curve }}
-                                                </button>
-                                            </mat-menu>
-                                        </div>
-                                        <div class="m-1">
-                                            <button
-                                                class="h-6 min-h-6 px-2 rounded-full bg-hover"
-                                                mat-button
-                                                [matMenuTriggerFor]="stateMenu"
-                                            >
-                                                <span
-                                                    class="font-medium text-sm text-secondary"
-                                                    >{{ selectedStates }}</span
-                                                >
-                                            </button>
-                                            <mat-menu #stateMenu="matMenu">
-                                                <mat-menu-item
-                                                    style="
-                                                        min-height: 0;
-                                                        line-height: 1;
-                                                        padding: 0;
-                                                    "
-                                                    *ngFor="
-                                                        let state of stateOptions
-                                                    "
-                                                >
-                                                    <button
-                                                        class="h-6 min-h-6 px-2 rounded-full bg-hover"
-                                                        [ngClass]="{
-                                                            'bg-orange-400':
-                                                                isSelected(
-                                                                    state
-                                                                ),
-                                                            'bg-gray-200':
-                                                                !isSelected(
-                                                                    state
-                                                                )
-                                                        }"
-                                                        mat-button
-                                                        (click)="
-                                                            onMenuStateSelected(
-                                                                state
-                                                            )
-                                                        "
-                                                    >
-                                                        {{ state }}
-                                                    </button>
-                                                </mat-menu-item>
-                                            </mat-menu>
-                                        </div>
-                                    </div>
-                                </div>
+                    </div>
 
-                                <div class="flex flex-col flex-auto mt-1">
-                                    <apx-chart
-                                        [series]="chartGlobal.series"
-                                        [chart]="chartGlobal.chart"
-                                        [colors]="chartGlobal.colors"
-                                        [yaxis]="chartGlobal.yaxis"
-                                        [xaxis]="chartGlobal.xaxis"
-                                        [labels]="chartGlobal.labels"
-                                        [stroke]="chartGlobal.stroke"
-                                        [plotOptions]="chartGlobal.plotOptions"
-                                        [markers]="chartGlobal.markers"
-                                        [fill]="chartGlobal.fill"
-                                        [tooltip]="chartGlobal.tooltip"
-                                    ></apx-chart>
-                                </div>
-                            </div>
-                        </div>
-                    </ng-template>
-                </mat-tab>
-                <mat-tab label="Performance Consultores">
-                    <ng-template matTabContent> </ng-template>
-                </mat-tab>
-            </mat-tab-group>
+                    <div class="flex flex-col flex-auto mt-1">
+                        <apx-chart
+                            [series]="chartGlobal.series"
+                            [chart]="chartGlobal.chart"
+                            [colors]="chartGlobal.colors"
+                            [yaxis]="chartGlobal.yaxis"
+                            [xaxis]="chartGlobal.xaxis"
+                            [labels]="chartGlobal.labels"
+                            [stroke]="chartGlobal.stroke"
+                            [plotOptions]="chartGlobal.plotOptions"
+                            [markers]="chartGlobal.markers"
+                            [fill]="chartGlobal.fill"
+                            [tooltip]="chartGlobal.tooltip"
+                        ></apx-chart>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
