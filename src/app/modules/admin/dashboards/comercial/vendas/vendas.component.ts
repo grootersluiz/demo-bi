@@ -32,7 +32,7 @@ export class VendasDashComponent implements OnInit {
     chartGlobal: ApexOptions;
     globalSeries = [
         { name: 'Meta', type: 'area', data: [] },
-        { name: 'Total CC', type: 'line', data: [] },
+        { name: 'Realizado', type: 'line', data: [] },
         { name: 'Dentro da Carteira', type: 'column', data: [] },
         { name: 'Fora da Carteira', type: 'column', data: [] },
     ];
@@ -168,7 +168,7 @@ export class VendasDashComponent implements OnInit {
         this._chartAcumuladoFormat(0);
 
         // Prepare the chart data
-        this._prepareChartData();
+        this._prepareChartData(this.initialInd, this.anualIntel);
 
         // Attach SVG fill fixer to all ApexCharts
         window['Apex'] = {
@@ -324,7 +324,7 @@ export class VendasDashComponent implements OnInit {
                 break;
         }
 
-        this._prepareChartAcumulado();
+        this._prepareChartAcumulado(this.anualIntel);
     }
 
     onAnualIntelSelected(intel: string) {
@@ -334,7 +334,7 @@ export class VendasDashComponent implements OnInit {
         this._chartAcumuladoFormat(index);
 
         // Prepare the chart data
-        this._prepareChartAcumulado();
+        this._prepareChartAcumulado(intel);
     }
 
     setInitialMY(evMY: Moment, datepicker: MatDatepicker<Moment>) {
@@ -517,7 +517,7 @@ export class VendasDashComponent implements OnInit {
     prepareIndicatorsData(indicator: string) {
         this.globalSeries = [
             { name: 'Meta', type: 'area', data: [] },
-            { name: 'Total CC', type: 'line', data: [] },
+            { name: 'Realizado', type: 'line', data: [] },
             { name: 'Dentro da Carteira', type: 'column', data: [] },
             { name: 'Fora da Carteira', type: 'column', data: [] },
         ];
@@ -551,7 +551,7 @@ export class VendasDashComponent implements OnInit {
                 }
             });
         });
-        this._prepareChartGlobal();
+        this._prepareChartGlobal(indicator);
     }
 
     onInput(value: string) {
@@ -638,7 +638,7 @@ export class VendasDashComponent implements OnInit {
      * @private
      */
 
-    private _prepareChartAcumulado(): void {
+    private _prepareChartAcumulado(ind: string): void {
         // CC Comparativo Acumulado
         this.chartAcumulado = {
             series: this.comparativoSeries,
@@ -666,9 +666,27 @@ export class VendasDashComponent implements OnInit {
             xaxis: {
                 categories: this.companiesLabels,
             },
-            yaxis: {
-                title: {
-                    text: 'Acumulado',
+            tooltip: {
+                theme: 'dark',
+                shared: true,
+                intersect: false,
+                y: {
+                    formatter: function (y) {
+                        if (typeof y !== 'undefined') {
+                            if (ind == 'ROL' || ind == 'LB') {
+                                return y.toLocaleString('pt-BR', {
+                                    style: 'currency',
+                                    currency: 'BRL',
+                                    maximumFractionDigits: 0,
+                                    minimumFractionDigits: 0,
+                                });
+                            }
+                            if (ind == 'MB') {
+                                return `${y.toFixed(2)}%`;
+                            }
+                        }
+                        return y.toString();
+                    },
                 },
             },
         };
@@ -680,7 +698,7 @@ export class VendasDashComponent implements OnInit {
      * @private
      */
 
-    private _prepareChartGlobal(): void {
+    private _prepareChartGlobal(ind: string): void {
         //Chart Global
         this.chartGlobal = {
             series: this.globalSeries,
@@ -789,27 +807,43 @@ export class VendasDashComponent implements OnInit {
             },
             yaxis: {
                 min: 0,
+                labels: {
+                    formatter: function (value) {
+                        return value.toFixed(0);
+                    },
+                },
             },
             tooltip: {
+                theme: 'dark',
                 shared: true,
                 intersect: false,
                 y: {
                     formatter: function (y) {
                         if (typeof y !== 'undefined') {
-                            return y.toFixed(2);
+                            if (ind == 'ROL' || ind == 'LB') {
+                                return y.toLocaleString('pt-BR', {
+                                    style: 'currency',
+                                    currency: 'BRL',
+                                    maximumFractionDigits: 0,
+                                    minimumFractionDigits: 0,
+                                });
+                            }
+                            if (ind == 'MB') {
+                                return `${y.toFixed(2)}%`;
+                            }
                         }
-                        return y;
+                        return y.toString();
                     },
                 },
             },
         };
     }
 
-    private _prepareChartData(): void {
+    private _prepareChartData(ind: string, anualIntel: string): void {
         //Acumulado Anual
-        this._prepareChartAcumulado();
+        this._prepareChartAcumulado(anualIntel);
 
         //Indicadores Mensais
-        this._prepareChartGlobal();
+        this._prepareChartGlobal(ind);
     }
 }

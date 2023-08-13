@@ -245,21 +245,42 @@
                         class="relative flex flex-auto bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
                     >
                         <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
-                            <mat-icon
+                            <ng-container
                                 *ngIf="
                                     data.cc.PERC_GAP_CC > 100;
-                                    else alertIcon
+                                    else alertCCTemplate
                                 "
-                                class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
-                                [svgIcon]="'heroicons_outline:check-circle'"
-                            ></mat-icon>
-                            <ng-template #alertIcon>
+                            >
                                 <mat-icon
-                                    class="icon-size-24 opacity-25 text-red-500 dark:text-red-400"
-                                    [svgIcon]="
-                                        'heroicons_outline:exclamation-circle'
-                                    "
+                                    class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
+                                    [svgIcon]="'heroicons_outline:check-circle'"
                                 ></mat-icon>
+                            </ng-container>
+
+                            <ng-template #alertCCTemplate>
+                                <ng-container
+                                    *ngIf="
+                                        data.cc.PERC_GAP_CC >= 90 &&
+                                            data.cc.PERC_GAP_CC < 100;
+                                        else alertCCRedTemplate
+                                    "
+                                >
+                                    <mat-icon
+                                        class="icon-size-24 opacity-25 text-yellow-500 dark:text-yellow-400"
+                                        [svgIcon]="
+                                            'heroicons_outline:exclamation-circle'
+                                        "
+                                    ></mat-icon>
+                                </ng-container>
+
+                                <ng-template #alertCCRedTemplate>
+                                    <mat-icon
+                                        class="icon-size-24 opacity-25 text-red-500 dark:text-red-400"
+                                        [svgIcon]="
+                                            'heroicons_outline:exclamation-circle'
+                                        "
+                                    ></mat-icon>
+                                </ng-template>
                             </ng-template>
                         </div>
                         <div class="flex items-center">
@@ -350,21 +371,42 @@
                         class="relative flex flex-auto bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
                     >
                         <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
-                            <mat-icon
+                            <ng-container
                                 *ngIf="
                                     data.ccVsRol.PERC_GAP_META > 100;
-                                    else alertIcon
+                                    else alertRolTemplate
                                 "
-                                class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
-                                [svgIcon]="'heroicons_outline:check-circle'"
-                            ></mat-icon>
-                            <ng-template #alertIcon>
+                            >
                                 <mat-icon
-                                    class="icon-size-24 opacity-25 text-red-500 dark:text-red-400"
-                                    [svgIcon]="
-                                        'heroicons_outline:exclamation-circle'
-                                    "
+                                    class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
+                                    [svgIcon]="'heroicons_outline:check-circle'"
                                 ></mat-icon>
+                            </ng-container>
+
+                            <ng-template #alertRolTemplate>
+                                <ng-container
+                                    *ngIf="
+                                        data.ccVsRol.PERC_GAP_META >= 90 &&
+                                            data.ccVsRol.PERC_GAP_META < 100;
+                                        else alertRolRedTemplate
+                                    "
+                                >
+                                    <mat-icon
+                                        class="icon-size-24 opacity-25 text-yellow-500 dark:text-yellow-400"
+                                        [svgIcon]="
+                                            'heroicons_outline:exclamation-circle'
+                                        "
+                                    ></mat-icon>
+                                </ng-container>
+
+                                <ng-template #alertRolRedTemplate>
+                                    <mat-icon
+                                        class="icon-size-24 opacity-25 text-red-500 dark:text-red-400"
+                                        [svgIcon]="
+                                            'heroicons_outline:exclamation-circle'
+                                        "
+                                    ></mat-icon>
+                                </ng-template>
                             </ng-template>
                         </div>
                         <div class="flex items-center">
@@ -508,6 +550,7 @@
                             [dataLabels]="chartAcumulado.dataLabels"
                             [plotOptions]="chartAcumulado.plotOptions"
                             [xaxis]="chartAcumulado.xaxis"
+                            [tooltip]="chartAcumulado.tooltip"
                         ></apx-chart>
                     </div>
                 </div>
@@ -516,21 +559,42 @@
                         class="relative flex flex-auto bg-card shadow rounded-2xl overflow-hidden p-3 ml-1"
                     >
                         <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
-                            <mat-icon
+                            <ng-container
                                 *ngIf="
                                     data.ccProj.PERC_GAP > 100;
-                                    else alertIcon
+                                    else alertProjTemplate
                                 "
-                                class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
-                                [svgIcon]="'heroicons_outline:check-circle'"
-                            ></mat-icon>
-                            <ng-template #alertIcon>
+                            >
                                 <mat-icon
-                                    class="icon-size-24 opacity-25 text-red-500 dark:text-red-400"
-                                    [svgIcon]="
-                                        'heroicons_outline:exclamation-circle'
-                                    "
+                                    class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
+                                    [svgIcon]="'heroicons_outline:check-circle'"
                                 ></mat-icon>
+                            </ng-container>
+
+                            <ng-template #alertProjTemplate>
+                                <ng-container
+                                    *ngIf="
+                                        data.ccProj.PERC_GAP >= 90 &&
+                                            data.ccProj.PERC_GAP < 100;
+                                        else alertProjRedTemplate
+                                    "
+                                >
+                                    <mat-icon
+                                        class="icon-size-24 opacity-25 text-yellow-500 dark:text-yellow-400"
+                                        [svgIcon]="
+                                            'heroicons_outline:exclamation-circle'
+                                        "
+                                    ></mat-icon>
+                                </ng-container>
+
+                                <ng-template #alertProjRedTemplate>
+                                    <mat-icon
+                                        class="icon-size-24 opacity-25 text-red-500 dark:text-red-400"
+                                        [svgIcon]="
+                                            'heroicons_outline:exclamation-circle'
+                                        "
+                                    ></mat-icon>
+                                </ng-template>
                             </ng-template>
                         </div>
                         <div class="flex items-center">
@@ -621,21 +685,42 @@
                         class="relative flex flex-auto bg-card shadow rounded-2xl overflow-hidden p-3 ml-1"
                     >
                         <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
-                            <mat-icon
+                            <ng-container
                                 *ngIf="
                                     data.ccLB.PERC_GAP_META > 100;
-                                    else alertIcon
+                                    else alertLBTemplate
                                 "
-                                class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
-                                [svgIcon]="'heroicons_outline:check-circle'"
-                            ></mat-icon>
-                            <ng-template #alertIcon>
+                            >
                                 <mat-icon
-                                    class="icon-size-24 opacity-25 text-red-500 dark:text-red-400"
-                                    [svgIcon]="
-                                        'heroicons_outline:exclamation-circle'
-                                    "
+                                    class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
+                                    [svgIcon]="'heroicons_outline:check-circle'"
                                 ></mat-icon>
+                            </ng-container>
+
+                            <ng-template #alertLBTemplate>
+                                <ng-container
+                                    *ngIf="
+                                        data.ccLB.PERC_GAP_META >= 90 &&
+                                            data.ccLB.PERC_GAP_META < 100;
+                                        else alertLBRedTemplate
+                                    "
+                                >
+                                    <mat-icon
+                                        class="icon-size-24 opacity-25 text-yellow-500 dark:text-yellow-400"
+                                        [svgIcon]="
+                                            'heroicons_outline:exclamation-circle'
+                                        "
+                                    ></mat-icon>
+                                </ng-container>
+
+                                <ng-template #alertLBRedTemplate>
+                                    <mat-icon
+                                        class="icon-size-24 opacity-25 text-red-500 dark:text-red-400"
+                                        [svgIcon]="
+                                            'heroicons_outline:exclamation-circle'
+                                        "
+                                    ></mat-icon>
+                                </ng-template>
                             </ng-template>
                         </div>
                         <div class="flex items-center">
@@ -724,21 +809,42 @@
                         class="relative flex w-72 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
                     >
                         <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
-                            <mat-icon
+                            <ng-container
                                 *ngIf="
                                     data.ccMB.PERC_GAP_META > 100;
-                                    else alertIcon
+                                    else alertMBTemplate
                                 "
-                                class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
-                                [svgIcon]="'heroicons_outline:check-circle'"
-                            ></mat-icon>
-                            <ng-template #alertIcon>
+                            >
                                 <mat-icon
-                                    class="icon-size-24 opacity-25 text-red-500 dark:text-red-400"
-                                    [svgIcon]="
-                                        'heroicons_outline:exclamation-circle'
-                                    "
+                                    class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
+                                    [svgIcon]="'heroicons_outline:check-circle'"
                                 ></mat-icon>
+                            </ng-container>
+
+                            <ng-template #alertMBTemplate>
+                                <ng-container
+                                    *ngIf="
+                                        data.ccMB.PERC_GAP_META >= 90 &&
+                                            data.ccMB.PERC_GAP_META < 100;
+                                        else alertMBRedTemplate
+                                    "
+                                >
+                                    <mat-icon
+                                        class="icon-size-24 opacity-25 text-yellow-500 dark:text-yellow-400"
+                                        [svgIcon]="
+                                            'heroicons_outline:exclamation-circle'
+                                        "
+                                    ></mat-icon>
+                                </ng-container>
+
+                                <ng-template #alertMBRedTemplate>
+                                    <mat-icon
+                                        class="icon-size-24 opacity-25 text-red-500 dark:text-red-400"
+                                        [svgIcon]="
+                                            'heroicons_outline:exclamation-circle'
+                                        "
+                                    ></mat-icon>
+                                </ng-template>
                             </ng-template>
                         </div>
                         <div class="flex items-center">
@@ -823,21 +929,42 @@
                         class="relative flex w-72 bg-card shadow rounded-2xl overflow-hidden p-3 mr-1"
                     >
                         <div class="absolute bottom-0 right-0 w-24 h-24 -m-6">
-                            <mat-icon
+                            <ng-container
                                 *ngIf="
                                     data.ccCob.PERC_COBERTURA_DC > 100;
-                                    else alertIcon
+                                    else alertCobTemplate
                                 "
-                                class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
-                                [svgIcon]="'heroicons_outline:check-circle'"
-                            ></mat-icon>
-                            <ng-template #alertIcon>
+                            >
                                 <mat-icon
-                                    class="icon-size-24 opacity-25 text-red-500 dark:text-red-400"
-                                    [svgIcon]="
-                                        'heroicons_outline:exclamation-circle'
-                                    "
+                                    class="icon-size-24 opacity-25 text-green-500 dark:text-green-400"
+                                    [svgIcon]="'heroicons_outline:check-circle'"
                                 ></mat-icon>
+                            </ng-container>
+
+                            <ng-template #alertCobTemplate>
+                                <ng-container
+                                    *ngIf="
+                                        data.ccCob.PERC_COBERTURA_DC >= 90 &&
+                                            data.ccCob.PERC_COBERTURA_DC < 100;
+                                        else alertCobRedTemplate
+                                    "
+                                >
+                                    <mat-icon
+                                        class="icon-size-24 opacity-25 text-yellow-500 dark:text-yellow-400"
+                                        [svgIcon]="
+                                            'heroicons_outline:exclamation-circle'
+                                        "
+                                    ></mat-icon>
+                                </ng-container>
+
+                                <ng-template #alertCobRedTemplate>
+                                    <mat-icon
+                                        class="icon-size-24 opacity-25 text-red-500 dark:text-red-400"
+                                        [svgIcon]="
+                                            'heroicons_outline:exclamation-circle'
+                                        "
+                                    ></mat-icon>
+                                </ng-template>
                             </ng-template>
                         </div>
                         <div class="flex items-center">
@@ -895,7 +1022,9 @@
                                 <div
                                     class="mt-1 font-medium text-sm leading-none tooltip"
                                 >
-                                    {{ data.ccCob.PERC_COBERTURA_DC }}
+                                    {{
+                                        data.ccCob.PERC_COBERTURA_DC.toFixed(2)
+                                    }}
                                 </div>
                             </div>
                             <div class="flex flex-col mx-1 my-2">
