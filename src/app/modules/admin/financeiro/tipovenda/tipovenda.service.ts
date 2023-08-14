@@ -141,7 +141,7 @@ export class tipovendaService {
         var dtFin = this.param.dtFin;
         var tipo = this.tipos;
         return this._httpClient.get<{ columns: []; rows: [] }>(
-            'http://api.portal.jspecas.com.br/v1/views/520/data?' +
+            'http://api.portal.jspecas.com.br/v1/views/521/data?' +
                 'filiais=' +
                 filiais +
                 '&dtIni=' +

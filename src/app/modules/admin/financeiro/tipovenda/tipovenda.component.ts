@@ -251,6 +251,7 @@ export class tipovendaComponent implements AfterViewInit {
                 }
 
                 this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][5]);
+                this.HeatFiliais.push(String(this.seriesHeat.rows[aux - 1][7]));
                 this.HeatFiliais.push(String(this.seriesHeat.rows[aux - 1][6]));
                 PMV += this.seriesHeat.rows[aux - 1][6];
                 auxMedia++;
@@ -287,6 +288,7 @@ export class tipovendaComponent implements AfterViewInit {
         // this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][3]);
         // this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][4]);
         this.HeatFiliais.push(this.seriesHeat.rows[aux - 1][5]);
+        this.HeatFiliais.push(String(this.seriesHeat.rows[aux - 1][7]));
         this.HeatFiliais.push(String(this.seriesHeat.rows[aux - 1][6]));
         PMV += this.seriesHeat.rows[aux - 1][6];
         auxMedia++;
@@ -306,14 +308,14 @@ export class tipovendaComponent implements AfterViewInit {
         this.seriesData.push({ name: filial, data: this.HeatFiliais });
 
         // Inicie cada total como 0.
-        let totals = new Array(16).fill(0);
+        let totals = new Array(17).fill(0);
 
         for (let series of this.seriesData) {
-            for (let index = 0; index < series.data.length - 1; index++) {
+            for (let index = 0; index < series.data.length ; index++) {
                 totals[index] += series.data[index];
             }
         }
-        totals[15] = PMV / auxMedia;
+        totals[16] = PMV / auxMedia;
 
         let totalSeries = {
             name: 'TOTAL',
@@ -1099,9 +1101,10 @@ export class tipovendaComponent implements AfterViewInit {
                     '10x',
                     '11x',
                     '12x+',
-                    'TOT. FIN',
-                    'TOT. ROL',
-                    'PMV',
+                    'FIN',
+                    'ROL',
+                    'DESC',
+                    'PMV'
                 ],
             },
             yaxis: {
