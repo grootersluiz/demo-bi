@@ -14,41 +14,98 @@ export class DashEstoqueService {
 
 
 
-    getDiasEstoque(codemp: String[]): Observable<any> {
+    getDiasEstoque(codemp, codparcforn, codmarca, curva): Observable<any> {
+
+    /*var elemento: String = "";
+      for (let index = 0; index < curva.length; index++) {
+        elemento += elemento ? ",'" + curva[index] +"'" : "'" + curva[index] +"'";
+
+
+      }*/
+
+    
 
         return this._httpClient.get<{ columns: []; rows: [] }>(
             'http://api.portal.jspecas.com.br/v1/views/519/data?' +
             'codemp=' +
-            codemp
+            codemp +
+            '&codparcforn='+
+            codparcforn+
+            '&codmarca='+
+            codmarca+
+            '&curva='+
+            curva
         );
     }
 
-    getGiroEstoque(codemp: String[]): Observable<any> {
+    getGiroEstoque(codemp, codparcforn, codmarca, curva): Observable<any> {
 
 
         return this._httpClient.get<{ columns: []; rows: [] }>(
             'http://api.portal.jspecas.com.br/v1/views/524/data?' +
             'codemp=' +
-            codemp
+            codemp +
+            '&codparcforn='+
+            codparcforn+
+            '&codmarca='+
+            codmarca+
+            '&curva='+
+            curva
         );
 
     }
 
 
-    getDisponibilidadeCurva(codemp: String[]): Observable<any> {
+    getDisponibilidadeCurva(codemp, codparcforn, codmarca, curva): Observable<any> {
 
 
         return this._httpClient.get<{ columns: []; rows: [] }>(
-            'http://api.portal.jspecas.com.br/v1/views/526/data?'+'codemp=' +codemp
+            'http://api.portal.jspecas.com.br/v1/views/526/data?'+
+            'codemp=' +
+            codemp +
+            '&codparcforn='+
+            codparcforn+
+            '&codmarca='+
+            codmarca+
+            '&curva='+
+            curva
         );
 
     }
 
-    getEstoquePorFornecedor(): Observable<any> {
+
+
+    getDisponibilidadeEmpresa(codemp, codparcforn, codmarca, curva) {
+
+        return this._httpClient.get<{ columns: []; rows: [] }>(
+            'http://api.portal.jspecas.com.br/v1/views/536/data?'+
+            'codemp=' +
+            codemp +
+            '&codparcforn='+
+            codparcforn+
+            '&codmarca='+
+            codmarca+
+            '&curva='+
+            curva
+        );
+
+    }
+
+    getEstoquePorFornecedor(numero,codemp, codparcforn, codmarca, curva): Observable<any> {
 
 
          return this._httpClient.get<{ columns: []; rows: [] }>(
              'http://api.portal.jspecas.com.br/v1/views/512/data?'
+             +'numero=' +
+             numero +
+             '&codemp=' +
+             codemp +
+             '&codparcforn='+
+             codparcforn+
+             '&codmarca='+
+             codmarca+
+             '&curva='+
+             curva
 
          );
 

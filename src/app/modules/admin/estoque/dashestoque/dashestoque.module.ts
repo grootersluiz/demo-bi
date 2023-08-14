@@ -33,6 +33,8 @@ import { ListamarcaModule } from '../../util/listamarca/listamarca.module';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatMenuModule } from '@angular/material/menu';
 import { ColorsComponent } from '../../util/colors/colors.component';
+import { ListafornecedorModule } from '../../util/listafornecedor/listafornecedor.module';
+import { ListacurvaModule } from '../../util/listacurva/listacurva.module';
 
 
 
@@ -65,8 +67,8 @@ import { ColorsComponent } from '../../util/colors/colors.component';
         ListamarcaModule,
         MatMenuModule,
         MatAutocompleteModule,
-
-
+        ListafornecedorModule,
+        ListacurvaModule
 
 
 

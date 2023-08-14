@@ -29,6 +29,8 @@
                <!-- FILTROS VVVVV -->
                <app-selectfilial #filial></app-selectfilial>
                <app-listamarca #marca></app-listamarca>
+               <app-listafornecedor #fornecedor></app-listafornecedor>
+               <app-listacurva #curva></app-listacurva>
 
 
                <!-- FILTROS ^^^^^ -->
@@ -39,7 +41,7 @@
                style="width: 120px"
                mat-flat-button
                [color]="'primary'"
-               (click)="getGeral(filial.filiais.value, marca.marcas.value)"
+               (click)="getGeral(filial.filiais.value, marca.marcas.value, fornecedor.fornecedores.value, curva.curvas.value)"
            >
                <span style="font-size: 12px">Aplicar</span>
            </button>
@@ -114,7 +116,7 @@
                 </div>
 
         </div>
-            <div  style="text-align: left;" class="flex flex-col h-80 bg-card shadow rounded-2xl mt-2">
+            <div  style="text-align: left;" class="flex flex-col h-95 bg-card shadow rounded-2xl mt-2 overflow-x-auto whitespace-no-wrap ">
 
                 <div style=" display: flex" class="pl-2">
                     <b> <mat-label>{{tituloTable}}</mat-label></b>
@@ -226,7 +228,7 @@
 
             </div-->
 
-            <div id="chartGiro" class="relative flex flex-col bg-card  w-full shadow rounded-2xl mt-10 gap-1 ">
+            <div id="chartGiro" class="relative flex flex-col bg-card  w-full shadow rounded-2xl mt-2 gap-1 ">
 
                 <div class="pl-2">
                     <b> <mat-label> Dias de Estoque / Giro</mat-label></b>
@@ -255,9 +257,9 @@
             </div>
 
 
-            <div class="flex flex-row gap-4 max-w-full mt-1 ">
+            <div class="flex flex-row gap-2 max-w-full mt-1 ">
 
-                <div class="mt-2 bg-card  rounded-2xl gap-1  w-full pl-2 w-3/5" >
+                <div class="mt-2 bg-card  rounded-2xl gap-1  pl-2 w-2/4" >
                     <div>
                         <b> <mat-label> Disponibilidade por Empresa</mat-label></b>
                     </div>
@@ -283,7 +285,7 @@
 
 
 
-                <div class="relative flex flex-col bg-card  w-full shadow rounded-2xl  mt-1 gap-1 w-1/5 " >
+                <div class="relative flex flex-col bg-card  shadow rounded-2xl  mt-1 gap-1 w-1/4 " >
 
                     <div class="pl-2">
                         <b> <mat-label> Disponibilidade de SKU</mat-label></b>
@@ -307,7 +309,7 @@
 
                 </div>
 
-                <div class="relative flex flex-col bg-card  w-full shadow rounded-2xl  mt-1 w-1/5 ">
+                <div class="relative flex flex-col bg-card  shadow rounded-2xl  mt-1 gap-1 w-1/4">
 
                     <div class="pl-2">
                         <b> <mat-label> Disponibilidade Cód Agrupador</mat-label></b>
@@ -337,24 +339,29 @@
 
 
 
-            <div class= "">
+<!-- overflow-y-auto  h-100-->
 
-            <div class="relative flex flex-row bg-card  w-full shadow rounded-2xl  mt-2 overflow-y-auto h-100 ">
+            <div class=" bg-card  w-full shadow rounded-2xl  mt-2  ">
                 <div class="example-form">
 
 
-                    <button mat-button [matMenuTriggerFor]="menu"> <mat-icon fontIcon="filter_list"> </mat-icon></button>
-                    <mat-menu #menu="matMenu">
-
-                      <button mat-menu-item>Item 1</button>
-                      <button mat-menu-item>Item 2</button>
-                    </mat-menu>
 
                 <div class="relative pl-2">
                     <b><mat-label>Estoque por Fornecedores</mat-label></b>
 
+                        <button mat-button [matMenuTriggerFor]="menu"> <mat-icon fontIcon="filter_list"> </mat-icon></button>
+                        <mat-menu #menu="matMenu">
 
+                          <button mat-menu-item (click)="filtrarFornecedor(20,1)">20</button>
+                          <button mat-menu-item (click)="filtrarFornecedor(50,2.5)">50</button>
+                          <button mat-menu-item (click)="filtrarFornecedor(100,5)">100</button>
+                          <button mat-menu-item (click)="filtrarFornecedor(200,10)">200</button>
+                          <button mat-menu-item (click)="filtrarFornecedor(1000,11)">1000</button>
+                        </mat-menu>
 
+                    </div>
+
+                    <div class="w-full">
                     <apx-chart [series]="chartOptionsFor.series"
                         [chart]="chartOptionsFor.chart"
                         [dataLabels]="chartOptionsFor.dataLabels"
@@ -368,13 +375,12 @@
                         [colors]="chartOptionsFor.colors"
                         ></apx-chart>
 
-
+                    </div>
                     </div>
 
 
 
 
-                </div>
             </div >
 
             <div>
@@ -387,5 +393,5 @@
 
 
 
-        </div>
+
     </div>
