@@ -308,13 +308,14 @@ export class tipovendaComponent implements AfterViewInit {
         this.seriesData.push({ name: filial, data: this.HeatFiliais });
 
         // Inicie cada total como 0.
-        let totals = new Array(17).fill(0);
+        let totals = new Array(16).fill(0);
 
         for (let series of this.seriesData) {
-            for (let index = 0; index < series.data.length ; index++) {
-                totals[index] += series.data[index];
+            for (let index = 0; index < series.data.length -1; index++) {
+                totals[index] += Number(series.data[index]);
             }
         }
+        console.log(totals)
         totals[16] = PMV / auxMedia;
 
         let totalSeries = {
@@ -884,6 +885,7 @@ export class tipovendaComponent implements AfterViewInit {
             tooltip: {
                 followCursor: true,
                 theme: 'dark',
+                fillSeriesColor: false,
                 x: {
                     format: 'dd MMM, yyyy',
                 },
