@@ -385,6 +385,12 @@ export class tipovendaComponent implements AfterViewInit {
         this.chartOptions1.xaxis.categories = this.categories;
         if (this.categories.length === 1) {
             this.chartOptions1.chart.type = 'bar';
+            this.chartOptions1.dataLabels.offsetY = -20;
+            this.chartOptions1.dataLabels.enabled = true;
+        }else{
+            this.chartOptions1.chart.type = 'area';
+            this.chartOptions1.dataLabels.offsetY = 0;
+            this.chartOptions1.dataLabels.enabled = false;
         }
         this.PMVGeral = this.formatadorPtsPMV(this.PMVGeral / this.PMVIndex);
         var reflow = new ApexCharts(this.chart, this.chartOptions1);
@@ -437,6 +443,12 @@ export class tipovendaComponent implements AfterViewInit {
         this.chartOptions2.xaxis.categories = this.categories2;
         if (this.categories2.length === 1) {
             this.chartOptions2.chart.type = 'bar';
+            this.chartOptions2.dataLabels.offsetY = -20;
+            this.chartOptions2.dataLabels.enabled = true;
+        }else{
+            this.chartOptions2.chart.type = 'area';
+            this.chartOptions2.dataLabels.offsetY = 0;
+            this.chartOptions2.dataLabels.enabled = false;
         }
 
         var reflow = new ApexCharts(this.chart2, this.chartOptions2);
@@ -837,7 +849,10 @@ export class tipovendaComponent implements AfterViewInit {
             ],
             plotOptions: {
                 bar: {
-                    horizontal: false,
+                    dataLabels: {
+                        position: 'top',
+                    },
+                    horizontal: false, // ou true, dependendo da orientação das barras // ajustar conforme necessário
                 },
             },
             xaxis: {
@@ -847,19 +862,14 @@ export class tipovendaComponent implements AfterViewInit {
             dataLabels: {
                 distributed: true,
                 enabled: false,
+                formatter: (val) => {
+                    return this.formatadorUnidade(val);
+                },
                 style: {
                     fontSize: '12px',
                     fontFamily: 'Helvetica, Arial, sans-serif',
                     fontWeight: 'bold',
                     colors: ['black'],
-                },
-                dropShadow: {
-                    enabled: true,
-                    top: 1,
-                    left: 1,
-                    blur: 1,
-                    color: '#000',
-                    opacity: 0.2,
                 },
             },
             yaxis: {
@@ -972,7 +982,10 @@ export class tipovendaComponent implements AfterViewInit {
             ],
             plotOptions: {
                 bar: {
-                    horizontal: false,
+                    dataLabels: {
+                        position: 'top',
+                    },
+                    horizontal: false, // ou true, dependendo da orientação das barras // ajustar conforme necessário
                 },
             },
             xaxis: {
@@ -982,20 +995,16 @@ export class tipovendaComponent implements AfterViewInit {
             dataLabels: {
                 distributed: true,
                 enabled: false,
+                formatter: (val) => {
+                    return this.formatadorUnidade(val);
+                },
                 style: {
                     fontSize: '12px',
                     fontFamily: 'Helvetica, Arial, sans-serif',
                     fontWeight: 'bold',
                     colors: ['black'],
                 },
-                dropShadow: {
-                    enabled: true,
-                    top: 1,
-                    left: 1,
-                    blur: 1,
-                    color: '#000',
-                    opacity: 0.2,
-                },
+
             },
             yaxis: {
                 show: true,
