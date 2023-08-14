@@ -100,7 +100,7 @@ export class DashestoqueComponent implements AfterViewInit {
     data: any;
     recentTransactionsTableColumns: string[] = [];
 
-    estoquePorFornecedor: EstoqueFornecedor = { nomeParc: [], SaldoEstoque: [] };
+    estoquePorFornecedor: EstoqueFornecedor = { nomeParc: ["A"], SaldoEstoque: [1] };
     //resumoEstoque ={giro:[], diasEstoque:[]}
     giroEstoque: GiroDiasEstoque = { serieGiro: [], SerieDias: [], categoria: [] };
     //giroVazio:GiroDias[]=[];
@@ -142,7 +142,7 @@ export class DashestoqueComponent implements AfterViewInit {
         this.codparcfor ="9999999";
         this.codmarca="9999999";
         this.curva="9999999";
-
+        this.tamanhoFor = this.estoquePorFornecedor.SaldoEstoque.length * 0.05;
         this.recentTransactionsTableColumns = [
             "codprod", "produto", "codemp", "empresa", "estoque", "media3m", "media6m", "qtdDias"
         ];
@@ -853,7 +853,7 @@ export class DashestoqueComponent implements AfterViewInit {
     }
     ngAfterViewInit(): void {
         this.atualizarDisponibilidadeEmpresa();
-        this.atualizarFornecedor();
+        //this.atualizarFornecedor();
 
     }
 
