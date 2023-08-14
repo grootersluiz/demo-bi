@@ -685,7 +685,10 @@ export class VendasDashComponent implements OnInit {
                                 return `${y.toFixed(2)}%`;
                             }
                         }
-                        return y.toString();
+                        return y.toLocaleString('pt-BR', {
+                            style: 'decimal',
+                            useGrouping: true,
+                        });
                     },
                 },
             },
@@ -832,7 +835,10 @@ export class VendasDashComponent implements OnInit {
                                 return `${y.toFixed(2)}%`;
                             }
                         }
-                        return y.toString();
+                        return y.toLocaleString('pt-BR', {
+                            style: 'decimal',
+                            useGrouping: true,
+                        });
                     },
                 },
             },

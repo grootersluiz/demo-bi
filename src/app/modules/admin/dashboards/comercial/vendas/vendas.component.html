@@ -302,7 +302,15 @@
                                 <div
                                     class="mt-2 font-medium text-lg leading-none tooltip"
                                 >
-                                    {{ data.cc.TOTAL_CARTEIRA }}
+                                    {{
+                                        data.cc.TOTAL_CARTEIRA.toLocaleString(
+                                            "pt-BR",
+                                            {
+                                                style: "decimal",
+                                                useGrouping: true
+                                            }
+                                        )
+                                    }}
                                 </div>
                             </div>
                             <div class="flex flex-col mx-1 my-3">
@@ -314,7 +322,15 @@
                                 <div
                                     class="mt-2 font-medium text-lg leading-none tooltip"
                                 >
-                                    {{ data.cc.REALIZADO }}
+                                    {{
+                                        data.cc.REALIZADO.toLocaleString(
+                                            "pt-BR",
+                                            {
+                                                style: "decimal",
+                                                useGrouping: true
+                                            }
+                                        )
+                                    }}
                                 </div>
                             </div>
                             <div class="flex flex-col mx-1 my-3">
@@ -326,7 +342,15 @@
                                 <div
                                     class="mt-2 font-medium text-lg leading-none"
                                 >
-                                    {{ data.cc.REALIZADO_DC }}
+                                    {{
+                                        data.cc.REALIZADO_DC.toLocaleString(
+                                            "pt-BR",
+                                            {
+                                                style: "decimal",
+                                                useGrouping: true
+                                            }
+                                        )
+                                    }}
                                 </div>
                             </div>
                             <div class="flex flex-col mx-1 my-3">
@@ -338,7 +362,15 @@
                                 <div
                                     class="mt-2 font-medium text-lg leading-none"
                                 >
-                                    {{ data.cc.META_POSITIVACAO }}
+                                    {{
+                                        data.cc.META_POSITIVACAO.toLocaleString(
+                                            "pt-BR",
+                                            {
+                                                style: "decimal",
+                                                useGrouping: true
+                                            }
+                                        )
+                                    }}
                                 </div>
                             </div>
                             <div class="flex flex-col mx-1 my-3">
@@ -362,7 +394,15 @@
                                 <div
                                     class="mt-2 font-medium text-lg leading-none"
                                 >
-                                    {{ data.cc.REALIZADO_FC }}
+                                    {{
+                                        data.cc.REALIZADO_FC.toLocaleString(
+                                            "pt-BR",
+                                            {
+                                                style: "decimal",
+                                                useGrouping: true
+                                            }
+                                        )
+                                    }}
                                 </div>
                             </div>
                         </div>
@@ -430,7 +470,10 @@
                                 >
                                     {{
                                         data.ccVsRol.REALIZADO_ROL
-                                            | currency : "BRL"
+                                            | currency
+                                                : "BRL"
+                                                : "symbol-narrow"
+                                                : "1.0-0"
                                     }}
                                 </div>
                             </div>
@@ -443,7 +486,13 @@
                                 <div
                                     class="mt-2 font-medium text-lg leading-none tooltip"
                                 >
-                                    {{ data.ccVsRol.ROL_DC | currency : "BRL" }}
+                                    {{
+                                        data.ccVsRol.ROL_DC
+                                            | currency
+                                                : "BRL"
+                                                : "symbol-narrow"
+                                                : "1.0-0"
+                                    }}
                                 </div>
                             </div>
                             <div class="flex flex-col mx-1 my-3">
@@ -455,7 +504,13 @@
                                 <div
                                     class="mt-2 font-medium text-lg leading-none"
                                 >
-                                    {{ data.ccVsRol.ROL_FC | currency : "BRL" }}
+                                    {{
+                                        data.ccVsRol.ROL_FC
+                                            | currency
+                                                : "BRL"
+                                                : "symbol-narrow"
+                                                : "1.0-0"
+                                    }}
                                 </div>
                             </div>
 
@@ -470,7 +525,10 @@
                                 >
                                     {{
                                         data.ccVsRol.ROL_META_CARTEIRA
-                                            | currency : "BRL"
+                                            | currency
+                                                : "BRL"
+                                                : "symbol-narrow"
+                                                : "1.0-0"
                                     }}
                                 </div>
                             </div>
@@ -618,7 +676,10 @@
                                 >
                                     {{
                                         data.ccProj.POTENCIAL_CARTEIRA
-                                            | currency : "BRL"
+                                            | currency
+                                                : "BRL"
+                                                : "symbol-narrow"
+                                                : "1.0-0"
                                     }}
                                 </div>
                             </div>
@@ -633,7 +694,10 @@
                                 >
                                     {{
                                         data.ccProj.PROJECAO_CARTEIRA
-                                            | currency : "BRL"
+                                            | currency
+                                                : "BRL"
+                                                : "symbol-narrow"
+                                                : "1.0-0"
                                     }}
                                 </div>
                             </div>
@@ -660,7 +724,10 @@
                                 >
                                     {{
                                         data.ccProj.PROJECAO_PF_CARTEIRA
-                                            | currency : "BRL"
+                                            | currency
+                                                : "BRL"
+                                                : "symbol-narrow"
+                                                : "1.0-0"
                                     }}
                                 </div>
                             </div>
@@ -675,7 +742,10 @@
                                 >
                                     {{
                                         data.ccProj.PROJECAO_PJ_CARTEIRA
-                                            | currency : "BRL"
+                                            | currency
+                                                : "BRL"
+                                                : "symbol-narrow"
+                                                : "1.0-0"
                                     }}
                                 </div>
                             </div>
@@ -744,7 +814,10 @@
                                 >
                                     {{
                                         data.ccLB.REALIZADO_LB
-                                            | currency : "BRL"
+                                            | currency
+                                                : "BRL"
+                                                : "symbol-narrow"
+                                                : "1.0-0"
                                     }}
                                 </div>
                             </div>
@@ -757,7 +830,13 @@
                                 <div
                                     class="mt-2 font-medium text-lg leading-none tooltip"
                                 >
-                                    {{ data.ccLB.LB_DC | currency : "BRL" }}
+                                    {{
+                                        data.ccLB.LB_DC
+                                            | currency
+                                                : "BRL"
+                                                : "symbol-narrow"
+                                                : "1.0-0"
+                                    }}
                                 </div>
                             </div>
                             <div class="flex flex-col mx-1 my-3">
@@ -769,7 +848,13 @@
                                 <div
                                     class="mt-2 font-medium text-lg leading-none"
                                 >
-                                    {{ data.ccLB.LB_FC | currency : "BRL" }}
+                                    {{
+                                        data.ccLB.LB_FC
+                                            | currency
+                                                : "BRL"
+                                                : "symbol-narrow"
+                                                : "1.0-0"
+                                    }}
                                 </div>
                             </div>
                             <div class="flex flex-col mx-1 my-3">
@@ -783,7 +868,10 @@
                                 >
                                     {{
                                         data.ccLB.LB_META_CARTEIRA
-                                            | currency : "BRL"
+                                            | currency
+                                                : "BRL"
+                                                : "symbol-narrow"
+                                                : "1.0-0"
                                     }}
                                 </div>
                             </div>
@@ -868,7 +956,10 @@
                                 >
                                     {{
                                         data.ccMB.REALIZADO_MB
-                                            | currency : "BRL"
+                                            | currency
+                                                : "BRL"
+                                                : "symbol-narrow"
+                                                : "1.0-0"
                                     }}
                                 </div>
                             </div>
@@ -881,7 +972,13 @@
                                 <div
                                     class="mt-1 font-medium text-sm leading-none tooltip"
                                 >
-                                    {{ data.ccMB.MB_DC | currency : "BRL" }}
+                                    {{
+                                        data.ccMB.MB_DC
+                                            | currency
+                                                : "BRL"
+                                                : "symbol-narrow"
+                                                : "1.0-0"
+                                    }}
                                 </div>
                             </div>
                             <div class="flex flex-col mx-1 my-2">
@@ -893,7 +990,13 @@
                                 <div
                                     class="mt-1 font-medium text-sm leading-none"
                                 >
-                                    {{ data.ccMB.MB_FC | currency : "BRL" }}
+                                    {{
+                                        data.ccMB.MB_FC
+                                            | currency
+                                                : "BRL"
+                                                : "symbol-narrow"
+                                                : "1.0-0"
+                                    }}
                                 </div>
                             </div>
                             <div class="flex flex-col mx-1 my-2">
@@ -907,7 +1010,10 @@
                                 >
                                     {{
                                         data.ccMB.MB_META_CARTEIRA
-                                            | currency : "BRL"
+                                            | currency
+                                                : "BRL"
+                                                : "symbol-narrow"
+                                                : "1.0-0"
                                     }}
                                 </div>
                             </div>
@@ -986,7 +1092,15 @@
                                 <div
                                     class="mt-1 font-medium text-sm leading-none tooltip"
                                 >
-                                    {{ data.ccCob.TOTAL_CARTEIRA }}
+                                    {{
+                                        data.ccCob.TOTAL_CARTEIRA.toLocaleString(
+                                            "pt-BR",
+                                            {
+                                                style: "decimal",
+                                                useGrouping: true
+                                            }
+                                        )
+                                    }}
                                 </div>
                             </div>
                             <div class="flex flex-col mx-1 my-2">
@@ -998,7 +1112,15 @@
                                 <div
                                     class="mt-1 font-medium text-sm leading-none"
                                 >
-                                    {{ data.ccCob.QTD_PJ_DC }}
+                                    {{
+                                        data.ccCob.QTD_PJ_DC.toLocaleString(
+                                            "pt-BR",
+                                            {
+                                                style: "decimal",
+                                                useGrouping: true
+                                            }
+                                        )
+                                    }}
                                 </div>
                             </div>
                             <div class="flex flex-col mx-1 my-2">
@@ -1010,7 +1132,15 @@
                                 <div
                                     class="mt-1 font-medium text-sm leading-none"
                                 >
-                                    {{ data.ccCob.QTD_POSITIVADO_DC }}
+                                    {{
+                                        data.ccCob.QTD_POSITIVADO_DC.toLocaleString(
+                                            "pt-BR",
+                                            {
+                                                style: "decimal",
+                                                useGrouping: true
+                                            }
+                                        )
+                                    }}
                                 </div>
                             </div>
                             <div class="flex flex-col mx-1 my-2">
@@ -1036,7 +1166,15 @@
                                 <div
                                     class="mt-1 font-medium text-sm leading-none"
                                 >
-                                    {{ data.ccCob.QTD_PF_DC }}
+                                    {{
+                                        data.ccCob.QTD_PF_DC.toLocaleString(
+                                            "pt-BR",
+                                            {
+                                                style: "decimal",
+                                                useGrouping: true
+                                            }
+                                        )
+                                    }}
                                 </div>
                             </div>
                             <div class="flex flex-col mx-1 my-2">
@@ -1048,7 +1186,15 @@
                                 <div
                                     class="mt-1 font-medium text-sm leading-none"
                                 >
-                                    {{ data.ccCob.QTD_POSITIVADO_FC }}
+                                    {{
+                                        data.ccCob.QTD_POSITIVADO_FC.toLocaleString(
+                                            "pt-BR",
+                                            {
+                                                style: "decimal",
+                                                useGrouping: true
+                                            }
+                                        )
+                                    }}
                                 </div>
                             </div>
                         </div>
