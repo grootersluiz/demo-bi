@@ -315,7 +315,6 @@ export class tipovendaComponent implements AfterViewInit {
                 totals[index] += Number(series.data[index]);
             }
         }
-        console.log(totals)
         totals[16] = PMV / auxMedia;
 
         let totalSeries = {
@@ -715,6 +714,7 @@ export class tipovendaComponent implements AfterViewInit {
             dataLabels: {
                 offsetY: -20,
                 enabled: true,
+
                 formatter: (val) => {
                     return this.formatadorUnidade(val);
                 },
