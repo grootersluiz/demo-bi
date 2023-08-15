@@ -100,12 +100,12 @@ export class DashestoqueComponent implements AfterViewInit {
     data: any;
     recentTransactionsTableColumns: string[] = [];
 
-    estoquePorFornecedor: EstoqueFornecedor = { nomeParc: ["A"], SaldoEstoque: [1] };
+    estoquePorFornecedor: EstoqueFornecedor = { nomeParc: ["A"], SaldoEstoque: [1], percentual:[0] };
     //resumoEstoque ={giro:[], diasEstoque:[]}
     giroEstoque: GiroDiasEstoque = { serieGiro: [], SerieDias: [], categoria: [] };
     //giroVazio:GiroDias[]=[];
 
-    estNomeFornecedor ;
+    estNomeFornecedor;
     estSaldoEstoque;
     codemp;
     codparcfor;
@@ -138,10 +138,10 @@ export class DashestoqueComponent implements AfterViewInit {
 
     constructor(public dashEstoqueServico: DashEstoqueService, private _httpClient: HttpClient,
         private _liveAnnouncer: LiveAnnouncer, private _dialog: MatDialog, private _router: Router, private _colors: ColorsComponent) {
-        this.codemp= "99" ;
-        this.codparcfor ="9999999";
-        this.codmarca="9999999";
-        this.curva="9999999";
+        this.codemp = "99";
+        this.codparcfor = "9999999";
+        this.codmarca = "9999999";
+        this.curva = "9999999";
         this.tamanhoFor = this.estoquePorFornecedor.SaldoEstoque.length * 0.05;
         this.recentTransactionsTableColumns = [
             "codprod", "produto", "codemp", "empresa", "estoque", "media3m", "media6m", "qtdDias"
@@ -948,23 +948,23 @@ export class DashestoqueComponent implements AfterViewInit {
             codemp = '99'
         }
 
-        if (codparcfor== 'null') {
+        if (codparcfor == 'null') {
             codparcfor = '9999999'
         }
         if (codmarca == 'null') {
             codmarca = '9999999'
         }
-  
+
         if (this.curva == 'null') {
             this.curva = "9999999";
-    
-    }
+
+        }
 
 
 
         this.codemp = codemp;
         this.codparcfor = codparcfor;
-    
+
 
 
 
@@ -976,11 +976,11 @@ export class DashestoqueComponent implements AfterViewInit {
 
     }
 
-   
+
     getDiasEstoque(codemp, codparcfor, codmarca, curva) {
 
         this.limparDiasEstoque();
-    
+
 
         this.dashEstoqueServico.getDiasEstoque(codemp, codparcfor, codmarca, curva).subscribe((dataresponse) => {
             this.diasEstoque = dataresponse.rows;
@@ -1037,7 +1037,7 @@ export class DashestoqueComponent implements AfterViewInit {
     }
 
     getDisponibilidadeEmpresa(codemp, codparcfor, codmarca, curva) {
-     
+
 
         this.limparDisponibilidadeEmpresa();
         this.dashEstoqueServico.getDisponibilidadeEmpresa(codemp, codparcfor, codmarca, curva).subscribe((dataresponse) => {
@@ -1099,6 +1099,7 @@ export class DashestoqueComponent implements AfterViewInit {
 
         this.estoquePorFornecedor.nomeParc = [];
         this.estoquePorFornecedor.SaldoEstoque = [];
+        this.estoquePorFornecedor.percentual =[];
 
 
 
@@ -1263,6 +1264,7 @@ export class DashestoqueComponent implements AfterViewInit {
 
             this.estoquePorFornecedor.nomeParc.push(param[i][1]);
             this.estoquePorFornecedor.SaldoEstoque.push(Math.floor(Number(param[i][4])));
+            this.estoquePorFornecedor.percentual.push(Number(param[i][5]));
 
         }
 
@@ -1464,10 +1466,16 @@ export class DashestoqueComponent implements AfterViewInit {
         this.chartOptionsFor = {
             series: [
                 {
-                    name: "Estoque",
+                    name: "Saldo de Estoque",
 
-                    data: this.estoquePorFornecedor.SaldoEstoque
-                }
+                    data: this.estoquePorFornecedor.SaldoEstoque 
+                },
+                /*{
+                    name: "% de Estoque",
+
+                    data: this.estoquePorFornecedor.percentual
+                },*/
+             
             ],
             colors: [this._colors.colors[1]],
             annotations: {
@@ -1490,8 +1498,11 @@ export class DashestoqueComponent implements AfterViewInit {
             chart: {
                 type: "bar",
                 height: this.tamanhoFor * 700,
+              // stacked: true,
                 width: "100%",
+              
             },
+           
 
             tooltip: {
                 followCursor: true,
@@ -1506,23 +1517,32 @@ export class DashestoqueComponent implements AfterViewInit {
             plotOptions: {
 
                 bar: {
-                    horizontal: true
+                    horizontal: true,
+                /*dataLabels:{
+                    position: "right"
+                }*/
                 }
+                
             },
 
             dataLabels: {
                 formatter: (val) => {
-                    return (this.formatadorMilhar(val));
+                    return (this.formatadorMilhar(val) );
+                    
                 },
+          
+                //textAnchor:'end',
+                offsetX:20,
                 enabled: true,
                 style: {
-
+                    
                     colors: ["#0a0a0a"],
                     fontSize: "10px",
                     fontWeight: "bold"
 
 
                 }
+            
             },
             /*
                         stroke: {
@@ -1541,7 +1561,7 @@ export class DashestoqueComponent implements AfterViewInit {
 
                     },
                     formatter: (val) => {
-                        return (this.formatadorPts(val));
+                        return (this.formatadorPts(val) );
                     }
 
                 },
@@ -1576,7 +1596,7 @@ export class DashestoqueComponent implements AfterViewInit {
     filtrarFornecedor(qtdforn, tamanho) {
         this.tamanhoFor = tamanho;
         this.limparEstoqueFornecedor();
-        this.getEstoquePorFornecedor(this.qtdForn, this.codemp, this.codparcfor, this.codmarca, this.curva);
+        this.getEstoquePorFornecedor(qtdforn, this.codemp, this.codparcfor, this.codmarca, this.curva);
 
     }
 
@@ -1994,6 +2014,7 @@ export interface EstoqueFornecedor {
 
     nomeParc: string[];
     SaldoEstoque: number[];
+    percentual: number[];
 }
 
 
