@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap, switchMap, map, filter } from 'rxjs';
 import { AnalisemarcaComponent } from './analisemarca.component';
+import { ColorsComponent } from '../../util/colors/colors.component';
 
 @Injectable({
     providedIn: 'root',
@@ -26,18 +27,19 @@ export class AnalisemarcaService {
 
     qtdemeses = 12;
 
-    _colors = {
-        palette1:  ['#008FFB','#00E396','#FEB019','#FF4560','#775DD0'],
-        palette2:  ['#3F51B5','#03A9F4','#4CAF50','#F9CE1D','#FF9800'],
-        palette3:  ['#33B2DF','#546E7A','#D4526E','#13D8AA','#A5978B'],
-        palette4:  ['#4ECDC4','#C7F464','#81D4FA','#546E7A','#FD6A6A'],
-        palette5:  ['#2B908F','#F9A3A4','#90EE7E','#FA4443','#69D2E7'],
-        palette6:  ['#449DD1','#F86624','#EA3546','#662E9B','#C5D86D'],
-        palette7:  ['#D7263D','#1B998B','#2E294E','#F46036','#E2C044'],
-        palette8:  ['#662E9B','#F86624','#F9C80E','#EA3546','#43BCCD'],
-        palette9:  ['#5C4742','#A5978B','#8D5B4C','#5A2A27','#C4BBAF'],
-        palette10: ['#A300D6','#7D02EB','#5653FE','#2983FF','#00B1F2']
-      };
+    // _colors = {
+    //     palette1:  ['#008FFB','#00E396','#FEB019','#FF4560','#775DD0'],
+    //     palette2:  ['#3F51B5','#03A9F4','#4CAF50','#F9CE1D','#FF9800'],
+    //     palette3:  ['#33B2DF','#546E7A','#D4526E','#13D8AA','#A5978B'],
+    //     palette4:  ['#4ECDC4','#C7F464','#81D4FA','#546E7A','#FD6A6A'],
+    //     palette5:  ['#2B908F','#F9A3A4','#90EE7E','#FA4443','#69D2E7'],
+    //     palette6:  ['#449DD1','#F86624','#EA3546','#662E9B','#C5D86D'],
+    //     palette7:  ['#D7263D','#1B998B','#2E294E','#F46036','#E2C044'],
+    //     palette8:  ['#662E9B','#F86624','#F9C80E','#EA3546','#43BCCD'],
+    //     palette9:  ['#5C4742','#A5978B','#8D5B4C','#5A2A27','#C4BBAF'],
+    //     palette10: ['#A300D6','#7D02EB','#5653FE','#2983FF','#00B1F2']
+    //   };
+    _colors = new ColorsComponent;
 
     updateOrder= false;
     showOrder= 'ROL,LB,MB,DIAS';
@@ -49,91 +51,98 @@ export class AnalisemarcaService {
             exibir : true,
             showYAxis : true,
             seriesName: "ROL",
-            cor : this._colors.palette1[0]
+            cor : this._colors.colors[0]
         },
         {
             name : "LB",
             exibir : true,
             showYAxis : false,
             seriesName: "LB",
-            cor : this._colors.palette1[1]
+            cor : this._colors.colors[1]
         },
         {
             name : "MB",
             exibir : true,
             showYAxis : true,
             seriesName: "MB",
-            cor : this._colors.palette1[2]
+            cor : this._colors.colors[2]
         },
         {
             name : "DIAS",
             exibir : true,
             showYAxis : false,
             seriesName: "DIAS",
-            cor : this._colors.palette1[3]
+            cor : this._colors.colors[3]
         },
         {
             name : "QTDE",
             exibir : false,
             showYAxis : false,
             seriesName: "QTDE",
-            cor : this._colors.palette1[4]
+            cor : this._colors.colors[4]
         },
         {
             name : "CMV",
             exibir : false,
             showYAxis : true,
             seriesName: "ROL",
-            cor : this._colors.palette2[0]
+            // cor : this._colors.palette2[0]
         },
         {
             name : "ROB",
             exibir : false,
             showYAxis : false,
             seriesName: "ROL",
-            cor : this._colors.palette2[1]
+            // cor : this._colors.palette2[1]
+        },
+        {
+            name : "DESCONTO",
+            exibir : false,
+            showYAxis : false,
+            seriesName: "DESCONTO",
+            // cor : this._colors.palette2[1]
         },
         {
             name : "IMPOSTOS",
             exibir : false,
             showYAxis : false,
             seriesName: "IMPOSTOS",
-            cor : this._colors.palette2[2]
+            // cor : this._colors.palette2[2]
         },
         {
             name : "ROL DIA",
             exibir : false,
             showYAxis : true,
             seriesName: "ROL DIA",
-            cor : this._colors.palette2[3]
+            // cor : this._colors.palette2[3]
         },
         {
             name : "LB DIA",
             exibir : false,
             showYAxis : false,
             seriesName:  "LB DIA",
-            cor : this._colors.palette2[4]
+            // cor : this._colors.palette2[4]
         },
         {
             name : "QTDE DIA",
             exibir : false,
             showYAxis : false,
             seriesName: "QTDE DIA",
-            cor : this._colors.palette3[0]
+            // cor : this._colors.palette3[0]
         },
         {
             name : "CMV DIA",
             exibir : false,
             showYAxis : false,
             seriesName: "CMV DIA",
-            cor : this._colors.palette3[1]
+            // cor : this._colors.palette3[1]
         },
         {
             name : "ROB DIA",
             exibir : false,
             showYAxis : false,
             seriesName: "ROL DIA",
-            cor : this._colors.palette3[2]
+            // cor : this._colors.palette3[2]
         }
     ];
 
@@ -163,7 +172,7 @@ export class AnalisemarcaService {
           minWidth: 0,
           maxWidth: 40,
           style: {
-            colors: this._colors.palette1[0],
+            colors: this.exibirAxis[0].cor,
             cssClass: 'apexcharts-yaxis-label'
           },
           formatter: (val) => {return(this.formatadorUnidade(val))}
@@ -190,7 +199,7 @@ export class AnalisemarcaService {
           minWidth: 0,
           maxWidth: 30,
           style: {
-            colors: this._colors.palette1[1],
+            colors: this.exibirAxis[1].cor,
             cssClass: 'apexcharts-yaxis-label'
           },
           formatter: (val) => {return(this.formatadorUnidade(val))}
@@ -219,7 +228,7 @@ export class AnalisemarcaService {
           minWidth: 0,
           maxWidth: 600,
           style: {
-            colors: this._colors.palette1[2],
+            colors: this.exibirAxis[2].cor,
             cssClass: 'apexcharts-yaxis-label'
           },
           formatter: (val) => {return(this.formatadorUnidade(val))}
@@ -248,7 +257,7 @@ export class AnalisemarcaService {
           minWidth: 0,
           maxWidth: 600,
           style: {
-            colors: this._colors.palette1[3],
+            colors: this.exibirAxis[3].cor,
             cssClass: 'apexcharts-yaxis-label'
           },
           formatter: (val) => {return(this.formatadorUnidade(val))}
@@ -272,7 +281,7 @@ export class AnalisemarcaService {
           minWidth: 0,
           maxWidth: 600,
           style: {
-            colors: this._colors.palette1[4],
+            colors: this.exibirAxis[4].cor,
             cssClass: 'apexcharts-yaxis-label'
           },
           formatter: (val) => {return(this.formatadorUnidade(val))}
@@ -286,7 +295,7 @@ export class AnalisemarcaService {
           minWidth: 0,
           maxWidth: 600,
           style: {
-            colors: this._colors.palette2[0],
+            // colors: this._colors.palette2[0],
             cssClass: 'apexcharts-yaxis-label'
           },
           formatter: (val) => {return(this.formatadorUnidade(val))}
@@ -300,7 +309,7 @@ export class AnalisemarcaService {
           minWidth: 0,
           maxWidth: 600,
           style: {
-            colors: this._colors.palette2[1],
+            // colors: this._colors.palette2[1],
             cssClass: 'apexcharts-yaxis-label'
           },
           formatter: (val) => {return(this.formatadorUnidade(val))}
@@ -308,13 +317,13 @@ export class AnalisemarcaService {
       },
       {
         show: false,
-        seriesName: this.exibirAxis[7].showYAxis, //'IMPOSTOS',
+        seriesName: this.exibirAxis[7].showYAxis, //'DESCONTO',
         labels: {
           show: false,
           minWidth: 0,
           maxWidth: 600,
           style: {
-            colors: this._colors.palette2[2],
+            // colors: this._colors.palette2[1],
             cssClass: 'apexcharts-yaxis-label'
           },
           formatter: (val) => {return(this.formatadorUnidade(val))}
@@ -322,13 +331,13 @@ export class AnalisemarcaService {
       },
       {
         show: false,
-        seriesName: this.exibirAxis[8].showYAxis, //'ROL_DIA',
+        seriesName: this.exibirAxis[8].showYAxis, //'IMPOSTOS',
         labels: {
           show: false,
           minWidth: 0,
           maxWidth: 600,
           style: {
-            colors: this._colors.palette2[3],
+            //colors: this._colors.palette2[2],
             cssClass: 'apexcharts-yaxis-label'
           },
           formatter: (val) => {return(this.formatadorUnidade(val))}
@@ -336,13 +345,13 @@ export class AnalisemarcaService {
       },
       {
         show: false,
-        seriesName: this.exibirAxis[9].showYAxis, //'LB_DIA',
+        seriesName: this.exibirAxis[9].showYAxis, //'ROL_DIA',
         labels: {
           show: false,
           minWidth: 0,
           maxWidth: 600,
           style: {
-            colors: this._colors.palette2[4],
+            //colors: this._colors.palette2[3],
             cssClass: 'apexcharts-yaxis-label'
           },
           formatter: (val) => {return(this.formatadorUnidade(val))}
@@ -350,13 +359,13 @@ export class AnalisemarcaService {
       },
       {
         show: false,
-        seriesName: this.exibirAxis[10].showYAxis, //'QTDE_DIA',
+        seriesName: this.exibirAxis[10].showYAxis, //'LB_DIA',
         labels: {
           show: false,
           minWidth: 0,
           maxWidth: 600,
           style: {
-            colors: this._colors.palette3[0],
+            //colors: this._colors.palette2[4],
             cssClass: 'apexcharts-yaxis-label'
           },
           formatter: (val) => {return(this.formatadorUnidade(val))}
@@ -364,13 +373,13 @@ export class AnalisemarcaService {
       },
       {
         show: false,
-        seriesName: this.exibirAxis[11].showYAxis, //'CMV_DIA',
+        seriesName: this.exibirAxis[11].showYAxis, //'QTDE_DIA',
         labels: {
           show: false,
           minWidth: 0,
           maxWidth: 600,
           style: {
-            colors: this._colors.palette3[1],
+            //colors: this._colors.palette3[0],
             cssClass: 'apexcharts-yaxis-label'
           },
           formatter: (val) => {return(this.formatadorUnidade(val))}
@@ -378,13 +387,27 @@ export class AnalisemarcaService {
       },
       {
         show: false,
-        seriesName: this.exibirAxis[12].showYAxis, //'ROB_DIA',
+        seriesName: this.exibirAxis[12].showYAxis, //'CMV_DIA',
         labels: {
           show: false,
           minWidth: 0,
           maxWidth: 600,
           style: {
-            colors: this._colors.palette3[2],
+            //colors: this._colors.palette3[1],
+            cssClass: 'apexcharts-yaxis-label'
+          },
+          formatter: (val) => {return(this.formatadorUnidade(val))}
+        }
+      },
+      {
+        show: false,
+        seriesName: this.exibirAxis[13].showYAxis, //'ROB_DIA',
+        labels: {
+          show: false,
+          minWidth: 0,
+          maxWidth: 600,
+          style: {
+            //colors: this._colors.palette3[2],
             cssClass: 'apexcharts-yaxis-label'
           },
           formatter: (val) => {return(this.formatadorUnidade(val))}

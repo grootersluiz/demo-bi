@@ -308,11 +308,11 @@ export class tipovendaComponent implements AfterViewInit {
         this.seriesData.push({ name: filial, data: this.HeatFiliais });
 
         // Inicie cada total como 0.
-        let totals = new Array(17).fill(0);
+        let totals = new Array(16).fill(0);
 
         for (let series of this.seriesData) {
-            for (let index = 0; index < series.data.length ; index++) {
-                totals[index] += series.data[index];
+            for (let index = 0; index < series.data.length -1; index++) {
+                totals[index] += Number(series.data[index]);
             }
         }
         totals[16] = PMV / auxMedia;
@@ -460,7 +460,7 @@ export class tipovendaComponent implements AfterViewInit {
 
         for (let row of dataRow) {
             let [date, type, value] = row;
-            if (type === 'A vista') type = 'À vista';
+            if (type === 'A vista') type = 'Até 1 dia';
             let [month, year] = date.split('/').map((part) => parseInt(part));
 
             if (!rawData[type]) rawData[type] = {};
@@ -700,6 +700,9 @@ export class tipovendaComponent implements AfterViewInit {
                 horizontalAlign: 'left',
                 position: 'top',
                 offsetX: 40,
+                onItemClick:{
+                    toggleDataSeries: false
+                }
             },
         };
         this.chartOptionsMixed2 = {
@@ -714,6 +717,7 @@ export class tipovendaComponent implements AfterViewInit {
             dataLabels: {
                 offsetY: -20,
                 enabled: true,
+
                 formatter: (val) => {
                     return this.formatadorUnidade(val);
                 },
@@ -884,6 +888,7 @@ export class tipovendaComponent implements AfterViewInit {
             tooltip: {
                 followCursor: true,
                 theme: 'dark',
+                fillSeriesColor: false,
                 x: {
                     format: 'dd MMM, yyyy',
                 },

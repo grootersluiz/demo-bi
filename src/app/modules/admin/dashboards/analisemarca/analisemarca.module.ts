@@ -39,6 +39,7 @@ import { ListacurvaModule } from '../../util/listacurva/listacurva.module';
 
 import {NgFor} from '@angular/common';
 import {MatSelectModule} from '@angular/material/select';
+import { ColorsComponent } from '../../util/colors/colors.component';
 
 registerLocaleData(localePt);
 
@@ -73,6 +74,7 @@ registerLocaleData(localePt);
         { provide: LOCALE_ID, useValue: 'pt-BR' },
         // { provide: MatDialogRef,useValue: [AnalisemarcaDialogComponent] },
         { provide: MAT_DIALOG_DATA, useValue: [] }
+        ,[ColorsComponent]
     ],
     entryComponents: [
         AnalisemarcaDialogComponent,
