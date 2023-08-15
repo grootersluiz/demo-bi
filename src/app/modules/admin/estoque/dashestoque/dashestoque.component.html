@@ -26,25 +26,20 @@
                 </div>
             </div>
             <div class="flex flex-wrap justify-end">
-               <!-- FILTROS VVVVV -->
-               <app-selectfilial #filial></app-selectfilial>
-               <app-listamarca #marca></app-listamarca>
-               <app-listafornecedor #fornecedor></app-listafornecedor>
-               <app-listacurva #curva></app-listacurva>
+                <!-- FILTROS VVVVV -->
+                <app-selectfilial #filial></app-selectfilial>
+                <app-listamarca #marca></app-listamarca>
+                <app-listafornecedor #fornecedor></app-listafornecedor>
+                <app-listacurva #curva></app-listacurva>
 
 
-               <!-- FILTROS ^^^^^ -->
-           </div>
-           <!-- Botão de confirmar filtro, adicionar evento de (click) -->
-           <button
-               class="sm:inline-flex ml-5 apply-button"
-               style="width: 120px"
-               mat-flat-button
-               [color]="'primary'"
-               (click)="getGeral(filial.filiais.value, marca.marcas.value, fornecedor.fornecedores.value, curva.curvas.value)"
-           >
-               <span style="font-size: 12px">Aplicar</span>
-           </button>
+                <!-- FILTROS ^^^^^ -->
+            </div>
+            <!-- Botão de confirmar filtro, adicionar evento de (click) -->
+            <button class="sm:inline-flex ml-5 apply-button" style="width: 120px" mat-flat-button [color]="'primary'"
+                (click)="getGeral(filial.filiais.value, marca.marcas.value, fornecedor.fornecedores.value, curva.curvas.value)">
+                <span style="font-size: 12px">Aplicar</span>
+            </button>
         </div>
 
     </div>
@@ -62,121 +57,98 @@
         </div-->
         <div class="w-full">
             <div class="fex justify-center">
-            <div style=" text-align: center;">
-                <b>Dias de Estoque</b>
-            </div>
-
-            <div   class="flex flex-row w-full gap-2 ">
-                <div id="chart"
-                    class="relative flex flex-col w-1/4 flex-direction bg-card shadow rounded-2xl overflow-hidden"
-                    (click)="atualizarTabela(1)">
-                    <br>
-                    <mat-label style="text-align: center;"> Até 30 Dias </mat-label>
-                    <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart"
-                        [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
-                        [fill]="chartOptions.fill">
-
-                    </apx-chart>
+                <div style=" text-align: center;">
+                    <b>Dias de Estoque</b>
                 </div>
 
+                <div class="flex flex-row w-full gap-2 ">
+                    <div id="chart"
+                        class="relative flex flex-col w-1/4 flex-direction bg-card shadow rounded-2xl overflow-hidden"
+                        (click)="atualizarTabela(1)">
+                        <br>
+                        <mat-label style="text-align: center;"> Até 30 Dias </mat-label>
+                        <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart"
+                            [plotOptions]="chartOptions.plotOptions" [labels]="chartOptions.labels"
+                            [fill]="chartOptions.fill">
 
-                <div id="chart2" style="text-align: center;"
-                    class="relative flex flex-col w-1/4 flex-direction bg-card shadow rounded-2xl overflow-hidden"
-                    (click)="atualizarTabela(2)">
-                    <br>
-                    <mat-label style="text-align: center;">De 31 à 60 Dias </mat-label>
-                    <apx-chart [series]="chartOptions2.series" [chart]="chartOptions2.chart"
-                        [plotOptions]="chartOptions2.plotOptions" [labels]="chartOptions2.labels"
-                        [fill]="chartOptions2.fill">
-                    </apx-chart>
+                        </apx-chart>
+                    </div>
+
+
+                    <div id="chart2" style="text-align: center;"
+                        class="relative flex flex-col w-1/4 flex-direction bg-card shadow rounded-2xl overflow-hidden"
+                        (click)="atualizarTabela(2)">
+                        <br>
+                        <mat-label style="text-align: center;">De 31 à 60 Dias </mat-label>
+                        <apx-chart [series]="chartOptions2.series" [chart]="chartOptions2.chart"
+                            [plotOptions]="chartOptions2.plotOptions" [labels]="chartOptions2.labels"
+                            [fill]="chartOptions2.fill">
+                        </apx-chart>
+                    </div>
+
+
+                    <div id="chart3" style="text-align: center;"
+                        class="relative flex flex-col w-1/4 flex-auto bg-card shadow rounded-2xl overflow-hidden"
+                        (click)="atualizarTabela(3)">
+                        <br>
+                        <mat-label style="text-align: center;">De 61 à 90 Dias </mat-label>
+                        <apx-chart [series]="chartOptions3.series" [chart]="chartOptions3.chart"
+                            [plotOptions]="chartOptions3.plotOptions" [labels]="chartOptions3.labels"
+                            [fill]="chartOptions3.fill"></apx-chart>
+
+
+                    </div>
+
+
+                    <div id="chart4" style="text-align: center;"
+                        class="relative flex flex-col w-1/4 flex-auto bg-card shadow rounded-2xl overflow-hidden"
+                        (click)="atualizarTabela(4)">
+                        <br>
+                        <mat-label style="text-align: center;"> Mais de 90 Dias </mat-label>
+                        <apx-chart [series]="chartOptions4.series" [chart]="chartOptions4.chart"
+                            [plotOptions]="chartOptions4.plotOptions" [labels]="chartOptions4.labels"
+                            [fill]="chartOptions4.fill"></apx-chart>
+                    </div>
+
                 </div>
+                <div style="text-align: left;"
+                    class="flex flex-col h-95 bg-card shadow rounded-2xl mt-2 overflow-x-auto whitespace-no-wrap ">
 
-
-                <div id="chart3" style="text-align: center;"
-                    class="relative flex flex-col w-1/4 flex-auto bg-card shadow rounded-2xl overflow-hidden"
-                    (click)="atualizarTabela(3)">
-                    <br>
-                    <mat-label style="text-align: center;">De 61 à 90 Dias </mat-label>
-                    <apx-chart [series]="chartOptions3.series" [chart]="chartOptions3.chart"
-                        [plotOptions]="chartOptions3.plotOptions" [labels]="chartOptions3.labels"
-                        [fill]="chartOptions3.fill"></apx-chart>
-
-
-                </div>
-
-
-                <div id="chart4" style="text-align: center;"
-                    class="relative flex flex-col w-1/4 flex-auto bg-card shadow rounded-2xl overflow-hidden"
-                    (click)="atualizarTabela(4)">
-                    <br>
-                    <mat-label style="text-align: center;"> Mais de 90 Dias </mat-label>
-                    <apx-chart [series]="chartOptions4.series" [chart]="chartOptions4.chart"
-                        [plotOptions]="chartOptions4.plotOptions" [labels]="chartOptions4.labels"
-                        [fill]="chartOptions4.fill"></apx-chart>
-                </div>
-
-        </div>
-            <div  style="text-align: left;" class="flex flex-col h-95 bg-card shadow rounded-2xl mt-2 overflow-x-auto whitespace-no-wrap ">
-
-                <div style=" display: flex" class="pl-2">
-                    <b> <mat-label>{{tituloTable}}</mat-label></b>
-                </div>
+                    <div style=" display: flex" class="pl-2">
+                        <b> <mat-label>{{tituloTable}}</mat-label></b>
+                    </div>
 
 
 
-                <div>
-                    <table
-                            class="w-full bg-transparent"
-                            mat-table
-                            matSort
-                            [dataSource]="dataSource"
-                            [trackBy]="trackByFn"
-                            #recentTransactionsTable
-                        >
+                    <div>
+                        <table class="w-full bg-transparent" mat-table matSort [dataSource]="dataSource"
+                            [trackBy]="trackByFn" #recentTransactionsTable>
                             <!-- Dynamic column -->
-                            <ng-container
-                                *ngFor="
+                            <ng-container *ngFor="
                                     let column of recentTransactionsTableColumns;
                                     let i = index
-                                "
-                                [matColumnDef]="column"
-                            >
-                                <th
-                                    class="sticky-header"
-                                    mat-header-cell
-                                    *matHeaderCellDef
-                                    mat-sort-header
-                                    style="font-size: 12px"
-                                >
+                                " [matColumnDef]="column">
+                                <th class="sticky-header" mat-header-cell *matHeaderCellDef mat-sort-header
+                                    style="font-size: 12px">
                                     {{ displayedColumns[i]}}
 
-                                    <mat-icon
-                                    class="pl-2 text-lg"
-                                    style="opacity: 0.4"
-                                    aria-hidden="false"
-                                    aria-label="Filter Icon"
-                                    fontIcon="menu"
-                                    (click)="
+                                    <mat-icon class="pl-2 text-lg" style="opacity: 0.4" aria-hidden="false"
+                                        aria-label="Filter Icon" fontIcon="menu" (click)="
                                         filterDialog(
                                             $event,
                                             column,
                                             displayedColumns[i]
                                         )
-                                    "
-                                ></mat-icon>
+                                    "></mat-icon>
 
                                     <!--button mat-button (click)="openFilterDialog(displayedColumns[i])">Open Filter Dialog</button-->
                                 </th>
 
-                                <td
-                                    style="font-size: 12px"
-                                    mat-cell
-                                    *matCellDef="let transaction"
-                                >
+                                <td style="font-size: 12px" mat-cell *matCellDef="let transaction">
                                     <span class="pr-2 whitespace-nowrap">
                                         <!-- Conditional formatting for BRL currency -->
                                         {{
-                                            transaction[column]
+                                        transaction[column]
                                         }}
                                     </span>
                                 </td>
@@ -184,148 +156,197 @@
 
                             <!-- Footer -->
                             <ng-container matColumnDef="recentOrdersTableFooter">
-                                <td
-                                    class="py-6 px-0 border-0"
-                                    mat-footer-cell
-                                    *matFooterCellDef
-                                    colspan="6"
-                                >
+                                <td class="py-6 px-0 border-0" mat-footer-cell *matFooterCellDef colspan="6">
                                     <!-- <button mat-stroked-button>
                                         See all transactions
                                     </button> -->
                                 </td>
                             </ng-container>
 
-                            <tr
-                                class="order-row h-6"
-                                mat-header-row
-                                *matHeaderRowDef="recentTransactionsTableColumns"
-                            ></tr>
-                            <tr
-                                class="order-row h-6"
-                                mat-row
-                                *matRowDef="
+                            <tr class="order-row h-6" mat-header-row *matHeaderRowDef="recentTransactionsTableColumns">
+                            </tr>
+                            <tr class="order-row h-6" mat-row *matRowDef="
                                     let row;
                                     columns: recentTransactionsTableColumns
-                                "
-                            ></tr>
+                                "></tr>
                             <!--tr
                                 class="h-1 border-0"
                                 mat-footer-row
                                 *matFooterRowDef="['recentOrdersTableFooter']"
                             ></tr-->
                         </table>
-                    <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons
-                        aria-label="Select page of periodic elements">
-                    </mat-paginator>
+                        <mat-paginator [pageSizeOptions]="[10]" showFirstLastButtons
+                            aria-label="Select page of periodic elements">
+                        </mat-paginator>
 
 
+                    </div>
                 </div>
-            </div>
 
-            <!--div class="mt-10 " style=" text-align: center; font-size: 14px;">
+                <!--div class="mt-10 " style=" text-align: center; font-size: 14px;">
                 <b><mat-label>Disponibilidade de Estoque</mat-label></b>
 
             </div-->
 
-            <div id="chartGiro" class="relative flex flex-col bg-card  w-full shadow rounded-2xl mt-2 gap-1 ">
+                <div id="chartGiro" class="relative flex flex-col bg-card  w-full shadow rounded-2xl mt-2 gap-1 ">
 
-                <div class="pl-2">
-                    <b> <mat-label> Dias de Estoque / Giro</mat-label></b>
-                </div>
-                <!--div id="chart">
+                    <div class="pl-2">
+                        <b> <mat-label> Dias de Estoque / Giro</mat-label></b>
+                    </div>
+                    <!--div id="chart">
                     <apx-chart [series]="chartOptionsCurvSKU.series"
                                 [chart]="chartOptionsCurvSKU.chart"
                                  [labels]="chartOptionsCurvSKU.labels"
                                 [responsive]="chartOptionsCurvSKU.responsive"></apx-chart>
                 </div-->
 
-                <apx-chart
-                [series]="chartOptionsGiro.series"
-                [chart]="chartOptionsGiro.chart"
-                [dataLabels]="chartOptionsGiro.dataLabels"
-                [plotOptions]="chartOptionsGiro.plotOptions"
-                [yaxis]="chartOptionsGiro.yaxis"
-                [legend]="chartOptionsGiro.legend"
-                [fill]="chartOptionsGiro.fill"
-                [stroke]="chartOptionsGiro.stroke"
-                [tooltip]="chartOptionsGiro.tooltip"
-                [xaxis]="chartOptionsGiro.xaxis"
-                [colors]="chartOptionsGiro.colors"
-              ></apx-chart>
+                    <apx-chart [series]="chartOptionsGiro.series" [chart]="chartOptionsGiro.chart"
+                        [dataLabels]="chartOptionsGiro.dataLabels" [plotOptions]="chartOptionsGiro.plotOptions"
+                        [yaxis]="chartOptionsGiro.yaxis" [legend]="chartOptionsGiro.legend"
+                        [fill]="chartOptionsGiro.fill" [stroke]="chartOptionsGiro.stroke"
+                        [tooltip]="chartOptionsGiro.tooltip" [xaxis]="chartOptionsGiro.xaxis"
+                        [colors]="chartOptionsGiro.colors"></apx-chart>
 
-            </div>
-
-
-            <div class="flex flex-row gap-2 max-w-full mt-1 ">
-
-                <div class="mt-2 bg-card  rounded-2xl gap-1  pl-2 w-2/4" >
-                    <div>
-                        <b> <mat-label> Disponibilidade por Empresa</mat-label></b>
-                    </div>
-
-                    <div  >
-                        <div>
-                            <apx-chart [series]="chartOptionsDisponibilidadeEmpresa.series"
-                                [chart]="chartOptionsDisponibilidadeEmpresa.chart"
-                                [dataLabels]="chartOptionsDisponibilidadeEmpresa.dataLabels"
-                                [plotOptions]="chartOptionsDisponibilidadeEmpresa.plotOptions"
-                                [yaxis]="chartOptionsDisponibilidadeEmpresa.yaxis"
-                                [xaxis]="chartOptionsDisponibilidadeEmpresa.xaxis"
-                                [stroke]="chartOptionsDisponibilidadeEmpresa.stroke"
-                                [grid]="chartOptionsDisponibilidadeEmpresa.grid"
-                                [fill]="chartOptionsDisponibilidadeEmpresa.fill"></apx-chart>
-
-
-
-
-                        </div>
-                    </div>
                 </div>
 
 
+                <div class="flex flex-row gap-2 max-w-full mt-1 ">
 
-                <div class="relative flex flex-col bg-card  shadow rounded-2xl  mt-1 gap-1 w-1/4 " >
+                    <div class="mt-2 bg-card  rounded-2xl gap-1  pl-2 w-2/4">
+                        <div>
+                            <b> <mat-label> Disponibilidade por Empresa</mat-label></b>
+                        </div>
 
-                    <div class="pl-2">
-                        <b> <mat-label> Disponibilidade de SKU</mat-label></b>
+                        <div>
+                            <div>
+                                <apx-chart [series]="chartOptionsDisponibilidadeEmpresa.series"
+                                    [chart]="chartOptionsDisponibilidadeEmpresa.chart"
+                                    [dataLabels]="chartOptionsDisponibilidadeEmpresa.dataLabels"
+                                    [plotOptions]="chartOptionsDisponibilidadeEmpresa.plotOptions"
+                                    [yaxis]="chartOptionsDisponibilidadeEmpresa.yaxis"
+                                    [xaxis]="chartOptionsDisponibilidadeEmpresa.xaxis"
+                                    [stroke]="chartOptionsDisponibilidadeEmpresa.stroke"
+                                    [grid]="chartOptionsDisponibilidadeEmpresa.grid"
+                                    [fill]="chartOptionsDisponibilidadeEmpresa.fill"></apx-chart>
+
+
+
+
+                            </div>
+                        </div>
                     </div>
-                    <!--div id="chart">
+
+
+
+                    <div class="relative flex flex-col bg-card  shadow rounded-2xl  mt-1 gap-1 w-1/4 ">
+
+                        <div class="pl-2">
+                            <b> <mat-label> Disponibilidade de SKU</mat-label></b>
+                        </div>
+                        <!--div id="chart">
                         <apx-chart [series]="chartOptionsCurvSKU.series"
                                     [chart]="chartOptionsCurvSKU.chart"
                                      [labels]="chartOptionsCurvSKU.labels"
                                     [responsive]="chartOptionsCurvSKU.responsive"></apx-chart>
                     </div-->
-                    <apx-chart [series]="chartOptionsDisponibilidadeSKU.series"
-                    [chart]="chartOptionsDisponibilidadeSKU.chart"
-                    [dataLabels]="chartOptionsDisponibilidadeSKU.dataLabels"
-                    [plotOptions]="chartOptionsDisponibilidadeSKU.plotOptions"
-                    [yaxis]="chartOptionsDisponibilidadeSKU.yaxis"
-                    [xaxis]="chartOptionsDisponibilidadeSKU.xaxis"
-                    [stroke]="chartOptionsDisponibilidadeSKU.stroke"
-                    [grid]="chartOptionsDisponibilidadeSKU.grid"
-                    [fill]="chartOptionsDisponibilidadeSKU.fill"
-                    [colors]="chartOptionsDisponibilidadeSKU.colors"></apx-chart>
+                        <apx-chart [series]="chartOptionsDisponibilidadeSKU.series"
+                            [chart]="chartOptionsDisponibilidadeSKU.chart"
+                            [dataLabels]="chartOptionsDisponibilidadeSKU.dataLabels"
+                            [plotOptions]="chartOptionsDisponibilidadeSKU.plotOptions"
+                            [yaxis]="chartOptionsDisponibilidadeSKU.yaxis"
+                            [xaxis]="chartOptionsDisponibilidadeSKU.xaxis"
+                            [stroke]="chartOptionsDisponibilidadeSKU.stroke"
+                            [grid]="chartOptionsDisponibilidadeSKU.grid" [fill]="chartOptionsDisponibilidadeSKU.fill"
+                            [colors]="chartOptionsDisponibilidadeSKU.colors"></apx-chart>
+
+                    </div>
+
+                    <div class="relative flex flex-col bg-card  shadow rounded-2xl  mt-1 gap-1 w-1/4">
+
+                        <div class="pl-2">
+                            <b> <mat-label> Disponibilidade Cód Agrupador</mat-label></b>
+                        </div>
+
+                        <apx-chart [series]="chartOptionsDisponibilidadeAgrupador.series"
+                            [chart]="chartOptionsDisponibilidadeAgrupador.chart"
+                            [dataLabels]="chartOptionsDisponibilidadeAgrupador.dataLabels"
+                            [plotOptions]="chartOptionsDisponibilidadeAgrupador.plotOptions"
+                            [yaxis]="chartOptionsDisponibilidadeAgrupador.yaxis"
+                            [xaxis]="chartOptionsDisponibilidadeAgrupador.xaxis"
+                            [stroke]="chartOptionsDisponibilidadeAgrupador.stroke"
+                            [grid]="chartOptionsDisponibilidadeAgrupador.grid"
+                            [fill]="chartOptionsDisponibilidadeAgrupador.fill"
+                            [colors]="chartOptionsDisponibilidadeAgrupador.colors">
+                        </apx-chart>
+
+                    </div>
+
+
+
 
                 </div>
 
-                <div class="relative flex flex-col bg-card  shadow rounded-2xl  mt-1 gap-1 w-1/4">
 
-                    <div class="pl-2">
-                        <b> <mat-label> Disponibilidade Cód Agrupador</mat-label></b>
+
+
+
+
+                <!-- overflow-y-auto  h-100-->
+
+                <div class=" bg-card  w-full shadow rounded-2xl  mt-2  flex-row">
+
+
+
+
+                    <div class=" pl-2 flex flex-row ">
+                        <div class="">
+                            <b><mat-label>Estoque por Fornecedores</mat-label></b>
+
+                            <button mat-button [matMenuTriggerFor]="menu"> <mat-icon fontIcon="filter_list">
+                                </mat-icon></button>
+                            <mat-menu #menu="matMenu">
+
+                                <button mat-menu-item (click)="filtrarFornecedor(20,1)">20</button>
+                                <button mat-menu-item (click)="filtrarFornecedor(50,2.5)">50</button>
+                                <button mat-menu-item (click)="filtrarFornecedor(100,5)">100</button>
+                                <button mat-menu-item (click)="filtrarFornecedor(200,10)">200</button>
+                                <button mat-menu-item (click)="filtrarFornecedor(1000,11)">1000</button>
+                            </mat-menu>
+
+
+                        </div>
+
+                        <div class="justify-end">
+                            <!--button class="botton-serie justify-center">
+                                <mat-icon class="pt-4 h-auto" fontIcon="radio_button_unchecked"></mat-icon>
+                            </button>
+                            <label class="leganda pt-0" style="height: 5;">Saldo Estoque</label>
+
+                            <button class="botton-serie justify-center">
+                                <mat-icon class="pt-4 h-auto" fontIcon="radio_button_unchecked"></mat-icon>
+                            </button>
+                            <label class="leganda pt-0" style="height: 1;">% de Estoque</label-->
+
+
+                                <mat-radio-group aria-label="Select an option"  [(ngModel)]="opcaoSelecionada">
+                                    <mat-radio-button  (click)= "alterarSerieForn(1)" checked="true">Saldo Estoque</mat-radio-button>
+                                    <mat-radio-button  (click)="alterarSerieForn(2)">% de Estoque</mat-radio-button>
+                                  </mat-radio-group>
+                        </div>
                     </div>
 
-                    <apx-chart [series]="chartOptionsDisponibilidadeAgrupador.series"
-                    [chart]="chartOptionsDisponibilidadeAgrupador.chart"
-                    [dataLabels]="chartOptionsDisponibilidadeAgrupador.dataLabels"
-                    [plotOptions]="chartOptionsDisponibilidadeAgrupador.plotOptions"
-                    [yaxis]="chartOptionsDisponibilidadeAgrupador.yaxis"
-                    [xaxis]="chartOptionsDisponibilidadeAgrupador.xaxis"
-                    [stroke]="chartOptionsDisponibilidadeAgrupador.stroke"
-                    [grid]="chartOptionsDisponibilidadeAgrupador.grid"
-                    [fill]="chartOptionsDisponibilidadeAgrupador.fill"
-                    [colors]="chartOptionsDisponibilidadeAgrupador.colors">
-                </apx-chart>
+
+
+                    <div class="w-full" id="chartFor">
+                        <apx-chart [series]="chartOptionsFor.series" [chart]="chartOptionsFor.chart"
+                            [dataLabels]="chartOptionsFor.dataLabels" [plotOptions]="chartOptionsFor.plotOptions"
+                            [yaxis]="chartOptionsFor.yaxis" [xaxis]="chartOptionsFor.xaxis"
+                            [stroke]="chartOptionsFor.stroke" [grid]="chartOptionsFor.grid"
+                            [fill]="chartOptionsFor.fill" [tooltip]="chartOptionsFor.tooltip"
+                            [colors]="chartOptionsFor.colors"></apx-chart>
+
+                    </div>
+
 
                 </div>
 
@@ -335,53 +356,6 @@
             </div>
 
 
-
-
-
-
-<!-- overflow-y-auto  h-100-->
-
-            <div class=" bg-card  w-full shadow rounded-2xl  mt-2  ">
-                <div class="example-form">
-
-
-
-                <div class="relative pl-2">
-                    <b><mat-label>Estoque por Fornecedores</mat-label></b>
-
-                        <button mat-button [matMenuTriggerFor]="menu"> <mat-icon fontIcon="filter_list"> </mat-icon></button>
-                        <mat-menu #menu="matMenu">
-
-                          <button mat-menu-item (click)="filtrarFornecedor(20,1)">20</button>
-                          <button mat-menu-item (click)="filtrarFornecedor(50,2.5)">50</button>
-                          <button mat-menu-item (click)="filtrarFornecedor(100,5)">100</button>
-                          <button mat-menu-item (click)="filtrarFornecedor(200,10)">200</button>
-                          <button mat-menu-item (click)="filtrarFornecedor(1000,11)">1000</button>
-                        </mat-menu>
-
-                    </div>
-
-                    <div class="w-full">
-                    <apx-chart [series]="chartOptionsFor.series"
-                        [chart]="chartOptionsFor.chart"
-                        [dataLabels]="chartOptionsFor.dataLabels"
-                        [plotOptions]="chartOptionsFor.plotOptions"
-                        [yaxis]="chartOptionsFor.yaxis"
-                        [xaxis]="chartOptionsFor.xaxis"
-                        [stroke]="chartOptionsFor.stroke"
-                        [grid]="chartOptionsFor.grid"
-                        [fill]="chartOptionsFor.fill"
-                        [tooltip]="chartOptionsFor.tooltip"
-                        [colors]="chartOptionsFor.colors"
-                        ></apx-chart>
-
-                    </div>
-                    </div>
-
-
-
-
-            </div >
 
             <div>
                 <div class="relative flex bg-card mt-25">
@@ -394,4 +368,4 @@
 
 
 
-    </div>
+        </div>

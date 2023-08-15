@@ -3,3 +3,11 @@
     max-height: 100;
     overflow: auto;    /* Habilita a barra de rolagem quando o conteúdo excede a altura */
   }
+  //.botton-serie{
+    //transform: scale(0.5);
+  //}
+
+  .mat-mdc-radio-button ~ .mat-mdc-radio-button {
+    transform:scale(0.7);
+
+  }
