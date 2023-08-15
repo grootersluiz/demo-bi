@@ -278,14 +278,14 @@
                                 [matMenuTriggerFor]="intelMenu"
                             >
                                 <span class="font-medium text-sm text-secondary">{{
-                                    selectedIntel
+                                    anualIntel
                                 }}</span>
                             </button>
                             <mat-menu #intelMenu="matMenu">
                                 <button
                                     mat-menu-item
                                     *ngFor="let intel of intelOptions"
-                                    (click)="onMenuIntelSelected(intel)"
+                                    (click)="onAnualIntelSelected(intel)"
                                 >
                                     {{ intel }}
                                 </button>
@@ -301,6 +301,7 @@
                             [dataLabels]="chartAcumulado.dataLabels"
                             [plotOptions]="chartAcumulado.plotOptions"
                             [xaxis]="chartAcumulado.xaxis"
+                            [tooltip]="chartAcumulado.tooltip"
                         ></apx-chart>
                     </div>
                 </div>
@@ -329,6 +330,7 @@
                             [stroke]="chartAnual.stroke"
                             [tooltip]="chartAnual.tooltip"
                             [xaxis]="chartAnual.xaxis"
+                            [yaxis]="chartAnual.yaxis"
                         ></apx-chart>
                     </div>
                 </div>

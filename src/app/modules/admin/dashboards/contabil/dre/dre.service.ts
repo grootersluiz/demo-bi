@@ -14,9 +14,13 @@ export class DreDashService {
     readonly REPORT_FILTRO_FILIAIS = '101';
     readonly REPORT_FILTRO_VENDEDORES = '121';
     readonly REPORT_COMPANUAL = '359';
+    readonly REPORT_ROL_LB_MB_EBITDA = '401';
+    readonly REPORT_ROL_VS_DESPESAS = '402';
 
-    readonly INITIAL_INITIAL_DATE = this.getCurrentDate();
-    readonly INITIAL_FINAL_DATE = this.getCurrentDate();
+    readonly INITIAL_INITIAL_DATE = { year: 2023, month: 0, date: 1 };
+    readonly INITIAL_FINAL_DATE = { year: 2023, month: 1, date: 1 };
+    // readonly INITIAL_INITIAL_DATE = this.getCurrentDate();
+    // readonly INITIAL_FINAL_DATE = this.getCurrentDate();
 
     readonly INITIAL_COMPANIES_IDS = ['null'];
     readonly INITIAL_SELLERS_IDS = ['null'];
@@ -50,6 +54,10 @@ export class DreDashService {
             this.REPORT_FILTRO_FILIAIS
         }&reportId=${
             this.REPORT_COMPANUAL
+        }&reportId=${
+            this.REPORT_ROL_LB_MB_EBITDA
+        }&reportId=${
+            this.REPORT_ROL_VS_DESPESAS
         }&dtini=
         ${this.formatDate(dtIni)}
         &codvend=${sellersIds.join(',')}&codemp=${companiesIds.join(',')}&dtfin=
@@ -59,7 +67,7 @@ export class DreDashService {
             tap((response: any) => {
                 //---------------------------------------------------
 
-                //Filtro Filiais
+                // Filtro Filiais
 
                 const COD_EMPRESA = 0;
                 const RAZAO_ABREV = 1;
@@ -76,12 +84,70 @@ export class DreDashService {
                     };
                 });
 
+                //----------------------------------------------
+                
+                //----------------------------------------------
+
+                // Tratamento Gráfico "Comparativo Anual"
 
                 const chartCompAnual = response[this.REPORT_COMPANUAL];
+
+                // Reversão Chart "Comparativo Anual"
+                // Object.keys(chartCompAnual).forEach((key) => {
+                //     if (key != 'report') {
+                //         chartCompAnual[key].labels.reverse();
+                //         chartCompAnual[key].series.forEach((serie) => {
+                //             serie.data.reverse();
+                //         });
+                //     }
+                // });
+                
+                //---------------------------------------------------
+
+                //----------------------------------------------
+
+                // Tratamento Gráfico "ROL - LB - MB - EBITDA"
+
+                const chartRolLbMbEbitda = response[this.REPORT_ROL_LB_MB_EBITDA];
+
+                Object.keys(chartRolLbMbEbitda).forEach((key) => {
+                    if (key != 'report') {
+                        chartRolLbMbEbitda[key].series.unshift({
+                            name: 'ROL',
+                            data: [parseFloat(chartRolLbMbEbitda[key].labels[0])],
+                            type: 'column',
+                        });
+                    }
+                });
+
+                //---------------------------------------------------
+
+                //----------------------------------------------
+
+                // Tratamento Gráfico "ROL VS DESPESAS"
+
+                const chartRolVsDespesas = response[this.REPORT_ROL_VS_DESPESAS];
+
+                Object.keys(chartRolVsDespesas).forEach((key) => {
+                    if (key != 'report') {
+                        chartRolVsDespesas[key].series.unshift({
+                            name: 'ROL',
+                            data: [parseFloat(chartRolVsDespesas[key].labels[0])],
+                            type: 'column',
+                        });
+                    }
+                });
+
+
+                //---------------------------------------------------
+
+                //---------------------------------------------------
 
                 const dashData = {
                     filiaisLista: companyFilter,
                     ccCompAnual: chartCompAnual,
+                    ccRolLbMbEbitda: chartRolLbMbEbitda,
+                    ccRolVsDespesas: chartRolVsDespesas,
                 };
                 this._data.next(dashData);
             })

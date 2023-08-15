@@ -26,25 +26,63 @@ import * as _moment from 'moment';
     styleUrls: ['../../../util/css/css.component.scss'],
 })
 export class DreDashComponent implements OnInit {
-    chartAnual: ApexOptions;
-    chartDespesas: ApexOptions;
+    
+    
     chartProjecao: ApexOptions;
 
     // Grafico Comparativo (Esquerda)
 
     chartAcumulado: ApexOptions;
     companiesLabels: string[] = [];
-    comparativoSeries: { name: string; data: number[] }[] = [
-        { name: '', data: [] },
-        { name: '', data: [] },
-        { name: '', data: [] },
-    ];
-    selectedIntel: string = 'ROL';
+    comparativoSeries: { name: string; data: number[] }[] = [];
+    anualIntel: string = 'ROL';
     intelOptions: string[] = ['ROL', 'LB', 'MB', 'EBITDA'];
     selectedSortOption: string = 'Por filial';
 
     sortOptions: string[] = ['Ascendente', 'Descendente', 'Nome'];
     data: any;
+
+    // Grafico ROL / MB / LB / EBITDA
+
+    chartAnual: ApexOptions;
+    anualLabels: string[] = [];
+    anualSeries: { name: string; data: number[] }[] = [
+        {
+            name: 'ROL',
+            data: [],
+        },
+        {
+            name: 'Lucro Bruto',
+            data: [],
+        },
+        {
+            name: 'Margem Bruta',
+            data: [],
+        },
+        {
+            name: 'EBITDA',
+            data: [],
+        },
+    ];
+
+    // Grafico ROL vs Despesas
+
+    chartDespesas: ApexOptions;
+    despesasLabels: string[] = [];
+    despesasSeries: { name: string; data: number[] }[] = [
+        {
+            name: 'ROL',
+            data: [],
+        },
+        {
+            name: 'Despesas Variáveis',
+            data: [],
+        },
+        {
+            name: 'Despesas Operacionais',
+            data: [],
+        }
+    ];
 
     // Filtros principais do dashboard
 
@@ -103,8 +141,6 @@ export class DreDashComponent implements OnInit {
                 // Store the data
                 this.data = data;
 
-                // Prepare the chart data
-                this._prepareChartData();
                 this.filiaisObjects = this.data.filiaisLista;
                 this.filiaisStringList = this.filiaisObjects.map(
                     (item) => item.string
@@ -128,26 +164,16 @@ export class DreDashComponent implements OnInit {
             });
 
         // Tratamento Chart "Comparativo Anual"
-        Object.keys(this.data.ccCompAnual).forEach((key) => {
-            if (key != 'report') {
-                this.companiesLabels.push(key);
+        this._chartAcumuladoFormat(0);
 
-                if (this.comparativoSeries[0].name == '') {
-                    this.data.ccCompAnual[key].labels.forEach((year, index) => {
-                        this.comparativoSeries[index].name = year;
-                    });
-                }
+        // Tratamento Chart "ROL / MB / LB / EBITDA"
+        this._chartAnualFormat();
 
-                this.data.ccCompAnual[key].series[0].data.forEach(
-                    (value, index) => {
-                        this.comparativoSeries[index].data.push(value);
-                    }
-                );
-            }
-        });
+        // Tratamento Chart ROL vs Despesas
+        this._chartDespesasFormat();
 
         // Prepare the chart data
-        this._prepareChartData();
+        this._prepareChartData(this.anualIntel);
 
         // Attach SVG fill fixer to all ApexCharts
         window['Apex'] = {
@@ -177,59 +203,55 @@ export class DreDashComponent implements OnInit {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
+  
     onSort(sortOption: string) {
         let temp = [];
         switch (sortOption) {
             case `Ascendente`:
                 temp = this.comparativoSeries[0].data.map((_, index) => {
+                    const seriesData = this.comparativoSeries.map(
+                        (series) => series.data[index]
+                    );
                     return {
                         company: this.companiesLabels[index],
-                        currentYear: this.comparativoSeries[0].data[index],
-                        lastYear: this.comparativoSeries[1].data[index],
-                        secondToLastYear: this.comparativoSeries[2].data[index],
+                        seriesData: seriesData,
                     };
                 });
-                temp.sort((a, b) => a.currentYear - b.currentYear);
-                this.comparativoSeries[0].data = temp.map(
-                    (item) => item.currentYear
-                );
-                this.comparativoSeries[1].data = temp.map(
-                    (item) => item.lastYear
-                );
-                this.comparativoSeries[2].data = temp.map(
-                    (item) => item.secondToLastYear
-                );
+                temp.sort((a, b) => a.seriesData[0] - b.seriesData[0]);
+                this.comparativoSeries.forEach((series, seriesIndex) => {
+                    series.data = temp.map(
+                        (item) => item.seriesData[seriesIndex]
+                    );
+                });
                 this.companiesLabels = temp.map((item) => item.company);
                 break;
 
             case `Descendente`:
                 temp = this.comparativoSeries[0].data.map((_, index) => {
+                    const seriesData = this.comparativoSeries.map(
+                        (series) => series.data[index]
+                    );
                     return {
                         company: this.companiesLabels[index],
-                        currentYear: this.comparativoSeries[0].data[index],
-                        lastYear: this.comparativoSeries[1].data[index],
-                        secondToLastYear: this.comparativoSeries[2].data[index],
+                        seriesData: seriesData,
                     };
                 });
-                temp.sort((a, b) => b.currentYear - a.currentYear);
-                this.comparativoSeries[0].data = temp.map(
-                    (item) => item.currentYear
-                );
-                this.comparativoSeries[1].data = temp.map(
-                    (item) => item.lastYear
-                );
-                this.comparativoSeries[2].data = temp.map(
-                    (item) => item.secondToLastYear
-                );
+                temp.sort((a, b) => b.seriesData[0] - a.seriesData[0]);
+                this.comparativoSeries.forEach((series, seriesIndex) => {
+                    series.data = temp.map(
+                        (item) => item.seriesData[seriesIndex]
+                    );
+                });
                 this.companiesLabels = temp.map((item) => item.company);
                 break;
             case 'Nome':
                 temp = this.comparativoSeries[0].data.map((_, index) => {
+                    const seriesData = this.comparativoSeries.map(
+                        (series) => series.data[index]
+                    );
                     return {
                         company: this.companiesLabels[index],
-                        currentYear: this.comparativoSeries[0].data[index],
-                        lastYear: this.comparativoSeries[1].data[index],
-                        secondToLastYear: this.comparativoSeries[2].data[index],
+                        seriesData: seriesData,
                     };
                 });
                 temp.sort((a, b) =>
@@ -237,52 +259,26 @@ export class DreDashComponent implements OnInit {
                         .toLowerCase()
                         .localeCompare(b.company.toLowerCase())
                 );
-                this.comparativoSeries[0].data = temp.map(
-                    (item) => item.currentYear
-                );
-                this.comparativoSeries[1].data = temp.map(
-                    (item) => item.lastYear
-                );
-                this.comparativoSeries[2].data = temp.map(
-                    (item) => item.secondToLastYear
-                );
+                this.comparativoSeries.forEach((series, seriesIndex) => {
+                    series.data = temp.map(
+                        (item) => item.seriesData[seriesIndex]
+                    );
+                });
                 this.companiesLabels = temp.map((item) => item.company);
                 break;
         }
 
-        this._prepareChartAcumulado();
+        this._prepareChartAcumulado(this.anualIntel);
     }
 
-    onMenuIntelSelected(intel: string) {
-        this.selectedIntel = intel;
+    onAnualIntelSelected(intel: string) {
+        this.anualIntel = intel;
         const index = this.intelOptions.indexOf(intel);
-        this.companiesLabels = [];
-        this.comparativoSeries = [
-            { name: '', data: [] },
-            { name: '', data: [] },
-            { name: '', data: [] },
-        ];
 
-        Object.keys(this.data.ccCompAnual).forEach((key) => {
-            if (key != 'report') {
-                this.companiesLabels.push(key);
-
-                if (this.comparativoSeries[0].name == '') {
-                    this.data.ccCompAnual[key].labels.forEach((year, index) => {
-                        this.comparativoSeries[index].name = year;
-                    });
-                }
-
-                this.data.ccCompAnual[key].series[index].data.forEach(
-                    (value, index) => {
-                        this.comparativoSeries[index].data.push(value);
-                    }
-                );
-            }
-        });
+        this._chartAcumuladoFormat(index);
 
         // Prepare the chart data
-        this._prepareChartAcumulado();
+        this._prepareChartAcumulado(intel);
     }
 
     setInitialMY(evMY: Moment, datepicker: MatDatepicker<Moment>) {
@@ -512,13 +508,111 @@ export class DreDashComponent implements OnInit {
             });
     }
 
+    private _chartAcumuladoFormat(indicator: number) {
+        this.companiesLabels = [];
+        this.comparativoSeries = [];
+
+        const yearArray = Object.keys(this.data.ccCompAnual).reverse();
+        if(yearArray.indexOf('report') != -1){
+            yearArray.splice(yearArray.indexOf('report'), 1);
+        }
+        
+
+        yearArray.forEach((year, index) => { // Each key represents a year in this response
+            this.comparativoSeries.push({ name: year, data: [] });
+            if (this.companiesLabels.length == 0) {
+                this.data.ccCompAnual[year].labels.forEach((company) => {
+                    this.companiesLabels.push(company);
+                });
+            }
+
+            this.data.ccCompAnual[year].series[indicator].data.forEach(
+                (value) => {
+                    this.comparativoSeries[index].data.push(
+                        value.toFixed(2)
+                    );
+                }
+            );
+        });
+        
+    }
+
+    private _chartAnualFormat() {
+        this.anualLabels = [];
+        this.anualSeries = [
+            {
+                name: 'ROL',
+                data: [],
+            },
+            {
+                name: 'Lucro Bruto',
+                data: [],
+            },
+            {
+                name: 'Margem Bruta',
+                data: [],
+            },
+            {
+                name: 'EBITDA',
+                data: [],
+            },
+        ];
+
+        const yearArray = Object.keys(this.data.ccRolLbMbEbitda);
+        if(yearArray.indexOf('report') != -1){
+            yearArray.splice(yearArray.indexOf('report'), 1);
+        }
+        
+
+        yearArray.forEach((year, index) => {
+            this.anualLabels.push(year);
+            this.anualSeries[0].data.push(this.data.ccRolLbMbEbitda[year].series[0].data[0]);
+            this.anualSeries[1].data.push(this.data.ccRolLbMbEbitda[year].series[1].data[0]);
+            this.anualSeries[2].data.push(this.data.ccRolLbMbEbitda[year].series[2].data[0]);
+            this.anualSeries[3].data.push(this.data.ccRolLbMbEbitda[year].series[3].data[0]);
+
+        });
+    }
+
+    private _chartDespesasFormat() {
+        this.despesasLabels = [];
+        this.despesasSeries = [
+            {
+                name: 'ROL',
+                data: [],
+            },
+            {
+                name: 'Despesas Variáveis',
+                data: [],
+            },
+            {
+                name: 'Despesas Operacionais',
+                data: [],
+            }
+        ];
+
+        const yearArray = Object.keys(this.data.ccRolVsDespesas);
+        if(yearArray.indexOf('report') != -1){
+            yearArray.splice(yearArray.indexOf('report'), 1);
+        }
+        
+
+        yearArray.forEach((year, index) => {
+            this.despesasLabels.push(year);
+            this.despesasSeries[0].data.push(this.data.ccRolVsDespesas[year].series[0].data[0]);
+            this.despesasSeries[2].data.push(this.data.ccRolVsDespesas[year].series[1].data[0]*-1);
+            this.despesasSeries[1].data.push(this.data.ccRolVsDespesas[year].series[2].data[0]*-1);
+
+        });
+    }
+
     /**
      * Prepare the chart data from the data
      *
      * @private
      */
 
-    private _prepareChartAcumulado(): void {
+    private _prepareChartAcumulado(ind: string): void {
         this.chartAcumulado = {
             series: this.comparativoSeries,
             chart: {
@@ -544,6 +638,29 @@ export class DreDashComponent implements OnInit {
             xaxis: {
                 categories: this.companiesLabels,
             },
+            tooltip: {
+                theme: 'dark',
+                shared: true,
+                intersect: false,
+                y: {
+                    formatter: function (y) {
+                        if (typeof y !== 'undefined') {
+                            if (ind == 'ROL' || ind == 'LB' || ind == 'EBITDA') {
+                                return y.toLocaleString('pt-BR', {
+                                    style: 'currency',
+                                    currency: 'BRL',
+                                    maximumFractionDigits: 0,
+                                    minimumFractionDigits: 0,
+                                });
+                            }
+                            if (ind == 'MB') {
+                                return `${y.toFixed(2)}%`;
+                            }
+                        }
+                        return y.toString();
+                    },
+                },
+            },
             yaxis: {
                 title: {
                     text: 'Acumulado Filiais',
@@ -552,28 +669,11 @@ export class DreDashComponent implements OnInit {
         };
     }
 
-    private _prepareChartData(): void {
+    private _prepareChartData(ind: string): void {
         //Chart Anual
 
         this.chartAnual = {
-            series: [
-                {
-                    name: 'ROL',
-                    data: [44, 55, 57],
-                },
-                {
-                    name: 'Lucro Bruto',
-                    data: [76, 85, 101],
-                },
-                {
-                    name: 'Margem Bruta',
-                    data: [66, 80, 90],
-                },
-                {
-                    name: 'EBITDA',
-                    data: [63, 60, 66],
-                },
-            ],
+            series: this.anualSeries,
             chart: {
                 type: 'bar',
                 height: 200,
@@ -597,14 +697,36 @@ export class DreDashComponent implements OnInit {
                 colors: ['transparent'],
             },
             xaxis: {
-                categories: ['2021', '2022', '2023'],
+                categories: this.anualLabels,
+            },
+            yaxis: {
+                min: 0,
+                labels: {
+                    formatter: function (value) {
+                        return value.toFixed(0);
+                    },
+                },
             },
             fill: {
                 opacity: 1,
             },
             tooltip: {
+                theme: 'dark',
+                shared: true,
+                intersect: false,
                 y: {
-                    formatter: function (val) {
+                    formatter: function (val, { series, seriesIndex }) {
+                        if(seriesIndex == 0 || seriesIndex == 1 || seriesIndex == 3) {
+                            return val.toLocaleString('pt-BR', {
+                                style: 'currency',
+                                currency: 'BRL',
+                                maximumFractionDigits: 0,
+                                minimumFractionDigits: 0,
+                            });
+                        }
+                        if(seriesIndex == 2) {
+                            return `${val.toFixed(2)}%`;
+                        }
                         return val.toString();
                     },
                 },
@@ -612,25 +734,12 @@ export class DreDashComponent implements OnInit {
         };
 
         //Acumulado Anual
-        this._prepareChartAcumulado();
+        this._prepareChartAcumulado(ind);
 
         //Chart Anual Despesas
 
         this.chartDespesas = {
-            series: [
-                {
-                    name: 'ROL',
-                    data: [78, 84, 75],
-                },
-                {
-                    name: 'Despesas Variáveis',
-                    data: [35, 41, 36],
-                },
-                {
-                    name: 'Despesas Operacionais',
-                    data: [63, 60, 66],
-                },
-            ],
+            series: this.despesasSeries,
             chart: {
                 type: 'area',
                 height: 200,
@@ -653,16 +762,40 @@ export class DreDashComponent implements OnInit {
                 width: 1,
             },
             xaxis: {
-                categories: ['2021', '2022', '2023'],
+                categories: this.despesasLabels,
+            },
+            yaxis: {
+                min: 0,
+                labels: {
+                    formatter: function (value) {
+                        return value.toFixed(0);
+                    },
+                },
             },
             fill: {
                 colors: ['#008000', '#FF8C00', '#94A3B8'],
                 opacity: 0.4,
             },
+            // tooltip: {
+            //     y: {
+            //         formatter: function (val) {
+            //             return val.toString();
+            //         },
+            //     },
+            // },
             tooltip: {
+                theme: 'dark',
+                shared: true,
+                intersect: false,
                 y: {
                     formatter: function (val) {
-                        return val.toString();
+                        return val.toLocaleString('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL',
+                            maximumFractionDigits: 0,
+                            minimumFractionDigits: 0,
+                        });
+                        
                     },
                 },
             },
