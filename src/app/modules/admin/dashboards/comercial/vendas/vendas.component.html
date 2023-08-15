@@ -33,7 +33,7 @@
                 <!-- Filtros Filial -->
                 <mat-form-field
                     class="hidden sm:inline-flex ml-3"
-                    style="width: 150px"
+                    style="width: 190px"
                     (click)="handleCompaniesFilterClick(dataInicio, dataFinal)"
                 >
                     <mat-label style="font-size: 12px; color: #fff"
@@ -954,13 +954,7 @@
                                 <div
                                     class="mt-1 font-medium text-sm leading-none tooltip"
                                 >
-                                    {{
-                                        data.ccMB.REALIZADO_MB
-                                            | currency
-                                                : "BRL"
-                                                : "symbol-narrow"
-                                                : "1.0-0"
-                                    }}
+                                    {{ data.ccMB.REALIZADO_MB.toFixed(2) }}%
                                 </div>
                             </div>
                             <div class="flex flex-col mx-1 my-2">
@@ -972,13 +966,7 @@
                                 <div
                                     class="mt-1 font-medium text-sm leading-none tooltip"
                                 >
-                                    {{
-                                        data.ccMB.MB_DC
-                                            | currency
-                                                : "BRL"
-                                                : "symbol-narrow"
-                                                : "1.0-0"
-                                    }}
+                                    {{ data.ccMB.MB_DC.toFixed(2) }}%
                                 </div>
                             </div>
                             <div class="flex flex-col mx-1 my-2">
@@ -990,13 +978,7 @@
                                 <div
                                     class="mt-1 font-medium text-sm leading-none"
                                 >
-                                    {{
-                                        data.ccMB.MB_FC
-                                            | currency
-                                                : "BRL"
-                                                : "symbol-narrow"
-                                                : "1.0-0"
-                                    }}
+                                    {{ data.ccMB.MB_FC.toFixed(2) }}%
                                 </div>
                             </div>
                             <div class="flex flex-col mx-1 my-2">
@@ -1008,13 +990,7 @@
                                 <div
                                     class="mt-1 font-medium text-sm leading-none"
                                 >
-                                    {{
-                                        data.ccMB.MB_META_CARTEIRA
-                                            | currency
-                                                : "BRL"
-                                                : "symbol-narrow"
-                                                : "1.0-0"
-                                    }}
+                                    {{ data.ccMB.MB_META_CARTEIRA.toFixed(2) }}%
                                 </div>
                             </div>
                             <div class="flex flex-col mx-1 my-2">

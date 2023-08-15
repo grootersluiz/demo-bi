@@ -8,6 +8,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 export class VendasDashService {
     private _data: BehaviorSubject<any> = new BehaviorSubject(null);
     private _sellersData: BehaviorSubject<any> = new BehaviorSubject([]);
+    private _filiaisData: BehaviorSubject<any> = new BehaviorSubject([]);
 
     //reports
 
@@ -43,6 +44,10 @@ export class VendasDashService {
 
     get sellersData$(): Observable<any> {
         return this._sellersData.asObservable();
+    }
+
+    get filiaisData$(): Observable<any> {
+        return this._filiaisData.asObservable();
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -273,6 +278,20 @@ export class VendasDashService {
                 });
 
                 this._sellersData.next(sellersFilter);
+            })
+        );
+    }
+
+    getFiliaisData() {
+        let url = `http://10.2.1.108/v1/views/569/data?`;
+
+        return this._httpClient.get(url).pipe(
+            tap((response: any) => {
+                const filterList = response['rows'].map((item) => {
+                    return { id: item[0], name: item[1] };
+                });
+
+                this._filiaisData.next({ filiaisLista: filterList });
             })
         );
     }

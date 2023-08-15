@@ -82,7 +82,7 @@ export class VendasDashComponent implements OnInit {
     // Filtros principais do dashboard
 
     filiais = new FormControl(this._vendasService.INITIAL_COMPANIES_IDS);
-    filiaisObjects: { id: number; string: string }[];
+    filiaisObjects: { id: number; name: string }[];
     filiaisStringList: string[];
     allCompaniesSelected: boolean = false;
 
@@ -136,9 +136,19 @@ export class VendasDashComponent implements OnInit {
                 // Store the data
                 this.data = data;
 
-                this.filiaisObjects = this.data.filiaisLista;
+                // Trigger the change detection mechanism so that it updates the chart when filtering
+                this._cdr.markForCheck();
+            });
+
+        // Get Companies Filter
+
+        this._vendasService.filiaisData$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe((data) => {
+                console.log(data);
+                this.filiaisObjects = data.filiaisLista;
                 this.filiaisStringList = this.filiaisObjects.map(
-                    (item) => item.string
+                    (item) => item.name
                 );
 
                 // Trigger the change detection mechanism so that it updates the chart when filtering
@@ -509,6 +519,7 @@ export class VendasDashComponent implements OnInit {
                 .getData(dtIni, dtFin, filiaisIds, vendedoresIds)
                 .subscribe(() => {
                     this.prepareIndicatorsData(this.initialInd);
+                    this._chartAcumuladoFormat(0);
                     this._prepareChartAcumulado(this.anualIntel);
                 });
         }
@@ -640,12 +651,32 @@ export class VendasDashComponent implements OnInit {
      */
 
     private _prepareChartAcumulado(ind: string): void {
+        const getChartHeight = (length: number) => {
+            const heights = [];
+            const inicio = 140;
+            const fim = 1400;
+            const tamanhoArray = 23;
+            const incremento = (fim - inicio) / (tamanhoArray - 1);
+
+            // Preenchendo o array
+            for (let i = 0; i < tamanhoArray; i++) {
+                const numero = inicio + i * incremento;
+                heights.push(numero);
+            }
+
+            if (length - 1 > heights.length - 1) {
+                return 1400;
+            } else {
+                return heights[length - 1];
+            }
+        };
+
         // CC Comparativo Acumulado
         this.chartAcumulado = {
             series: this.comparativoSeries,
             chart: {
                 type: 'bar',
-                height: 60 * this.companiesLabels.length,
+                height: getChartHeight(this.companiesLabels.length),
                 toolbar: {
                     show: false,
                 },
@@ -811,9 +842,16 @@ export class VendasDashComponent implements OnInit {
             },
             yaxis: {
                 min: 0,
+                tickAmount: 5,
                 labels: {
                     formatter: function (value) {
-                        return value.toFixed(0);
+                        if (value) {
+                            return value.toLocaleString('pt-BR', {
+                                style: 'decimal',
+                                maximumFractionDigits: 0,
+                                minimumFractionDigits: 0,
+                            });
+                        }
                     },
                 },
             },
