@@ -451,7 +451,21 @@ export class DreDashComponent implements OnInit {
         if (dtIni && dtFin) {
             this._dreService
                 .getData(dtIni, dtFin, filiaisIds, vendedoresIds)
-                .subscribe();
+                .subscribe(() => {
+                    this.onAnualIntelSelected('ROL');
+
+                    // Tratamento Chart "ROL / MB / LB / EBITDA"
+                    this._chartAnualFormat();
+
+                    // Tratamento Chart ROL vs Despesas
+                    this._chartDespesasFormat();
+
+                    // Prepare the chart data
+                    this._prepareChartData(this.anualIntel);
+
+                    // this._chartAcumuladoFormat(0)
+                    // this._prepareChartAcumulado('ROL');
+                });
         }
     }
 
@@ -529,7 +543,7 @@ export class DreDashComponent implements OnInit {
             this.data.ccCompAnual[year].series[indicator].data.forEach(
                 (value) => {
                     this.comparativoSeries[index].data.push(
-                        value.toFixed(2)
+                        value ? value.toFixed(2) : 0
                     );
                 }
             );
@@ -613,11 +627,12 @@ export class DreDashComponent implements OnInit {
      */
 
     private _prepareChartAcumulado(ind: string): void {
+
         this.chartAcumulado = {
             series: this.comparativoSeries,
             chart: {
                 type: 'bar',
-                height: 80 * this.companiesLabels.length, //800
+                height: 135 * (this.companiesLabels.length ), //800
                 toolbar: {
                     show: false,
                 },
@@ -716,18 +731,20 @@ export class DreDashComponent implements OnInit {
                 intersect: false,
                 y: {
                     formatter: function (val, { series, seriesIndex }) {
-                        if(seriesIndex == 0 || seriesIndex == 1 || seriesIndex == 3) {
-                            return val.toLocaleString('pt-BR', {
-                                style: 'currency',
-                                currency: 'BRL',
-                                maximumFractionDigits: 0,
-                                minimumFractionDigits: 0,
-                            });
+                        if (val) {
+                            if(seriesIndex == 0 || seriesIndex == 1 || seriesIndex == 3) {
+                                return val.toLocaleString('pt-BR', {
+                                    style: 'currency',
+                                    currency: 'BRL',
+                                    maximumFractionDigits: 0,
+                                    minimumFractionDigits: 0,
+                                });
+                            }
+                            if(seriesIndex == 2) {
+                                return `${val.toFixed(2)}%`;
+                            }
+                            return val.toString();
                         }
-                        if(seriesIndex == 2) {
-                            return `${val.toFixed(2)}%`;
-                        }
-                        return val.toString();
                     },
                 },
             },

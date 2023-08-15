@@ -17,10 +17,10 @@ export class DreDashService {
     readonly REPORT_ROL_LB_MB_EBITDA = '401';
     readonly REPORT_ROL_VS_DESPESAS = '402';
 
-    readonly INITIAL_INITIAL_DATE = { year: 2023, month: 0, date: 1 };
-    readonly INITIAL_FINAL_DATE = { year: 2023, month: 1, date: 1 };
-    // readonly INITIAL_INITIAL_DATE = this.getCurrentDate();
-    // readonly INITIAL_FINAL_DATE = this.getCurrentDate();
+    // readonly INITIAL_INITIAL_DATE = { year: 2023, month: 0, date: 1 };
+    // readonly INITIAL_FINAL_DATE = { year: 2023, month: 1, date: 1 };
+    readonly INITIAL_INITIAL_DATE = this.getCurrentDate();
+    readonly INITIAL_FINAL_DATE = this.getCurrentDate();
 
     readonly INITIAL_COMPANIES_IDS = ['null'];
     readonly INITIAL_SELLERS_IDS = ['null'];
@@ -91,6 +91,7 @@ export class DreDashService {
                 // Tratamento Gráfico "Comparativo Anual"
 
                 const chartCompAnual = response[this.REPORT_COMPANUAL];
+               
 
                 // Reversão Chart "Comparativo Anual"
                 // Object.keys(chartCompAnual).forEach((key) => {
