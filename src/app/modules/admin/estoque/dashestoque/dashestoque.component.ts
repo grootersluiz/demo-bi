@@ -1613,13 +1613,10 @@ var objetoSerie = {
 
 
 
-var tooltip = this.chartOptionsFor.tooltip;
-var xaxis = this.chartOptionsFor.xaxis;
 
 this.chartOptionsFor.series = [];
-        this.chartOptionsFor.series[0] = objetoSerie  ;
+        this.chartOptionsFor.series[0] = objetoSerie ;
 
-        this.chartOptionsFor.tooltip = tooltip;
        
 
         var reflow = new ApexCharts(this.chartFor, this.chartOptionsFor);
