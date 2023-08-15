@@ -145,7 +145,6 @@ export class VendasDashComponent implements OnInit {
         this._vendasService.filiaisData$
             .pipe(takeUntil(this._unsubscribeAll))
             .subscribe((data) => {
-                console.log(data);
                 this.filiaisObjects = data.filiaisLista;
                 this.filiaisStringList = this.filiaisObjects.map(
                     (item) => item.name
