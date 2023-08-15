@@ -12,6 +12,7 @@ import _, { isNumber } from 'lodash';
 
 import { HttpClient } from '@angular/common/http';
 import { AnalisemarcaService } from './analisemarca.service';
+import { ColorsComponent } from '../../util/colors/colors.component';
 
 import ApexCharts from "apexcharts"; //está usando
 import { ApexOptions } from 'ng-apexcharts'; //está usando
@@ -31,6 +32,7 @@ import { values } from 'lodash';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
+  colors: any[];
   chart: ApexChart;
   fill: ApexFill;
   yaxis: ApexYAxis[];
@@ -370,6 +372,7 @@ export class AnalisemarcaComponent {
               ,private _renderer: Renderer2
               ,private _httpClient : HttpClient
               ,public dialog: MatDialog
+              ,private _colors: ColorsComponent
               ,@Inject(LOCALE_ID) public locale: string){
 
     // this._formatNumber      = formatNumber;
@@ -450,6 +453,7 @@ export class AnalisemarcaComponent {
 
     this.chartOptions = {
       series: this.viewSerie,
+      colors: this._colors.colors,
       chart: {
         animations: {
           enabled: false
@@ -681,8 +685,6 @@ export class AnalisemarcaComponent {
   }
 
   consultavendafilial(_dtref,filial,marca,fornecedor ){
-
-    console.log(fornecedor);
 
     if(!marca){
         marca = 'null';
