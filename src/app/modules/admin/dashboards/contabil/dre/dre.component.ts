@@ -627,12 +627,32 @@ export class DreDashComponent implements OnInit {
      */
 
     private _prepareChartAcumulado(ind: string): void {
+        const getChartHeight = (length: number) => {
+            const heights = [];
+            const inicio = 140;
+            const fim = 1400;
+            const tamanhoArray = 23;
+            const incremento = (fim - inicio) / (tamanhoArray - 1);
+
+            // Preenchendo o array
+            for (let i = 0; i < tamanhoArray; i++) {
+                const numero = inicio + i * incremento;
+                heights.push(numero);
+            }
+            
+            if(length - 1 > heights.length - 1){
+                return 1400
+            }else{
+                return heights[length - 1];;
+            }
+
+        }
 
         this.chartAcumulado = {
             series: this.comparativoSeries,
             chart: {
                 type: 'bar',
-                height: 135 * (this.companiesLabels.length ), //800
+                height: getChartHeight(this.companiesLabels.length), 
                 toolbar: {
                     show: false,
                 },
