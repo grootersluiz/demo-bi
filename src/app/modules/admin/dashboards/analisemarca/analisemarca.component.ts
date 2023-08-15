@@ -8,6 +8,7 @@ import { default as _rollupMoment, Moment } from 'moment';
 import { MatDatepicker, MatDatepickerToggle, MatDatepickerInputEvent} from '@angular/material/datepicker';
 import * as _moment from 'moment';
 const moment = _rollupMoment || _moment;
+import _, { isNumber } from 'lodash';
 
 import { HttpClient } from '@angular/common/http';
 import { AnalisemarcaService } from './analisemarca.service';
@@ -505,25 +506,15 @@ export class AnalisemarcaComponent {
       },
       dataLabels: {
         distributed: true,
-        formatter: function (val, opts) {
-            var valor = val? Number(val).toFixed(2) : '0.00';
+        formatter: (val) => {
 
-            valor = valor.replace('.',',');
-
-            // if(valor.indexOf(",00") == -1)
-            if(Number((valor.length)) > 6 && Number(valor.length) < 10){
-                var leng = valor.length;
-                valor = valor.substring(0,leng-6)+'.'+valor.substring(leng-6,leng);
-
-            }else{
-
-                if(Number((valor.length)) > 9 && Number(valor.length) < 13){
-                    var leng = valor.length;
-                    valor = valor.substring(0,leng-9)+'.'+valor.substring(leng-9,leng-6)+'.'+ valor.substring(leng-6,leng);
-                }
+            if (Number(val) < 0 || Number(val) > 150) {
+                return this.formatadorPts(val);
+            } else if (val != 0) {
+                return this.formatadorPtsPMV(val);
+            } else {
+                return val;
             }
-
-            return String(valor);
         },
         enabled: true,
         style: {
@@ -552,25 +543,15 @@ export class AnalisemarcaComponent {
             format: 'dd MMM, yyyy',
         },
         y: {
-            formatter: function (val) {
-                var valor = val? Number(val).toFixed(2) : '0.00';
+            formatter: (val) => {
 
-                valor = valor.replace('.',',');
-
-                // if(valor.indexOf(",00") == -1)
-                if(Number((valor.length)) > 6 && Number(valor.length) < 10){
-                    var leng = valor.length;
-                    valor = valor.substring(0,leng-6)+'.'+valor.substring(leng-6,leng);
-
-                }else{
-
-                    if(Number((valor.length)) > 9 && Number(valor.length) < 13){
-                        var leng = valor.length;
-                        valor = valor.substring(0,leng-9)+'.'+valor.substring(leng-9,leng-6)+'.'+ valor.substring(leng-6,leng);
-                    }
+                if (val < 0 || val > 150) {
+                    return this.formatadorPts(val);
+                } else if (val != 0) {
+                    return this.formatadorPtsPMV(val);
+                } else {
+                    return val;
                 }
-
-                return String(valor);
             }
         },
     },
@@ -605,6 +586,34 @@ export class AnalisemarcaComponent {
     };
 
   }
+  formatadorPts(val) {
+        if (isNumber(val)) {
+            if (!val) {
+                val = 0;
+            }
+            return String(
+                val.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL',
+                })
+            ).slice(0, -3);
+        }
+        return val;
+    }
+    formatadorPtsPMV(val) {
+        if (isNumber(val)) {
+            if (!val) {
+                val = 0;
+            }
+            return String(
+                val.toLocaleString('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL',
+                })
+            ).slice(3);
+        }
+        return val;
+    }
 
   ngAfterViewInit(): void {
 
