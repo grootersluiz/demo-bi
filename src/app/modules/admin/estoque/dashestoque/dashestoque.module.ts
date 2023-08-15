@@ -35,6 +35,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { ColorsComponent } from '../../util/colors/colors.component';
 import { ListafornecedorModule } from '../../util/listafornecedor/listafornecedor.module';
 import { ListacurvaModule } from '../../util/listacurva/listacurva.module';
+import { MatRadioModule } from '@angular/material/radio';
 
 
 
@@ -68,7 +69,8 @@ import { ListacurvaModule } from '../../util/listacurva/listacurva.module';
         MatMenuModule,
         MatAutocompleteModule,
         ListafornecedorModule,
-        ListacurvaModule
+        ListacurvaModule,
+        MatRadioModule
 
 
 

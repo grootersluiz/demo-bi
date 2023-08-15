@@ -27,6 +27,7 @@ import {
     ApexOptions,
 
 
+
 } from "ng-apexcharts";
 import { FilterDialogComponent } from "../../dashboards/rol/filterdialog/filterdialog.component";
 import { DashEstoqueService } from "./dashestoque.service";
@@ -55,6 +56,7 @@ export class DashestoqueComponent implements AfterViewInit {
     @ViewChild("chart2") chart2: ChartComponent;
     @ViewChild("chart3") chart3: ChartComponent;
     @ViewChild("chart4") chart4: ChartComponent;
+    @ViewChild("chartFor") chartFor: ChartComponent;
     @ViewChild("chatTable") chatTable: ChartComponent;
     @ViewChild("chartSku") chartSku: ChartComponent;
     @ViewChild("chartCurvSku") chartCurvSku: ChartComponent;
@@ -112,6 +114,7 @@ export class DashestoqueComponent implements AfterViewInit {
     qtdForn = 20;
     codmarca;
     curva;
+    opcaoSelecionada = '1';
 
 
     //dataSource = [];
@@ -1468,14 +1471,14 @@ export class DashestoqueComponent implements AfterViewInit {
                 {
                     name: "Saldo de Estoque",
 
-                    data: this.estoquePorFornecedor.SaldoEstoque 
+                    data: this.estoquePorFornecedor.SaldoEstoque
                 },
                 /*{
                     name: "% de Estoque",
 
                     data: this.estoquePorFornecedor.percentual
                 },*/
-             
+
             ],
             colors: [this._colors.colors[1]],
             annotations: {
@@ -1500,16 +1503,16 @@ export class DashestoqueComponent implements AfterViewInit {
                 height: this.tamanhoFor * 700,
               // stacked: true,
                 width: "100%",
-              
+
             },
-           
+
 
             tooltip: {
                 followCursor: true,
                 theme: 'dark',
                 y: {
                     formatter: (val) => {
-                        return (this.formatadorPts(val));
+                        return (this.formatadorMilhar(val));
                     }
                 },
             },
@@ -1522,27 +1525,27 @@ export class DashestoqueComponent implements AfterViewInit {
                     position: "right"
                 }*/
                 }
-                
+
             },
 
             dataLabels: {
                 formatter: (val) => {
                     return (this.formatadorMilhar(val) );
-                    
+
                 },
-          
+
                 //textAnchor:'end',
                 offsetX:20,
                 enabled: true,
                 style: {
-                    
+
                     colors: ["#0a0a0a"],
                     fontSize: "10px",
                     fontWeight: "bold"
 
 
                 }
-            
+
             },
             /*
                         stroke: {
@@ -1561,7 +1564,7 @@ export class DashestoqueComponent implements AfterViewInit {
 
                     },
                     formatter: (val) => {
-                        return (this.formatadorPts(val) );
+                        return (this.formatadorMilhar(val) );
                     }
 
                 },
@@ -1594,10 +1597,36 @@ export class DashestoqueComponent implements AfterViewInit {
     }
 
     filtrarFornecedor(qtdforn, tamanho) {
+        this.opcaoSelecionada ='1';
         this.tamanhoFor = tamanho;
         this.limparEstoqueFornecedor();
         this.getEstoquePorFornecedor(qtdforn, this.codemp, this.codparcfor, this.codmarca, this.curva);
 
+    }
+
+    alterarSerieForn(param){
+
+var objetoSerie = {
+    name: param ==1? "Saldo de Estoque": "% de Estoque",
+    data: param ==1? this.estoquePorFornecedor.SaldoEstoque : this.estoquePorFornecedor.percentual,
+}
+
+
+
+var tooltip = this.chartOptionsFor.tooltip;
+var xaxis = this.chartOptionsFor.xaxis;
+
+this.chartOptionsFor.series = [];
+        this.chartOptionsFor.series[0] = objetoSerie  ;
+
+        this.chartOptionsFor.tooltip = tooltip;
+       
+
+        var reflow = new ApexCharts(this.chartFor, this.chartOptionsFor);
+
+
+        
+    
     }
 
 
@@ -1790,8 +1819,8 @@ export class DashestoqueComponent implements AfterViewInit {
                 codemp: Number(param[i][2]),
                 empresa: param[i][3],
                 estoque: Number(param[i][4]),
-                media3m: Number(param[i][5]),
-                media6m: Number(param[i][6]),
+                media3m: this.formatadorPts(Number(param[i][5])),
+                media6m: this.formatadorPts(Number(param[i][6])),
                 qtdDias: Number(param[i][7])
             };
             ELEMENT_DATA.push(elemento);
