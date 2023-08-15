@@ -508,10 +508,8 @@ export class VendasDashComponent implements OnInit {
             this._vendasService
                 .getData(dtIni, dtFin, filiaisIds, vendedoresIds)
                 .subscribe(() => {
-                    this.onAnualIntelSelected('Positivação');
-                    // this.prepareIndicatorsData(this.initialInd);
-                    // this._prepareChartAcumulado(this.anualIntel);
-                    
+                    this.prepareIndicatorsData(this.initialInd);
+                    this._prepareChartAcumulado(this.anualIntel);
                 });
         }
     }
