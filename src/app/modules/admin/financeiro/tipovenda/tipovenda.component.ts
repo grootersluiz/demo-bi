@@ -460,7 +460,7 @@ export class tipovendaComponent implements AfterViewInit {
 
         for (let row of dataRow) {
             let [date, type, value] = row;
-            if (type === 'A vista') type = 'À vista';
+            if (type === 'A vista') type = 'Até 1 dia';
             let [month, year] = date.split('/').map((part) => parseInt(part));
 
             if (!rawData[type]) rawData[type] = {};
@@ -700,6 +700,9 @@ export class tipovendaComponent implements AfterViewInit {
                 horizontalAlign: 'left',
                 position: 'top',
                 offsetX: 40,
+                onItemClick:{
+                    toggleDataSeries: false
+                }
             },
         };
         this.chartOptionsMixed2 = {
