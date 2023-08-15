@@ -8,6 +8,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 export class DreDashService {
     private _data: BehaviorSubject<any> = new BehaviorSubject(null);
     private _sellersData: BehaviorSubject<any> = new BehaviorSubject([]);
+    private _filiaisData: BehaviorSubject<any> = new BehaviorSubject([]);
 
     //reports
 
@@ -40,6 +41,10 @@ export class DreDashService {
 
     get sellersData$(): Observable<any> {
         return this._sellersData.asObservable();
+    }
+
+    get filiaisData$(): Observable<any> {
+        return this._filiaisData.asObservable();
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -174,6 +179,26 @@ export class DreDashService {
                 });
 
                 this._sellersData.next(sellersFilter);
+            })
+        );
+    }
+
+    getFiliaisData() {
+        let url = `http://10.2.1.108/v1/views/569/data?`;
+
+        return this._httpClient.get(url).pipe(
+            tap((response: any) => {
+
+                const COD_EMPRESA = 0;
+                const RAZAO_ABREV = 1;
+                const companyFilter = response.rows.map((item) => {
+                    return {
+                        id: item[COD_EMPRESA],
+                        string: item[RAZAO_ABREV]
+                    };
+                });
+                
+                this._filiaisData.next({ filiaisLista: companyFilter });
             })
         );
     }

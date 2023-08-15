@@ -69,3 +69,30 @@ export class SellersResolver implements Resolve<any> {
         );
     }
 }
+
+@Injectable({
+    providedIn: 'root',
+})
+export class FiliaisResolver implements Resolve<any> {
+    /**
+     * Constructor
+     */
+    constructor(private _dredashService: DreDashService) {}
+
+    // -----------------------------------------------------------------------------------------------------
+    // @ Public methods
+    // -----------------------------------------------------------------------------------------------------
+
+    /**
+     * Resolver
+     *
+     * @param route
+     * @param state
+     */
+    resolve(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot
+    ): Observable<any> {
+        return this._dredashService.getFiliaisData();
+    }
+}

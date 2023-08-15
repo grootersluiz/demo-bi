@@ -27,7 +27,6 @@ import * as _moment from 'moment';
 })
 export class DreDashComponent implements OnInit {
     
-    
     chartProjecao: ApexOptions;
 
     // Grafico Comparativo (Esquerda)
@@ -141,10 +140,10 @@ export class DreDashComponent implements OnInit {
                 // Store the data
                 this.data = data;
 
-                this.filiaisObjects = this.data.filiaisLista;
-                this.filiaisStringList = this.filiaisObjects.map(
-                    (item) => item.string
-                );
+                // this.filiaisObjects = this.data.filiaisLista;
+                // this.filiaisStringList = this.filiaisObjects.map(
+                //     (item) => item.string
+                // );
 
                 // Trigger the change detection mechanism so that it updates the chart when filtering
                 this._cdr.markForCheck();
@@ -188,6 +187,16 @@ export class DreDashComponent implements OnInit {
                 },
             },
         };
+
+        this._dreService.filiaisData$
+            .pipe(takeUntil(this._unsubscribeAll))
+            .subscribe( (data) => {
+                this.filiaisObjects = data.filiaisLista;
+                this.filiaisStringList = this.filiaisObjects.map(
+                    (item) => item.string
+                );
+                this._cdr.markForCheck();
+            })
     }
 
     /**
@@ -203,7 +212,23 @@ export class DreDashComponent implements OnInit {
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
 
-  
+  // Function to generate dynamic colors
+    generateDynamicColors(numColors) {
+        const predefinedColors = [
+            '#ed7b00',
+            '#6e7a8a',
+            '#edca00',
+            '#016901',
+            '#191970',
+        ];
+        const colors = [];
+        for (let i = 0; i < numColors; i++) {
+            colors.push(predefinedColors[i % predefinedColors.length]);
+        }
+
+        return colors;
+    }
+
     onSort(sortOption: string) {
         let temp = [];
         switch (sortOption) {
@@ -466,6 +491,7 @@ export class DreDashComponent implements OnInit {
                     // this._chartAcumuladoFormat(0)
                     // this._prepareChartAcumulado('ROL');
                 });
+            
         }
     }
 
@@ -548,6 +574,7 @@ export class DreDashComponent implements OnInit {
                 }
             );
         });
+
         
     }
 
@@ -580,12 +607,17 @@ export class DreDashComponent implements OnInit {
 
         yearArray.forEach((year, index) => {
             this.anualLabels.push(year);
-            this.anualSeries[0].data.push(this.data.ccRolLbMbEbitda[year].series[0].data[0]);
-            this.anualSeries[1].data.push(this.data.ccRolLbMbEbitda[year].series[1].data[0]);
-            this.anualSeries[2].data.push(this.data.ccRolLbMbEbitda[year].series[2].data[0]);
-            this.anualSeries[3].data.push(this.data.ccRolLbMbEbitda[year].series[3].data[0]);
+
+            this.anualSeries.forEach((serie, index) => {
+                serie.data.push(this.data.ccRolLbMbEbitda[year].series[index].data[0]);
+            })
+            // this.anualSeries[0].data.push(this.data.ccRolLbMbEbitda[year].series[0].data[0]);
+            // this.anualSeries[1].data.push(this.data.ccRolLbMbEbitda[year].series[1].data[0]);
+            // this.anualSeries[2].data.push(this.data.ccRolLbMbEbitda[year].series[2].data[0]);
+            // this.anualSeries[3].data.push(this.data.ccRolLbMbEbitda[year].series[3].data[0]);
 
         });
+        
     }
 
     private _chartDespesasFormat() {
@@ -660,7 +692,7 @@ export class DreDashComponent implements OnInit {
             legend: {
                 position: 'top',
             },
-            colors: ['#ed7b00', '#6e7a8a', '#edca00'],
+            colors: this.generateDynamicColors(this.comparativoSeries.length),
             plotOptions: {
                 bar: {
                     borderRadius: 1,
@@ -697,8 +729,16 @@ export class DreDashComponent implements OnInit {
                 },
             },
             yaxis: {
-                title: {
-                    text: 'Acumulado Filiais',
+                labels: {
+                    formatter: function (value) {
+                        if (value) {
+                            return value.toLocaleString('pt-BR', {
+                                style: 'decimal',
+                                maximumFractionDigits: 0,
+                                minimumFractionDigits: 0,
+                            });
+                        }
+                    },
                 },
             },
         };
@@ -738,7 +778,13 @@ export class DreDashComponent implements OnInit {
                 min: 0,
                 labels: {
                     formatter: function (value) {
-                        return value.toFixed(0);
+                        if (value) {
+                            return value.toLocaleString('pt-BR', {
+                                style: 'decimal',
+                                maximumFractionDigits: 0,
+                                minimumFractionDigits: 0,
+                            });
+                        }
                     },
                 },
             },
@@ -805,7 +851,13 @@ export class DreDashComponent implements OnInit {
                 min: 0,
                 labels: {
                     formatter: function (value) {
-                        return value.toFixed(0);
+                        if (value) {
+                            return value.toLocaleString('pt-BR', {
+                                style: 'decimal',
+                                maximumFractionDigits: 0,
+                                minimumFractionDigits: 0,
+                            });
+                        }
                     },
                 },
             },

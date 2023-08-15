@@ -33,7 +33,7 @@
                 <!-- Filtros Filial -->
                 <mat-form-field
                     class="hidden sm:inline-flex ml-3"
-                    style="width: 150px"
+                    style="width: 185px"
                     (click)="handleCompaniesFilterClick(dataInicio, dataFinal)"
                 >
                     <mat-label style="font-size: 12px; color: #fff"
@@ -301,6 +301,7 @@
                             [dataLabels]="chartAcumulado.dataLabels"
                             [plotOptions]="chartAcumulado.plotOptions"
                             [xaxis]="chartAcumulado.xaxis"
+                            [yaxis]="chartAcumulado.yaxis"
                             [tooltip]="chartAcumulado.tooltip"
                         ></apx-chart>
                     </div>
