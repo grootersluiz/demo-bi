@@ -10,11 +10,11 @@
             *ngIf="isToggleOn"
         >
             <div class="flex flex-auto">
-                <img
+                <!-- <img
                     class="mr-3 logo-filter lg:block"
                     src="assets/images/logo/Logo-Rede-JS-Pecas_7.png"
                     alt=""
-                />
+                /> -->
                 <div class="flex flex-col">
                     <div
                         class="text-3xl font-semibold tracking-tight leading-8"
@@ -242,10 +242,7 @@
             <div
                 class="relative h-200 w-160 bg-card shadow rounded-2xl py-3 pr-1 mr-1"
             >
-                <div
-                    class="h-full w-full overflow-y-auto p-3"
-                >
-
+                <div class="h-full w-full overflow-y-auto p-3">
                     <div class="flex items-start justify-between m-1 mb-0">
                         <div
                             class="text-lg font-bold tracking-tight leading-6 truncate"
@@ -258,11 +255,12 @@
                                 mat-button
                                 [matMenuTriggerFor]="sortMenu"
                             >
-                                <span class="font-medium text-sm text-secondary">{{
-                                    'Ordenar'
-                                }}</span>
+                                <span
+                                    class="font-medium text-sm text-secondary"
+                                    >{{ "Ordenar" }}</span
+                                >
                             </button>
-                            <mat-menu  #sortMenu="matMenu">
+                            <mat-menu #sortMenu="matMenu">
                                 <button
                                     mat-menu-item
                                     *ngFor="let option of sortOptions"
@@ -277,9 +275,10 @@
                                 mat-button
                                 [matMenuTriggerFor]="intelMenu"
                             >
-                                <span class="font-medium text-sm text-secondary">{{
-                                    anualIntel
-                                }}</span>
+                                <span
+                                    class="font-medium text-sm text-secondary"
+                                    >{{ anualIntel }}</span
+                                >
                             </button>
                             <mat-menu #intelMenu="matMenu">
                                 <button

@@ -23,8 +23,8 @@ const themes = {
     // Default theme is required for theming system to work correctly!
     default: {
         primary: {
-            ...colors.amber,
-            DEFAULT: colors.amber[600],
+            ...colors.blue,
+            DEFAULT: colors.blue[900],
         },
         accent: {
             ...colors.stone,

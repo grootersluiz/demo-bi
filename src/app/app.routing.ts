@@ -39,7 +39,7 @@ export const appRoutes: Route[] = [
     {
         path: 'signed-in-redirect',
         pathMatch: 'full',
-        redirectTo: 'links/linksGeral',
+        redirectTo: 'dashboards/41',
     },
 
     // Auth routes for guests
@@ -236,8 +236,6 @@ export const appRoutes: Route[] = [
                                 'app/modules/admin/dashboards/contabil/dre/dre.module'
                             ).then((m) => m.DreDashModule),
                     },
-
-
                 ],
             },
 

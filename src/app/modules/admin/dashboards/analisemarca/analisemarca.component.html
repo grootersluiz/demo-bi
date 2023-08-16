@@ -3,10 +3,9 @@
     subTitulo: string = "";
     isToggleOn: boolean;
  -->
- <!-- <div class="box-content component-container h-full w-full mt-0 mr-2 mb-0 ml-2 p-0" id="painelAnaliseMarca" > -->
-    <!-- <div class="flex flex-col h-full w-full pl-1 pr-1"> -->
-<div class="component-container h-full w-full pl-1 pr-1 ">
-
+<!-- <div class="box-content component-container h-full w-full mt-0 mr-2 mb-0 ml-2 p-0" id="painelAnaliseMarca" > -->
+<!-- <div class="flex flex-col h-full w-full pl-1 pr-1"> -->
+<div class="component-container h-full w-full pl-1 pr-1">
     <div class="flex flex-col w-full">
         <div class="flex flex-grow w-full justify-between">
             <button
@@ -30,11 +29,11 @@
             [class.hidden]="!isToggleOn"
         >
             <div class="flex flex-auto">
-                <img
+                <!-- <img
                     class="mr-3 logo-filter lg:block"
                     src="assets/images/logo/Logo-Rede-JS-Pecas_7.png"
                     alt=""
-                />
+                /> -->
                 <div class="flex flex-col">
                     <div
                         class="text-3xl font-semibold tracking-tight leading-8"
@@ -51,9 +50,9 @@
             <div class="flex flex-wrap justify-end items-start">
                 <!-- FILTROS VVVVV -->
 
-                <app-selectfilial #filial ></app-selectfilial>
+                <app-selectfilial #filial></app-selectfilial>
                 <app-listafornecedor #forn></app-listafornecedor>
-                <app-listamarca #marca ></app-listamarca>
+                <app-listamarca #marca></app-listamarca>
                 <mat-form-field
                     class="sm:inline-flex ml-3"
                     style="width: 150px"
@@ -95,7 +94,14 @@
                 style="width: 120px"
                 mat-flat-button
                 [color]="'primary'"
-                (click)="consultavendafilial( dataref.value,filial.filiais.value,marca.marcas.value,forn.fornecedores.value)"
+                (click)="
+                    consultavendafilial(
+                        dataref.value,
+                        filial.filiais.value,
+                        marca.marcas.value,
+                        forn.fornecedores.value
+                    )
+                "
             >
                 <span style="font-size: 12px">Aplicar</span>
             </button>
@@ -106,7 +112,12 @@
     >
         <!-- COMPONENTES ABAIXO -->
         <!-- Colocar class="grid px-2 py-2 w-12/12 rounded-2xl bg-card shadow mb-1" em todos componentes-->
-        <div id="containerDash" [hidden]="false" class="flex flex-row" style="height: 94%">
+        <div
+            id="containerDash"
+            [hidden]="false"
+            class="flex flex-row"
+            style="height: 94%"
+        >
             <div
                 id="divChart"
                 #divChart
@@ -139,5 +150,4 @@
             </div>
         </div>
     </div>
-
 </div>
